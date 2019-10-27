@@ -1,6 +1,9 @@
 {
   "name": "honey-chat",
   "version": "0.0.1",
+  "author": "DmitryScaletta",
+  "description": "Alternative twitch-like chat with history and some enhancements",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "prop-types": "^15.7.2",
