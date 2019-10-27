@@ -42,7 +42,7 @@ const Name = styled.span`
 `;
 const Text = styled.span``;
 
-const ChatMessage = ({ name, color, text = '', emotes = {}, isHistory }) => (
+const ChatMessage = ({ name, color, text, emotes, isHistory }) => (
   <ChatMessageRoot isHistory={isHistory}>
     <Name color={color}>{name}</Name>:{' '}
     <Text dangerouslySetInnerHTML={{ __html: formatEmotes(text, emotes) }} />

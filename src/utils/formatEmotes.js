@@ -1,7 +1,7 @@
-const formatEmotes = (text, emotes) => {
+const formatEmotes = (text = '', emotes) => {
   let splitText = text.split('');
 
-  Object.entries(emotes).forEach(([i, e]) => {
+  Object.entries(emotes || {}).forEach(([i, e]) => {
     e.forEach((mote) => {
       if (typeof mote !== 'string') return;
 
