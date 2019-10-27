@@ -54,22 +54,21 @@ const App = () => {
         `https://recent-messages.robotty.de/api/v2/recent-messages/${MAIN_CHANNEL_NAME}?clearchatToNotice=true`,
       );
       const recentMessages = await recentMessagesResponse.json();
-      const normalizedRecentMessages = recentMessages.messages.map(
-        (rawMessage) => {
-          const {
+      const normalizedRecentMessages = recentMessages.messages
+        .map((rawMessage) => tmiParser.msg(rawMessage))
+        .filter(({ command }) => command === 'PRIVMSG')
+        .map(
+          ({
             params: [, text],
             tags: { 'display-name': name, color, emotes },
-          } = tmiParser.msg(rawMessage);
-
-          return {
+          }) => ({
             name,
             color,
             text,
             emotes: parseEmotes(emotes),
             isHistory: true,
-          };
-        },
-      );
+          }),
+        );
 
       setMessages(normalizedRecentMessages);
     };
