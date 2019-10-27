@@ -5,7 +5,9 @@
   "description": "Alternative twitch-like chat with history and some enhancements",
   "license": "MIT",
   "private": true,
+  "homepage": "https://honeykingdom.github.io/chat",
   "dependencies": {
+    "gh-pages": "^2.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -26,6 +28,8 @@
     "prettier": "^1.18.2"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
