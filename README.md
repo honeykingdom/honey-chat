@@ -1,3 +1,3 @@
-# Lamp Twitch Chat
+# Honey Chat
 
 Alternative twitch-like chat with history and some enhancements
