@@ -9,6 +9,7 @@ const ChatMessageRoot = styled.div`
   color: #fff;
   opacity: ${(p) => (p.isHistory ? '0.5' : '1')};
   line-height: 20px;
+  word-wrap: break-word;
 
   &:nth-child(even) {
     background-color: #1f1925;
@@ -41,7 +42,7 @@ const Name = styled.span`
 `;
 const Text = styled.span``;
 
-const ChatMessage = ({ name, color, text, emotes, isHistory }) => (
+const ChatMessage = ({ name, color, text = '', emotes = {}, isHistory }) => (
   <ChatMessageRoot isHistory={isHistory}>
     <Name color={color}>{name}</Name>:{' '}
     <Text dangerouslySetInnerHTML={{ __html: formatEmotes(text, emotes) }} />
