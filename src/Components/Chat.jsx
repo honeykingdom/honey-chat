@@ -19,7 +19,6 @@ const ChatRoot = styled.div`
 const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 340px;
   height: 100%;
   background-color: #000;
 `;
