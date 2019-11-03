@@ -2,7 +2,7 @@ import React from 'react';
 import pt from 'prop-types';
 import styled from 'styled-components';
 
-import formatEmotes from '../utils/formatEmotes';
+import formatMessage from '../utils/formatMessage';
 
 const ChatMessageRoot = styled.div`
   padding: 5px 20px;
@@ -45,7 +45,7 @@ const Text = styled.span``;
 const ChatMessage = ({ name, color, text, emotes, isHistory }) => (
   <ChatMessageRoot isHistory={isHistory}>
     <Name color={color}>{name}</Name>:{' '}
-    <Text dangerouslySetInnerHTML={{ __html: formatEmotes(text, emotes) }} />
+    <Text dangerouslySetInnerHTML={{ __html: formatMessage(text, emotes) }} />
   </ChatMessageRoot>
 );
 
