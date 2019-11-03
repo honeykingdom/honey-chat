@@ -141,7 +141,7 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
         value={text}
       />
       <Controls>
-        {!isAuth && <Link to="/auth">Login via Twitch</Link>}
+        {!isAuth && <Link to="/auth">Sign in with Twitch</Link>}
         <SendButton disabled={isDisabled} type="submit">
           Chat
         </SendButton>
