@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "/chat/static/js/main.2a79879e.chunk.js",
-    "main.js.map": "/chat/static/js/main.2a79879e.chunk.js.map",
-    "runtime-main.js": "/chat/static/js/runtime-main.a7124b14.js",
-    "runtime-main.js.map": "/chat/static/js/runtime-main.a7124b14.js.map",
-    "static/js/2.e3050ef8.chunk.js": "/chat/static/js/2.e3050ef8.chunk.js",
-    "static/js/2.e3050ef8.chunk.js.map": "/chat/static/js/2.e3050ef8.chunk.js.map",
+    "main.js": "/chat/static/js/main.be5929e9.chunk.js",
+    "main.js.map": "/chat/static/js/main.be5929e9.chunk.js.map",
+    "runtime-main.js": "/chat/static/js/runtime-main.cf7822e3.js",
+    "runtime-main.js.map": "/chat/static/js/runtime-main.cf7822e3.js.map",
+    "static/js/2.c574a8fd.chunk.js": "/chat/static/js/2.c574a8fd.chunk.js",
+    "static/js/2.c574a8fd.chunk.js.map": "/chat/static/js/2.c574a8fd.chunk.js.map",
     "index.html": "/chat/index.html",
-    "precache-manifest.3436cd994ff4b9804c9c782fae3db411.js": "/chat/precache-manifest.3436cd994ff4b9804c9c782fae3db411.js",
+    "precache-manifest.ca45686eec7e6b7d08e1c7fcb0ede9f9.js": "/chat/precache-manifest.ca45686eec7e6b7d08e1c7fcb0ede9f9.js",
     "service-worker.js": "/chat/service-worker.js"
   },
   "entrypoints": [
-    "static/js/runtime-main.a7124b14.js",
-    "static/js/2.e3050ef8.chunk.js",
-    "static/js/main.2a79879e.chunk.js"
+    "static/js/runtime-main.cf7822e3.js",
+    "static/js/2.c574a8fd.chunk.js",
+    "static/js/main.be5929e9.chunk.js"
   ]
 }
