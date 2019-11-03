@@ -7,14 +7,22 @@
   "private": true,
   "homepage": "https://honeykingdom.github.io/chat",
   "dependencies": {
+    "date-fns": "^2.6.0",
     "gh-pages": "^2.1.1",
+    "jsonwebtoken": "^8.5.1",
     "prop-types": "^15.7.2",
+    "ramda": "^0.26.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-scrollbars-custom": "^4.0.21",
-    "styled-components": "^4.4.0",
-    "tmi.js": "^1.5.0",
+    "redux": "^4.0.4",
+    "redux-actions": "^2.6.5",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.0.0-rc.1",
+    "tmi.js": "https://github.com/honeykingdom/tmi.js.git",
     "url-regex": "^5.0.0"
   },
   "devDependencies": {
@@ -42,7 +50,8 @@
       "prettier/react"
     ],
     "plugins": [
-      "prettier"
+      "prettier",
+      "react-hooks"
     ],
     "globals": {
       "fetch": true,
