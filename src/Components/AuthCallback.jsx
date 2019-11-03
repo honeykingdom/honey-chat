@@ -24,7 +24,7 @@ const AuthCallback = () => {
 
   fetchUser(dispatch)(id);
 
-  history.push('/');
+  history.push('/chat/');
 
   return null;
 };

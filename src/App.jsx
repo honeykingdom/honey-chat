@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './Components/Home';
 import Auth from './Components/Auth';
-import AuthCallback from './Components/AuthCallback';
 import GlobalStyles from './styles';
 
 const App = ({ store }) => (
@@ -13,9 +12,8 @@ const App = ({ store }) => (
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/auth" component={Auth} />
-          <Route exact path="/auth/callback" component={AuthCallback} />
+          <Route exact path="/chat/" component={Home} />
+          <Route exact path="/chat/auth" component={Auth} />
         </Switch>
       </Router>
     </Provider>
