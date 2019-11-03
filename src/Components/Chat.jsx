@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import pt from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Client } from 'tmi.js';
+import tmiParser from 'tmi.js/lib/parser';
 import Scrollbar from 'react-scrollbars-custom';
 
+import { MAIN_CHANNEL_NAME, TWITCH_API_CLIENT_ID } from '../utils/constants';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
@@ -47,6 +50,7 @@ const MoreMessagesButton = styled.button`
   position: absolute;
   right: 0;
   bottom: 10px;
+  display: ${(p) => (p.visible ? 'block' : 'none')};
   padding: 5px 20px;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -57,7 +61,37 @@ const MoreMessagesButton = styled.button`
   transform: translateX(-50%);
 `;
 
-const Chat = ({ messages }) => {
+const defaultOptions = {
+  options: {
+    clientId: TWITCH_API_CLIENT_ID,
+  },
+  connection: {
+    secure: true,
+    reconnect: true,
+  },
+  channels: [MAIN_CHANNEL_NAME],
+};
+
+const parseEmotes = (emotes) => {
+  if (typeof emotes !== 'string') return emotes;
+
+  return emotes.split('/').reduce((acc, emote) => {
+    const [emoteId, emoteIndexes] = emote.split(':');
+
+    return {
+      ...acc,
+      [emoteId]: emoteIndexes.split(','),
+    };
+  }, {});
+};
+
+let client = null;
+
+const Chat = () => {
+  const [messages, setMessages] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const isAuth = useSelector((state) => state.auth.isAuth);
+  const username = useSelector((state) => state.auth.user.login);
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -83,6 +117,84 @@ const Chat = ({ messages }) => {
     setIsMoreMessagesButtonVisible(isVisible);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const recentMessagesResponse = await fetch(
+        `https://recent-messages.robotty.de/api/v2/recent-messages/${MAIN_CHANNEL_NAME}?clearchatToNotice=true`,
+      );
+      const recentMessages = await recentMessagesResponse.json();
+      const normalizedRecentMessages = recentMessages.messages
+        .map((rawMessage) => tmiParser.msg(rawMessage))
+        .filter(({ command }) => command === 'PRIVMSG')
+        .map(
+          ({
+            params: [, text],
+            tags: { 'display-name': name, color, emotes },
+          }) => ({
+            name,
+            color,
+            text,
+            emotes: parseEmotes(emotes),
+            isHistory: true,
+          }),
+        );
+
+      setMessages(normalizedRecentMessages);
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const getOptions = () => {
+      const authOptions = isAuth
+        ? {
+            identity: {
+              username,
+              password: `oauth:${localStorage.accessToken}`,
+            },
+          }
+        : {};
+
+      return {
+        ...defaultOptions,
+        ...authOptions,
+      };
+    };
+
+    if (client) {
+      client.disconnect();
+    }
+
+    if (isAuth) {
+      const options = getOptions();
+      client = new Client(options);
+
+      client.connect();
+
+      client.on('connected', () => setIsConnected(true));
+      client.on('disconnected', () => setIsConnected(false));
+
+      client.on(
+        'message',
+        (channel, { color, 'display-name': name, emotes }, text) => {
+          const message = {
+            name,
+            color,
+            emotes: parseEmotes(emotes),
+            text,
+          };
+          setMessages((m) => [...m, message]);
+        },
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
+
+  const handleSubmit = (data) => {
+    client.say(MAIN_CHANNEL_NAME, data);
+  };
+
   return (
     <ChatRoot>
       <ChatWrapper>
@@ -100,24 +212,21 @@ const Chat = ({ messages }) => {
               />
             ))}
           </Messages>
-          {isMoreMessagesButtonVisible && (
-            <MoreMessagesButton onClick={handleScrollToBottom}>
-              More messages below
-            </MoreMessagesButton>
-          )}
+          <MoreMessagesButton
+            onClick={handleScrollToBottom}
+            visible={isMoreMessagesButtonVisible}
+          >
+            More messages below
+          </MoreMessagesButton>
         </MessagesWrapper>
-        <ChatInput />
+        <ChatInput
+          onSubmit={handleSubmit}
+          isDisabled={!isAuth || !isConnected}
+          isAuth={isAuth}
+        />
       </ChatWrapper>
     </ChatRoot>
   );
-};
-
-Chat.defaultProps = {
-  messages: [],
-};
-
-Chat.propTypes = {
-  messages: pt.arrayOf(pt.shape({})),
 };
 
 export default Chat;
