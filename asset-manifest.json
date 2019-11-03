@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "/chat/static/js/main.be5929e9.chunk.js",
-    "main.js.map": "/chat/static/js/main.be5929e9.chunk.js.map",
-    "runtime-main.js": "/chat/static/js/runtime-main.cf7822e3.js",
-    "runtime-main.js.map": "/chat/static/js/runtime-main.cf7822e3.js.map",
-    "static/js/2.c574a8fd.chunk.js": "/chat/static/js/2.c574a8fd.chunk.js",
-    "static/js/2.c574a8fd.chunk.js.map": "/chat/static/js/2.c574a8fd.chunk.js.map",
-    "index.html": "/chat/index.html",
-    "precache-manifest.ca45686eec7e6b7d08e1c7fcb0ede9f9.js": "/chat/precache-manifest.ca45686eec7e6b7d08e1c7fcb0ede9f9.js",
-    "service-worker.js": "/chat/service-worker.js"
+    "main.js": "https://honeykingdom.github.io/chat/static/js/main.be5929e9.chunk.js",
+    "main.js.map": "https://honeykingdom.github.io/chat/static/js/main.be5929e9.chunk.js.map",
+    "runtime-main.js": "https://honeykingdom.github.io/chat/static/js/runtime-main.f56b02ee.js",
+    "runtime-main.js.map": "https://honeykingdom.github.io/chat/static/js/runtime-main.f56b02ee.js.map",
+    "static/js/2.7e7e5230.chunk.js": "https://honeykingdom.github.io/chat/static/js/2.7e7e5230.chunk.js",
+    "static/js/2.7e7e5230.chunk.js.map": "https://honeykingdom.github.io/chat/static/js/2.7e7e5230.chunk.js.map",
+    "index.html": "https://honeykingdom.github.io/chat/index.html",
+    "precache-manifest.aa5c90a654d8824d3921216df6f8120a.js": "https://honeykingdom.github.io/chat/precache-manifest.aa5c90a654d8824d3921216df6f8120a.js",
+    "service-worker.js": "https://honeykingdom.github.io/chat/service-worker.js"
   },
   "entrypoints": [
-    "static/js/runtime-main.cf7822e3.js",
-    "static/js/2.c574a8fd.chunk.js",
+    "static/js/runtime-main.f56b02ee.js",
+    "static/js/2.7e7e5230.chunk.js",
     "static/js/main.be5929e9.chunk.js"
   ]
 }
