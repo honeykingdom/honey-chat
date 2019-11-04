@@ -6,3 +6,5 @@ export const TWITCH_API_REDIRECT_URI =
   process.env.REACT_APP_TWITCH_API_REDIRECT_URI;
 
 export const MAIN_CHANNEL_NAME = 'nasvay_s';
+
+export const CHANNEL_MESSAGES_LIMIT = 500;
