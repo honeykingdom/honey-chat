@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Client } from 'tmi.js';
-import tmiParser from 'tmi.js/lib/parser';
 import Scrollbar from 'react-scrollbars-custom';
+import uuid from 'uuid/v4';
 
-import { MAIN_CHANNEL_NAME, TWITCH_API_CLIENT_ID } from '../utils/constants';
+import { MAIN_CHANNEL_NAME } from '../utils/constants';
+import Client from '../utils/twitchChat';
+import { fetchRecentMessages, addMessage } from '../reducers/messages';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
@@ -47,7 +48,7 @@ const Messages = styled(Scrollbar).attrs({
 `;
 const MoreMessagesButton = styled.button`
   position: absolute;
-  right: 0;
+  left: 50%;
   bottom: 10px;
   display: ${(p) => (p.visible ? 'block' : 'none')};
   padding: 5px 20px;
@@ -60,37 +61,16 @@ const MoreMessagesButton = styled.button`
   transform: translateX(-50%);
 `;
 
-const defaultOptions = {
-  options: {
-    clientId: TWITCH_API_CLIENT_ID,
-  },
-  connection: {
-    secure: true,
-    reconnect: true,
-  },
-  channels: [MAIN_CHANNEL_NAME],
-};
-
-const parseEmotes = (emotes) => {
-  if (typeof emotes !== 'string') return emotes;
-
-  return emotes.split('/').reduce((acc, emote) => {
-    const [emoteId, emoteIndexes] = emote.split(':');
-
-    return {
-      ...acc,
-      [emoteId]: emoteIndexes.split(','),
-    };
-  }, {});
-};
-
 let client = null;
 
 const Chat = () => {
-  const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
   const [isConnected, setIsConnected] = useState(false);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const username = useSelector((state) => state.auth.user.login);
+  const displayName = useSelector((state) => state.auth.user.displayName);
+  const messages = useSelector((state) => state.messages.items);
+  const [color, setColor] = useState('');
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -103,7 +83,12 @@ const Chat = () => {
     }
   };
 
-  useEffect(handleScrollToBottom, [messages]);
+  useEffect(() => {
+    if (!isMoreMessagesButtonVisible) {
+      handleScrollToBottom();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   const handleScrollUpdate = ({
     clientHeight,
@@ -117,81 +102,50 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const recentMessagesResponse = await fetch(
-        `https://recent-messages.robotty.de/api/v2/recent-messages/${MAIN_CHANNEL_NAME}?clearchatToNotice=true`,
-      );
-      const recentMessages = await recentMessagesResponse.json();
-      const normalizedRecentMessages = recentMessages.messages
-        .map((rawMessage) => tmiParser.msg(rawMessage))
-        .filter(({ command }) => command === 'PRIVMSG')
-        .map(
-          ({
-            params: [, text],
-            tags: { 'display-name': name, color, emotes },
-          }) => ({
-            name,
-            color,
-            text,
-            emotes: parseEmotes(emotes),
-            isHistory: true,
-          }),
-        );
-
-      setMessages(normalizedRecentMessages);
-    };
-
-    fetchData();
+    fetchRecentMessages(dispatch)(MAIN_CHANNEL_NAME);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const getOptions = () => {
-      const authOptions = isAuth
-        ? {
-            identity: {
-              username,
-              password: `oauth:${localStorage.accessToken}`,
-            },
-          }
-        : {};
-
-      return {
-        ...defaultOptions,
-        ...authOptions,
-      };
-    };
-
     if (client) {
       client.disconnect();
     }
 
     if (isAuth) {
-      const options = getOptions();
+      const options = {
+        identity: {
+          name: username,
+          auth: localStorage.accessToken,
+        },
+      };
       client = new Client(options);
 
       client.connect();
 
+      client.join(`#${MAIN_CHANNEL_NAME}`);
+
       client.on('connected', () => setIsConnected(true));
       client.on('disconnected', () => setIsConnected(false));
 
-      client.on(
-        'message',
-        (channel, { color, 'display-name': name, emotes }, text) => {
-          const message = {
-            name,
-            color,
-            emotes: parseEmotes(emotes),
-            text,
-          };
-          setMessages((m) => [...m, message]);
-        },
-      );
+      client.on('message', (data) => dispatch(addMessage(data)));
+      client.on('userstate', ({ tags }) => setColor(tags.color));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
-  const handleSubmit = (data) => {
-    client.say(MAIN_CHANNEL_NAME, data);
+  const handleSubmit = (message) => {
+    client.say(`#${MAIN_CHANNEL_NAME}`, message);
+    // TODO: add isAction
+    dispatch(
+      addMessage({
+        message,
+        tags: {
+          id: uuid(),
+          displayName,
+          color, // TODO: fix color
+        },
+      }),
+    );
   };
 
   return (
@@ -199,14 +153,12 @@ const Chat = () => {
       <ChatWrapper>
         <MessagesWrapper>
           <Messages onUpdate={handleScrollUpdate} ref={messagesRef}>
-            {messages.map(({ name, color, text, emotes, isHistory }, key) => (
+            {messages.map(({ message, tags, isAction, isHistory }) => (
               <ChatMessage
-                // eslint-disable-next-line react/no-array-index-key
-                key={key}
-                name={name}
-                color={color}
-                text={text}
-                emotes={emotes}
+                key={tags.id}
+                message={message}
+                tags={tags}
+                isAction={isAction}
                 isHistory={isHistory}
               />
             ))}
