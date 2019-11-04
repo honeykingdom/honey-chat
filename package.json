@@ -7,6 +7,7 @@
   "private": true,
   "homepage": "https://honeykingdom.github.io/chat",
   "dependencies": {
+    "camel-case": "^3.0.0",
     "date-fns": "^2.6.0",
     "gh-pages": "^2.1.1",
     "jsonwebtoken": "^8.5.1",
@@ -22,8 +23,9 @@
     "redux-actions": "^2.6.5",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.0-rc.1",
-    "tmi.js": "https://github.com/honeykingdom/tmi.js.git",
-    "url-regex": "^5.0.0"
+    "tekko": "^2.4.0",
+    "url-regex": "^5.0.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
@@ -58,7 +60,8 @@
       "window": true,
       "document": true,
       "localStorage": true,
-      "navigator": true
+      "navigator": true,
+      "WebSocket": true
     },
     "env": {
       "jest": true
