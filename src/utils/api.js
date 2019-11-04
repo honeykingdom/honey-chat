@@ -27,3 +27,8 @@ export const apiRequest = (url) =>
 */
 export const fetchUser = (id) =>
   apiRequest(`${TWITCH_API_BASE}/users?id=${id}`);
+
+export const fetchRecentMessages = (channel) =>
+  fetch(
+    `https://recent-messages.robotty.de/api/v2/recent-messages/${channel}?clearchatToNotice=true`,
+  ).then((response) => response.json());
