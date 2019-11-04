@@ -3,8 +3,8 @@ import pt from 'prop-types';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Home from './Components/Home';
-import Auth from './Components/Auth';
+import Home from './components/Home';
+import Auth from './components/Auth';
 import GlobalStyles from './styles';
 
 const App = ({ store }) => (
