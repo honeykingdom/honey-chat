@@ -2,11 +2,9 @@ import React from 'react';
 import pt from 'prop-types';
 import styled from 'styled-components';
 
-import formatMessage from '../utils/formatMessage';
-
 const ChatMessageRoot = styled.div`
   padding: 5px 20px;
-  color: #fff;
+  color: ${(p) => (p.isAction ? p.color : '#fff')};
   opacity: ${(p) => (p.isHistory ? '0.5' : '1')};
   line-height: 20px;
   word-wrap: break-word;
@@ -42,24 +40,44 @@ const Name = styled.span`
 `;
 const Text = styled.span``;
 
-const ChatMessage = ({ name, color, text, emotes, isHistory }) => (
-  <ChatMessageRoot isHistory={isHistory}>
-    <Name color={color}>{name}</Name>:{' '}
-    <Text dangerouslySetInnerHTML={{ __html: formatMessage(text, emotes) }} />
+const tagsType = pt.shape({
+  badgeInfo: pt.shape({
+    subscriber: pt.number,
+  }),
+  badges: pt.shape({}),
+  color: pt.string.isRequired,
+  displayName: pt.string.isRequired,
+  emotes: pt.shape({}),
+  flags: pt.string,
+  id: pt.string,
+  mod: pt.bool,
+  roomId: pt.string,
+  tmiSentId: pt.string,
+  userId: pt.string,
+});
+
+const ChatMessage = ({
+  message,
+  tags: { color, displayName },
+  isHistory,
+  isAction,
+}) => (
+  <ChatMessageRoot isHistory={isHistory} isAction={isAction} color={color}>
+    <Name color={color}>{displayName}</Name>
+    {!isAction && ':'} <Text dangerouslySetInnerHTML={{ __html: message }} />
   </ChatMessageRoot>
 );
 
 ChatMessage.defaultProps = {
-  emotes: {},
   isHistory: false,
+  isAction: false,
 };
 
 ChatMessage.propTypes = {
-  name: pt.string.isRequired,
-  color: pt.string.isRequired,
-  text: pt.string.isRequired,
-  emotes: pt.oneOfType([pt.bool, pt.shape({})]),
+  tags: tagsType.isRequired,
+  message: pt.string.isRequired,
   isHistory: pt.bool,
+  isAction: pt.bool,
 };
 
 export default ChatMessage;
