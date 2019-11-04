@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { pick } from 'ramda';
 import styled from 'styled-components';
 import Scrollbar from 'react-scrollbars-custom';
-import uuid from 'uuid/v4';
 
 import { MAIN_CHANNEL_NAME } from '../utils/constants';
 import Client from '../utils/twitchChat';
@@ -68,9 +68,7 @@ const Chat = () => {
   const [isConnected, setIsConnected] = useState(false);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const username = useSelector((state) => state.auth.user.login);
-  const displayName = useSelector((state) => state.auth.user.displayName);
   const messages = useSelector((state) => state.messages.items);
-  const [color, setColor] = useState('');
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -122,30 +120,24 @@ const Chat = () => {
 
       client.connect();
 
-      client.join(`#${MAIN_CHANNEL_NAME}`);
+      client.join(MAIN_CHANNEL_NAME);
 
       client.on('connected', () => setIsConnected(true));
       client.on('disconnected', () => setIsConnected(false));
 
-      client.on('message', (data) => dispatch(addMessage(data)));
-      client.on('userstate', ({ tags }) => setColor(tags.color));
+      const handleMessage = (data) => {
+        const normalizedData = pick(['tags', 'message', 'isAction'], data);
+        dispatch(addMessage(normalizedData));
+      };
+
+      client.on('message', handleMessage);
+      client.on('own-message', handleMessage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   const handleSubmit = (message) => {
-    client.say(`#${MAIN_CHANNEL_NAME}`, message);
-    // TODO: add isAction
-    dispatch(
-      addMessage({
-        message,
-        tags: {
-          id: uuid(),
-          displayName,
-          color, // TODO: fix color
-        },
-      }),
-    );
+    client.say(MAIN_CHANNEL_NAME, message);
   };
 
   return (
