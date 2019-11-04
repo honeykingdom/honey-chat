@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
+import { pathOr, omit } from 'ramda';
 import { EventEmitter } from 'events';
 import { parse as tekkoParse, format as tekkoFormat } from 'tekko';
 import camelCase from 'camel-case';
+import uuid from 'uuid/v4';
 
 const chatUrl = 'wss://irc-ws.chat.twitch.tv:443';
 
@@ -165,6 +167,10 @@ export const parseChatMessage = (data) => {
   };
 };
 
+const parseGlobalUserState = (data) => data.tags;
+const parseUserState = (data) => data.tags;
+const parseRoomState = (data) => data.tags;
+
 class Client extends EventEmitter {
   socket;
 
@@ -179,7 +185,7 @@ class Client extends EventEmitter {
   constructor(opts = {}) {
     super();
     this.socket = null;
-    this.channels = [];
+    this.channels = {};
     this.options = opts || {};
     this.user = null;
     this._queue = [];
@@ -237,6 +243,7 @@ class Client extends EventEmitter {
     }
 
     const data = parseMessageData(parsedData);
+    const channelName = pathOr('', ['params', 0], data).slice(1);
 
     if (command === 'PRIVMSG') {
       this.emit('message', parseChatMessage(data));
@@ -244,34 +251,41 @@ class Client extends EventEmitter {
     }
 
     if (command === 'USERSTATE') {
-      this.emit('userstate', data);
+      const eventData = parseUserState(data);
+      this.channels[channelName].userState = eventData;
+      this.emit('userstate', eventData);
       return;
     }
 
     if (command === 'JOIN') {
+      this.channels = { ...this.channels, [channelName]: {} };
       this.emit('join', data);
       return;
     }
 
     if (command === 'PART') {
+      this.channels = omit([channelName], this.channels);
       this.emit('part', data);
       return;
     }
 
     if (command === 'ROOMSTATE') {
-      this.emit('roomstate', data);
+      const eventData = parseRoomState(data);
+      this.channels[channelName].roomState = eventData;
+      this.emit('roomstate', eventData);
       return;
     }
 
     if (command === 'GLOBALUSERSTATE') {
-      this.user = data;
+      const eventData = parseGlobalUserState(data);
+      this.user = parseGlobalUserState(data);
 
       while (this._queue.length) {
         const ircMessage = this._queue.shift();
         this.sendRaw(ircMessage);
       }
 
-      this.emit('globaluserstate', { data });
+      this.emit('globaluserstate', eventData);
       return;
     }
 
@@ -305,17 +319,33 @@ class Client extends EventEmitter {
   say(channel, message) {
     const ircMessage = tekkoFormat({
       command: 'PRIVMSG',
-      middle: [channel],
+      middle: [`#${channel}`],
       trailing: message,
     });
     this.sendRaw(ircMessage);
+
+    const isAction = message.startsWith('/me ');
+    const tags = {
+      ...this.channels[channel].userState,
+      id: uuid(),
+      roomId: this.channels[channel].roomState.roomId,
+      tmiSentTs: new Date().getTime(),
+      userId: this.user.userId,
+    };
+    this.emit('own-message', {
+      command: 'PRIVMSG',
+      params: [`#${channel}`],
+      message: isAction ? message.slice(4) : message,
+      tags,
+      isAction,
+    });
   }
 
   sendCommand(channel, command, params) {
     const commandParams = Array.isArray(params) ? params.join(' ') : params;
     const ircMessage = tekkoFormat({
       command: 'PRIVMSG',
-      middle: [channel],
+      middle: [`#${channel}`],
       trailing: `/${command} ${commandParams}`,
     });
     this.sendRaw(ircMessage);
@@ -324,7 +354,7 @@ class Client extends EventEmitter {
   join(roomName) {
     const ircMessage = tekkoFormat({
       command: 'JOIN',
-      middle: [roomName],
+      middle: [`#${roomName}`],
     });
 
     if (!this.user) {
@@ -337,7 +367,7 @@ class Client extends EventEmitter {
   part(roomName) {
     const ircMessage = tekkoFormat({
       command: 'PART',
-      middle: [roomName],
+      middle: [`#${roomName}`],
     });
 
     if (!this.user) {
