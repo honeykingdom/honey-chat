@@ -239,7 +239,7 @@ class Client extends EventEmitter {
     const data = parseMessageData(parsedData);
 
     if (command === 'PRIVMSG') {
-      this.emit('message', data);
+      this.emit('message', parseChatMessage(data));
       return;
     }
 
