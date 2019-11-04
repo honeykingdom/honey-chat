@@ -328,7 +328,6 @@ class Client extends EventEmitter {
     const tags = {
       ...this.channels[channel].userState,
       id: uuid(),
-      roomId: this.channels[channel].roomState.roomId,
       tmiSentTs: new Date().getTime(),
       userId: this.user.userId,
     };
