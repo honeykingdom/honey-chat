@@ -52,7 +52,7 @@ const tagsType = pt.shape({
   id: pt.string,
   mod: pt.bool,
   roomId: pt.string,
-  tmiSentId: pt.string,
+  tmiSentId: pt.oneOfType([pt.string, pt.number]),
   userId: pt.string,
 });
 
