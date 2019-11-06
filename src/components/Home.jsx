@@ -1,33 +1,138 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { pathOr } from 'ramda';
 
+import { fetchTwitchEmotes } from '../reducers/emotes/twitch';
+import {
+  fetchBttvGlobalEmotes,
+  fetchBttvChannelEmotes,
+} from '../reducers/emotes/bttv';
+import {
+  fetchFfzGlobalEmotes,
+  fetchFfzChannelEmotes,
+} from '../reducers/emotes/ffz';
+import { addMessages, fetchRecentMessages } from '../reducers/messages';
+import {
+  setCurrentChannel,
+  setIsConnected,
+  updateGlobalUserState,
+  updateUserState,
+  updateRoomState,
+  removeChannel,
+} from '../reducers/chat';
 import { setIsAuth } from '../reducers/auth';
-import AuthCallback from './AuthCallback';
+import Client from '../utils/twitchChat';
+
 import Chat from './Chat';
+
+let client = null;
+
+const channelIdSelector = (state) =>
+  pathOr(
+    null,
+    ['chat', 'channels', state.chat.currentChannel, 'roomState', 'roomId'],
+    state,
+  );
 
 const Home = () => {
   const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuth);
+  const username = useSelector((state) => state.auth.user.login);
+  const currentChannel = useSelector((state) => state.chat.currentChannel);
+  const currentChannelId = useSelector(channelIdSelector);
+  const userId = useSelector((state) => state.auth.user.id);
 
   useEffect(() => {
-    if (!window.location.hash) {
-      const rawUser = localStorage.getItem('user');
+    const rawUser = localStorage.getItem('user');
 
-      if (rawUser) {
-        const user = JSON.parse(rawUser);
+    if (rawUser) {
+      const user = JSON.parse(rawUser);
 
-        dispatch(setIsAuth({ isAuth: true, user }));
+      dispatch(setIsAuth({ isAuth: true, user }));
+    }
+
+    if (window.location.hash) {
+      dispatch(setCurrentChannel(window.location.hash.slice(1)));
+    }
+
+    // TODO: try to connect to the chat. if there is an error, set isAuth to false and connect without login
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (currentChannel && isAuth) {
+      if (client) {
+        client.disconnect();
       }
 
-      // try to connect to the chat. if there is an error, set isAuth to false and connect without login
+      const handleMessage = (data) => {
+        const eventData = {
+          channel: data.channel,
+          items: [data],
+        };
+        dispatch(addMessages(eventData));
+      };
+
+      const options = {
+        identity: {
+          name: username,
+          auth: localStorage.accessToken,
+        },
+      };
+      client = new Client(options);
+
+      client.connect();
+
+      client.join(currentChannel);
+
+      client.on('connected', () => dispatch(setIsConnected(true)));
+      client.on('disconnected', () => dispatch(setIsConnected(false)));
+
+      client.on('globaluserstate', (data) =>
+        dispatch(updateGlobalUserState(data)),
+      );
+      client.on('userstate', (data) => dispatch(updateUserState(data)));
+      client.on('roomstate', (data) => dispatch(updateRoomState(data)));
+
+      client.on('part', (data) => dispatch(removeChannel(data)));
+
+      client.on('message', handleMessage);
+      client.on('own-message', handleMessage);
+
+      // setTimeout(() => client.part(currentChannel), 5000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, username, currentChannel, isAuth]);
 
-  if (window.location.hash) {
-    return <AuthCallback />;
-  }
+  useEffect(() => {
+    dispatch(fetchBttvGlobalEmotes());
+    dispatch(fetchFfzGlobalEmotes());
+  }, [dispatch]);
 
-  return <Chat />;
+  useEffect(() => {
+    // TODO: fetch recent messages after all emotes were loaded
+    if (currentChannel) {
+      dispatch(fetchRecentMessages(currentChannel));
+    }
+  }, [dispatch, currentChannel]);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchTwitchEmotes(userId));
+    }
+  }, [dispatch, userId]);
+
+  useEffect(() => {
+    // TODO: check if emotes for the current channel is already in the store
+    if (currentChannel && currentChannelId) {
+      dispatch(fetchBttvChannelEmotes(currentChannelId, currentChannel));
+      dispatch(fetchFfzChannelEmotes(currentChannelId, currentChannel));
+    }
+  }, [dispatch, currentChannel, currentChannelId]);
+
+  const handleSendMessage = (message) => {
+    client.say(currentChannel, message);
+  };
+
+  return <Chat onSendMessage={handleSendMessage} />;
 };
 
 export default Home;

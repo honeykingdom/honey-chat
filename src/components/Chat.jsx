@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { pick } from 'ramda';
+import pt from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { pathOr } from 'ramda';
 import Scrollbar from 'react-scrollbars-custom';
 
-import { MAIN_CHANNEL_NAME } from '../utils/constants';
-import Client from '../utils/twitchChat';
-import { fetchRecentMessages, addMessage } from '../reducers/messages';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
@@ -61,14 +59,14 @@ const MoreMessagesButton = styled.button`
   transform: translateX(-50%);
 `;
 
-let client = null;
+const messagesSelector = (state) =>
+  pathOr([], ['messages', state.chat.currentChannel, 'items'], state);
 
-const Chat = () => {
-  const dispatch = useDispatch();
-  const [isConnected, setIsConnected] = useState(false);
+const Chat = ({ onSendMessage }) => {
   const isAuth = useSelector((state) => state.auth.isAuth);
-  const username = useSelector((state) => state.auth.user.login);
-  const messages = useSelector((state) => state.messages.items);
+  const messages = useSelector(messagesSelector);
+  // TODO: check if the user has a rights to send messages
+  const isConnected = useSelector((state) => state.chat.isConnected);
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -99,47 +97,6 @@ const Chat = () => {
     setIsMoreMessagesButtonVisible(isVisible);
   };
 
-  useEffect(() => {
-    fetchRecentMessages(dispatch)(MAIN_CHANNEL_NAME);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (client) {
-      client.disconnect();
-    }
-
-    if (isAuth) {
-      const options = {
-        identity: {
-          name: username,
-          auth: localStorage.accessToken,
-        },
-      };
-      client = new Client(options);
-
-      client.connect();
-
-      client.join(MAIN_CHANNEL_NAME);
-
-      client.on('connected', () => setIsConnected(true));
-      client.on('disconnected', () => setIsConnected(false));
-
-      const handleMessage = (data) => {
-        const normalizedData = pick(['tags', 'message', 'isAction'], data);
-        dispatch(addMessage(normalizedData));
-      };
-
-      client.on('message', handleMessage);
-      client.on('own-message', handleMessage);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
-
-  const handleSubmit = (message) => {
-    client.say(MAIN_CHANNEL_NAME, message);
-  };
-
   return (
     <ChatRoot>
       <ChatWrapper>
@@ -163,13 +120,17 @@ const Chat = () => {
           </MoreMessagesButton>
         </MessagesWrapper>
         <ChatInput
-          onSubmit={handleSubmit}
+          onSubmit={onSendMessage}
           isDisabled={!isAuth || !isConnected}
           isAuth={isAuth}
         />
       </ChatWrapper>
     </ChatRoot>
   );
+};
+
+Chat.propTypes = {
+  onSendMessage: pt.func.isRequired,
 };
 
 export default Chat;
