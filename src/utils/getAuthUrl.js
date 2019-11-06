@@ -14,6 +14,7 @@ const authParams = {
     'chat:read',
     'user_blocks_read',
     'user_blocks_edit',
+    'user_subscriptions',
   ].join('+'),
   claims: JSON.stringify({
     id_token: { email_verified: null, picture: null, preferred_username: null },
