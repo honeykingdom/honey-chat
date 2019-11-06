@@ -17,7 +17,7 @@ const fetchUserRequest = createAction('FETCH_USER_REQUEST');
 const fetchUserSuccess = createAction('FETCH_USER_SUCCESS');
 const fetchUserFailure = createAction('FETCH_USER_FAILURE');
 
-export const fetchUser = (dispatch) => async (id) => {
+export const fetchUser = (id) => async (dispatch) => {
   dispatch(fetchUserRequest());
 
   const response = await apiFetchUser(id);
