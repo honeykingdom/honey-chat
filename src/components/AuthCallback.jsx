@@ -22,7 +22,7 @@ const AuthCallback = () => {
 
   const { sub: id } = jwt.decode(idToken);
 
-  fetchUser(dispatch)(id);
+  dispatch(fetchUser(id));
 
   history.push('/chat/');
 
