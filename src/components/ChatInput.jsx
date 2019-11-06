@@ -99,12 +99,6 @@ const Textarea = styled.textarea`
   }
 `;
 
-const handleKeyDown = (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-  }
-};
-
 const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
   const textareaRef = useRef(null);
   const [text, setText] = useState('');
@@ -117,11 +111,15 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
     setText('');
   };
 
-  const handleKeyUp = useCallback(
+  const handleKeyDown = useCallback(
     (e) => {
       if (e.key === 'Enter') {
-        onSubmit(text);
-        setText('');
+        e.preventDefault();
+        const message = text.trim();
+        if (message) {
+          onSubmit(message);
+          setText('');
+        }
       }
     },
     [onSubmit, setText, text],
@@ -131,18 +129,15 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
     const textareaNode = textareaRef.current;
 
     textareaNode.addEventListener('keydown', handleKeyDown, false);
-    textareaNode.addEventListener('keyup', handleKeyUp, false);
 
     return () => {
       textareaNode.removeEventListener('keydown', handleKeyDown, false);
-      textareaNode.removeEventListener('keyup', handleKeyUp, false);
     };
-  }, [handleKeyUp]);
+  }, [handleKeyDown]);
 
   return (
     <ChatInputRoot onSubmit={handleSubmit}>
       <Textarea
-        name="message"
         placeholder="Send a message"
         ref={textareaRef}
         maxLength={500}
