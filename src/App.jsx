@@ -5,14 +5,20 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './components/Home';
 import Auth from './components/Auth';
+import AuthCallback from './components/AuthCallback';
 import GlobalStyles from './styles';
+
+const renderHome = () => {
+  const isAuthRedirect = window.location.hash.startsWith('#access_token=');
+  return isAuthRedirect ? <AuthCallback /> : <Home />;
+};
 
 const App = ({ store }) => (
   <>
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route exact path="/chat/" component={Home} />
+          <Route exact path="/chat/" render={renderHome} />
           <Route exact path="/chat/auth" component={Auth} />
         </Switch>
       </Router>
