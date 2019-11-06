@@ -9,7 +9,6 @@ const chatUrl = 'wss://irc-ws.chat.twitch.tv:443';
 
 const noopIRCCommands = [
   'CAP',
-  '001',
   '002',
   '003',
   '004',
@@ -41,6 +40,29 @@ const numberMessageTags = [
 ];
 
 const depricatedMessageTags = ['subscriber', 'turbo', 'user-type'];
+
+const noticeMessageTags = [
+  'msg_banned',
+  'msg_bad_characters',
+  'msg_channel_blocked',
+  'msg_channel_suspended',
+  'msg_duplicate',
+  'msg_emoteonly',
+  'msg_facebook',
+  'msg_followersonly',
+  'msg_followersonly_followed',
+  'msg_followersonly_zero',
+  'msg_r9k',
+  'msg_ratelimit',
+  'msg_rejected',
+  'msg_rejected_mandatory',
+  'msg_room_not_found',
+  'msg_slowmode',
+  'msg_subsonly',
+  'msg_suspended',
+  'msg_timedout',
+  'msg_verified_email',
+];
 
 const parseMessageEmotes = (raw = '') => {
   if (!raw) return {};
@@ -156,20 +178,29 @@ export const parseMessageData = ({
   prefix,
 });
 
-export const parseChatMessage = (data) => {
-  const { message } = data;
+export const parseChatMessage = ({
+  message,
+  tags,
+  params,
+  prefix: { user },
+}) => {
   const isAction = getIsAction(message);
 
   return {
-    ...data,
     message: isAction ? normalizeActionMessage(message) : message,
+    tags,
+    user,
+    channel: params[0].slice(1),
     isAction,
   };
 };
 
-const parseGlobalUserState = (data) => data.tags;
-const parseUserState = (data) => data.tags;
-const parseRoomState = (data) => data.tags;
+const parseGlobalUserState = ({ tags }) => ({ tags });
+const parseUserState = ({ tags, params: [channel] }) => ({
+  tags,
+  channel: channel.slice(1),
+});
+const parseRoomState = parseUserState;
 
 class Client extends EventEmitter {
   socket;
@@ -182,13 +213,16 @@ class Client extends EventEmitter {
 
   _queue;
 
-  constructor(opts = {}) {
+  _messagesQueue;
+
+  constructor(options = {}) {
     super();
     this.socket = null;
     this.channels = {};
-    this.options = opts || {};
+    this.options = options;
     this.user = null;
     this._queue = [];
+    this._messagesQueue = [];
   }
 
   _onConnect() {
@@ -237,48 +271,95 @@ class Client extends EventEmitter {
       return;
     }
 
+    if (command === '001') {
+      const name = parsedData.params[0];
+      this.options.identity.name = name;
+      return;
+    }
+
     // noop
     if (noopIRCCommands.includes(command)) {
       return;
     }
 
     const data = parseMessageData(parsedData);
-    const channelName = pathOr('', ['params', 0], data).slice(1);
+    const channel = pathOr('', ['params', 0], data).slice(1);
 
+    // Sends a message to a channel
     if (command === 'PRIVMSG') {
-      this.emit('message', parseChatMessage(data));
+      const eventData = parseChatMessage(data);
+      this.emit('message', eventData);
       return;
     }
 
+    // Sends user-state data when a user joins a channel or sends a PRIVMSG to a channel
     if (command === 'USERSTATE') {
       const eventData = parseUserState(data);
-      this.channels[channelName].userState = eventData;
+      this.channels[channel].userState = eventData.tags;
+
+      const commandType =
+        this._messagesQueue.length === 0 ? 'JOIN_CHANNEL' : 'SEND_PRIVMSG';
+
+      // Last message was sent successfully
+      if (commandType === 'SEND_PRIVMSG') {
+        const message = this._messagesQueue.shift();
+        const isAction = message.startsWith('/me ');
+        const messageEventData = {
+          message: isAction ? message.slice(4) : message,
+          tags: {
+            ...eventData.tags,
+            id: uuid(),
+            tmiSentTs: new Date().getTime(),
+            userId: this.user.userId,
+          },
+          user: this.options.identity.name,
+          channel,
+          isAction,
+        };
+
+        this.emit('own-message', messageEventData);
+      }
+
       this.emit('userstate', eventData);
       return;
     }
 
     if (command === 'JOIN') {
-      this.channels = { ...this.channels, [channelName]: {} };
-      this.emit('join', data);
+      const eventData = { channel };
+      this.channels = { ...this.channels, [channel]: {} };
+      this.emit('join', eventData);
       return;
     }
 
     if (command === 'PART') {
-      this.channels = omit([channelName], this.channels);
-      this.emit('part', data);
+      const eventData = { channel };
+      this.channels = omit([channel], this.channels);
+      this.emit('part', eventData);
       return;
     }
 
     if (command === 'ROOMSTATE') {
       const eventData = parseRoomState(data);
-      this.channels[channelName].roomState = eventData;
+      this.channels[channel].roomState = eventData.tags;
       this.emit('roomstate', eventData);
+      return;
+    }
+
+    if (command === 'NOTICE') {
+      const eventData = data;
+
+      // Last message was not sent
+      if (noticeMessageTags.includes(data.tags.msgId)) {
+        this._messagesQueue.shift();
+      }
+
+      this.emit('notice', eventData);
       return;
     }
 
     if (command === 'GLOBALUSERSTATE') {
       const eventData = parseGlobalUserState(data);
-      this.user = parseGlobalUserState(data);
+      this.user = eventData.tags;
 
       while (this._queue.length) {
         const ircMessage = this._queue.shift();
@@ -317,6 +398,8 @@ class Client extends EventEmitter {
   }
 
   say(channel, message) {
+    // TODO: check if conected to the channel before send
+
     const ircMessage = tekkoFormat({
       command: 'PRIVMSG',
       middle: [`#${channel}`],
@@ -324,20 +407,7 @@ class Client extends EventEmitter {
     });
     this.sendRaw(ircMessage);
 
-    const isAction = message.startsWith('/me ');
-    const tags = {
-      ...this.channels[channel].userState,
-      id: uuid(),
-      tmiSentTs: new Date().getTime(),
-      userId: this.user.userId,
-    };
-    this.emit('own-message', {
-      command: 'PRIVMSG',
-      params: [`#${channel}`],
-      message: isAction ? message.slice(4) : message,
-      tags,
-      isAction,
-    });
+    this._messagesQueue.push(message);
   }
 
   sendCommand(channel, command, params) {
