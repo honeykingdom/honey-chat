@@ -12,6 +12,7 @@ import {
   fetchFfzGlobalEmotes,
   fetchFfzChannelEmotes,
 } from '../reducers/emotes/ffz';
+import { isAllEmotesLoadedSelector } from '../reducers/emotes/selectors';
 import { addMessages, fetchRecentMessages } from '../reducers/messages';
 import {
   setCurrentChannel,
@@ -42,6 +43,7 @@ const Home = () => {
   const username = useSelector((state) => state.auth.user.login);
   const currentChannel = useSelector((state) => state.chat.currentChannel);
   const currentChannelId = useSelector(channelIdSelector);
+  const isAllEmotesLoaded = useSelector(isAllEmotesLoadedSelector);
   const userId = useSelector((state) => state.auth.user.id);
   const hash = useLocationHash();
 
@@ -120,11 +122,11 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // TODO: fetch recent messages after all emotes were loaded
-    if (currentChannel) {
+    // TODO: Load recent messages immedeatly but render after all emotes will load
+    if (currentChannel && isAllEmotesLoaded) {
       dispatch(fetchRecentMessages(currentChannel));
     }
-  }, [dispatch, currentChannel]);
+  }, [dispatch, currentChannel, isAllEmotesLoaded]);
 
   useEffect(() => {
     if (userId) {
