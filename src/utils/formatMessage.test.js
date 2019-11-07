@@ -67,6 +67,7 @@ it('format emoji', () => {
   const message1 = '🤔 test';
   const message2 = 'test 😂 👌';
   const message3 = 'this is a 😡 test';
+  const message4 = '😂👌';
 
   const result1 = [createEmoji('thinking', getEmojiUrl('1f914')), ' test'];
   const result2 = [
@@ -80,10 +81,12 @@ it('format emoji', () => {
     createEmoji('rage', getEmojiUrl('1f621')),
     ' test',
   ];
+  const result4 = ['😂👌'];
 
   expect(formatMessage(message1, {}, emotes)).toEqual(result1);
   expect(formatMessage(message2, {}, emotes)).toEqual(result2);
   expect(formatMessage(message3, {}, emotes)).toEqual(result3);
+  expect(formatMessage(message4, {}, emotes)).toEqual(result4);
 });
 
 it('format mensions', () => {
