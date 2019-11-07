@@ -24,7 +24,9 @@ const AuthCallback = () => {
 
   dispatch(fetchUser(id));
 
-  history.push('/chat/');
+  const lastChannel = localStorage.getItem('lastChannel');
+
+  history.push(lastChannel ? `/chat/#${lastChannel}` : '/chat/');
 
   return null;
 };
