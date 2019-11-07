@@ -141,9 +141,7 @@ const Home = () => {
   }, [dispatch, currentChannel, currentChannelId]);
 
   const handleSendMessage = (message) => {
-    console.log(message);
     const normalizedMessage = replaceEmojis(message.trim());
-    console.log(normalizedMessage);
     client.say(currentChannel, normalizedMessage);
   };
 

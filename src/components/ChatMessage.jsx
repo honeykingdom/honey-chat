@@ -95,7 +95,6 @@ const renderMessageArray = (item, key) => {
   }
 
   if (item.type === 'link') {
-    // console.log(item);
     return (
       <Link key={key} href={item.href}>
         {item.text}

@@ -85,8 +85,6 @@ export const fetchRecentMessages = (channel) => async (dispatch, getState) => {
       items: normalizeRecentMessages(response.messages, getState()),
     };
 
-    // console.log(normalizeRecentMessages(response.messages));
-
     dispatch(fetchRecentMessagesSuccess(data));
   } catch (error) {
     dispatch(fetchRecentMessagesFailure({ channel, error }));
