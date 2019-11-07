@@ -22,13 +22,6 @@ const authParams = {
   // state: uid(),
 };
 
-// const getAuthUrl = () => {
-//   const search = new URLSearchParams();
-//   Object.entries(authParams).forEach(([key, value]) => search.set(key, value));
-
-//   return `${TWITCH_API_AUTH_BASE}?${search.toString()}`;
-// };
-
 const getAuthUrl = () => {
   const search = Object.entries(authParams)
     .map(([key, value]) => `${key}=${value}`)
