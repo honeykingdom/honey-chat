@@ -43,7 +43,7 @@ export const createTwitchEmote = (alt, id) => ({
 export const createBttvEmote = (alt, { id }) => ({
   type: 'bttv-emote',
   alt,
-  src: `${BTTV_EMOTES_CDN}${id}/1x`,
+  src: `${BTTV_EMOTES_CDN}/${id}/1x`,
   srcSet: `${BTTV_EMOTES_CDN}/${id}/2x 2x, ${BTTV_EMOTES_CDN}/${id}/3x 4x`,
 });
 export const createFfzEmote = (alt, { urls }) => ({
