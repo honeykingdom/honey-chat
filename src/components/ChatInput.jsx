@@ -22,21 +22,6 @@ const Controls = styled.div`
   & > :not(:last-child) {
     margin-right: 20px;
   }
-
-  a {
-    color: #bf94ff;
-    text-decoration: none;
-
-    &:focus,
-    &:hover {
-      color: #a970ff;
-      text-decoration: underline;
-    }
-
-    &:visited {
-      color: #a970ff;
-    }
-  }
 `;
 const SendButton = styled.button`
   padding: 0 10px;
@@ -99,6 +84,20 @@ const Textarea = styled.textarea`
     pointer-events: none;
   }
 `;
+const StyledLink = styled(Link)`
+  color: #bf94ff;
+  text-decoration: none;
+
+  &:focus,
+  &:hover {
+    color: #a970ff;
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: #a970ff;
+  }
+`;
 
 const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
   const textareaRef = useRef(null);
@@ -147,7 +146,9 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
         value={text}
       />
       <Controls>
-        {!isAuth && <Link to="/chat/auth">Sign in with Twitch</Link>}
+        {!isAuth && (
+          <StyledLink to="/chat/auth">Sign in with Twitch</StyledLink>
+        )}
         <SendButton disabled={isDisabled} type="submit">
           Chat
         </SendButton>
