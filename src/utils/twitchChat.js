@@ -400,6 +400,8 @@ class Client extends EventEmitter {
   say(channel, message) {
     // TODO: check if conected to the channel before send
 
+    if (!message) return;
+
     const ircMessage = tekkoFormat({
       command: 'PRIVMSG',
       middle: [`#${channel}`],
