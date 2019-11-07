@@ -79,6 +79,7 @@ const Textarea = styled.textarea`
   border: 2px solid transparent;
   background-color: #262626;
   font-family: inherit;
+  font-size: 12px;
   line-height: 1.5;
   border-radius: 4px;
   outline: none;
