@@ -102,15 +102,18 @@ const Chat = ({ onSendMessage }) => {
       <ChatWrapper>
         <MessagesWrapper>
           <Messages onUpdate={handleScrollUpdate} ref={messagesRef}>
-            {messages.map(({ message, tags, isAction, isHistory }) => (
-              <ChatMessage
-                key={tags.id}
-                message={message}
-                tags={tags}
-                isAction={isAction}
-                isHistory={isHistory}
-              />
-            ))}
+            {messages.map(
+              ({ message, messageArray, tags, isAction, isHistory }) => (
+                <ChatMessage
+                  key={tags.id}
+                  message={message}
+                  messageArray={messageArray}
+                  tags={tags}
+                  isAction={isAction}
+                  isHistory={isHistory}
+                />
+              ),
+            )}
           </Messages>
           <MoreMessagesButton
             onClick={handleScrollToBottom}
