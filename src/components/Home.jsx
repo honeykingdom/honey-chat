@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pathOr } from 'ramda';
 
+import useLocationHash from '../hooks/useLocationHash';
 import { fetchTwitchEmotes } from '../reducers/emotes/twitch';
 import {
   fetchBttvGlobalEmotes,
@@ -42,6 +43,7 @@ const Home = () => {
   const currentChannel = useSelector((state) => state.chat.currentChannel);
   const currentChannelId = useSelector(channelIdSelector);
   const userId = useSelector((state) => state.auth.user.id);
+  const hash = useLocationHash();
 
   useEffect(() => {
     const rawUser = localStorage.getItem('user');
@@ -56,12 +58,12 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (window.location.hash) {
-      const channel = window.location.hash.slice(1);
+    if (hash && hash.length > 1) {
+      const channel = hash.slice(1);
       dispatch(setCurrentChannel(channel));
       localStorage.setItem('lastChannel', channel);
     }
-  }, [dispatch, window.location.hash]);
+  }, [dispatch, hash]);
 
   useEffect(() => {
     document.title = currentChannel
@@ -71,10 +73,6 @@ const Home = () => {
 
   useEffect(() => {
     if (currentChannel && isAuth) {
-      if (client) {
-        client.disconnect();
-      }
-
       const handleMessage = (data) => {
         const eventData = {
           channel: data.channel,
@@ -89,10 +87,13 @@ const Home = () => {
           auth: localStorage.accessToken,
         },
       };
-      client = new Client(options);
 
-      client.connect();
+      if (!client) {
+        client = new Client(options);
+        client.connect();
+      }
 
+      // TODO: Part the previous channel before join
       client.join(currentChannel);
 
       client.on('connected', () => dispatch(setIsConnected(true)));
