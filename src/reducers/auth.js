@@ -20,12 +20,16 @@ const fetchUserFailure = createAction('FETCH_USER_FAILURE');
 export const fetchUser = (id) => async (dispatch) => {
   dispatch(fetchUserRequest());
 
-  const response = await apiFetchUser(id);
-  const { login, display_name: displayName } = response.data[0];
-  const user = { id, login, displayName };
-  localStorage.setItem('user', JSON.stringify(user));
+  try {
+    const response = await apiFetchUser(id);
+    const { login, display_name: displayName } = response.data[0];
+    const user = { id, login, displayName };
+    localStorage.setItem('user', JSON.stringify(user));
 
-  dispatch(fetchUserSuccess(user));
+    dispatch(fetchUserSuccess(user));
+  } catch (error) {
+    dispatch(fetchUserFailure(error));
+  }
 };
 
 const handleSetIsAuth = (state, { payload: { isAuth, user } }) => ({
