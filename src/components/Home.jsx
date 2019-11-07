@@ -122,7 +122,7 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // TODO: Load recent messages immedeatly but render after all emotes will load
+    // TODO: Load recent messages immediately but render after all emotes will load
     if (currentChannel && isAllEmotesLoaded) {
       dispatch(fetchRecentMessages(currentChannel));
     }
