@@ -1,9 +1,241 @@
-// import urlRegex from 'url-regex';
+import pt from 'prop-types';
+import { parse as twemojiParser } from 'twemoji-parser';
+import emojilib from 'emojilib/emojis';
+import urlRegex from 'url-regex';
+import {
+  pipe,
+  toPairs,
+  map,
+  flatten,
+  find,
+  propEq,
+  join,
+  filter,
+  keys,
+  head,
+} from 'ramda';
 
-// twitch-emotes, bttv-emotes, ffz-emotes, emoji, links, mentions
-const formatMessage = (message, emotes) => {
-  // const { twitch, bttv, ffz } = emotes;
-  return message;
+// const mentionRegex = /^@([\p{Letter}_]+)/u;
+const mentionRegex = /^@([\w_]+)/;
+const linkRegex = urlRegex({ strict: false });
+
+const normalizeEmotesFromTags = pipe(
+  toPairs,
+  map(([id, value]) => map((v) => ({ id, ...v }), value)),
+  flatten,
+);
+
+const getFfzSrcSet = pipe(
+  toPairs,
+  map(([dpi, url]) => `${url} ${dpi}x`),
+  join(', '),
+);
+
+const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
+const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
+
+export const createTwitchEmote = (alt, id) => ({
+  type: 'twitch-emote',
+  alt,
+  src: `${TWITCH_EMOTES_CDN}/${id}/1.0`,
+  srcSet: `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`,
+});
+export const createBttvEmote = (alt, { id }) => ({
+  type: 'bttv-emote',
+  alt,
+  src: `${BTTV_EMOTES_CDN}${id}/1x`,
+  srcSet: `${BTTV_EMOTES_CDN}/${id}/2x 2x, ${BTTV_EMOTES_CDN}/${id}/3x 4x`,
+});
+export const createFfzEmote = (alt, { urls }) => ({
+  type: 'ffz-emote',
+  alt,
+  src: urls[1],
+  srcSet: getFfzSrcSet(urls),
+});
+export const createEmoji = (alt, src) => ({
+  type: 'emoji',
+  alt,
+  src,
+  srcSet: null,
+});
+export const createMention = (text, target) => ({
+  type: 'mention',
+  text,
+  target,
+});
+export const createLink = (href) => ({
+  type: 'link',
+  text: href,
+  href,
+});
+
+export const twitchEmoteType = pt.shape({
+  type: pt.oneOf(['twitch-emote']).isRequired,
+  alt: pt.string.isRequired,
+  src: pt.string.isRequired,
+  srcSet: pt.string.isRequired,
+});
+export const bttvEmoteType = pt.shape({
+  type: pt.oneOf(['bttv-emote']).isRequired,
+  alt: pt.string.isRequired,
+  src: pt.string.isRequired,
+  srcSet: pt.string.isRequired,
+});
+export const ffzEmoteType = pt.shape({
+  type: pt.oneOf(['ffz-emote']).isRequired,
+  alt: pt.string.isRequired,
+  src: pt.string.isRequired,
+  srcSet: pt.string.isRequired,
+});
+export const emojiType = pt.shape({
+  type: pt.oneOf(['emoji']).isRequired,
+  alt: pt.string.isRequired,
+  src: pt.string.isRequired,
+  srcSet: pt.string.isRequired,
+});
+export const mentionType = pt.shape({
+  type: pt.oneOf(['mention']).isRequired,
+  text: pt.string.isRequired,
+  target: pt.string.isRequired,
+});
+export const linkType = pt.shape({
+  type: pt.oneOf(['link']).isRequired,
+  text: pt.string.isRequired,
+  href: pt.string.isRequired,
+});
+
+const findTwitchEmote = (name, twitch) => find(propEq('code', name), twitch);
+const findBttvEmote = (name, bttv) => find(propEq('code', name), bttv);
+const findFfzEmote = (name, ffz) => find(propEq('name', name), ffz);
+const findEmoji = (char) =>
+  pipe(
+    filter(propEq('char', char)),
+    keys,
+    head,
+  )(emojilib);
+
+const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
+  if (parseTwitch) {
+    const twitchEmote = findTwitchEmote(word, twitch);
+    if (twitchEmote) return createTwitchEmote(word, twitchEmote.id);
+  }
+
+  const bttvEmote = findBttvEmote(word, bttv);
+  if (bttvEmote) return createBttvEmote(word, bttvEmote);
+
+  const ffzEmote = findFfzEmote(word, ffz);
+  if (ffzEmote) return createFfzEmote(word, ffzEmote);
+
+  // Don't parse two or more emotes without spaces between
+  // Don't parse emote if it's not in the emojilib package
+  const emojiMatch = twemojiParser(word, { assetType: 'png' });
+  if (
+    emojiMatch &&
+    emojiMatch.length === 1 &&
+    emojiMatch[0].text.length === word.length
+  ) {
+    const emoji = findEmoji(word);
+
+    if (emoji) {
+      const [{ url }] = emojiMatch;
+      return createEmoji(emoji, url);
+    }
+  }
+
+  // TODO: Use unicode regex if it supports
+  const mentionMatch = word.match(mentionRegex);
+  if (mentionMatch) {
+    const [text, target] = mentionMatch;
+    return [
+      createMention(text, target.toLowerCase()),
+      word.length - text.length,
+    ];
+  }
+
+  const linkMatch = word.match(linkRegex);
+  if (linkMatch && linkMatch[0].length === word.length) {
+    return createLink(word);
+  }
+
+  return null;
+};
+
+const formatMessage = (message, embeddedEmotes, emotes) => {
+  // If the message was sent by the current user, there is no embedded emotes
+  // So we need to parse twitch emotes manually
+
+  const isOwnMessage = embeddedEmotes === undefined || embeddedEmotes === null;
+  const hasEmbeddedEmotes =
+    embeddedEmotes && Object.keys(embeddedEmotes).length > 0;
+  const normalizedEmbeddedEmotes = normalizeEmotesFromTags(embeddedEmotes);
+
+  const result = [];
+  let offset = 0;
+  // Before that offset all content was added to the result array
+  let arrayOffset = 0;
+
+  // Check every word. From offset to the next space index
+  do {
+    const spaceIndex = message.indexOf(' ', offset + 1);
+
+    const isStart = offset === 0;
+    const isEnd = spaceIndex === -1;
+
+    const startIndex = isStart ? offset : offset + 1;
+    const endIndex = isEnd ? message.length : spaceIndex;
+
+    const word = message.substring(startIndex, endIndex);
+
+    if (word) {
+      let entity = null;
+
+      // Check embedded twitch emotes
+      if (hasEmbeddedEmotes) {
+        const embeddedEmote = find(
+          propEq('start', startIndex),
+          normalizedEmbeddedEmotes,
+        );
+
+        if (embeddedEmote) {
+          entity = createTwitchEmote(word, embeddedEmote.id);
+        }
+      }
+
+      // Check other entities
+      if (!entity) {
+        entity = findEntity(word, emotes, { parseTwitch: isOwnMessage });
+      }
+
+      if (entity) {
+        // Push all text before this entity
+        if (arrayOffset !== startIndex) {
+          const textBefore = message.substring(arrayOffset, startIndex);
+          result.push(textBefore);
+        }
+
+        // If entity it's an array it means entity may be not full word
+        // The second element is the difference between word length and entity length
+        if (Array.isArray(entity)) {
+          const [entityObject, difference] = entity;
+          result.push(entityObject);
+          arrayOffset = endIndex - difference;
+        } else {
+          result.push(entity);
+          arrayOffset = endIndex;
+        }
+      }
+    }
+
+    // If it's the last word and it wasn't added to the result add it now
+    if (spaceIndex === -1 && arrayOffset !== endIndex) {
+      const textAfter = message.substring(arrayOffset, endIndex);
+      result.push(textAfter);
+    }
+
+    offset = spaceIndex;
+  } while (offset !== -1);
+
+  return result;
 };
 
 export default formatMessage;
