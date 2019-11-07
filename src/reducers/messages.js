@@ -51,15 +51,24 @@ const {
   'FETCH_RECENT_MESSAGES_FAILURE',
 );
 
-const normalizeRecentMessages = (messages) =>
+const normalizeRecentMessages = (messages, state) =>
   messages
     .map((m) => parse(m))
     .filter((m) => m.command === 'PRIVMSG')
     .map(({ tags, params: [channel, message], prefix: { user } }) => {
       const isAction = getIsAction(message);
+      const normalizedMessage = isAction
+        ? normalizeActionMessage(message)
+        : message;
+      const parsedTags = parseMessageTags(tags);
       return {
-        message: isAction ? normalizeActionMessage(message) : message,
-        tags: parseMessageTags(tags),
+        message: normalizedMessage,
+        messageArray: formatMessage(
+          normalizedMessage,
+          parsedTags.emotes,
+          getEmotes(state),
+        ),
+        tags: parsedTags,
         user,
         channel: channel.slice(1),
         isAction,
@@ -73,11 +82,10 @@ export const fetchRecentMessages = (channel) => async (dispatch, getState) => {
     const response = await apiFetchRecentMessages(channel);
     const data = {
       channel,
-      items: formatMessage(
-        normalizeRecentMessages(response.messages),
-        getEmotes(getState()),
-      ),
+      items: normalizeRecentMessages(response.messages, getState()),
     };
+
+    // console.log(normalizeRecentMessages(response.messages));
 
     dispatch(fetchRecentMessagesSuccess(data));
   } catch (error) {
@@ -140,7 +148,12 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
 };
 
 export const addMessages = (payload) => (dispatch, getState) => {
-  const newItems = formatMessage(payload.items, getEmotes(getState()));
+  const newItems = payload.items.map(({ message, tags, ...rest }) => ({
+    message,
+    messageArray: formatMessage(message, tags.emotes, getEmotes(getState())),
+    tags,
+    ...rest,
+  }));
 
   dispatch(
     addMessagesRequest({
