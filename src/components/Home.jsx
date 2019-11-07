@@ -22,6 +22,7 @@ import {
 } from '../reducers/chat';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
+import replaceEmojis from '../utils/replaceEmojis';
 
 import Chat from './Chat';
 
@@ -57,6 +58,12 @@ const Home = () => {
 
     // TODO: try to connect to the chat. if there is an error, set isAuth to false and connect without login
   }, [dispatch]);
+
+  useEffect(() => {
+    document.title = currentChannel
+      ? `#${currentChannel} - ${process.env.REACT_APP_NAME} `
+      : process.env.REACT_APP_NAME;
+  }, [currentChannel]);
 
   useEffect(() => {
     if (currentChannel && isAuth) {
@@ -129,7 +136,10 @@ const Home = () => {
   }, [dispatch, currentChannel, currentChannelId]);
 
   const handleSendMessage = (message) => {
-    client.say(currentChannel, message);
+    console.log(message);
+    const normalizedMessage = replaceEmojis(message.trim());
+    console.log(normalizedMessage);
+    client.say(currentChannel, normalizedMessage);
   };
 
   return <Chat onSendMessage={handleSendMessage} />;
