@@ -3,24 +3,24 @@ export const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';
 
 // TODO: throw an error if fetch completed with not 2** code
 
-const helixHeaders = {
+const getHelixHeaders = () => ({
   Authorization: `Bearer ${localStorage.accessToken}`,
-};
+});
 
-const krakenHeaders = {
+const getKrakenHeaders = () => ({
   Accept: 'application/vnd.twitchtv.v5+json',
   'Client-ID': process.env.REACT_APP_TWITCH_API_CLIENT_ID,
   Authorization: `OAuth ${localStorage.accessToken}`,
-};
+});
 
 const apiRequestHelix = (url) =>
   fetch(`${TWITCH_API_HELIX}${url}`, {
-    headers: helixHeaders,
+    headers: getHelixHeaders(),
   }).then((response) => response.json());
 
 const apiRequestKraken = (url) =>
   fetch(`${TWITCH_API_KRAKEN}${url}`, {
-    headers: krakenHeaders,
+    headers: getKrakenHeaders(),
   }).then((response) => response.json());
 
 const apiRequest = (url) => fetch(url).then((response) => response.json());
