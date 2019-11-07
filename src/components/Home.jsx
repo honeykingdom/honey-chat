@@ -52,12 +52,16 @@ const Home = () => {
       dispatch(setIsAuth({ isAuth: true, user }));
     }
 
-    if (window.location.hash) {
-      dispatch(setCurrentChannel(window.location.hash.slice(1)));
-    }
-
     // TODO: try to connect to the chat. if there is an error, set isAuth to false and connect without login
   }, [dispatch]);
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const channel = window.location.hash.slice(1);
+      dispatch(setCurrentChannel(channel));
+      localStorage.setItem('lastChannel', channel);
+    }
+  }, [dispatch, window.location.hash]);
 
   useEffect(() => {
     document.title = currentChannel
