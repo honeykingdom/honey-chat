@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 import { pipe, pathOr, values, flatten } from 'ramda';
 
+const currentChannelSelector = pathOr('', ['chat', 'currentChannel']);
+
 export const twitchEmotesSelector = createSelector(
   pathOr([], ['emotes', 'twitch', 'items']),
   pipe(
@@ -11,7 +13,7 @@ export const twitchEmotesSelector = createSelector(
 
 const bttvChannelEmotesSelector = createSelector(
   pathOr({}, ['emotes', 'bttv', 'channels']),
-  pathOr('', ['chat', 'currentChannel']),
+  currentChannelSelector,
   (channels, currentChannel) => pathOr([], [currentChannel, 'items'], channels),
 );
 export const bttvEmotesSelector = createSelector(
@@ -25,7 +27,7 @@ export const bttvEmotesSelector = createSelector(
 
 const ffzChannelEmotesSelector = createSelector(
   pathOr({}, ['emotes', 'ffz', 'channels']),
-  pathOr('', ['chat', 'currentChannel']),
+  currentChannelSelector,
   (channels, currentChannel) => pathOr([], [currentChannel, 'items'], channels),
 );
 export const ffzEmotesSelector = createSelector(
@@ -35,4 +37,32 @@ export const ffzEmotesSelector = createSelector(
     ...globalFfzEmotes,
     ...channelFfzEmotes,
   ],
+);
+
+const isBttvChannelEmotesLoadedSelector = (state) =>
+  pathOr(false, [
+    'emotes',
+    'bttv',
+    'channels',
+    currentChannelSelector(state),
+    'isLoaded',
+  ])(state);
+
+const isFfzChannelEmotesLoadedSelector = (state) =>
+  pathOr(false, [
+    'emotes',
+    'ffz',
+    'channels',
+    currentChannelSelector(state),
+    'isLoaded',
+  ])(state);
+
+export const isAllEmotesLoadedSelector = createSelector(
+  pathOr(false, ['emotes', 'twitch', 'isLoaded']),
+  pathOr(false, ['emotes', 'bttv', 'global', 'isLoaded']),
+  isBttvChannelEmotesLoadedSelector,
+  pathOr(false, ['emotes', 'ffz', 'global', 'isLoaded']),
+  isFfzChannelEmotesLoadedSelector,
+  (twitch, bttvGlobal, bttvChannel, ffzGlobal, ffzChannel) =>
+    twitch && bttvGlobal && bttvChannel && ffzGlobal && ffzChannel,
 );
