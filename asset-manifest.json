@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "/chat/static/js/main.979c8f86.chunk.js",
-    "main.js.map": "/chat/static/js/main.979c8f86.chunk.js.map",
+    "main.js": "/chat/static/js/main.26780e28.chunk.js",
+    "main.js.map": "/chat/static/js/main.26780e28.chunk.js.map",
     "runtime-main.js": "/chat/static/js/runtime-main.cf7822e3.js",
     "runtime-main.js.map": "/chat/static/js/runtime-main.cf7822e3.js.map",
-    "static/js/2.4904362a.chunk.js": "/chat/static/js/2.4904362a.chunk.js",
-    "static/js/2.4904362a.chunk.js.map": "/chat/static/js/2.4904362a.chunk.js.map",
+    "static/js/2.f4ec7142.chunk.js": "/chat/static/js/2.f4ec7142.chunk.js",
+    "static/js/2.f4ec7142.chunk.js.map": "/chat/static/js/2.f4ec7142.chunk.js.map",
     "index.html": "/chat/index.html",
-    "precache-manifest.18879b98d9d8cc3fcf65ab67d4106efc.js": "/chat/precache-manifest.18879b98d9d8cc3fcf65ab67d4106efc.js",
+    "precache-manifest.2651de3eed0648acc9702761eab8599e.js": "/chat/precache-manifest.2651de3eed0648acc9702761eab8599e.js",
     "service-worker.js": "/chat/service-worker.js"
   },
   "entrypoints": [
     "static/js/runtime-main.cf7822e3.js",
-    "static/js/2.4904362a.chunk.js",
-    "static/js/main.979c8f86.chunk.js"
+    "static/js/2.f4ec7142.chunk.js",
+    "static/js/main.26780e28.chunk.js"
   ]
 }
