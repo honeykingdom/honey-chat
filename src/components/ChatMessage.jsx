@@ -60,7 +60,7 @@ export const tagsType = pt.shape({
     subscriber: pt.number,
   }),
   badges: pt.shape({}),
-  color: pt.string.isRequired,
+  color: pt.string,
   displayName: pt.string.isRequired,
   emotes: pt.shape({}),
   flags: pt.string,
