@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { pathOr, omit } from 'ramda';
+import { pathOr, omit, mergeDeepRight, mergeDeepWith, concat } from 'ramda';
 import { EventEmitter } from 'events';
 import { parse as tekkoParse, format as tekkoFormat } from 'tekko';
 import camelCase from 'camel-case';
@@ -127,6 +127,10 @@ const normalizeTagValue = (name, value) => {
   if (booleanMessageTags.includes(name)) return value === '1';
   if (numberMessageTags.includes(name)) return parseInt(value, 10);
 
+  if (typeof value === 'string') {
+    return value.replace('\\s', ' ');
+  }
+
   return value;
 };
 
@@ -196,11 +200,35 @@ export const parseChatMessage = ({
 };
 
 const parseGlobalUserState = ({ tags }) => ({ tags });
-const parseUserState = ({ tags, params: [channel] }) => ({
+const parseState = ({ tags, params: [channel] }) => ({
   tags,
   channel: channel.slice(1),
 });
-const parseRoomState = parseUserState;
+const parseUserState = parseState;
+const parseRoomState = parseState;
+
+const parseCommand = ({ message, tags, params: [channel] }) => ({
+  message,
+  tags,
+  channel: channel.slice(1),
+});
+const parseNotice = parseCommand;
+const parseUserNotice = parseCommand;
+const parseClearMessage = parseCommand;
+const parseClearChat = parseCommand;
+const parseHostTarget = parseCommand;
+
+const parseWhisper = ({
+  message,
+  tags,
+  params: [channel],
+  prefix: { user },
+}) => ({
+  message,
+  tags,
+  channel,
+  user,
+});
 
 class Client extends EventEmitter {
   socket;
@@ -222,7 +250,7 @@ class Client extends EventEmitter {
     this.options = options;
     this.user = null;
     this._queue = [];
-    this._messagesQueue = [];
+    this._messagesQueue = {};
   }
 
   _onConnect() {
@@ -252,6 +280,28 @@ class Client extends EventEmitter {
   _onData(rawData) {
     const data = rawData.trim().split('\r\n');
     data.forEach((line) => this._handleMessage(line));
+  }
+
+  _emmitOwnMessage(tags, channel) {
+    const message = pathOr([], ['_messagesQueue', channel], this).shift();
+
+    if (typeof message !== 'string') return;
+
+    const isAction = message.startsWith('/me ');
+    const messageEventData = {
+      message: isAction ? message.slice(4) : message,
+      tags: {
+        ...tags,
+        id: uuid(),
+        tmiSentTs: new Date().getTime(),
+        userId: this.user.userId,
+      },
+      user: this.options.identity.name,
+      channel,
+      isAction,
+    };
+
+    this.emit('ownmessage', messageEventData);
   }
 
   _handleMessage(raw) {
@@ -295,29 +345,16 @@ class Client extends EventEmitter {
     // Sends user-state data when a user joins a channel or sends a PRIVMSG to a channel
     if (command === 'USERSTATE') {
       const eventData = parseUserState(data);
-      this.channels[channel].userState = eventData.tags;
 
-      const commandType =
-        this._messagesQueue.length === 0 ? 'JOIN_CHANNEL' : 'SEND_PRIVMSG';
+      this.channels = mergeDeepRight(this.channels, {
+        [channel]: { userState: eventData.tags },
+      });
 
-      // Last message was sent successfully
-      if (commandType === 'SEND_PRIVMSG') {
-        const message = this._messagesQueue.shift();
-        const isAction = message.startsWith('/me ');
-        const messageEventData = {
-          message: isAction ? message.slice(4) : message,
-          tags: {
-            ...eventData.tags,
-            id: uuid(),
-            tmiSentTs: new Date().getTime(),
-            userId: this.user.userId,
-          },
-          user: this.options.identity.name,
-          channel,
-          isAction,
-        };
+      const isSendedAfterPrivateMessage =
+        pathOr(0, ['_messagesQueue', channel, 'length'], this) > 0;
 
-        this.emit('own-message', messageEventData);
+      if (isSendedAfterPrivateMessage) {
+        this._emmitOwnMessage(eventData.tags, channel);
       }
 
       this.emit('userstate', eventData);
@@ -326,7 +363,7 @@ class Client extends EventEmitter {
 
     if (command === 'JOIN') {
       const eventData = { channel };
-      this.channels = { ...this.channels, [channel]: {} };
+      this.channels = mergeDeepRight(this.channels, { [channel]: {} });
       this.emit('join', eventData);
       return;
     }
@@ -340,20 +377,52 @@ class Client extends EventEmitter {
 
     if (command === 'ROOMSTATE') {
       const eventData = parseRoomState(data);
-      this.channels[channel].roomState = eventData.tags;
+      this.channels = mergeDeepRight(this.channels, {
+        [channel]: { roomState: eventData.tags },
+      });
       this.emit('roomstate', eventData);
       return;
     }
 
     if (command === 'NOTICE') {
-      const eventData = data;
+      const eventData = parseNotice(data);
 
       // Last message was not sent
       if (noticeMessageTags.includes(data.tags.msgId)) {
-        this._messagesQueue.shift();
+        pathOr([], ['_messagesQueue', channel], this).shift();
       }
 
       this.emit('notice', eventData);
+      return;
+    }
+
+    if (command === 'USERNOTICE') {
+      const eventData = parseUserNotice(data);
+      this.emit('usernotice', eventData);
+      return;
+    }
+
+    if (command === 'CLEARCHAT') {
+      const eventData = parseClearChat(data);
+      this.emit('clearchat', eventData);
+      return;
+    }
+
+    if (command === 'CLEARMSG') {
+      const eventData = parseClearMessage(data);
+      this.emit('clearmsg', eventData);
+      return;
+    }
+
+    if (command === 'HOSTTARGET') {
+      const eventData = parseHostTarget(data);
+      this.emit('hosttarget', eventData);
+      return;
+    }
+
+    if (command === 'WHISPER') {
+      const eventData = parseWhisper(data);
+      this.emit('whisper', eventData);
       return;
     }
 
@@ -409,7 +478,9 @@ class Client extends EventEmitter {
     });
     this.sendRaw(ircMessage);
 
-    this._messagesQueue.push(message);
+    this._messagesQueue = mergeDeepWith(concat, this._messagesQueue, {
+      [channel]: [message],
+    });
   }
 
   sendCommand(channel, command, params) {
