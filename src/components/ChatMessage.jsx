@@ -17,10 +17,7 @@ const ChatMessageRoot = styled.div`
   opacity: ${(p) => (p.isHistory ? '0.5' : '1')};
   line-height: 20px;
   word-wrap: break-word;
-
-  &:nth-child(even) {
-    background-color: #1f1925;
-  }
+  background-color: ${(p) => (p.isEven ? '#1f1925' : 'transparent')};
 `;
 const Name = styled.span`
   font-weight: bold;
@@ -111,8 +108,14 @@ const ChatMessage = ({
   tags: { color, displayName },
   isHistory,
   isAction,
+  isEven,
 }) => (
-  <ChatMessageRoot isHistory={isHistory} isAction={isAction} color={color}>
+  <ChatMessageRoot
+    isHistory={isHistory}
+    isAction={isAction}
+    isEven={isEven}
+    color={color}
+  >
     <Name color={color}>{displayName}</Name>
     {!isAction && ':'} {messageArray.map(renderMessageArray)}
   </ChatMessageRoot>
@@ -121,6 +124,7 @@ const ChatMessage = ({
 ChatMessage.defaultProps = {
   isHistory: false,
   isAction: false,
+  isEven: false,
 };
 
 ChatMessage.propTypes = {
@@ -141,6 +145,7 @@ ChatMessage.propTypes = {
   tags: tagsType.isRequired,
   isHistory: pt.bool,
   isAction: pt.bool,
+  isEven: pt.bool,
 };
 
 export default ChatMessage;
