@@ -12,14 +12,13 @@ const MORE_MESSAGES_OFFSET = 100;
 
 const ChatRoot = styled.div`
   height: 100vh;
-  background-color: #222;
   font-size: 12px;
 `;
 const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #000;
+  background-color: #18181b;
 `;
 const MessagesWrapper = styled.div`
   position: relative;
@@ -62,11 +61,15 @@ const MoreMessagesButton = styled.button`
 const messagesSelector = (state) =>
   pathOr([], ['messages', state.chat.currentChannel, 'items'], state);
 
+const isEvenSelector = (state) =>
+  pathOr(false, ['messages', state.chat.currentChannel, 'isEven'], state);
+
 const Chat = ({ onSendMessage }) => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const messages = useSelector(messagesSelector);
   // TODO: check if the user has a rights to send messages
   const isConnected = useSelector((state) => state.chat.isConnected);
+  const isEven = useSelector(isEvenSelector);
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -103,7 +106,7 @@ const Chat = ({ onSendMessage }) => {
         <MessagesWrapper>
           <Messages onUpdate={handleScrollUpdate} ref={messagesRef}>
             {messages.map(
-              ({ message, messageArray, tags, isAction, isHistory }) => (
+              ({ message, messageArray, tags, isAction, isHistory }, key) => (
                 <ChatMessage
                   key={tags.id}
                   message={message}
@@ -111,6 +114,7 @@ const Chat = ({ onSendMessage }) => {
                   tags={tags}
                   isAction={isAction}
                   isHistory={isHistory}
+                  isEven={isEven ? key % 2 === 1 : key % 2 === 0}
                 />
               ),
             )}

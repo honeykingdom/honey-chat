@@ -7,7 +7,7 @@ const ChatInputRoot = styled.form`
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
-  background-color: #000;
+  background-color: #18181b;
 
   & > :not(:last-child) {
     margin-bottom: 10px;
@@ -62,7 +62,7 @@ const Textarea = styled.textarea`
   min-height: 40px;
   overflow: hidden;
   border: 2px solid transparent;
-  background-color: #262626;
+  background-color: rgba(255, 255, 255, 0.15);
   font-family: inherit;
   font-size: 12px;
   line-height: 1.5;
