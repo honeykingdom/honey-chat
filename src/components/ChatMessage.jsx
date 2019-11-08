@@ -115,7 +115,7 @@ const ChatMessage = ({
   isAction,
   isEven,
 }) => {
-  const loginRegex = new RegExp(login, 'gi');
+  const loginRegex = RegExp(login, 'gi');
   const isMention = user !== login && loginRegex.test(message);
 
   return (
