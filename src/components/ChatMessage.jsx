@@ -1,7 +1,7 @@
 import React from 'react';
 import pt from 'prop-types';
 import styled, { css } from 'styled-components';
-import { any, propEq } from 'ramda';
+// import { any, propEq } from 'ramda';
 
 import {
   twitchEmoteType,
@@ -107,7 +107,7 @@ const renderMessageArray = (user, login) => (item, key) => {
 };
 
 const ChatMessage = ({
-  // message,
+  message,
   messageArray,
   tags: { color, displayName },
   user,
@@ -116,8 +116,9 @@ const ChatMessage = ({
   isAction,
   isEven,
 }) => {
-  const isMention =
-    any(propEq('target', login), messageArray) && user !== login;
+  const loginRegex = new RegExp(login, 'gi');
+  const isMention = user !== login && loginRegex.test(message);
+  // any(propEq('target', login), messageArray)
 
   return (
     <ChatMessageRoot
@@ -156,7 +157,7 @@ export const tagsType = pt.shape({
 });
 
 ChatMessage.propTypes = {
-  // message: pt.string.isRequired,
+  message: pt.string.isRequired,
   messageArray: pt.arrayOf(
     pt.oneOfType([
       pt.string,
