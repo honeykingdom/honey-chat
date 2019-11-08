@@ -24,6 +24,7 @@ const defaultState = {
   //     isError: false,
   //     error: null,
   //   },
+  //   isEven: false,
   //   items: [],
   // },
 };
@@ -38,6 +39,13 @@ const getEmotes = (state) => ({
   bttv: bttvEmotesSelector(state),
   ffz: ffzEmotesSelector(state),
 });
+
+const getIsEven = (prev, addedItemsCount, isSliced) => {
+  if (isSliced) {
+    return addedItemsCount % 2 ? !prev : prev;
+  }
+  return prev;
+};
 
 const {
   addMessages: addMessagesRequest,
@@ -112,6 +120,11 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
   }
 
   if (type === fetchRecentMessagesSuccess.toString()) {
+    const newItems = [...payload.items, ...state[channel].items];
+    const slicedMessages = sliceMessages(newItems);
+    const isSliced = newItems.length > slicedMessages.length;
+    const isEven = pathOr(false, [channel, 'isEven'], state);
+
     return {
       ...state,
       [channel]: {
@@ -122,7 +135,8 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
           isError: false,
           error: null,
         },
-        items: sliceMessages([...payload.items, ...state[channel].items]),
+        isEven: getIsEven(isEven, payload.items.length, isSliced),
+        items: newItems,
       },
     };
   }
@@ -164,12 +178,17 @@ export const addMessages = (payload) => (dispatch, getState) => {
 const handleAddMessages = (state, { payload }) => {
   const { channel } = payload;
   const oldItems = pathOr([], [channel, 'items'], state);
+  const newItems = [...oldItems, ...payload.items];
+  const slicedMessages = sliceMessages(newItems);
+  const isSliced = newItems.length > slicedMessages.length;
+  const isEven = pathOr(false, [channel, 'isEven'], state);
 
   return {
     ...state,
     [channel]: {
       ...state[channel],
-      items: sliceMessages([...oldItems, ...payload.items]),
+      isEven: getIsEven(isEven, payload.items.length, isSliced),
+      items: slicedMessages,
     },
   };
 };
