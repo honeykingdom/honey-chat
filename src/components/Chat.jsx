@@ -70,6 +70,7 @@ const Chat = ({ onSendMessage }) => {
   // TODO: check if the user has a rights to send messages
   const isConnected = useSelector((state) => state.chat.isConnected);
   const isEven = useSelector(isEvenSelector);
+  const login = useSelector((state) => state.auth.user.login);
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -106,12 +107,17 @@ const Chat = ({ onSendMessage }) => {
         <MessagesWrapper>
           <Messages onUpdate={handleScrollUpdate} ref={messagesRef}>
             {messages.map(
-              ({ message, messageArray, tags, isAction, isHistory }, key) => (
+              (
+                { message, messageArray, tags, user, isAction, isHistory },
+                key,
+              ) => (
                 <ChatMessage
                   key={tags.id}
                   message={message}
                   messageArray={messageArray}
                   tags={tags}
+                  user={user}
+                  login={login}
                   isAction={isAction}
                   isHistory={isHistory}
                   isEven={isEven ? key % 2 === 1 : key % 2 === 0}
