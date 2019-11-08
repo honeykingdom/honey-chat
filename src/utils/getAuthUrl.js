@@ -10,8 +10,11 @@ const authParams = {
   response_type: 'token+id_token',
   scope: [
     'openid',
+    'channel:moderate',
     'chat:edit',
     'chat:read',
+    'whispers:read',
+    'whispers:edit',
     'user_blocks_read',
     'user_blocks_edit',
     'user_subscriptions',
