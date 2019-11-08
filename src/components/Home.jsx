@@ -20,7 +20,6 @@ import {
   updateGlobalUserState,
   updateUserState,
   updateRoomState,
-  removeChannel,
 } from '../reducers/chat';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
@@ -107,12 +106,8 @@ const Home = () => {
       client.on('userstate', (data) => dispatch(updateUserState(data)));
       client.on('roomstate', (data) => dispatch(updateRoomState(data)));
 
-      client.on('part', (data) => dispatch(removeChannel(data)));
-
       client.on('message', handleMessage);
-      client.on('own-message', handleMessage);
-
-      // setTimeout(() => client.part(currentChannel), 5000);
+      client.on('ownmessage', handleMessage);
     }
   }, [dispatch, username, currentChannel, isAuth]);
 
