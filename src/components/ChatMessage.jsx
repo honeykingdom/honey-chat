@@ -1,7 +1,6 @@
 import React from 'react';
 import pt from 'prop-types';
 import styled, { css } from 'styled-components';
-// import { any, propEq } from 'ramda';
 
 import {
   twitchEmoteType,
@@ -118,7 +117,6 @@ const ChatMessage = ({
 }) => {
   const loginRegex = new RegExp(login, 'gi');
   const isMention = user !== login && loginRegex.test(message);
-  // any(propEq('target', login), messageArray)
 
   return (
     <ChatMessageRoot
