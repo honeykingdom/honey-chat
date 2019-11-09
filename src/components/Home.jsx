@@ -22,6 +22,7 @@ import {
   updateRoomState,
   currentChannelSelector,
 } from '../reducers/chat';
+import { fetchGlobalBadges, fetchChannelBadges } from '../reducers/badges';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
 import replaceEmojis from '../utils/replaceEmojis';
@@ -115,6 +116,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchBttvGlobalEmotes());
     dispatch(fetchFfzGlobalEmotes());
+    dispatch(fetchGlobalBadges());
   }, [dispatch]);
 
   useEffect(() => {
@@ -135,6 +137,7 @@ const Home = () => {
     if (currentChannel && currentChannelId) {
       dispatch(fetchBttvChannelEmotes(currentChannelId, currentChannel));
       dispatch(fetchFfzChannelEmotes(currentChannelId, currentChannel));
+      dispatch(fetchChannelBadges(currentChannelId, currentChannel));
     }
   }, [dispatch, currentChannel, currentChannelId]);
 

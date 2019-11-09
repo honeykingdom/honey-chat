@@ -109,7 +109,15 @@ const Chat = ({ onSendMessage }) => {
           <Messages onUpdate={handleScrollUpdate} ref={messagesRef}>
             {messages.map(
               (
-                { message, messageArray, tags, user, isAction, isHistory },
+                {
+                  message,
+                  messageArray,
+                  tags,
+                  badges,
+                  user,
+                  isAction,
+                  isHistory,
+                },
                 key,
               ) => (
                 <ChatMessage
@@ -117,6 +125,7 @@ const Chat = ({ onSendMessage }) => {
                   message={message}
                   messageArray={messageArray}
                   tags={tags}
+                  badges={badges}
                   user={user}
                   login={login}
                   isAction={isAction}

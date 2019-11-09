@@ -65,6 +65,13 @@ const Link = styled.a.attrs({ rel: 'noreferrer noopener', target: '_blank' })`
     color: #a970ff;
   }
 `;
+const Badge = styled.img`
+  margin-bottom: 2px;
+  margin-right: 3px;
+  max-width: 100%;
+  vertical-align: middle;
+  border-radius: 3px;
+`;
 
 const renderMessageArray = (user, login) => (item, key) => {
   if (typeof item !== 'object') return item;
@@ -105,10 +112,17 @@ const renderMessageArray = (user, login) => (item, key) => {
   return null;
 };
 
+const renderBadges = (badges) =>
+  badges.map(({ alt, label, src, srcSet }, key) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <Badge key={key} alt={alt} aria-label={label} src={src} srcSet={srcSet} />
+  ));
+
 const ChatMessage = ({
   message,
   messageArray,
   tags: { color, displayName },
+  badges,
   user,
   login,
   isHistory,
@@ -126,6 +140,7 @@ const ChatMessage = ({
       isMention={isMention}
       color={color}
     >
+      {badges.length > 0 && renderBadges(badges)}
       <Name color={color}>{displayName}</Name>
       {!isAction && ':'} {messageArray.map(renderMessageArray(user, login))}
     </ChatMessageRoot>
@@ -136,6 +151,7 @@ ChatMessage.defaultProps = {
   isHistory: false,
   isAction: false,
   isEven: false,
+  badges: [],
 };
 
 export const tagsType = pt.shape({
@@ -170,6 +186,14 @@ ChatMessage.propTypes = {
     ]),
   ).isRequired,
   tags: tagsType.isRequired,
+  badges: pt.arrayOf(
+    pt.shape({
+      alt: pt.string,
+      label: pt.string,
+      src: pt.string.isRequired,
+      srcSet: pt.string,
+    }),
+  ),
   user: pt.string.isRequired,
   login: pt.string.isRequired,
   isHistory: pt.bool,
