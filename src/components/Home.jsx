@@ -22,7 +22,11 @@ import {
   updateRoomState,
   currentChannelSelector,
 } from '../reducers/chat';
-import { fetchGlobalBadges, fetchChannelBadges } from '../reducers/badges';
+import {
+  fetchGlobalBadges,
+  fetchChannelBadges,
+  isBadgesLoadedSelector,
+} from '../reducers/badges';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
 import replaceEmojis from '../utils/replaceEmojis';
@@ -45,6 +49,7 @@ const Home = () => {
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
   const isAllEmotesLoaded = useSelector(isAllEmotesLoadedSelector);
+  const isBadgesLoaded = useSelector(isBadgesLoadedSelector);
   const userId = useSelector((state) => state.auth.user.id);
   const hash = useLocationHash();
 
@@ -121,10 +126,10 @@ const Home = () => {
 
   useEffect(() => {
     // TODO: Load recent messages immediately but render after all emotes will load
-    if (currentChannel && isAllEmotesLoaded) {
+    if (currentChannel && isAllEmotesLoaded && isBadgesLoaded) {
       dispatch(fetchRecentMessages(currentChannel));
     }
-  }, [dispatch, currentChannel, isAllEmotesLoaded]);
+  }, [dispatch, currentChannel, isAllEmotesLoaded, isBadgesLoaded]);
 
   useEffect(() => {
     if (userId) {
