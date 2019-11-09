@@ -13,7 +13,11 @@ import {
   fetchFfzChannelEmotes,
 } from '../reducers/emotes/ffz';
 import { isAllEmotesLoadedSelector } from '../reducers/emotes/selectors';
-import { addMessages, fetchRecentMessages } from '../reducers/messages';
+import {
+  addMessages,
+  fetchRecentMessages,
+  clearChat,
+} from '../reducers/messages';
 import {
   setCurrentChannel,
   setIsConnected,
@@ -89,6 +93,12 @@ const Home = () => {
         dispatch(addMessages(eventData));
       };
 
+      const handleClearChat = (data) => {
+        if (!data.tags.targetUserId) return;
+
+        dispatch(clearChat(data));
+      };
+
       const options = {
         identity: {
           name: username,
@@ -112,6 +122,8 @@ const Home = () => {
       );
       client.on('userstate', (data) => dispatch(updateUserState(data)));
       client.on('roomstate', (data) => dispatch(updateRoomState(data)));
+
+      client.on('clearchat', handleClearChat);
 
       client.on('message', handleMessage);
       client.on('ownmessage', handleMessage);

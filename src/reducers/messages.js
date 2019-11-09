@@ -1,4 +1,9 @@
-import { createActions, handleActions, combineActions } from 'redux-actions';
+import {
+  createAction,
+  createActions,
+  handleActions,
+  combineActions,
+} from 'redux-actions';
 import { pathOr, toPairs, map, pipe, filter } from 'ramda';
 import { parse } from 'tekko';
 
@@ -30,6 +35,20 @@ const defaultState = {
   // },
 };
 
+const {
+  addMessages: addMessagesRequest,
+  fetchRecentMessagesRequest,
+  fetchRecentMessagesSuccess,
+  fetchRecentMessagesFailure,
+} = createActions(
+  'ADD_MESSAGES',
+  'FETCH_RECENT_MESSAGES_REQUEST',
+  'FETCH_RECENT_MESSAGES_SUCCESS',
+  'FETCH_RECENT_MESSAGES_FAILURE',
+);
+
+export const clearChat = createAction('CLEAR_CHAT');
+
 const sliceMessages = (items) => {
   const diff = items.length - CHANNEL_MESSAGES_LIMIT;
   return diff > 0 ? items.slice(diff) : items;
@@ -47,18 +66,6 @@ const getIsEven = (prev, addedItemsCount, isSliced) => {
   }
   return prev;
 };
-
-const {
-  addMessages: addMessagesRequest,
-  fetchRecentMessagesRequest,
-  fetchRecentMessagesSuccess,
-  fetchRecentMessagesFailure,
-} = createActions(
-  'ADD_MESSAGES',
-  'FETCH_RECENT_MESSAGES_REQUEST',
-  'FETCH_RECENT_MESSAGES_SUCCESS',
-  'FETCH_RECENT_MESSAGES_FAILURE',
-);
 
 const createBadge = ({
   title,
@@ -238,6 +245,27 @@ const handleAddMessages = (state, { payload }) => {
   };
 };
 
+const handleClearChat = (state, { payload }) => {
+  const {
+    channel,
+    tags: { targetUserId },
+  } = payload;
+
+  const newItems = state[channel].items.map((message) =>
+    message.tags.userId === targetUserId && !message.isHistory
+      ? { ...message, isDeleted: true }
+      : message,
+  );
+
+  return {
+    ...state,
+    [channel]: {
+      ...state[channel],
+      items: newItems,
+    },
+  };
+};
+
 const reducer = handleActions(
   {
     [addMessagesRequest]: handleAddMessages,
@@ -246,6 +274,7 @@ const reducer = handleActions(
       fetchRecentMessagesSuccess,
       fetchRecentMessagesFailure,
     )]: handleFetchRecentMessages,
+    [clearChat]: handleClearChat,
   },
   defaultState,
 );
