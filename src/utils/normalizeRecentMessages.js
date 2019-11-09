@@ -16,6 +16,7 @@ import getMessageBadges from './getMessageBadges';
 const normalizeRecentMessages = (state, messages) => {
   const globalBadges = globalBadgesSelector(state);
   const channelBadges = channelBadgesSelector(state);
+  const emotes = emotesSelector(state);
 
   return messages
     .map((m) => parse(m))
@@ -32,7 +33,7 @@ const normalizeRecentMessages = (state, messages) => {
         messageArray: formatMessage(
           normalizedMessage,
           parsedTags.emotes,
-          emotesSelector(state),
+          emotes,
         ),
         tags: parsedTags,
         badges: getMessageBadges(
