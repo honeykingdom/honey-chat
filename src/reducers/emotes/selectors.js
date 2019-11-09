@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pipe, pathOr, values, flatten } from 'ramda';
+import { pipe, path, pathOr, values, flatten } from 'ramda';
 
 import { currentChannelSelector } from '../chat';
 
@@ -39,30 +39,32 @@ export const ffzEmotesSelector = createSelector(
   ],
 );
 
-const isBttvChannelEmotesLoadedSelector = (state) =>
-  pathOr(false, [
-    'emotes',
-    'bttv',
-    'channels',
-    currentChannelSelector(state),
-    'isLoaded',
-  ])(state);
+const isBttvGlobalEmotesLoadedSelector = (state) =>
+  state.emotes.bttv.global.isLoaded || state.emotes.bttv.global.isError;
+const isBttvChannelEmotesLoadedSelector = (state) => {
+  const channel = currentChannelSelector(state);
+  return (
+    path(['emotes', 'bttv', 'channels', channel, 'isLoaded'], state) ||
+    path(['emotes', 'bttv', 'channels', channel, 'isError'], state)
+  );
+};
 
-const isFfzChannelEmotesLoadedSelector = (state) =>
-  pathOr(false, [
-    'emotes',
-    'ffz',
-    'channels',
-    currentChannelSelector(state),
-    'isLoaded',
-  ])(state);
+const isFfzGlobalEmotesLoadedSelector = (state) =>
+  state.emotes.ffz.global.isLoaded || state.emotes.ffz.global.isError;
+const isFfzChannelEmotesLoadedSelector = (state) => {
+  const channel = currentChannelSelector(state);
+  return (
+    path(['emotes', 'ffz', 'channels', channel, 'isLoaded'], state) ||
+    path(['emotes', 'ffz', 'channels', channel, 'isError'], state)
+  );
+};
 
-export const isAllEmotesLoadedSelector = createSelector(
-  pathOr(false, ['emotes', 'twitch', 'isLoaded']),
-  pathOr(false, ['emotes', 'bttv', 'global', 'isLoaded']),
-  isBttvChannelEmotesLoadedSelector,
-  pathOr(false, ['emotes', 'ffz', 'global', 'isLoaded']),
-  isFfzChannelEmotesLoadedSelector,
-  (twitch, bttvGlobal, bttvChannel, ffzGlobal, ffzChannel) =>
-    twitch && bttvGlobal && bttvChannel && ffzGlobal && ffzChannel,
-);
+const isTwitchEmotesLoadedSelector = (state) =>
+  state.emotes.twitch.isLoaded || state.emotes.twitch.isError;
+
+export const isEmotesLoadedSelector = (state) =>
+  isTwitchEmotesLoadedSelector(state) &&
+  isBttvGlobalEmotesLoadedSelector(state) &&
+  isBttvChannelEmotesLoadedSelector(state) &&
+  isFfzGlobalEmotesLoadedSelector(state) &&
+  isFfzChannelEmotesLoadedSelector(state);
