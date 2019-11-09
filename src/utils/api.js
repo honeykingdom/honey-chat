@@ -46,3 +46,12 @@ export const fetchRecentMessages = (channel) =>
   apiRequest(
     `https://recent-messages.robotty.de/api/v2/recent-messages/${channel}?clearchatToNotice=true`,
   );
+
+export const fetchGlobalBadges = (language = 'en') =>
+  apiRequest(
+    `https://badges.twitch.tv/v1/badges/global/display?language=${language}`,
+  );
+export const fetchChannelBadges = (channelId, language = 'en') =>
+  apiRequest(
+    `https://badges.twitch.tv/v1/badges/channels/${channelId}/display?language=${language}`,
+  );
