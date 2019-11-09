@@ -45,32 +45,30 @@ export const emotesSelector = (state) => ({
   ffz: ffzEmotesSelector(state),
 });
 
-const isBttvGlobalEmotesLoadedSelector = (state) =>
-  state.emotes.bttv.global.isLoaded || state.emotes.bttv.global.isError;
-const isBttvChannelEmotesLoadedSelector = (state) => {
+export const isBttvEmotesLoadedSelector = (state) => {
   const channel = currentChannelSelector(state);
-  return (
+  const globalLoaded =
+    state.emotes.bttv.global.isLoaded || state.emotes.bttv.global.isError;
+  const channelLoaded =
     path(['emotes', 'bttv', 'channels', channel, 'isLoaded'], state) ||
-    path(['emotes', 'bttv', 'channels', channel, 'isError'], state)
-  );
+    path(['emotes', 'bttv', 'channels', channel, 'isError'], state);
+  return globalLoaded && channelLoaded;
 };
 
-const isFfzGlobalEmotesLoadedSelector = (state) =>
-  state.emotes.ffz.global.isLoaded || state.emotes.ffz.global.isError;
-const isFfzChannelEmotesLoadedSelector = (state) => {
+export const isFfzEmotesLoadedSelector = (state) => {
   const channel = currentChannelSelector(state);
-  return (
+  const globalLoaded =
+    state.emotes.ffz.global.isLoaded || state.emotes.ffz.global.isError;
+  const channelLoaded =
     path(['emotes', 'ffz', 'channels', channel, 'isLoaded'], state) ||
-    path(['emotes', 'ffz', 'channels', channel, 'isError'], state)
-  );
+    path(['emotes', 'ffz', 'channels', channel, 'isError'], state);
+  return globalLoaded && channelLoaded;
 };
 
-const isTwitchEmotesLoadedSelector = (state) =>
+export const isTwitchEmotesLoadedSelector = (state) =>
   state.emotes.twitch.isLoaded || state.emotes.twitch.isError;
 
 export const isEmotesLoadedSelector = (state) =>
   isTwitchEmotesLoadedSelector(state) &&
-  isBttvGlobalEmotesLoadedSelector(state) &&
-  isBttvChannelEmotesLoadedSelector(state) &&
-  isFfzGlobalEmotesLoadedSelector(state) &&
-  isFfzChannelEmotesLoadedSelector(state);
+  isBttvEmotesLoadedSelector(state) &&
+  isFfzEmotesLoadedSelector(state);
