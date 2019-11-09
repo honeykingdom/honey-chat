@@ -13,7 +13,7 @@ const getChatMessageBg = (p) => {
 const MessageRoot = styled.div`
   padding: 5px 20px;
   color: ${(p) => (p.isAction ? p.color : '#fff')};
-  opacity: ${(p) => (p.isHistory ? '0.5' : '1')};
+  opacity: ${(p) => (p.isHistory || p.isDeleted ? '0.5' : '1')};
   line-height: 20px;
   word-wrap: break-word;
   background-color: ${getChatMessageBg};
@@ -142,6 +142,7 @@ const Message = ({
       isAction={isAction}
       isEven={isEven}
       isMention={isMention}
+      isDeleted={isDeleted}
       color={color}
     >
       {badges.length > 0 && renderBadges(badges)}
