@@ -1,8 +1,8 @@
 import { createActions, handleActions, combineActions } from 'redux-actions';
-import { pathOr } from 'ramda';
+import { pathOr, mergeDeepRight } from 'ramda';
 
+import storeFlags from '../utils/storeFlags';
 import { currentChannelSelector } from './chat';
-
 import {
   fetchGlobalBadges as apiFetchGlobalBadges,
   fetchChannelBadges as apiFetchChannelBadges,
@@ -10,10 +10,7 @@ import {
 
 const defaultState = {
   global: {
-    isLoading: false,
-    isLoaded: false,
-    isError: false,
-    error: null,
+    ...storeFlags.default,
     items: {},
   },
   channels: {
@@ -31,13 +28,19 @@ export const globalBadgesSelector = (state) => state.badges.global.items;
 export const channelBadgesSelector = (state) =>
   pathOr({}, ['badges', 'channels', currentChannelSelector(state), 'items']);
 
-export const isBadgesLoadedSelector = (state) =>
-  state.badges.global.isLoaded &&
-  pathOr(
-    false,
-    ['badges', 'channels', currentChannelSelector(state), 'isLoaded'],
-    state,
+const isGlobalBadgesLoadedSelector = (state) =>
+  state.badges.global.isLoaded || state.badges.global.isError;
+
+const isChannelBadgesLoadedSelector = (state) => {
+  const channel = currentChannelSelector(state);
+  return (
+    pathOr(false, ['badges', 'channels', channel, 'isLoaded'], state) ||
+    pathOr(false, ['badges', 'channels', channel, 'isError'], state)
   );
+};
+
+export const isBadgesLoadedSelector = (state) =>
+  isGlobalBadgesLoadedSelector(state) && isChannelBadgesLoadedSelector(state);
 
 const {
   fetchGlobalBadgesRequest,
@@ -88,43 +91,21 @@ export const fetchChannelBadges = (channelId, channel) => async (dispatch) => {
 
 const handleFetchFfzGlobalEmotes = (state, { type, payload }) => {
   if (type === fetchGlobalBadgesRequest.toString()) {
-    return {
-      ...state,
-      global: {
-        ...state.global,
-        isLoading: true,
-        isLoaded: false,
-        isError: false,
-        error: null,
-      },
-    };
+    return mergeDeepRight(state, {
+      global: { ...storeFlags.request },
+    });
   }
 
   if (type === fetchGlobalBadgesSuccess.toString()) {
-    return {
-      ...state,
-      global: {
-        ...state.global,
-        isLoading: false,
-        isLoaded: true,
-        isError: false,
-        error: null,
-        ...payload,
-      },
-    };
+    return mergeDeepRight(state, {
+      global: { ...storeFlags.success, items: payload.items },
+    });
   }
 
   if (type === fetchGlobalBadgesFailure.toString()) {
-    return {
-      ...state,
-      global: {
-        ...state.global,
-        isLoading: false,
-        isLoaded: false,
-        isError: true,
-        ...payload,
-      },
-    };
+    return mergeDeepRight(state, {
+      global: { ...storeFlags.failure, error: payload.error },
+    });
   }
 
   return state;
@@ -134,49 +115,27 @@ const handleFetchFfzChannelEmotes = (state, { type, payload }) => {
   const { channel } = payload;
 
   if (type === fetchChannelBadgesRequest.toString()) {
-    return {
-      ...state,
+    return mergeDeepRight(state, {
       channels: {
-        ...state.channels,
-        [channel]: {
-          isLoading: true,
-          isLoaded: false,
-          isError: false,
-          error: null,
-        },
+        [channel]: { ...storeFlags.request },
       },
-    };
+    });
   }
 
   if (type === fetchChannelBadgesSuccess.toString()) {
-    return {
-      ...state,
+    return mergeDeepRight(state, {
       channels: {
-        ...state.channels,
-        [channel]: {
-          isLoading: false,
-          isLoaded: true,
-          isError: false,
-          error: null,
-          items: payload.items,
-        },
+        [channel]: { ...storeFlags.success, items: payload.items },
       },
-    };
+    });
   }
 
   if (type === fetchChannelBadgesFailure.toString()) {
-    return {
-      ...state,
+    return mergeDeepRight(state, {
       channels: {
-        ...state.channels,
-        [channel]: {
-          isLoading: false,
-          isLoaded: false,
-          isError: true,
-          error: payload.error,
-        },
+        [channel]: { ...storeFlags.failure, error: payload.error },
       },
-    };
+    });
   }
 
   return state;

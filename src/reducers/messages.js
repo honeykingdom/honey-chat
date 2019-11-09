@@ -4,7 +4,7 @@ import {
   handleActions,
   combineActions,
 } from 'redux-actions';
-import { pathOr } from 'ramda';
+import { pathOr, mergeDeepRight, concat } from 'ramda';
 import { parse } from 'tekko';
 
 import {
@@ -13,6 +13,7 @@ import {
   ffzEmotesSelector,
 } from './emotes/selectors';
 import { globalBadgesSelector, channelBadgesSelector } from './badges';
+import { currentChannelSelector } from './chat';
 import { fetchRecentMessages as apiFetchRecentMessages } from '../utils/api';
 import { CHANNEL_MESSAGES_LIMIT } from '../utils/constants';
 import {
@@ -20,6 +21,7 @@ import {
   normalizeActionMessage,
   parseMessageTags,
 } from '../utils/twitchChat';
+import storeFlags from '../utils/storeFlags';
 import formatMessage from '../utils/formatMessage';
 import getMessageBadges from '../utils/getMessageBadges';
 
@@ -54,7 +56,24 @@ const {
   'FETCH_RECENT_MESSAGES_FAILURE',
 );
 
+export const isHistoryLoadingSelector = (state) =>
+  pathOr(false, [
+    'messages',
+    currentChannelSelector(state),
+    'history',
+    'isLoading',
+  ])(state);
+
+export const isHistoryLoadedSelector = (state) =>
+  pathOr(false, [
+    'messages',
+    currentChannelSelector(state),
+    'history',
+    'isLoaded',
+  ])(state);
+
 export const clearChat = createAction('CLEAR_CHAT');
+export const addRecentMessagesAction = createAction('ADD_RECENT_MESSAGES');
 
 const sliceMessages = (items) => {
   const diff = items.length - CHANNEL_MESSAGES_LIMIT;
@@ -74,7 +93,7 @@ const getIsEven = (prev, addedItemsCount, isSliced) => {
   return prev;
 };
 
-const normalizeRecentMessages = (messages, state) => {
+const normalizeRecentMessages = (state, messages) => {
   const globalBadges = globalBadgesSelector(state);
   const channelBadges = channelBadgesSelector(state);
 
@@ -109,14 +128,22 @@ const normalizeRecentMessages = (messages, state) => {
     });
 };
 
-export const fetchRecentMessages = (channel) => async (dispatch, getState) => {
+export const addRecentMessages = (channel) => (dispatch, getState) => {
+  const state = getState();
+  const messages = pathOr([], ['messages', channel, 'history', 'items'], state);
+  const data = {
+    channel,
+    items: normalizeRecentMessages(state, messages),
+  };
+
+  dispatch(addRecentMessagesAction(data));
+};
+
+export const fetchRecentMessages = (channel) => async (dispatch) => {
   dispatch(fetchRecentMessagesRequest({ channel }));
   try {
     const response = await apiFetchRecentMessages(channel);
-    const data = {
-      channel,
-      items: normalizeRecentMessages(response.messages, getState()),
-    };
+    const data = { channel, items: response.messages };
 
     dispatch(fetchRecentMessagesSuccess(data));
   } catch (error) {
@@ -128,57 +155,27 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
   const { channel } = payload;
 
   if (type === fetchRecentMessagesRequest.toString()) {
-    const oldItems = pathOr([], [channel, 'items'], state);
-    return {
-      ...state,
+    return mergeDeepRight(state, {
       [channel]: {
-        ...state[channel],
-        history: {
-          isLoading: true,
-          isLoaded: false,
-          isError: false,
-          error: null,
-        },
-        items: oldItems,
+        history: { ...storeFlags.request },
       },
-    };
+    });
   }
 
   if (type === fetchRecentMessagesSuccess.toString()) {
-    const newItems = [...payload.items, ...state[channel].items];
-    const slicedMessages = sliceMessages(newItems);
-    const isSliced = newItems.length > slicedMessages.length;
-    const isEven = pathOr(false, [channel, 'isEven'], state);
-
-    return {
-      ...state,
+    return mergeDeepRight(state, {
       [channel]: {
-        ...state[channel],
-        history: {
-          isLoading: false,
-          isLoaded: true,
-          isError: false,
-          error: null,
-        },
-        isEven: getIsEven(isEven, payload.items.length, isSliced),
-        items: newItems,
+        history: { ...storeFlags.success, items: payload.items },
       },
-    };
+    });
   }
 
   if (type === fetchRecentMessagesFailure.toString()) {
-    return {
-      ...state,
+    return mergeDeepRight(state, {
       [channel]: {
-        ...state[channel],
-        history: {
-          isLoading: false,
-          isLoaded: false,
-          isError: true,
-          error: payload.error,
-        },
+        history: { ...storeFlags.failure, error: payload.error },
       },
-    };
+    });
   }
 
   return state;
@@ -241,6 +238,21 @@ const handleAddMessageEntity = (state, { payload: message }) => {
   };
 };
 
+const handleAddRecentMessages = (state, { payload: { channel, items } }) => {
+  const newItems = concat(items, pathOr([], [channel, 'items'], state));
+  const slicedMessages = sliceMessages(newItems);
+  const isSliced = newItems.length > slicedMessages.length;
+  const isEven = pathOr(false, [channel, 'isEven'], state);
+
+  return mergeDeepRight(state, {
+    [channel]: {
+      history: { items: [] },
+      items: newItems,
+      isEven: getIsEven(isEven, items.length, isSliced),
+    },
+  });
+};
+
 const handleClearChat = (state, { payload }) => {
   const {
     channel,
@@ -265,6 +277,7 @@ const handleClearChat = (state, { payload }) => {
 const reducer = handleActions(
   {
     [addMessageEntity]: handleAddMessageEntity,
+    [addRecentMessagesAction]: handleAddRecentMessages,
     [combineActions(
       fetchRecentMessagesRequest,
       fetchRecentMessagesSuccess,
