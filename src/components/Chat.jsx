@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import pt from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { pathOr } from 'ramda';
 import Scrollbar from 'react-scrollbars-custom';
 
-import { currentChannelSelector } from '../reducers/chat';
+import { messagesSelector } from '../reducers/messages/selectors';
+import { isEvenSelector } from '../reducers/chat/selectors';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
@@ -58,12 +58,6 @@ const MoreMessagesButton = styled.button`
   cursor: pointer;
   transform: translateX(-50%);
 `;
-
-const messagesSelector = (state) =>
-  pathOr([], ['messages', currentChannelSelector(state), 'items'], state);
-
-const isEvenSelector = (state) =>
-  pathOr(false, ['messages', currentChannelSelector(state), 'isEven'], state);
 
 const Chat = ({ onSendMessage }) => {
   const isAuth = useSelector((state) => state.auth.isAuth);

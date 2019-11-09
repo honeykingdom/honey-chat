@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 
-import { fetchUser as apiFetchUser } from '../utils/api';
+import { fetchUser as apiFetchUser } from '../../utils/api';
 
 const defaultState = {
   isAuth: false,

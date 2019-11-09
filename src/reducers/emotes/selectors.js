@@ -39,6 +39,12 @@ export const ffzEmotesSelector = createSelector(
   ],
 );
 
+export const emotesSelector = (state) => ({
+  twitch: twitchEmotesSelector(state),
+  bttv: bttvEmotesSelector(state),
+  ffz: ffzEmotesSelector(state),
+});
+
 const isBttvGlobalEmotesLoadedSelector = (state) =>
   state.emotes.bttv.global.isLoaded || state.emotes.bttv.global.isError;
 const isBttvChannelEmotesLoadedSelector = (state) => {

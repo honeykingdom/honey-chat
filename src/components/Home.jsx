@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { pathOr } from 'ramda';
 import uuid from 'uuid/v4';
 
 import useLocationHash from '../hooks/useLocationHash';
@@ -22,8 +21,8 @@ import {
   fetchRecentMessages,
   addRecentMessages,
   clearChat,
-  isHistoryLoadedSelector,
 } from '../reducers/messages';
+import { isHistoryLoadedSelector } from '../reducers/messages/selectors';
 import {
   setCurrentChannel,
   setIsConnected,
@@ -32,11 +31,9 @@ import {
   updateRoomState,
   currentChannelSelector,
 } from '../reducers/chat';
-import {
-  fetchGlobalBadges,
-  fetchChannelBadges,
-  isBadgesLoadedSelector,
-} from '../reducers/badges';
+import { fetchGlobalBadges, fetchChannelBadges } from '../reducers/badges';
+import { isBadgesLoadedSelector } from '../reducers/badges/selectors';
+import { channelIdSelector } from '../reducers/chat/selectors';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
 import replaceEmojis from '../utils/replaceEmojis';
@@ -45,23 +42,16 @@ import Chat from './Chat';
 
 let client = null;
 
-const channelIdSelector = (state) =>
-  pathOr(
-    null,
-    ['chat', 'channels', currentChannelSelector(state), 'roomState', 'roomId'],
-    state,
-  );
-
 const Home = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuth);
   const login = useSelector((state) => state.auth.user.login);
+  const userId = useSelector((state) => state.auth.user.id);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
   const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
   const isBadgesLoaded = useSelector(isBadgesLoadedSelector);
   const isHistoryLoaded = useSelector(isHistoryLoadedSelector);
-  const userId = useSelector((state) => state.auth.user.id);
   const hash = useLocationHash();
 
   useDocumentTitle(currentChannel);

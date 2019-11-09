@@ -5,25 +5,18 @@ import {
   combineActions,
 } from 'redux-actions';
 import { pathOr, mergeDeepRight, concat } from 'ramda';
-import { parse } from 'tekko';
 
+import { emotesSelector } from '../emotes/selectors';
 import {
-  twitchEmotesSelector,
-  bttvEmotesSelector,
-  ffzEmotesSelector,
-} from './emotes/selectors';
-import { globalBadgesSelector, channelBadgesSelector } from './badges';
-import { currentChannelSelector } from './chat';
-import { fetchRecentMessages as apiFetchRecentMessages } from '../utils/api';
-import { CHANNEL_MESSAGES_LIMIT } from '../utils/constants';
-import {
-  getIsAction,
-  normalizeActionMessage,
-  parseMessageTags,
-} from '../utils/twitchChat';
-import storeFlags from '../utils/storeFlags';
-import formatMessage from '../utils/formatMessage';
-import getMessageBadges from '../utils/getMessageBadges';
+  globalBadgesSelector,
+  channelBadgesSelector,
+} from '../badges/selectors';
+import { fetchRecentMessages as apiFetchRecentMessages } from '../../utils/api';
+import { CHANNEL_MESSAGES_LIMIT } from '../../utils/constants';
+import storeFlags from '../../utils/storeFlags';
+import formatMessage from '../../utils/formatMessage';
+import getMessageBadges from '../../utils/getMessageBadges';
+import normalizeRecentMessages from '../../utils/normalizeRecentMessages';
 
 const defaultState = {
   // [channel]: {
@@ -56,22 +49,6 @@ const {
   'FETCH_RECENT_MESSAGES_FAILURE',
 );
 
-export const isHistoryLoadingSelector = (state) =>
-  pathOr(false, [
-    'messages',
-    currentChannelSelector(state),
-    'history',
-    'isLoading',
-  ])(state);
-
-export const isHistoryLoadedSelector = (state) =>
-  pathOr(false, [
-    'messages',
-    currentChannelSelector(state),
-    'history',
-    'isLoaded',
-  ])(state);
-
 export const clearChat = createAction('CLEAR_CHAT');
 export const addRecentMessagesAction = createAction('ADD_RECENT_MESSAGES');
 
@@ -80,52 +57,11 @@ const sliceMessages = (items) => {
   return diff > 0 ? items.slice(diff) : items;
 };
 
-const getEmotes = (state) => ({
-  twitch: twitchEmotesSelector(state),
-  bttv: bttvEmotesSelector(state),
-  ffz: ffzEmotesSelector(state),
-});
-
 const getIsEven = (prev, addedItemsCount, isSliced) => {
   if (isSliced) {
     return addedItemsCount % 2 ? !prev : prev;
   }
   return prev;
-};
-
-const normalizeRecentMessages = (state, messages) => {
-  const globalBadges = globalBadgesSelector(state);
-  const channelBadges = channelBadgesSelector(state);
-
-  return messages
-    .map((m) => parse(m))
-    .filter((m) => m.command === 'PRIVMSG')
-    .map(({ tags, params: [channel, message], prefix: { user } }) => {
-      const isAction = getIsAction(message);
-      const normalizedMessage = isAction
-        ? normalizeActionMessage(message)
-        : message;
-      const parsedTags = parseMessageTags(tags);
-      return {
-        type: 'MESSAGE',
-        message: normalizedMessage,
-        messageArray: formatMessage(
-          normalizedMessage,
-          parsedTags.emotes,
-          getEmotes(state),
-        ),
-        tags: parsedTags,
-        badges: getMessageBadges(
-          parsedTags.badges,
-          globalBadges,
-          channelBadges,
-        ),
-        user,
-        channel: channel.slice(1),
-        isAction,
-        isHistory: true,
-      };
-    });
 };
 
 export const addRecentMessages = (channel) => (dispatch, getState) => {
@@ -188,7 +124,7 @@ export const addMessage = ({ message, tags, ...rest }) => (
   const state = getState();
   const globalBadges = globalBadgesSelector(state);
   const channelBadges = channelBadgesSelector(state);
-  const emotes = getEmotes(state);
+  const emotes = emotesSelector(state);
 
   const normalizedMessage = {
     type: messageTypes.MESSAGE,
