@@ -64,6 +64,9 @@ const noticeMessageTags = [
   'msg_verified_email',
 ];
 
+const getRandomUsername = () =>
+  `justinfan${Math.floor(Math.random() * 80000 + 1000)}`;
+
 const parseMessageEmotes = (raw = '') => {
   if (!raw) return {};
 
@@ -247,7 +250,7 @@ class Client extends EventEmitter {
     super();
     this.socket = null;
     this.channels = {};
-    this.options = options;
+    this.options = mergeDeepRight({ identity: {} }, options);
     this.user = null;
     this._queue = [];
     this._messagesQueue = {};
@@ -255,10 +258,14 @@ class Client extends EventEmitter {
 
   _onConnect() {
     const { name, auth } = this.options.identity;
+
+    const nick = name || getRandomUsername();
+    const pass = auth ? `oauth:${auth}` : 'SCHMOOPIIE';
+
     this.sendRaw([
       'CAP REQ :twitch.tv/tags twitch.tv/commands',
-      `PASS oauth:${auth}`,
-      `NICK ${name}`,
+      `PASS ${pass}`,
+      `NICK ${nick}`,
     ]);
     this.emit('connected');
   }
@@ -324,6 +331,12 @@ class Client extends EventEmitter {
     if (command === '001') {
       const name = parsedData.params[0];
       this.options.identity.name = name;
+
+      while (this._queue.length) {
+        const ircMessage = this._queue.shift();
+        this.sendRaw(ircMessage);
+      }
+
       return;
     }
 
@@ -429,12 +442,6 @@ class Client extends EventEmitter {
     if (command === 'GLOBALUSERSTATE') {
       const eventData = parseGlobalUserState(data);
       this.user = eventData.tags;
-
-      while (this._queue.length) {
-        const ircMessage = this._queue.shift();
-        this.sendRaw(ircMessage);
-      }
-
       this.emit('globaluserstate', eventData);
       return;
     }
