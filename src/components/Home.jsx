@@ -14,7 +14,9 @@ import {
 } from '../reducers/emotes/ffz';
 import { isAllEmotesLoadedSelector } from '../reducers/emotes/selectors';
 import {
-  addMessages,
+  addMessage,
+  addNoticeMessage,
+  addUserNoticeMessage,
   fetchRecentMessages,
   clearChat,
 } from '../reducers/messages';
@@ -85,13 +87,7 @@ const Home = () => {
 
   useEffect(() => {
     if (currentChannel && isAuth) {
-      const handleMessage = (data) => {
-        const eventData = {
-          channel: data.channel,
-          items: [data],
-        };
-        dispatch(addMessages(eventData));
-      };
+      const handleMessage = (data) => dispatch(addMessage(data));
 
       const handleClearChat = (data) => {
         if (!data.tags.targetUserId) return;
@@ -127,6 +123,8 @@ const Home = () => {
 
       client.on('message', handleMessage);
       client.on('ownmessage', handleMessage);
+      client.on('notice', (data) => dispatch(addNoticeMessage(data)));
+      client.on('usernotice', (data) => dispatch(addUserNoticeMessage(data)));
     }
   }, [dispatch, username, currentChannel, isAuth]);
 
