@@ -4,8 +4,9 @@ import {
   handleActions,
   combineActions,
 } from 'redux-actions';
-import { pathOr, toPairs, map, pipe, filter } from 'ramda';
+import { pathOr } from 'ramda';
 import { parse } from 'tekko';
+import uuid from 'uuid/v4';
 
 import {
   twitchEmotesSelector,
@@ -21,6 +22,7 @@ import {
   parseMessageTags,
 } from '../utils/twitchChat';
 import formatMessage from '../utils/formatMessage';
+import getMessageBadges from '../utils/getMessageBadges';
 
 const defaultState = {
   // [channel]: {
@@ -35,13 +37,19 @@ const defaultState = {
   // },
 };
 
+export const messageTypes = {
+  MESSAGE: 'MESSAGE',
+  NOTICE_MESSAGE: 'NOTICE_MESSAGE',
+  USER_NOTICE_MESSAGE: 'USER_NOTICE_MESSAGE',
+};
+
 const {
-  addMessages: addMessagesRequest,
+  addMessageEntity,
   fetchRecentMessagesRequest,
   fetchRecentMessagesSuccess,
   fetchRecentMessagesFailure,
 } = createActions(
-  'ADD_MESSAGES',
+  'ADD_MESSAGE_ENTITY',
   'FETCH_RECENT_MESSAGES_REQUEST',
   'FETCH_RECENT_MESSAGES_SUCCESS',
   'FETCH_RECENT_MESSAGES_FAILURE',
@@ -67,35 +75,6 @@ const getIsEven = (prev, addedItemsCount, isSliced) => {
   return prev;
 };
 
-const createBadge = ({
-  title,
-  description,
-  image_url_1x: imageUrl1x,
-  image_url_2x: imageUrl2x,
-  image_url_4x: imageUrl4x,
-}) => ({
-  alt: title,
-  label: description,
-  src: imageUrl1x,
-  srcSet: `${imageUrl1x} 1x, ${imageUrl2x} 2x, ${imageUrl4x} 4x`,
-});
-
-const getMessageBadges = (badges, globalBadges, channelBadges) => {
-  const mapBadges = ([name, version]) => {
-    const badge =
-      pathOr(false, [name, 'versions', version], channelBadges) ||
-      pathOr(false, [name, 'versions', version], globalBadges);
-
-    return badge ? createBadge(badge) : false;
-  };
-
-  return pipe(
-    toPairs,
-    map(mapBadges),
-    filter(Boolean),
-  )(badges);
-};
-
 const normalizeRecentMessages = (messages, state) => {
   const globalBadges = globalBadgesSelector(state);
   const channelBadges = channelBadgesSelector(state);
@@ -110,6 +89,7 @@ const normalizeRecentMessages = (messages, state) => {
         : message;
       const parsedTags = parseMessageTags(tags);
       return {
+        type: 'MESSAGE',
         message: normalizedMessage,
         messageArray: formatMessage(
           normalizedMessage,
@@ -205,41 +185,63 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
   return state;
 };
 
-export const addMessages = (payload) => (dispatch, getState) => {
+export const addMessage = ({ message, tags, ...rest }) => (
+  dispatch,
+  getState,
+) => {
   const state = getState();
   const globalBadges = globalBadgesSelector(state);
   const channelBadges = channelBadgesSelector(state);
   const emotes = getEmotes(state);
 
-  const newItems = payload.items.map(({ message, tags, ...rest }) => ({
+  const normalizedMessage = {
+    type: messageTypes.MESSAGE,
     message,
     messageArray: formatMessage(message, tags.emotes, emotes),
     tags,
     badges: getMessageBadges(tags.badges, globalBadges, channelBadges),
     ...rest,
-  }));
+  };
 
-  dispatch(
-    addMessagesRequest({
-      ...payload,
-      items: newItems,
-    }),
-  );
+  dispatch(addMessageEntity(normalizedMessage));
 };
 
-const handleAddMessages = (state, { payload }) => {
-  const { channel } = payload;
+export const addNoticeMessage = (message) => (dispatch) => {
+  const normalizedMessage = {
+    ...message,
+    type: messageTypes.NOTICE_MESSAGE,
+  };
+
+  dispatch(addMessageEntity(normalizedMessage));
+};
+
+export const addUserNoticeMessage = (message) => (dispatch) => {
+  const normalizedMessage = {
+    ...message,
+    type: messageTypes.USER_NOTICE_MESSAGE,
+  };
+
+  dispatch(addMessageEntity(normalizedMessage));
+};
+
+const handleAddMessageEntity = (state, { payload: message }) => {
+  const { channel } = message;
+  const normalizedMessage = message.tags.id
+    ? message
+    : { ...message, tags: { ...message.tags, id: uuid() } };
   const oldItems = pathOr([], [channel, 'items'], state);
-  const newItems = [...oldItems, ...payload.items];
+  const newItems = [...oldItems, normalizedMessage];
   const slicedMessages = sliceMessages(newItems);
   const isSliced = newItems.length > slicedMessages.length;
   const isEven = pathOr(false, [channel, 'isEven'], state);
+
+  console.log(normalizedMessage);
 
   return {
     ...state,
     [channel]: {
       ...state[channel],
-      isEven: getIsEven(isEven, payload.items.length, isSliced),
+      isEven: getIsEven(isEven, 1, isSliced),
       items: slicedMessages,
     },
   };
@@ -268,7 +270,7 @@ const handleClearChat = (state, { payload }) => {
 
 const reducer = handleActions(
   {
-    [addMessagesRequest]: handleAddMessages,
+    [addMessageEntity]: handleAddMessageEntity,
     [combineActions(
       fetchRecentMessagesRequest,
       fetchRecentMessagesSuccess,
