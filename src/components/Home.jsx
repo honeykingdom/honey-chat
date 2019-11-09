@@ -4,6 +4,7 @@ import { pathOr } from 'ramda';
 import uuid from 'uuid/v4';
 
 import useLocationHash from '../hooks/useLocationHash';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import { fetchTwitchEmotes } from '../reducers/emotes/twitch';
 import {
   fetchBttvGlobalEmotes,
@@ -60,6 +61,8 @@ const Home = () => {
   const userId = useSelector((state) => state.auth.user.id);
   const hash = useLocationHash();
 
+  useDocumentTitle(currentChannel);
+
   useEffect(() => {
     const rawUser = localStorage.getItem('user');
 
@@ -79,12 +82,6 @@ const Home = () => {
       localStorage.setItem('lastChannel', channel);
     }
   }, [dispatch, hash]);
-
-  useEffect(() => {
-    document.title = currentChannel
-      ? `#${currentChannel} - ${process.env.REACT_APP_NAME} `
-      : process.env.REACT_APP_NAME;
-  }, [currentChannel]);
 
   useEffect(() => {
     if (currentChannel && isAuth) {
