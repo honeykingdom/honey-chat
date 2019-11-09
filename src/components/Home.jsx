@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pathOr } from 'ramda';
+import uuid from 'uuid/v4';
 
 import useLocationHash from '../hooks/useLocationHash';
 import { fetchTwitchEmotes } from '../reducers/emotes/twitch';
@@ -51,7 +52,7 @@ const channelIdSelector = (state) =>
 const Home = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuth);
-  const username = useSelector((state) => state.auth.user.login);
+  const login = useSelector((state) => state.auth.user.login);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
   const isAllEmotesLoaded = useSelector(isAllEmotesLoadedSelector);
@@ -87,6 +88,13 @@ const Home = () => {
 
   useEffect(() => {
     if (currentChannel && isAuth) {
+      const options = {
+        identity: {
+          name: login,
+          auth: localStorage.accessToken,
+        },
+      };
+
       const handleMessage = (data) => dispatch(addMessage(data));
 
       const handleClearChat = (data) => {
@@ -95,11 +103,12 @@ const Home = () => {
         dispatch(clearChat(data));
       };
 
-      const options = {
-        identity: {
-          name: username,
-          auth: localStorage.accessToken,
-        },
+      const handleNotice = (data) => {
+        const normalizedMessage = {
+          ...data,
+          tags: { ...data.tags, id: uuid() },
+        };
+        dispatch(addNoticeMessage(normalizedMessage));
       };
 
       if (!client) {
@@ -123,10 +132,10 @@ const Home = () => {
 
       client.on('message', handleMessage);
       client.on('ownmessage', handleMessage);
-      client.on('notice', (data) => dispatch(addNoticeMessage(data)));
+      client.on('notice', handleNotice);
       client.on('usernotice', (data) => dispatch(addUserNoticeMessage(data)));
     }
-  }, [dispatch, username, currentChannel, isAuth]);
+  }, [dispatch, login, currentChannel, isAuth]);
 
   useEffect(() => {
     dispatch(fetchBttvGlobalEmotes());

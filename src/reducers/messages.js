@@ -6,7 +6,6 @@ import {
 } from 'redux-actions';
 import { pathOr } from 'ramda';
 import { parse } from 'tekko';
-import uuid from 'uuid/v4';
 
 import {
   twitchEmotesSelector,
@@ -226,11 +225,8 @@ export const addUserNoticeMessage = (message) => (dispatch) => {
 
 const handleAddMessageEntity = (state, { payload: message }) => {
   const { channel } = message;
-  const normalizedMessage = message.tags.id
-    ? message
-    : { ...message, tags: { ...message.tags, id: uuid() } };
   const oldItems = pathOr([], [channel, 'items'], state);
-  const newItems = [...oldItems, normalizedMessage];
+  const newItems = [...oldItems, message];
   const slicedMessages = sliceMessages(newItems);
   const isSliced = newItems.length > slicedMessages.length;
   const isEven = pathOr(false, [channel, 'isEven'], state);
