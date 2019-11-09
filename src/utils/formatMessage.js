@@ -34,6 +34,13 @@ const getFfzSrcSet = pipe(
 const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
 const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 
+const normalizeHref = (href) =>
+  href.startsWith('http://') ||
+  href.startsWith('https://') ||
+  href.startsWith('//')
+    ? href
+    : `//${href}`;
+
 export const createTwitchEmote = (alt, id) => ({
   type: 'twitch-emote',
   alt,
@@ -66,7 +73,7 @@ export const createMention = (text, target) => ({
 export const createLink = (href) => ({
   type: 'link',
   text: href,
-  href,
+  href: normalizeHref(href),
 });
 
 export const twitchEmoteType = pt.shape({
