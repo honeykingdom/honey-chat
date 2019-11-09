@@ -1,6 +1,6 @@
 import pt from 'prop-types';
 
-import { messageTypes } from '../../reducers/messages';
+import { MESSAGE_TYPES } from '../../utils/constants';
 import {
   twitchEmoteType,
   bttvEmoteType,
@@ -11,7 +11,7 @@ import {
 } from '../../utils/formatMessage';
 
 export const messageType = pt.shape({
-  type: pt.oneOf([messageTypes.MESSAGE]).isRequired,
+  type: pt.oneOf([MESSAGE_TYPES.MESSAGE]).isRequired,
   message: pt.string.isRequired,
   messageArray: pt.arrayOf(
     pt.oneOfType([
@@ -55,7 +55,7 @@ export const messageType = pt.shape({
 });
 
 export const noticeType = pt.shape({
-  type: pt.oneOf([messageTypes.NOTICE_MESSAGE]).isRequired,
+  type: pt.oneOf([MESSAGE_TYPES.NOTICE_MESSAGE]).isRequired,
   message: pt.string.isRequired,
   channel: pt.string.isRequired,
   tags: pt.shape({
@@ -64,7 +64,7 @@ export const noticeType = pt.shape({
 });
 
 export const userNoticeType = pt.shape({
-  type: pt.oneOf([messageTypes.USER_NOTICE_MESSAGE]).isRequired,
+  type: pt.oneOf([MESSAGE_TYPES.USER_NOTICE_MESSAGE]).isRequired,
   message: pt.string,
   channel: pt.string.isRequired,
   tags: pt.shape({

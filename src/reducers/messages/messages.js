@@ -12,7 +12,7 @@ import {
   channelBadgesSelector,
 } from '../badges/selectors';
 import { fetchRecentMessages as apiFetchRecentMessages } from '../../utils/api';
-import { CHANNEL_MESSAGES_LIMIT } from '../../utils/constants';
+import { CHANNEL_MESSAGES_LIMIT, MESSAGE_TYPES } from '../../utils/constants';
 import storeFlags from '../../utils/storeFlags';
 import formatMessage from '../../utils/formatMessage';
 import getMessageBadges from '../../utils/getMessageBadges';
@@ -29,12 +29,6 @@ const defaultState = {
   //   isEven: false,
   //   items: [],
   // },
-};
-
-export const messageTypes = {
-  MESSAGE: 'MESSAGE',
-  NOTICE_MESSAGE: 'NOTICE_MESSAGE',
-  USER_NOTICE_MESSAGE: 'USER_NOTICE_MESSAGE',
 };
 
 const {
@@ -127,7 +121,7 @@ export const addMessage = ({ message, tags, ...rest }) => (
   const emotes = emotesSelector(state);
 
   const normalizedMessage = {
-    type: messageTypes.MESSAGE,
+    type: MESSAGE_TYPES.MESSAGE,
     message,
     messageArray: formatMessage(message, tags.emotes, emotes),
     tags,
@@ -141,7 +135,7 @@ export const addMessage = ({ message, tags, ...rest }) => (
 export const addNoticeMessage = (message) => (dispatch) => {
   const normalizedMessage = {
     ...message,
-    type: messageTypes.NOTICE_MESSAGE,
+    type: MESSAGE_TYPES.NOTICE_MESSAGE,
   };
 
   dispatch(addMessageEntity(normalizedMessage));
@@ -150,7 +144,7 @@ export const addNoticeMessage = (message) => (dispatch) => {
 export const addUserNoticeMessage = (message) => (dispatch) => {
   const normalizedMessage = {
     ...message,
-    type: messageTypes.USER_NOTICE_MESSAGE,
+    type: MESSAGE_TYPES.USER_NOTICE_MESSAGE,
   };
 
   dispatch(addMessageEntity(normalizedMessage));

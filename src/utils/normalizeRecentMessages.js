@@ -1,5 +1,6 @@
 import { parse } from 'tekko';
 
+import { MESSAGE_TYPES } from './constants';
 import {
   globalBadgesSelector,
   channelBadgesSelector,
@@ -27,8 +28,9 @@ const normalizeRecentMessages = (state, messages) => {
         ? normalizeActionMessage(message)
         : message;
       const parsedTags = parseMessageTags(tags);
+
       return {
-        type: 'MESSAGE',
+        type: MESSAGE_TYPES.MESSAGE,
         message: normalizedMessage,
         messageArray: formatMessage(
           normalizedMessage,
