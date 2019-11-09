@@ -20,8 +20,7 @@ import normalizeHref from './normalizeHref';
 const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
 const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 
-// const mentionRegex = /^@([\p{Letter}_]+)/u;
-const mentionRegex = /^@([\w_]+)/;
+const mentionRegex = /^@([\p{Letter}_]+)/u;
 const linkRegex = urlRegex({ strict: false });
 
 const normalizeEmotesFromTags = pipe(
