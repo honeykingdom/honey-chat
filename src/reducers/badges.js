@@ -31,6 +31,14 @@ export const globalBadgesSelector = (state) => state.badges.global.items;
 export const channelBadgesSelector = (state) =>
   pathOr({}, ['badges', 'channels', currentChannelSelector(state), 'items']);
 
+export const isBadgesLoadedSelector = (state) =>
+  state.badges.global.isLoaded &&
+  pathOr(
+    false,
+    ['badges', 'channels', currentChannelSelector(state), 'isLoaded'],
+    state,
+  );
+
 const {
   fetchGlobalBadgesRequest,
   fetchGlobalBadgesSuccess,
