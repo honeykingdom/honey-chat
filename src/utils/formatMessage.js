@@ -15,6 +15,11 @@ import {
   head,
 } from 'ramda';
 
+import normalizeHref from './normalizeHref';
+
+const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
+const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
+
 // const mentionRegex = /^@([\p{Letter}_]+)/u;
 const mentionRegex = /^@([\w_]+)/;
 const linkRegex = urlRegex({ strict: false });
@@ -30,16 +35,6 @@ const getFfzSrcSet = pipe(
   map(([dpi, url]) => `${url} ${dpi}x`),
   join(', '),
 );
-
-const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
-const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
-
-const normalizeHref = (href) =>
-  href.startsWith('http://') ||
-  href.startsWith('https://') ||
-  href.startsWith('//')
-    ? href
-    : `//${href}`;
 
 export const createTwitchEmote = (alt, id) => ({
   type: 'twitch-emote',
