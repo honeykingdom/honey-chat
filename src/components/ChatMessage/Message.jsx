@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import pt from 'prop-types';
 import styled, { css } from 'styled-components';
 
-import {
-  twitchEmoteType,
-  bttvEmoteType,
-  ffzEmoteType,
-  emojiType,
-  mentionType,
-  linkType,
-} from '../utils/formatMessage';
+import { messageType } from './types';
 
 const getChatMessageBg = (p) => {
   if (p.isMention) return 'rgba(255, 0, 0, 0.3)';
@@ -17,7 +10,7 @@ const getChatMessageBg = (p) => {
   return 'transparent';
 };
 
-const ChatMessageRoot = styled.div`
+const MessageRoot = styled.div`
   padding: 5px 20px;
   color: ${(p) => (p.isAction ? p.color : '#fff')};
   opacity: ${(p) => (p.isHistory ? '0.5' : '1')};
@@ -51,7 +44,7 @@ const Mention = styled.span`
       color: #18181b;
     `}
 `;
-const Link = styled.a.attrs({ rel: 'noreferrer noopener', target: '_blank' })`
+const Link = styled.a`
   color: #bf94ff;
   text-decoration: none;
   cursor: pointer;
@@ -104,7 +97,12 @@ const renderMessageArray = (user, login) => (item, key) => {
 
   if (item.type === 'link') {
     return (
-      <Link key={key} href={item.href}>
+      <Link
+        key={key}
+        href={item.href}
+        rel="noreferrer noopener"
+        target="_blank"
+      >
         {item.text}
       </Link>
     );
@@ -121,23 +119,25 @@ const renderBadges = (badges) =>
 
 const MESSAGE_DELETED_LABED = '<message deleted>';
 
-const ChatMessage = ({
-  message,
-  messageArray,
-  tags: { color, displayName },
-  badges,
-  user,
+const Message = ({
+  message: {
+    message,
+    messageArray,
+    tags: { color, displayName },
+    badges,
+    user,
+    isHistory,
+    isAction,
+    isDeleted,
+  },
   login,
-  isHistory,
-  isAction,
-  isDeleted,
   isEven,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const isMention = user !== login && RegExp(login, 'gi').test(message);
 
   return (
-    <ChatMessageRoot
+    <MessageRoot
       isHistory={isHistory}
       isAction={isAction}
       isEven={isEven}
@@ -153,64 +153,18 @@ const ChatMessage = ({
       ) : (
         messageArray.map(renderMessageArray(user, login))
       )}
-    </ChatMessageRoot>
+    </MessageRoot>
   );
 };
 
-ChatMessage.defaultProps = {
-  isHistory: false,
-  isAction: false,
-  isDeleted: false,
+Message.defaultProps = {
   isEven: false,
-  badges: [],
 };
 
-export const tagsType = pt.shape({
-  badgeInfo: pt.shape({
-    subscriber: pt.number,
-  }),
-  badges: pt.shape({}),
-  color: pt.string,
-  displayName: pt.string.isRequired,
-  emotes: pt.shape({}),
-  flags: pt.string,
-  id: pt.string,
-  mod: pt.bool,
-  roomId: pt.string,
-  tmiSentId: pt.oneOfType([pt.string, pt.number]),
-  userId: pt.string,
-});
-
-ChatMessage.propTypes = {
-  message: pt.string.isRequired,
-  messageArray: pt.arrayOf(
-    pt.oneOfType([
-      pt.string,
-      pt.shape({}),
-      twitchEmoteType,
-      bttvEmoteType,
-      ffzEmoteType,
-      emojiType,
-      mentionType,
-      // TODO: fix warning with link type
-      linkType,
-    ]),
-  ).isRequired,
-  tags: tagsType.isRequired,
-  badges: pt.arrayOf(
-    pt.shape({
-      alt: pt.string,
-      label: pt.string,
-      src: pt.string.isRequired,
-      srcSet: pt.string,
-    }),
-  ),
-  user: pt.string.isRequired,
+Message.propTypes = {
+  message: messageType.isRequired,
   login: pt.string.isRequired,
-  isHistory: pt.bool,
-  isAction: pt.bool,
-  isDeleted: pt.bool,
   isEven: pt.bool,
 };
 
-export default ChatMessage;
+export default Message;
