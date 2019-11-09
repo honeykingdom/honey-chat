@@ -235,8 +235,6 @@ const handleAddMessageEntity = (state, { payload: message }) => {
   const isSliced = newItems.length > slicedMessages.length;
   const isEven = pathOr(false, [channel, 'isEven'], state);
 
-  console.log(normalizedMessage);
-
   return {
     ...state,
     [channel]: {
