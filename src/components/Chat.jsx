@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { pathOr } from 'ramda';
 import Scrollbar from 'react-scrollbars-custom';
 
+import { currentChannelSelector } from '../reducers/chat';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
@@ -59,10 +60,10 @@ const MoreMessagesButton = styled.button`
 `;
 
 const messagesSelector = (state) =>
-  pathOr([], ['messages', state.chat.currentChannel, 'items'], state);
+  pathOr([], ['messages', currentChannelSelector(state), 'items'], state);
 
 const isEvenSelector = (state) =>
-  pathOr(false, ['messages', state.chat.currentChannel, 'isEven'], state);
+  pathOr(false, ['messages', currentChannelSelector(state), 'isEven'], state);
 
 const Chat = ({ onSendMessage }) => {
   const isAuth = useSelector((state) => state.auth.isAuth);

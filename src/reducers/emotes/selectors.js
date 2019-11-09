@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { pipe, pathOr, values, flatten } from 'ramda';
 
-const currentChannelSelector = pathOr('', ['chat', 'currentChannel']);
+import { currentChannelSelector } from '../chat';
 
 export const twitchEmotesSelector = createSelector(
   pathOr([], ['emotes', 'twitch', 'items']),

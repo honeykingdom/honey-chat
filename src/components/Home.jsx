@@ -20,6 +20,7 @@ import {
   updateGlobalUserState,
   updateUserState,
   updateRoomState,
+  currentChannelSelector,
 } from '../reducers/chat';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
@@ -32,7 +33,7 @@ let client = null;
 const channelIdSelector = (state) =>
   pathOr(
     null,
-    ['chat', 'channels', state.chat.currentChannel, 'roomState', 'roomId'],
+    ['chat', 'channels', currentChannelSelector(state), 'roomState', 'roomId'],
     state,
   );
 
@@ -40,7 +41,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuth);
   const username = useSelector((state) => state.auth.user.login);
-  const currentChannel = useSelector((state) => state.chat.currentChannel);
+  const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
   const isAllEmotesLoaded = useSelector(isAllEmotesLoadedSelector);
   const userId = useSelector((state) => state.auth.user.id);

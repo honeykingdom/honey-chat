@@ -1,5 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
-import { omit } from 'ramda';
+import { pathOr, omit } from 'ramda';
 
 const defaultState = {
   currentChannel: null,
@@ -12,6 +12,8 @@ const defaultState = {
     // }
   },
 };
+
+export const currentChannelSelector = pathOr('', ['chat', 'currentChannel']);
 
 export const {
   setCurrentChannel,
