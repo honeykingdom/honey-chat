@@ -159,12 +159,13 @@ const Message = ({
 };
 
 Message.defaultProps = {
+  login: '',
   isEven: false,
 };
 
 Message.propTypes = {
   message: messageType.isRequired,
-  login: pt.string.isRequired,
+  login: pt.string,
   isEven: pt.bool,
 };
 

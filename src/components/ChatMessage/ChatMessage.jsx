@@ -26,11 +26,12 @@ const ChatMessage = ({ message, login, isEven }) => {
 
 ChatMessage.defaultProps = {
   isEven: false,
+  login: '',
 };
 
 ChatMessage.propTypes = {
   message: pt.oneOfType([messageType, noticeType, userNoticeType]).isRequired,
-  login: pt.string.isRequired,
+  login: pt.string,
   isEven: pt.bool,
 };
 
