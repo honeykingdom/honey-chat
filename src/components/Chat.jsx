@@ -117,6 +117,7 @@ const Chat = ({ onSendMessage }) => {
                   user,
                   isAction,
                   isHistory,
+                  isDeleted,
                 },
                 key,
               ) => (
@@ -130,6 +131,7 @@ const Chat = ({ onSendMessage }) => {
                   login={login}
                   isAction={isAction}
                   isHistory={isHistory}
+                  isDeleted={isDeleted}
                   isEven={isEven ? key % 2 === 1 : key % 2 === 0}
                 />
               ),

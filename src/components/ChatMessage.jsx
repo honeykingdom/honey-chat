@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import pt from 'prop-types';
 import styled, { css } from 'styled-components';
 
@@ -54,6 +54,7 @@ const Mention = styled.span`
 const Link = styled.a.attrs({ rel: 'noreferrer noopener', target: '_blank' })`
   color: #bf94ff;
   text-decoration: none;
+  cursor: pointer;
 
   &:focus,
   &:hover {
@@ -118,6 +119,8 @@ const renderBadges = (badges) =>
     <Badge key={key} alt={alt} aria-label={label} src={src} srcSet={srcSet} />
   ));
 
+const MESSAGE_DELETED_LABED = '<message deleted>';
+
 const ChatMessage = ({
   message,
   messageArray,
@@ -127,10 +130,11 @@ const ChatMessage = ({
   login,
   isHistory,
   isAction,
+  isDeleted,
   isEven,
 }) => {
-  const loginRegex = RegExp(login, 'gi');
-  const isMention = user !== login && loginRegex.test(message);
+  const [isVisible, setIsVisible] = useState(false);
+  const isMention = user !== login && RegExp(login, 'gi').test(message);
 
   return (
     <ChatMessageRoot
@@ -142,7 +146,13 @@ const ChatMessage = ({
     >
       {badges.length > 0 && renderBadges(badges)}
       <Name color={color}>{displayName}</Name>
-      {!isAction && ':'} {messageArray.map(renderMessageArray(user, login))}
+      {isAction ? ' ' : ': '}
+      {isDeleted && !isVisible ? (
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <Link onClick={() => setIsVisible(true)}>{MESSAGE_DELETED_LABED}</Link>
+      ) : (
+        messageArray.map(renderMessageArray(user, login))
+      )}
     </ChatMessageRoot>
   );
 };
@@ -150,6 +160,7 @@ const ChatMessage = ({
 ChatMessage.defaultProps = {
   isHistory: false,
   isAction: false,
+  isDeleted: false,
   isEven: false,
   badges: [],
 };
@@ -198,6 +209,7 @@ ChatMessage.propTypes = {
   login: pt.string.isRequired,
   isHistory: pt.bool,
   isAction: pt.bool,
+  isDeleted: pt.bool,
   isEven: pt.bool,
 };
 
