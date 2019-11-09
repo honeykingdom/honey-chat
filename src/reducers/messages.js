@@ -1,5 +1,5 @@
 import { createActions, handleActions, combineActions } from 'redux-actions';
-import { pathOr } from 'ramda';
+import { pathOr, toPairs, map, pipe, filter } from 'ramda';
 import { parse } from 'tekko';
 
 import {
@@ -7,6 +7,7 @@ import {
   bttvEmotesSelector,
   ffzEmotesSelector,
 } from './emotes/selectors';
+import { globalBadgesSelector, channelBadgesSelector } from './badges';
 import { fetchRecentMessages as apiFetchRecentMessages } from '../utils/api';
 import { CHANNEL_MESSAGES_LIMIT } from '../utils/constants';
 import {
@@ -59,8 +60,40 @@ const {
   'FETCH_RECENT_MESSAGES_FAILURE',
 );
 
-const normalizeRecentMessages = (messages, state) =>
-  messages
+const createBadge = ({
+  title,
+  description,
+  image_url_1x: imageUrl1x,
+  image_url_2x: imageUrl2x,
+  image_url_4x: imageUrl4x,
+}) => ({
+  alt: title,
+  label: description,
+  src: imageUrl1x,
+  srcSet: `${imageUrl1x} 1x, ${imageUrl2x} 2x, ${imageUrl4x} 4x`,
+});
+
+const getMessageBadges = (badges, globalBadges, channelBadges) => {
+  const mapBadges = ([name, version]) => {
+    const badge =
+      pathOr(false, [name, 'versions', version], channelBadges) ||
+      pathOr(false, [name, 'versions', version], globalBadges);
+
+    return badge ? createBadge(badge) : false;
+  };
+
+  return pipe(
+    toPairs,
+    map(mapBadges),
+    filter(Boolean),
+  )(badges);
+};
+
+const normalizeRecentMessages = (messages, state) => {
+  const globalBadges = globalBadgesSelector(state);
+  const channelBadges = channelBadgesSelector(state);
+
+  return messages
     .map((m) => parse(m))
     .filter((m) => m.command === 'PRIVMSG')
     .map(({ tags, params: [channel, message], prefix: { user } }) => {
@@ -77,12 +110,18 @@ const normalizeRecentMessages = (messages, state) =>
           getEmotes(state),
         ),
         tags: parsedTags,
+        badges: getMessageBadges(
+          parsedTags.badges,
+          globalBadges,
+          channelBadges,
+        ),
         user,
         channel: channel.slice(1),
         isAction,
         isHistory: true,
       };
     });
+};
 
 export const fetchRecentMessages = (channel) => async (dispatch, getState) => {
   dispatch(fetchRecentMessagesRequest({ channel }));
