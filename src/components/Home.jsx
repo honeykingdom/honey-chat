@@ -14,13 +14,15 @@ import {
   fetchFfzGlobalEmotes,
   fetchFfzChannelEmotes,
 } from '../reducers/emotes/ffz';
-import { isAllEmotesLoadedSelector } from '../reducers/emotes/selectors';
+import { isEmotesLoadedSelector } from '../reducers/emotes/selectors';
 import {
   addMessage,
   addNoticeMessage,
   addUserNoticeMessage,
   fetchRecentMessages,
+  addRecentMessages,
   clearChat,
+  isHistoryLoadedSelector,
 } from '../reducers/messages';
 import {
   setCurrentChannel,
@@ -56,8 +58,9 @@ const Home = () => {
   const login = useSelector((state) => state.auth.user.login);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
-  const isAllEmotesLoaded = useSelector(isAllEmotesLoadedSelector);
+  const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
   const isBadgesLoaded = useSelector(isBadgesLoadedSelector);
+  const isHistoryLoaded = useSelector(isHistoryLoadedSelector);
   const userId = useSelector((state) => state.auth.user.id);
   const hash = useLocationHash();
 
@@ -111,26 +114,26 @@ const Home = () => {
       if (!client) {
         client = new Client(options);
         client.connect();
+
+        client.on('connected', () => dispatch(setIsConnected(true)));
+        client.on('disconnected', () => dispatch(setIsConnected(false)));
+
+        client.on('globaluserstate', (data) =>
+          dispatch(updateGlobalUserState(data)),
+        );
+        client.on('userstate', (data) => dispatch(updateUserState(data)));
+        client.on('roomstate', (data) => dispatch(updateRoomState(data)));
+
+        client.on('clearchat', handleClearChat);
+
+        client.on('message', handleMessage);
+        client.on('ownmessage', handleMessage);
+        client.on('notice', handleNotice);
+        client.on('usernotice', (data) => dispatch(addUserNoticeMessage(data)));
       }
 
       // TODO: Part the previous channel before join
       client.join(currentChannel);
-
-      client.on('connected', () => dispatch(setIsConnected(true)));
-      client.on('disconnected', () => dispatch(setIsConnected(false)));
-
-      client.on('globaluserstate', (data) =>
-        dispatch(updateGlobalUserState(data)),
-      );
-      client.on('userstate', (data) => dispatch(updateUserState(data)));
-      client.on('roomstate', (data) => dispatch(updateRoomState(data)));
-
-      client.on('clearchat', handleClearChat);
-
-      client.on('message', handleMessage);
-      client.on('ownmessage', handleMessage);
-      client.on('notice', handleNotice);
-      client.on('usernotice', (data) => dispatch(addUserNoticeMessage(data)));
     }
   }, [dispatch, login, currentChannel, isAuth]);
 
@@ -141,11 +144,22 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // TODO: Load recent messages immediately but render after all emotes will load
-    if (currentChannel && isAllEmotesLoaded && isBadgesLoaded) {
+    if (currentChannel) {
       dispatch(fetchRecentMessages(currentChannel));
     }
-  }, [dispatch, currentChannel, isAllEmotesLoaded, isBadgesLoaded]);
+  }, [dispatch, currentChannel]);
+
+  useEffect(() => {
+    if (currentChannel && isEmotesLoaded && isBadgesLoaded && isHistoryLoaded) {
+      dispatch(addRecentMessages(currentChannel));
+    }
+  }, [
+    dispatch,
+    currentChannel,
+    isEmotesLoaded,
+    isBadgesLoaded,
+    isHistoryLoaded,
+  ]);
 
   useEffect(() => {
     if (userId) {
