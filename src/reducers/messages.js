@@ -199,10 +199,16 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
 };
 
 export const addMessages = (payload) => (dispatch, getState) => {
+  const state = getState();
+  const globalBadges = globalBadgesSelector(state);
+  const channelBadges = channelBadgesSelector(state);
+  const emotes = getEmotes(state);
+
   const newItems = payload.items.map(({ message, tags, ...rest }) => ({
     message,
-    messageArray: formatMessage(message, tags.emotes, getEmotes(getState())),
+    messageArray: formatMessage(message, tags.emotes, emotes),
     tags,
+    badges: getMessageBadges(tags.badges, globalBadges, channelBadges),
     ...rest,
   }));
 
