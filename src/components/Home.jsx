@@ -13,7 +13,11 @@ import {
   fetchFfzGlobalEmotes,
   fetchFfzChannelEmotes,
 } from '../reducers/emotes/ffz';
-import { isEmotesLoadedSelector } from '../reducers/emotes/selectors';
+import {
+  isTwitchEmotesLoadedSelector,
+  isBttvEmotesLoadedSelector,
+  isFfzEmotesLoadedSelector,
+} from '../reducers/emotes/selectors';
 import {
   addMessage,
   addNoticeMessage,
@@ -49,7 +53,9 @@ const Home = () => {
   const userId = useSelector((state) => state.auth.user.id);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
-  const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
+  const isTwitchEmotesLoaded = useSelector(isTwitchEmotesLoadedSelector);
+  const isBttvEmotesLoaded = useSelector(isBttvEmotesLoadedSelector);
+  const isFfzEmotesLoaded = useSelector(isFfzEmotesLoadedSelector);
   const isBadgesLoaded = useSelector(isBadgesLoadedSelector);
   const isHistoryLoaded = useSelector(isHistoryLoadedSelector);
   const hash = useLocationHash();
@@ -77,7 +83,7 @@ const Home = () => {
   }, [dispatch, hash]);
 
   useEffect(() => {
-    if (currentChannel && isAuth) {
+    if (currentChannel) {
       const options = {
         identity: {
           name: login,
@@ -102,7 +108,7 @@ const Home = () => {
       };
 
       if (!client) {
-        client = new Client(options);
+        client = new Client(isAuth ? options : {});
         client.connect();
 
         client.on('connected', () => dispatch(setIsConnected(true)));
@@ -140,13 +146,24 @@ const Home = () => {
   }, [dispatch, currentChannel]);
 
   useEffect(() => {
-    if (currentChannel && isEmotesLoaded && isBadgesLoaded && isHistoryLoaded) {
+    // Don't wait twitch emotes for anonymous users
+    if (
+      currentChannel &&
+      (isAuth ? isTwitchEmotesLoaded : true) &&
+      isBttvEmotesLoaded &&
+      isFfzEmotesLoaded &&
+      isBadgesLoaded &&
+      isHistoryLoaded
+    ) {
       dispatch(addRecentMessages(currentChannel));
     }
   }, [
     dispatch,
+    isAuth,
     currentChannel,
-    isEmotesLoaded,
+    isTwitchEmotesLoaded,
+    isBttvEmotesLoaded,
+    isFfzEmotesLoaded,
     isBadgesLoaded,
     isHistoryLoaded,
   ]);
