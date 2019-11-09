@@ -93,7 +93,7 @@ export const emojiType = pt.shape({
   type: pt.oneOf(['emoji']).isRequired,
   alt: pt.string.isRequired,
   src: pt.string.isRequired,
-  srcSet: pt.string.isRequired,
+  srcSet: pt.string,
 });
 export const mentionType = pt.shape({
   type: pt.oneOf(['mention']).isRequired,

@@ -16,13 +16,12 @@ export const messageType = pt.shape({
   messageArray: pt.arrayOf(
     pt.oneOfType([
       pt.string,
-      pt.shape({}),
       twitchEmoteType,
       bttvEmoteType,
       ffzEmoteType,
       emojiType,
       mentionType,
-      linkType, // TODO: fix warning with link type
+      linkType,
     ]),
   ).isRequired,
   tags: pt.shape({
