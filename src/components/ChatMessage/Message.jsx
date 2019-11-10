@@ -37,12 +37,22 @@ const Emoji = styled.img`
 `;
 const Mention = styled.span`
   ${(p) =>
-    p.isActive &&
+    (p.isActive || p.isOwnMessage) &&
     css`
       padding: 2px 4px;
+    `};
+  ${(p) =>
+    p.isOwnMessage &&
+    css`
+      background-color: #40404a;
+      color: #fff;
+    `};
+  ${(p) =>
+    p.isActive &&
+    css`
       background-color: #fafafa;
       color: #18181b;
-    `}
+    `};
 `;
 const Link = styled.a`
   color: #bf94ff;
@@ -87,9 +97,12 @@ const renderMessageArray = (user, login) => (item, key) => {
   }
 
   if (item.type === 'mention') {
-    const isActive = item.target === login || user === login;
     return (
-      <Mention key={key} isActive={isActive}>
+      <Mention
+        key={key}
+        isActive={item.target === login}
+        isOwnMessage={user === login}
+      >
         {item.text}
       </Mention>
     );
