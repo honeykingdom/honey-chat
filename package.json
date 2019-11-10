@@ -29,6 +29,7 @@
     "tekko": "^2.4.0",
     "twemoji-parser": "^12.1.0",
     "url-regex": "^5.0.0",
+    "use-onclickoutside": "^0.3.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
