@@ -7,7 +7,7 @@ import useOnClickOutside from 'use-onclickoutside';
 import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
 import EmotePicker from './EmotePicker';
 
-const ChatInputRoot = styled.div`
+const ChatInputRoot = styled.form`
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
