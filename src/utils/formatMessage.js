@@ -115,7 +115,7 @@ const findTwitchEmote = (name, twitch) =>
     // 1-14 - match by regex
     if (id >= 1 && id <= 14) {
       const regexString = regexMap[id] || code;
-      return RegExp(regexString).test(name);
+      return RegExp(`^${regexString}$`).test(name);
     }
     return name === code;
   }, twitch);
