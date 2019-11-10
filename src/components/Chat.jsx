@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import pt from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import Scrollbar from 'react-scrollbars-custom';
 
-import { messagesSelector } from '../reducers/messages/selectors';
-import { isEvenSelector } from '../reducers/chat/selectors';
+import { messagesSelector } from 'reducers/messages/selectors';
+import { isEvenSelector } from 'reducers/chat/selectors';
+import Scrollbar from 'components/Scrollbar';
+
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
@@ -21,25 +22,11 @@ const ChatWrapper = styled.div`
   height: 100%;
   background-color: #18181b;
 `;
-const MessagesWrapper = styled.div`
+const Messages = styled.div`
   position: relative;
   flex-grow: 1;
 `;
-const Messages = styled(Scrollbar).attrs({
-  disableTracksWidthCompensation: true,
-})`
-  overflow-y: auto;
-
-  .ScrollbarsCustom-TrackY {
-    background: none !important;
-  }
-
-  .ScrollbarsCustom-ThumbY {
-    margin-left: auto;
-    margin-right: auto;
-    width: 6px !important;
-  }
-
+const StyledScrollbar = styled(Scrollbar)`
   .ScrollbarsCustom-Content {
     padding-bottom: 10px !important;
   }
@@ -70,11 +57,11 @@ const Chat = ({ onSendMessage }) => {
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
   ] = useState(false);
-  const messagesRef = useRef(null);
+  const scrollbarRef = useRef(null);
 
   const handleScrollToBottom = () => {
-    if (messagesRef.current && messagesRef.current.scrollToBottom) {
-      messagesRef.current.scrollToBottom();
+    if (scrollbarRef.current && scrollbarRef.current.scrollToBottom) {
+      scrollbarRef.current.scrollToBottom();
     }
   };
 
@@ -99,8 +86,8 @@ const Chat = ({ onSendMessage }) => {
   return (
     <ChatRoot>
       <ChatWrapper>
-        <MessagesWrapper>
-          <Messages onUpdate={handleScrollUpdate} ref={messagesRef}>
+        <Messages>
+          <StyledScrollbar onUpdate={handleScrollUpdate} ref={scrollbarRef}>
             {messages.map((message, key) => (
               <ChatMessage
                 key={message.tags.id}
@@ -109,14 +96,14 @@ const Chat = ({ onSendMessage }) => {
                 isEven={isEven ? key % 2 === 1 : key % 2 === 0}
               />
             ))}
-          </Messages>
+          </StyledScrollbar>
           <MoreMessagesButton
             onClick={handleScrollToBottom}
             visible={isMoreMessagesButtonVisible}
           >
             More messages below
           </MoreMessagesButton>
-        </MessagesWrapper>
+        </Messages>
         <ChatInput
           onSubmit={onSendMessage}
           isDisabled={!isAuth || !isConnected}
