@@ -9,6 +9,7 @@ import formatMessage, {
 } from './formatMessage';
 import * as emotes from './mocks/emotes';
 
+const findBttvEmote = (name) => R.find(R.propEq('code', name), emotes.bttv);
 const findFfzEmote = (name) => R.find(R.propEq('name', name), emotes.ffz);
 const getEmojiUrl = (code) => `https://twemoji.maxcdn.com/2/72x72/${code}.png`;
 
@@ -17,31 +18,34 @@ it('format emotes', () => {
     'Kappa Keepo hey Kappa 4Head hello world :) KKona KKonaW Zappa EZ hey sumSmash';
   const message1Emotes = {
     '1': [{ start: 40, end: 41 }],
-    '25': [{ start: 0, end: 4 }, { start: 16, end: 20 }],
+    '25': [
+      { start: 0, end: 4 },
+      { start: 16, end: 20 },
+    ],
     '354': [{ start: 22, end: 26 }],
     '1902': [{ start: 6, end: 10 }],
   };
 
   const result1 = [
-    createTwitchEmote('Kappa', 25),
+    createTwitchEmote({ id: 25, code: 'Kappa' }),
     ' ',
-    createTwitchEmote('Keepo', 1902),
+    createTwitchEmote({ id: 1902, code: 'Keepo' }),
     ' hey ',
-    createTwitchEmote('Kappa', 25),
+    createTwitchEmote({ id: 25, code: 'Kappa' }),
     ' ',
-    createTwitchEmote('4Head', 354),
+    createTwitchEmote({ id: 354, code: '4Head' }),
     ' hello world ',
-    createTwitchEmote(':)', 1),
+    createTwitchEmote({ id: 1, code: ':)' }),
     ' ',
-    createBttvEmote('KKona', { id: '566ca04265dbbdab32ec054a' }),
+    createBttvEmote(findBttvEmote('KKona')),
     ' ',
-    createFfzEmote('KKonaW', { urls: findFfzEmote('KKonaW').urls }),
+    createFfzEmote(findFfzEmote('KKonaW')),
     ' ',
-    createBttvEmote('Zappa', { id: '5622aaef3286c42e57d8e4ab' }),
+    createBttvEmote(findBttvEmote('Zappa')),
     ' ',
-    createBttvEmote('EZ', { id: '5590b223b344e2c42a9e28e3' }),
+    createBttvEmote(findBttvEmote('EZ')),
     ' hey ',
-    createBttvEmote('sumSmash', { id: '5af84b9e766af63db43bf6b9' }),
+    createBttvEmote(findBttvEmote('sumSmash')),
   ];
 
   expect(formatMessage(message1, message1Emotes, emotes)).toEqual(result1);
@@ -52,26 +56,26 @@ it('format emotes inside onw messages', () => {
   const message2 = 'R-) R) <3 >( o_O O.o';
 
   const result1 = [
-    createTwitchEmote('Kappa', 25),
+    createTwitchEmote({ id: 25, code: 'Kappa' }),
     ' ',
-    createTwitchEmote('Keepo', 1902),
+    createTwitchEmote({ id: 1902, code: 'Keepo' }),
     ' hey ',
-    createBttvEmote('KKona', { id: '566ca04265dbbdab32ec054a' }),
+    createBttvEmote(findBttvEmote('KKona')),
     ' this is a test ',
-    createFfzEmote('KKonaW', { urls: findFfzEmote('KKonaW').urls }),
+    createFfzEmote(findFfzEmote('KKonaW')),
   ];
   const result2 = [
-    createTwitchEmote('R-)', 14),
+    createTwitchEmote({ id: 14, code: 'R-)' }),
     ' ',
-    createTwitchEmote('R)', 14),
+    createTwitchEmote({ id: 14, code: 'R)' }),
     ' ',
-    createTwitchEmote('<3', 9),
+    createTwitchEmote({ id: 9, code: '<3' }),
     ' ',
-    createTwitchEmote('>(', 4),
+    createTwitchEmote({ id: 4, code: '>(' }),
     ' ',
-    createTwitchEmote('o_O', 6),
+    createTwitchEmote({ id: 6, code: 'o_O' }),
     ' ',
-    createTwitchEmote('O.o', 6),
+    createTwitchEmote({ id: 6, code: 'O.o' }),
   ];
 
   expect(formatMessage(message1, null, emotes)).toEqual(result1);
@@ -158,11 +162,11 @@ it('format emotes (twitch, bttv, ffz), emoji, mention and link', () => {
   const message1Emotes = { '25': [{ start: 4, end: 8 }] };
   const result1 = [
     'Hey ',
-    createTwitchEmote('Kappa', 25),
+    createTwitchEmote({ id: 25, code: 'Kappa' }),
     ' ',
-    createBttvEmote('KKona', { id: '566ca04265dbbdab32ec054a' }),
+    createBttvEmote(findBttvEmote('KKona')),
     ' ',
-    createFfzEmote('KKonaW', { urls: findFfzEmote('KKonaW').urls }),
+    createFfzEmote(findFfzEmote('KKonaW')),
     ' hello world ',
     createLink('google.com'),
     ' ',

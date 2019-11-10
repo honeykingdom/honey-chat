@@ -35,21 +35,21 @@ const getFfzSrcSet = pipe(
   join(', '),
 );
 
-export const createTwitchEmote = (alt, id) => ({
+export const createTwitchEmote = ({ id, code }) => ({
   type: 'twitch-emote',
-  alt,
+  alt: code,
   src: `${TWITCH_EMOTES_CDN}/${id}/1.0`,
   srcSet: `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`,
 });
-export const createBttvEmote = (alt, { id }) => ({
+export const createBttvEmote = ({ id, code }) => ({
   type: 'bttv-emote',
-  alt,
+  alt: code,
   src: `${BTTV_EMOTES_CDN}/${id}/1x`,
   srcSet: `${BTTV_EMOTES_CDN}/${id}/2x 2x, ${BTTV_EMOTES_CDN}/${id}/3x 4x`,
 });
-export const createFfzEmote = (alt, { urls }) => ({
+export const createFfzEmote = ({ name, urls }) => ({
   type: 'ffz-emote',
-  alt,
+  alt: name,
   src: urls[1],
   srcSet: getFfzSrcSet(urls),
 });
@@ -122,23 +122,20 @@ const findTwitchEmote = (name, twitch) =>
 const findBttvEmote = (name, bttv) => find(propEq('code', name), bttv);
 const findFfzEmote = (name, ffz) => find(propEq('name', name), ffz);
 const findEmoji = (char) =>
-  pipe(
-    filter(propEq('char', char)),
-    keys,
-    head,
-  )(emojilib);
+  pipe(filter(propEq('char', char)), keys, head)(emojilib);
 
 const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
   if (parseTwitch) {
     const twitchEmote = findTwitchEmote(word, twitch);
-    if (twitchEmote) return createTwitchEmote(word, twitchEmote.id);
+    if (twitchEmote)
+      return createTwitchEmote({ id: twitchEmote.id, code: word });
   }
 
   const bttvEmote = findBttvEmote(word, bttv);
-  if (bttvEmote) return createBttvEmote(word, bttvEmote);
+  if (bttvEmote) return createBttvEmote(bttvEmote);
 
   const ffzEmote = findFfzEmote(word, ffz);
-  if (ffzEmote) return createFfzEmote(word, ffzEmote);
+  if (ffzEmote) return createFfzEmote(ffzEmote);
 
   // Don't parse two or more emotes without spaces between
   // Don't parse emote if it's not in the emojilib package
@@ -211,7 +208,7 @@ const formatMessage = (message, embeddedEmotes, emotes) => {
         );
 
         if (embeddedEmote) {
-          entity = createTwitchEmote(word, embeddedEmote.id);
+          entity = createTwitchEmote({ id: embeddedEmote.id, code: word });
         }
       }
 
