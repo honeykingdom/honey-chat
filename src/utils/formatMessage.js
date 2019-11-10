@@ -55,7 +55,7 @@ export const createFfzEmote = ({ name, urls }) => ({
 });
 export const createEmoji = (alt, src) => ({
   type: 'emoji',
-  alt,
+  alt: `:${alt}:`,
   src,
   srcSet: null,
 });
