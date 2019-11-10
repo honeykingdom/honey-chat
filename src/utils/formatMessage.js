@@ -105,7 +105,20 @@ export const linkType = pt.shape({
   href: pt.string.isRequired,
 });
 
-const findTwitchEmote = (name, twitch) => find(propEq('code', name), twitch);
+const regexMap = {
+  4: '>\\(', // '\\&gt\\;\\('
+  9: '<3', // '\\&lt\\;3'
+};
+
+const findTwitchEmote = (name, twitch) =>
+  find(({ id, code }) => {
+    // 1-14 - match by regex
+    if (id >= 1 && id <= 14) {
+      const regexString = regexMap[id] || code;
+      return RegExp(regexString).test(name);
+    }
+    return name === code;
+  }, twitch);
 const findBttvEmote = (name, bttv) => find(propEq('code', name), bttv);
 const findFfzEmote = (name, ffz) => find(propEq('name', name), ffz);
 const findEmoji = (char) =>

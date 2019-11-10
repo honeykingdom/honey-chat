@@ -49,6 +49,7 @@ it('format emotes', () => {
 
 it('format emotes inside onw messages', () => {
   const message1 = 'Kappa Keepo hey KKona this is a test KKonaW';
+  const message2 = 'R-) R) <3 >( o_O O.o';
 
   const result1 = [
     createTwitchEmote('Kappa', 25),
@@ -59,8 +60,22 @@ it('format emotes inside onw messages', () => {
     ' this is a test ',
     createFfzEmote('KKonaW', { urls: findFfzEmote('KKonaW').urls }),
   ];
+  const result2 = [
+    createTwitchEmote('R-)', 14),
+    ' ',
+    createTwitchEmote('R)', 14),
+    ' ',
+    createTwitchEmote('<3', 9),
+    ' ',
+    createTwitchEmote('>(', 4),
+    ' ',
+    createTwitchEmote('o_O', 6),
+    ' ',
+    createTwitchEmote('O.o', 6),
+  ];
 
   expect(formatMessage(message1, null, emotes)).toEqual(result1);
+  expect(formatMessage(message2, null, emotes)).toEqual(result2);
 });
 
 it('format emoji', () => {
