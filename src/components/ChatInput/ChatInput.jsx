@@ -63,7 +63,7 @@ const TextareaWrapper = styled.div`
 const EmotePickerModal = styled.div`
   position: absolute;
   top: auto;
-  left: 0;
+  right: 0;
   bottom: 100%;
   margin-bottom: 8px;
   width: 320px;
