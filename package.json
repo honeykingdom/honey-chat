@@ -71,6 +71,15 @@
     "env": {
       "jest": true
     },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "paths": [
+            "src"
+          ]
+        }
+      }
+    },
     "parser": "babel-eslint"
   },
   "prettier": {
