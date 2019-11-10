@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pipe, path, pathOr, values, flatten } from 'ramda';
+import { pipe, path, pathOr, values, flatten, toPairs } from 'ramda';
 
 import {
   createTwitchEmote,
@@ -20,7 +20,7 @@ const createChannelEmotesSelector = (type) => (state) =>
     [],
     ['emotes', type, 'channels', currentChannelSelector(state), 'items'],
     state,
-);
+  );
 
 const bttvGlobalEmotesSelector = createGlobalEmotesSelector('bttv');
 const bttvChannelEmotesSelector = createChannelEmotesSelector('bttv');
@@ -43,6 +43,57 @@ export const emotesSelector = (state) => ({
   bttv: bttvEmotesSelector(state),
   ffz: ffzEmotesSelector(state),
 });
+
+// prettier-ignore
+const regexEmotesMap = {
+  '[oO](_|\\.)[oO]': 'O_o',
+  '\\&gt\\;\\(':     '>(',
+  '\\&lt\\;3':       '<3',
+  '\\:-?(o|O)':      ':O',
+  '\\:-?(p|P)':      ':P',
+  '\\:-?[\\\\/]':    ':/',
+  '\\:-?[z|Z|\\|]':  ':Z',
+  '\\:-?\\(':        ':(',
+  '\\:-?\\)':        ':)',
+  '\\:-?D':          ':D',
+  '\\;-?(p|P)':      ';P',
+  '\\;-?\\)':        ';)',
+  'R-?\\)':          'R)',
+  'B-?\\)':          'B)',
+};
+
+export const emoteCategoriesSelector = createSelector(
+  (state) => state.emotes.twitch.items,
+  bttvGlobalEmotesSelector,
+  bttvChannelEmotesSelector,
+  ffzGlobalEmotesSelector,
+  ffzChannelEmotesSelector,
+  (twitch, bttvGlobal, bttvChannel, ffzGlobal, ffzChannel) =>
+    [
+      {
+        title: 'BetterTTV Channel Emotes',
+        items: bttvChannel.map(createBttvEmote),
+      },
+      {
+        title: 'FrankerFaceZ Channel Emotes',
+        items: ffzChannel.map(createFfzEmote),
+      },
+      ...toPairs(twitch).map(([setId, items]) => ({
+        title: setId === '0' ? 'Twitch' : null,
+        items: items.map(({ id, code }) =>
+          createTwitchEmote({ id, code: regexEmotesMap[code] || code }),
+        ),
+      })),
+      {
+        title: 'BetterTTV',
+        items: bttvGlobal.map(createBttvEmote),
+      },
+      {
+        title: 'FrankerFaceZ',
+        items: ffzGlobal.map(createFfzEmote),
+      },
+    ].filter(({ items }) => items.length > 0),
+);
 
 const createIsEmotesLoadedSelector = (type) => (state) => {
   const channel = currentChannelSelector(state);
