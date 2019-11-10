@@ -1,42 +1,41 @@
 import { createSelector } from 'reselect';
 import { pipe, path, pathOr, values, flatten } from 'ramda';
 
+import {
+  createTwitchEmote,
+  createBttvEmote,
+  createFfzEmote,
+} from 'utils/formatMessage';
 import { currentChannelSelector } from '../chat';
 
 export const twitchEmotesSelector = createSelector(
   pathOr([], ['emotes', 'twitch', 'items']),
-  pipe(
-    values,
-    flatten,
-  ),
+  pipe(values, flatten),
 );
 
-const bttvChannelEmotesSelector = createSelector(
-  pathOr({}, ['emotes', 'bttv', 'channels']),
-  currentChannelSelector,
-  (channels, currentChannel) => pathOr([], [currentChannel, 'items'], channels),
+const createGlobalEmotesSelector = (type) =>
+  pathOr([], ['emotes', type, 'global', 'items']);
+const createChannelEmotesSelector = (type) => (state) =>
+  pathOr(
+    [],
+    ['emotes', type, 'channels', currentChannelSelector(state), 'items'],
+    state,
 );
+
+const bttvGlobalEmotesSelector = createGlobalEmotesSelector('bttv');
+const bttvChannelEmotesSelector = createChannelEmotesSelector('bttv');
 export const bttvEmotesSelector = createSelector(
-  pathOr([], ['emotes', 'bttv', 'global', 'items']),
+  bttvGlobalEmotesSelector,
   bttvChannelEmotesSelector,
-  (globalBttvEmotes, channelBttvEmotes) => [
-    ...globalBttvEmotes,
-    ...channelBttvEmotes,
-  ],
+  (bttvGlobal, bttvChannel) => [...bttvGlobal, ...bttvChannel],
 );
 
-const ffzChannelEmotesSelector = createSelector(
-  pathOr({}, ['emotes', 'ffz', 'channels']),
-  currentChannelSelector,
-  (channels, currentChannel) => pathOr([], [currentChannel, 'items'], channels),
-);
+const ffzGlobalEmotesSelector = createGlobalEmotesSelector('ffz');
+const ffzChannelEmotesSelector = createChannelEmotesSelector('ffz');
 export const ffzEmotesSelector = createSelector(
-  pathOr([], ['emotes', 'ffz', 'global', 'items']),
+  ffzGlobalEmotesSelector,
   ffzChannelEmotesSelector,
-  (globalFfzEmotes, channelFfzEmotes) => [
-    ...globalFfzEmotes,
-    ...channelFfzEmotes,
-  ],
+  (ffzGlobal, ffzChannel) => [...ffzGlobal, ...ffzChannel],
 );
 
 export const emotesSelector = (state) => ({
