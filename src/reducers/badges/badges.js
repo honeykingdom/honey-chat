@@ -1,12 +1,11 @@
 import { createActions, handleActions, combineActions } from 'redux-actions';
 import { pathOr, mergeDeepRight } from 'ramda';
 
-import storeFlags from '../../utils/storeFlags';
-
 import {
   fetchGlobalBadges as apiFetchGlobalBadges,
   fetchChannelBadges as apiFetchChannelBadges,
-} from '../../utils/api';
+} from 'utils/api';
+import storeFlags from 'utils/storeFlags';
 
 const defaultState = {
   global: {

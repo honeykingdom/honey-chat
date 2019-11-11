@@ -3,7 +3,7 @@ import { createActions, handleActions, combineActions } from 'redux-actions';
 import {
   fetchBttvGlobalEmotes as apiFetchBttvGlobalEmotes,
   fetchBttvChannelEmotes as apiFetchBttvChannelEmotes,
-} from '../../utils/api';
+} from 'utils/api';
 
 const defaultState = {
   global: {

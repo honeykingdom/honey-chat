@@ -1,9 +1,8 @@
 import React from 'react';
 import pt from 'prop-types';
 
-import { MESSAGE_TYPES } from '../../utils/constants';
+import { MESSAGE_TYPES } from 'utils/constants';
 import { messageType, noticeType, userNoticeType } from './types';
-
 import Message from './Message';
 import Notice from './Notice';
 import UserNotice from './UserNotice';

@@ -2,22 +2,22 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uuid from 'uuid/v4';
 
-import useLocationHash from '../hooks/useLocationHash';
-import useDocumentTitle from '../hooks/useDocumentTitle';
-import { fetchTwitchEmotes } from '../reducers/emotes/twitch';
+import useLocationHash from 'hooks/useLocationHash';
+import useDocumentTitle from 'hooks/useDocumentTitle';
+import { fetchTwitchEmotes } from 'reducers/emotes/twitch';
 import {
   fetchBttvGlobalEmotes,
   fetchBttvChannelEmotes,
-} from '../reducers/emotes/bttv';
+} from 'reducers/emotes/bttv';
 import {
   fetchFfzGlobalEmotes,
   fetchFfzChannelEmotes,
-} from '../reducers/emotes/ffz';
+} from 'reducers/emotes/ffz';
 import {
   isTwitchEmotesLoadedSelector,
   isBttvEmotesLoadedSelector,
   isFfzEmotesLoadedSelector,
-} from '../reducers/emotes/selectors';
+} from 'reducers/emotes/selectors';
 import {
   addMessage,
   addNoticeMessage,
@@ -25,26 +25,25 @@ import {
   fetchRecentMessages,
   addRecentMessages,
   clearChat,
-} from '../reducers/messages';
-import { isHistoryLoadedSelector } from '../reducers/messages/selectors';
+} from 'reducers/messages';
+import { isHistoryLoadedSelector } from 'reducers/messages/selectors';
 import {
   setCurrentChannel,
   setIsConnected,
   updateGlobalUserState,
   updateUserState,
   updateRoomState,
-} from '../reducers/chat';
+} from 'reducers/chat';
 import {
   currentChannelSelector,
   channelIdSelector,
-} from '../reducers/chat/selectors';
-import { fetchGlobalBadges, fetchChannelBadges } from '../reducers/badges';
-import { isBadgesLoadedSelector } from '../reducers/badges/selectors';
-import { setIsAuth } from '../reducers/auth';
-import Client from '../utils/twitchChat';
-import replaceEmojis from '../utils/replaceEmojis';
-
-import Chat from './Chat';
+} from 'reducers/chat/selectors';
+import { fetchGlobalBadges, fetchChannelBadges } from 'reducers/badges';
+import { isBadgesLoadedSelector } from 'reducers/badges/selectors';
+import { setIsAuth } from 'reducers/auth';
+import Client from 'utils/twitchChat';
+import replaceEmojis from 'utils/replaceEmojis';
+import Chat from 'components/Chat';
 
 let client = null;
 

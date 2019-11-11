@@ -1,8 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 
-import common from './common';
-import colors from './colors';
-import vars from './vars';
+import common from 'styles/common';
+import colors from 'styles/colors';
+import vars from 'styles/vars';
 
 export default createGlobalStyle`
   :root {

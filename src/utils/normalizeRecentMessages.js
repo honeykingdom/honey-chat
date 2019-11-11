@@ -1,18 +1,18 @@
 import { parse } from 'tekko';
 
-import { MESSAGE_TYPES } from './constants';
 import {
   globalBadgesSelector,
   channelBadgesSelector,
-} from '../reducers/badges/selectors';
-import { emotesSelector } from '../reducers/emotes/selectors';
+} from 'reducers/badges/selectors';
+import { emotesSelector } from 'reducers/emotes/selectors';
+import { MESSAGE_TYPES } from 'utils/constants';
 import {
   getIsAction,
   normalizeActionMessage,
   parseMessageTags,
-} from './twitchChat';
-import formatMessage from './formatMessage';
-import getMessageBadges from './getMessageBadges';
+} from 'utils/twitchChat';
+import formatMessage from 'utils/formatMessage';
+import getMessageBadges from 'utils/getMessageBadges';
 
 const normalizeRecentMessages = (state, messages) => {
   const globalBadges = globalBadgesSelector(state);

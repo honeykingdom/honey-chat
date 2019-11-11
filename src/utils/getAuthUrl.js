@@ -2,7 +2,7 @@ import {
   TWITCH_API_AUTH_BASE,
   TWITCH_API_CLIENT_ID,
   TWITCH_API_REDIRECT_URI,
-} from './constants';
+} from 'utils/constants';
 
 const authParams = {
   client_id: TWITCH_API_CLIENT_ID,

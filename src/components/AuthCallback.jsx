@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 
-import { fetchUser } from '../reducers/auth';
+import { fetchUser } from 'reducers/auth';
 
 const AuthCallback = () => {
   const dispatch = useDispatch();

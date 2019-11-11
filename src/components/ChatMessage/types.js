@@ -1,6 +1,6 @@
 import pt from 'prop-types';
 
-import { MESSAGE_TYPES } from '../../utils/constants';
+import { MESSAGE_TYPES } from 'utils/constants';
 import {
   twitchEmoteType,
   bttvEmoteType,
@@ -8,7 +8,7 @@ import {
   emojiType,
   mentionType,
   linkType,
-} from '../../utils/formatMessage';
+} from 'utils/formatMessage';
 
 export const messageType = pt.shape({
   type: pt.oneOf([MESSAGE_TYPES.MESSAGE]).isRequired,

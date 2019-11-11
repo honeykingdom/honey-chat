@@ -1,4 +1,5 @@
 import R from 'ramda';
+
 import formatMessage, {
   createTwitchEmote,
   createBttvEmote,
@@ -6,8 +7,8 @@ import formatMessage, {
   createEmoji,
   createMention,
   createLink,
-} from './formatMessage';
-import * as emotes from './mocks/emotes';
+} from 'utils/formatMessage';
+import * as emotes from 'utils/mocks/emotes';
 
 const findBttvEmote = (name) => R.find(R.propEq('code', name), emotes.bttv);
 const findFfzEmote = (name) => R.find(R.propEq('name', name), emotes.ffz);

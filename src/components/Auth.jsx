@@ -1,4 +1,4 @@
-import getAuthUrl from '../utils/getAuthUrl';
+import getAuthUrl from 'utils/getAuthUrl';
 
 const Auth = () => {
   window.location.href = getAuthUrl();

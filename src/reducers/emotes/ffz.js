@@ -4,7 +4,7 @@ import { pipe, pathOr, map, values, flatten } from 'ramda';
 import {
   fetchFfzGlobalEmotes as apiFetchFfzGlobalEmotes,
   fetchFfzChannelEmotes as apiFetchFfzChannelEmotes,
-} from '../../utils/api';
+} from 'utils/api';
 
 const defaultState = {
   global: {

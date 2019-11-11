@@ -6,17 +6,17 @@ import {
 } from 'redux-actions';
 import { pathOr, mergeDeepRight, concat } from 'ramda';
 
-import { emotesSelector } from '../emotes/selectors';
+import { emotesSelector } from 'reducers/emotes/selectors';
 import {
   globalBadgesSelector,
   channelBadgesSelector,
-} from '../badges/selectors';
-import { fetchRecentMessages as apiFetchRecentMessages } from '../../utils/api';
-import { CHANNEL_MESSAGES_LIMIT, MESSAGE_TYPES } from '../../utils/constants';
-import storeFlags from '../../utils/storeFlags';
-import formatMessage from '../../utils/formatMessage';
-import getMessageBadges from '../../utils/getMessageBadges';
-import normalizeRecentMessages from '../../utils/normalizeRecentMessages';
+} from 'reducers/badges/selectors';
+import { fetchRecentMessages as apiFetchRecentMessages } from 'utils/api';
+import { CHANNEL_MESSAGES_LIMIT, MESSAGE_TYPES } from 'utils/constants';
+import storeFlags from 'utils/storeFlags';
+import formatMessage from 'utils/formatMessage';
+import getMessageBadges from 'utils/getMessageBadges';
+import normalizeRecentMessages from 'utils/normalizeRecentMessages';
 
 const defaultState = {
   // [channel]: {

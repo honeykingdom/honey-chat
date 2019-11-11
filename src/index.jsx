@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 
-import isAuthRedirect from './utils/isAuthRedirect';
-import store from './store';
+import isAuthRedirect from 'utils/isAuthRedirect';
+import store from 'store';
 import App from './App';
 // import * as serviceWorker from './serviceWorker';
 

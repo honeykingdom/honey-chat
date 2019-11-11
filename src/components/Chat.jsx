@@ -10,9 +10,8 @@ import {
   isSplitChatSelector,
 } from 'reducers/options/selectors';
 import Scrollbar from 'components/Scrollbar';
-
-import ChatInput from './ChatInput';
-import ChatMessage from './ChatMessage';
+import ChatInput from 'components/ChatInput';
+import ChatMessage from 'components/ChatMessage';
 
 const MORE_MESSAGES_OFFSET = 100;
 

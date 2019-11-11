@@ -1,6 +1,6 @@
 import { createActions, handleActions, combineActions } from 'redux-actions';
 
-import { fetchTwitchEmotesBySets } from '../../utils/api';
+import { fetchTwitchEmotesBySets } from 'utils/api';
 
 const defaultState = {
   isLoading: false,

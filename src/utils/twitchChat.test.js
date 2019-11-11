@@ -2,7 +2,7 @@
 import R from 'ramda';
 import { parse as tekkoParse } from 'tekko';
 
-import Client, { parseMessageTags } from './twitchChat';
+import Client, { parseMessageTags } from 'utils/twitchChat';
 
 const createClient = () => {
   const client = new Client({ identity: {} });

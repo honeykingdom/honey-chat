@@ -15,7 +15,7 @@ import {
   head,
 } from 'ramda';
 
-import normalizeHref from './normalizeHref';
+import normalizeHref from 'utils/normalizeHref';
 
 const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
 const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
