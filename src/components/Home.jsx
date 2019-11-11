@@ -33,11 +33,13 @@ import {
   updateGlobalUserState,
   updateUserState,
   updateRoomState,
-  currentChannelSelector,
 } from '../reducers/chat';
+import {
+  currentChannelSelector,
+  channelIdSelector,
+} from '../reducers/chat/selectors';
 import { fetchGlobalBadges, fetchChannelBadges } from '../reducers/badges';
 import { isBadgesLoadedSelector } from '../reducers/badges/selectors';
-import { channelIdSelector } from '../reducers/chat/selectors';
 import { setIsAuth } from '../reducers/auth';
 import Client from '../utils/twitchChat';
 import replaceEmojis from '../utils/replaceEmojis';

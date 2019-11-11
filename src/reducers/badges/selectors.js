@@ -1,6 +1,6 @@
 import { pathOr } from 'ramda';
 
-import { currentChannelSelector } from '../chat';
+import { currentChannelSelector } from 'reducers/chat/selectors';
 
 export const globalBadgesSelector = (state) => state.badges.global.items;
 export const channelBadgesSelector = (state) =>

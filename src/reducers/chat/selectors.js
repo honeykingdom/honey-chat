@@ -1,6 +1,6 @@
 import { pathOr } from 'ramda';
 
-import { currentChannelSelector } from './chat';
+export const currentChannelSelector = pathOr('', ['chat', 'currentChannel']);
 
 export const channelIdSelector = (state) =>
   pathOr(

@@ -6,7 +6,7 @@ import {
   createBttvEmote,
   createFfzEmote,
 } from 'utils/formatMessage';
-import { currentChannelSelector } from '../chat';
+import { currentChannelSelector } from 'reducers/chat/selectors';
 
 export const twitchEmotesSelector = createSelector(
   pathOr([], ['emotes', 'twitch', 'items']),

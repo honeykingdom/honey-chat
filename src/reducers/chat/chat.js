@@ -13,8 +13,6 @@ const defaultState = {
   },
 };
 
-export const currentChannelSelector = pathOr('', ['chat', 'currentChannel']);
-
 export const {
   setCurrentChannel,
   setIsConnected,
