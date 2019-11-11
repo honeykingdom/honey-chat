@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import pt from 'prop-types';
 import styled, { css } from 'styled-components';
+import { format } from 'date-fns/fp';
 
 import { messageType } from './types';
 
@@ -69,6 +70,10 @@ const Link = styled.a`
     color: #a970ff;
   }
 `;
+const Timestamp = styled.span`
+  margin-right: 5px;
+  color: rgba(255, 255, 255, 0.6);
+`;
 const Badge = styled.img`
   margin-bottom: 2px;
   margin-right: 3px;
@@ -136,7 +141,7 @@ const Message = ({
   message: {
     message,
     messageArray,
-    tags: { color, displayName },
+    tags: { color, displayName, tmiSentTs },
     badges,
     user,
     isHistory,
@@ -145,6 +150,7 @@ const Message = ({
   },
   login,
   isEven,
+  isShowTimestamps,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const isMention = user !== login && RegExp(login, 'gi').test(message);
@@ -158,6 +164,9 @@ const Message = ({
       isDeleted={isDeleted}
       color={color}
     >
+      {isShowTimestamps && (
+        <Timestamp>{format('h:mm', new Date(tmiSentTs))}</Timestamp>
+      )}
       {badges.length > 0 && renderBadges(badges)}
       <Name color={color}>{displayName}</Name>
       {isAction ? ' ' : ': '}
@@ -174,12 +183,14 @@ const Message = ({
 Message.defaultProps = {
   login: '',
   isEven: false,
+  isShowTimestamps: false,
 };
 
 Message.propTypes = {
   message: messageType.isRequired,
   login: pt.string,
   isEven: pt.bool,
+  isShowTimestamps: pt.bool,
 };
 
 export default React.memo(Message);
