@@ -48,7 +48,7 @@ const {
 
 const parseBlockedUsers = pipe(
   prop('blocks'),
-  map(({ _id: id, name, display_name: displayName }) => ({
+  map(({ user: { _id: id, name, display_name: displayName } }) => ({
     id,
     name,
     displayName,
@@ -60,9 +60,9 @@ export const fetchBlockedUsers = (userId) => async (dispatch) => {
   try {
     const response = await apiFetchBlockedUsers(userId);
 
-    dispatch(fetchBlockedUsersRequest({ items: parseBlockedUsers(response) }));
+    dispatch(fetchBlockedUsersSuccess({ items: parseBlockedUsers(response) }));
   } catch (error) {
-    dispatch(fetchBlockedUsersRequest({ error }));
+    dispatch(fetchBlockedUsersFailure({ error }));
   }
 };
 
@@ -105,13 +105,13 @@ const handleFetchBlockUsers = (state, { type, payload }) => {
 
   if (type === fetchBlockedUsersSuccess.toString()) {
     return mergeDeepRight(state, {
-      channels: { ...storeFlags.success, items: payload.items },
+      blockedUsers: { ...storeFlags.success, items: payload.items },
     });
   }
 
   if (type === fetchBlockedUsersFailure.toString()) {
     return mergeDeepRight(state, {
-      channels: { ...storeFlags.failure, error: payload.error },
+      blockedUsers: { ...storeFlags.failure, error: payload.error },
     });
   }
 
