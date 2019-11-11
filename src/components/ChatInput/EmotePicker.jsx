@@ -1,59 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import pt from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { emoteCategoriesSelector } from 'reducers/emotes/selectors';
 import Scrollbar from 'components/Scrollbar';
-import { ReactComponent as CloseIconSvg } from 'icons/close.svg';
 
 const EmotePickerRoot = styled.div`
-  position: relative;
   padding-top: 32px;
   padding-bottom: 16px;
   height: 100%;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 8px 0px,
-    rgba(0, 0, 0, 0.4) 0px 0px 4px 0px;
-  background-color: #18181b;
-  white-space: normal;
-  color: #fff;
-  border-radius: 4px;
-`;
-const CloseButton = styled.button.attrs({ type: 'button' })`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: none;
-  border: none;
-  outline: none;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  &:focus {
-    box-shadow: 0 0 6px 0 #772ce8;
-  }
-`;
-const CloseIcon = styled(CloseIconSvg)`
-  display: block;
-  width: 20px;
-  height: 20px;
 `;
 const Categories = styled.div`
   height: 100%;
@@ -87,37 +43,33 @@ const Emote = styled.img`
   }
 `;
 
-/* eslint-disable react/prop-types */
-const renderCategory = (handleClick) => ({ title, items }, key) => (
-  <Category key={key}>
-    {!!title && <CategoryHeader>{title}</CategoryHeader>}
-    <CategoryItems>
-      {items.map(({ alt, src, srcSet }) => (
-        <Emote
-          key={alt}
-          alt={alt}
-          src={src}
-          srcSet={srcSet}
-          onClick={() => handleClick(alt)}
-        />
-      ))}
-    </CategoryItems>
-  </Category>
-);
-/* eslint-enable react/prop-types */
-
-const EmotePicker = ({ onEmoteClick, onClose }) => {
+const EmotePicker = ({ onEmoteClick }) => {
   const emoteCategories = useSelector(emoteCategoriesSelector);
+
+  const renderCategory = useCallback(
+    ({ title, items }, key) => (
+      <Category key={key}>
+        {!!title && <CategoryHeader>{title}</CategoryHeader>}
+        <CategoryItems>
+          {items.map(({ alt, src, srcSet }) => (
+            <Emote
+              key={alt}
+              alt={alt}
+              src={src}
+              srcSet={srcSet}
+              onClick={() => onEmoteClick(alt)}
+            />
+          ))}
+        </CategoryItems>
+      </Category>
+    ),
+    [onEmoteClick],
+  );
 
   return (
     <EmotePickerRoot>
-      <CloseButton onClick={onClose}>
-        <CloseIcon />
-      </CloseButton>
       <Categories>
-        <Scrollbar>
-          {emoteCategories.map(renderCategory(onEmoteClick))}
-        </Scrollbar>
+        <Scrollbar>{emoteCategories.map(renderCategory)}</Scrollbar>
       </Categories>
     </EmotePickerRoot>
   );
@@ -127,7 +79,6 @@ EmotePicker.defaultProps = {};
 
 EmotePicker.propTypes = {
   onEmoteClick: pt.func.isRequired,
-  onClose: pt.func.isRequired,
 };
 
 export default EmotePicker;
