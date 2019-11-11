@@ -33,10 +33,13 @@ import {
   updateGlobalUserState,
   updateUserState,
   updateRoomState,
+  fetchBlockedUsers,
 } from 'reducers/chat';
 import {
   currentChannelSelector,
   channelIdSelector,
+  blockedUsersSelector,
+  isBlockedUsersLoadedSelector,
 } from 'reducers/chat/selectors';
 import { fetchGlobalBadges, fetchChannelBadges } from 'reducers/badges';
 import { isBadgesLoadedSelector } from 'reducers/badges/selectors';
@@ -54,12 +57,24 @@ const Home = () => {
   const userId = useSelector((state) => state.auth.user.id);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(channelIdSelector);
+  const blockedUsers = useSelector(blockedUsersSelector);
+
   const isTwitchEmotesLoaded = useSelector(isTwitchEmotesLoadedSelector);
   const isBttvEmotesLoaded = useSelector(isBttvEmotesLoadedSelector);
   const isFfzEmotesLoaded = useSelector(isFfzEmotesLoadedSelector);
   const isBadgesLoaded = useSelector(isBadgesLoadedSelector);
   const isHistoryLoaded = useSelector(isHistoryLoadedSelector);
+  const isBlockedUsersLoaded = useSelector(isBlockedUsersLoadedSelector);
   const hash = useLocationHash();
+
+  const isReadyToAddRecentMessages =
+    currentChannel &&
+    (isAuth ? isTwitchEmotesLoaded : true) &&
+    (isAuth ? isBlockedUsersLoaded : true) &&
+    isBttvEmotesLoaded &&
+    isFfzEmotesLoaded &&
+    isBadgesLoaded &&
+    isHistoryLoaded;
 
   useDocumentTitle(currentChannel);
 
@@ -84,55 +99,72 @@ const Home = () => {
   }, [dispatch, hash]);
 
   useEffect(() => {
-    if (currentChannel) {
-      const options = {
-        identity: {
-          name: login,
-          auth: localStorage.accessToken,
-        },
-      };
+    if (!currentChannel) return () => {};
 
-      const handleMessage = (data) => dispatch(addMessage(data));
+    const options = {
+      identity: {
+        name: login,
+        auth: localStorage.accessToken,
+      },
+    };
 
-      const handleClearChat = (data) => {
-        if (!data.tags.targetUserId) return;
+    const handleConnected = () => dispatch(setIsConnected(true));
+    const handleDisconnected = () => dispatch(setIsConnected(true));
 
-        dispatch(clearChat(data));
-      };
+    const handleGlobalUserState = (data) =>
+      dispatch(updateGlobalUserState(data));
 
-      const handleNotice = (data) => {
-        const normalizedMessage = {
-          ...data,
-          tags: { ...data.tags, id: uuid() },
-        };
-        dispatch(addNoticeMessage(normalizedMessage));
-      };
+    const handleUserState = (data) => dispatch(updateUserState(data));
+    const handleRoomState = (data) => dispatch(updateRoomState(data));
+    const handleMessage = (data) => {
+      if (blockedUsers.includes(data.user)) return;
+      dispatch(addMessage(data));
+    };
 
-      if (!client) {
-        client = new Client(isAuth ? options : {});
-        client.connect();
+    const handleNotice = (data) => {
+      const normalizedMessage = { ...data, tags: { ...data.tags, id: uuid() } };
+      dispatch(addNoticeMessage(normalizedMessage));
+    };
+    const handleUserNotice = (data) => dispatch(addUserNoticeMessage(data));
 
-        client.on('connected', () => dispatch(setIsConnected(true)));
-        client.on('disconnected', () => dispatch(setIsConnected(false)));
+    const handleClearChat = (data) => {
+      if (!data.tags.targetUserId) return;
+      dispatch(clearChat(data));
+    };
 
-        client.on('globaluserstate', (data) =>
-          dispatch(updateGlobalUserState(data)),
-        );
-        client.on('userstate', (data) => dispatch(updateUserState(data)));
-        client.on('roomstate', (data) => dispatch(updateRoomState(data)));
-
-        client.on('clearchat', handleClearChat);
-
-        client.on('message', handleMessage);
-        client.on('ownmessage', handleMessage);
-        client.on('notice', handleNotice);
-        client.on('usernotice', (data) => dispatch(addUserNoticeMessage(data)));
-      }
-
-      // TODO: Part the previous channel before join
-      client.join(currentChannel);
+    if (!client) {
+      client = new Client(isAuth ? options : {});
+      client.connect();
     }
-  }, [dispatch, login, currentChannel, isAuth]);
+
+    client.on('connected', handleConnected);
+    client.on('disconnected', handleDisconnected);
+    client.on('globaluserstate', handleGlobalUserState);
+    client.on('userstate', handleUserState);
+    client.on('roomstate', handleRoomState);
+    client.on('message', handleMessage);
+    client.on('ownmessage', handleMessage);
+    client.on('notice', handleNotice);
+    client.on('usernotice', handleUserNotice);
+    client.on('clearchat', handleClearChat);
+
+    // TODO: Part the previous channel before join
+    client.join(currentChannel);
+
+    return () => {
+      client.off('connected', handleConnected);
+      client.off('disconnected', handleDisconnected);
+      client.off('globaluserstate', handleGlobalUserState);
+      client.off('userstate', handleUserState);
+      client.off('roomstate', handleRoomState);
+      client.off('message', handleMessage);
+      client.off('ownmessage', handleMessage);
+      client.off('notice', handleNotice);
+      client.off('usernotice', handleUserNotice);
+      client.off('clearchat', handleClearChat);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, login, currentChannel, isAuth, blockedUsers.length]);
 
   useEffect(() => {
     dispatch(fetchBttvGlobalEmotes());
@@ -147,31 +179,15 @@ const Home = () => {
   }, [dispatch, currentChannel]);
 
   useEffect(() => {
-    // Don't wait twitch emotes for anonymous users
-    if (
-      currentChannel &&
-      (isAuth ? isTwitchEmotesLoaded : true) &&
-      isBttvEmotesLoaded &&
-      isFfzEmotesLoaded &&
-      isBadgesLoaded &&
-      isHistoryLoaded
-    ) {
+    if (isReadyToAddRecentMessages) {
       dispatch(addRecentMessages(currentChannel));
     }
-  }, [
-    dispatch,
-    isAuth,
-    currentChannel,
-    isTwitchEmotesLoaded,
-    isBttvEmotesLoaded,
-    isFfzEmotesLoaded,
-    isBadgesLoaded,
-    isHistoryLoaded,
-  ]);
+  }, [dispatch, currentChannel, isReadyToAddRecentMessages]);
 
   useEffect(() => {
     if (userId) {
       dispatch(fetchTwitchEmotes(userId));
+      dispatch(fetchBlockedUsers(userId));
     }
   }, [dispatch, userId]);
 
