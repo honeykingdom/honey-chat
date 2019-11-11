@@ -8,9 +8,16 @@ import Message from './Message';
 import Notice from './Notice';
 import UserNotice from './UserNotice';
 
-const ChatMessage = ({ message, login, isEven }) => {
+const ChatMessage = ({ message, login, isEven, isShowTimestamps }) => {
   if (message.type === MESSAGE_TYPES.MESSAGE) {
-    return <Message message={message} login={login} isEven={isEven} />;
+    return (
+      <Message
+        message={message}
+        login={login}
+        isEven={isEven}
+        isShowTimestamps={isShowTimestamps}
+      />
+    );
   }
 
   if (message.type === MESSAGE_TYPES.NOTICE_MESSAGE) {
@@ -25,14 +32,16 @@ const ChatMessage = ({ message, login, isEven }) => {
 };
 
 ChatMessage.defaultProps = {
-  isEven: false,
   login: '',
+  isEven: false,
+  isShowTimestamps: false,
 };
 
 ChatMessage.propTypes = {
   message: pt.oneOfType([messageType, noticeType, userNoticeType]).isRequired,
   login: pt.string,
   isEven: pt.bool,
+  isShowTimestamps: pt.bool,
 };
 
 export default ChatMessage;
