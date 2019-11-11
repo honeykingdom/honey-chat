@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pipe, path, pathOr, values, flatten, toPairs } from 'ramda';
+import { pipe, path, pathOr, propOr, values, flatten, omit, map } from 'ramda';
 
 import {
   createTwitchEmote,
@@ -62,6 +62,9 @@ const regexEmotesMap = {
   'B-?\\)':          'B)',
 };
 
+const createGlobalTwitchEmote = ({ id, code }) =>
+  createTwitchEmote({ id, code: regexEmotesMap[code] || code });
+
 export const emoteCategoriesSelector = createSelector(
   (state) => state.emotes.twitch.items,
   bttvGlobalEmotesSelector,
@@ -78,12 +81,15 @@ export const emoteCategoriesSelector = createSelector(
         title: 'FrankerFaceZ Channel Emotes',
         items: ffzChannel.map(createFfzEmote),
       },
-      ...toPairs(twitch).map(([setId, items]) => ({
-        title: setId === '0' ? 'Twitch' : null,
-        items: items.map(({ id, code }) =>
-          createTwitchEmote({ id, code: regexEmotesMap[code] || code }),
-        ),
-      })),
+      ...pipe(
+        omit(['0']),
+        values,
+        map((items) => ({ items: map(createTwitchEmote, items) })),
+      )(twitch),
+      {
+        title: 'Twitch',
+        items: map(createGlobalTwitchEmote, propOr([], '0', twitch)),
+      },
       {
         title: 'BetterTTV',
         items: bttvGlobal.map(createBttvEmote),
@@ -106,9 +112,7 @@ const createIsEmotesLoadedSelector = (type) => (state) => {
 };
 
 export const isBttvEmotesLoadedSelector = createIsEmotesLoadedSelector('bttv');
-
 export const isFfzEmotesLoadedSelector = createIsEmotesLoadedSelector('ffz');
-
 export const isTwitchEmotesLoadedSelector = (state) =>
   state.emotes.twitch.isLoaded || state.emotes.twitch.isError;
 
