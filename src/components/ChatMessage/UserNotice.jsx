@@ -22,4 +22,4 @@ UserNotice.propTypes = {
   message: userNoticeType.isRequired,
 };
 
-export default UserNotice;
+export default React.memo(UserNotice);

@@ -25,4 +25,4 @@ Notice.propTypes = {
   isEven: pt.bool,
 };
 
-export default Notice;
+export default React.memo(Notice);

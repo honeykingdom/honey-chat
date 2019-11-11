@@ -182,4 +182,4 @@ Message.propTypes = {
   isEven: pt.bool,
 };
 
-export default Message;
+export default React.memo(Message);
