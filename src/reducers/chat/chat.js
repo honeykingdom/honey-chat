@@ -1,5 +1,8 @@
-import { createActions, handleActions } from 'redux-actions';
-import { pathOr, omit } from 'ramda';
+import { createActions, handleActions, combineActions } from 'redux-actions';
+import { mergeDeepRight, pipe, prop, map, omit } from 'ramda';
+
+import { fetchBlockedUsers as apiFetchBlockedUsers } from 'utils/api';
+import storeFlags from 'utils/storeFlags';
 
 const defaultState = {
   currentChannel: null,
@@ -10,6 +13,10 @@ const defaultState = {
     //   userState: {},
     //   roomState: {},
     // }
+  },
+  blockedUsers: {
+    ...storeFlags.default,
+    items: [],
   },
 };
 
@@ -28,6 +35,36 @@ export const {
   'UPDATE_ROOM_STATE',
   'REMOVE_CHANNEL',
 );
+
+const {
+  fetchBlockedUsersRequest,
+  fetchBlockedUsersSuccess,
+  fetchBlockedUsersFailure,
+} = createActions(
+  'FETCH_BLOCKED_USERS_REQUEST',
+  'FETCH_BLOCKED_USERS_SUCCESS',
+  'FETCH_BLOCKED_USERS_FAILURE',
+);
+
+const parseBlockedUsers = pipe(
+  prop('blocks'),
+  map(({ _id: id, name, display_name: displayName }) => ({
+    id,
+    name,
+    displayName,
+  })),
+);
+
+export const fetchBlockedUsers = (userId) => async (dispatch) => {
+  dispatch(fetchBlockedUsersRequest());
+  try {
+    const response = await apiFetchBlockedUsers(userId);
+
+    dispatch(fetchBlockedUsersRequest({ items: parseBlockedUsers(response) }));
+  } catch (error) {
+    dispatch(fetchBlockedUsersRequest({ error }));
+  }
+};
 
 const handleSetCurrentChannel = (state, { payload }) => ({
   ...state,
@@ -59,6 +96,27 @@ const handleRemoveChannel = (state, { payload: channel }) => ({
   ...state,
   channels: omit([channel], state.channels),
 });
+const handleFetchBlockUsers = (state, { type, payload }) => {
+  if (type === fetchBlockedUsersRequest.toString()) {
+    return mergeDeepRight(state, {
+      blockedUsers: { ...storeFlags.request },
+    });
+  }
+
+  if (type === fetchBlockedUsersSuccess.toString()) {
+    return mergeDeepRight(state, {
+      channels: { ...storeFlags.success, items: payload.items },
+    });
+  }
+
+  if (type === fetchBlockedUsersFailure.toString()) {
+    return mergeDeepRight(state, {
+      channels: { ...storeFlags.failure, error: payload.error },
+    });
+  }
+
+  return state;
+};
 
 const reducer = handleActions(
   {
@@ -68,6 +126,11 @@ const reducer = handleActions(
     [updateUserState]: handleUpdateUserState,
     [updateRoomState]: handleUpdateRoomState,
     [removeChannel]: handleRemoveChannel,
+    [combineActions(
+      fetchBlockedUsersRequest,
+      fetchBlockedUsersSuccess,
+      fetchBlockedUsersFailure,
+    )]: handleFetchBlockUsers,
   },
   defaultState,
 );
