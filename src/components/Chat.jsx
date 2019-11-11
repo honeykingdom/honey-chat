@@ -5,6 +5,10 @@ import styled from 'styled-components';
 
 import { messagesSelector } from 'reducers/messages/selectors';
 import { isEvenSelector } from 'reducers/chat/selectors';
+import {
+  isShowTimestampsSelector,
+  isSplitChatSelector,
+} from 'reducers/options/selectors';
 import Scrollbar from 'components/Scrollbar';
 
 import ChatInput from './ChatInput';
@@ -53,6 +57,8 @@ const Chat = ({ onSendMessage }) => {
   const isConnected = useSelector((state) => state.chat.isConnected);
   const isEven = useSelector(isEvenSelector);
   const login = useSelector((state) => state.auth.user.login);
+  const isShowTimestamps = useSelector(isShowTimestampsSelector);
+  const isSplitChat = useSelector(isSplitChatSelector);
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
@@ -83,6 +89,11 @@ const Chat = ({ onSendMessage }) => {
     setIsMoreMessagesButtonVisible(isVisible);
   };
 
+  const getIsEven = (key) => {
+    if (!isSplitChat) return false;
+    return isEven ? key % 2 === 1 : key % 2 === 0;
+  };
+
   return (
     <ChatRoot>
       <ChatWrapper>
@@ -93,7 +104,8 @@ const Chat = ({ onSendMessage }) => {
                 key={message.tags.id}
                 message={message}
                 login={login}
-                isEven={isEven ? key % 2 === 1 : key % 2 === 0}
+                isEven={getIsEven(key)}
+                isShowTimestamps={isShowTimestamps}
               />
             ))}
           </StyledScrollbar>
