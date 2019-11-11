@@ -29,6 +29,7 @@ const booleanMessageTags = [
 ];
 
 const numberMessageTags = [
+  'tmi-sent-ts',
   'ban-duration',
   'bits',
   'msg-param-cumulative-months',
