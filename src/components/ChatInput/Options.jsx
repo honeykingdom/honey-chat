@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import pt from 'prop-types';
+// import pt from 'prop-types';
 import styled from 'styled-components';
 
 import { changeOption } from 'reducers/options';
@@ -62,14 +62,18 @@ const Options = () => {
         />
       </Option>
     ),
+    [dispatch],
   );
 
-  const renderOptionsCategory = useCallback(({ title, items }, key) => (
-    <Category key={key}>
-      {!!title && <CategoryHeader>{title}</CategoryHeader>}
-      <CategoryItems>{items.map(renderOption)}</CategoryItems>
-    </Category>
-  ));
+  const renderOptionsCategory = useCallback(
+    ({ title, items }, key) => (
+      <Category key={key}>
+        {!!title && <CategoryHeader>{title}</CategoryHeader>}
+        <CategoryItems>{items.map(renderOption)}</CategoryItems>
+      </Category>
+    ),
+    [renderOption],
+  );
 
   return (
     <OptionsRoot>

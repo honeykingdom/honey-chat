@@ -172,9 +172,6 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
     setText('');
   };
 
-  const handleEmoteClick = (emoteName) =>
-    setText(`${text.trim()} ${emoteName} `.trimLeft());
-
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key === 'Enter') {
@@ -199,21 +196,31 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
     };
   }, [handleKeyDown]);
 
-  const renderEmotesModal = useCallback(() => (
-    <EmotesModal>
-      <ChatModal onClose={handleCloseEmotesModal}>
-        <EmotePicker onEmoteClick={handleEmoteClick} />
-      </ChatModal>
-    </EmotesModal>
-  ));
+  const renderEmotesModal = useCallback(
+    () => (
+      <EmotesModal>
+        <ChatModal onClose={handleCloseEmotesModal}>
+          <EmotePicker
+            onEmoteClick={(emoteName) =>
+              setText((t) => `${t.trim()} ${emoteName} `.trimLeft())
+            }
+          />
+        </ChatModal>
+      </EmotesModal>
+    ),
+    [],
+  );
 
-  const renderOptionsModal = useCallback(() => (
-    <OptionsModal ref={optionsModalRef}>
-      <ChatModal onClose={handleCloseOptionsModal}>
-        <Options />
-      </ChatModal>
-    </OptionsModal>
-  ));
+  const renderOptionsModal = useCallback(
+    () => (
+      <OptionsModal ref={optionsModalRef}>
+        <ChatModal onClose={handleCloseOptionsModal}>
+          <Options />
+        </ChatModal>
+      </OptionsModal>
+    ),
+    [],
+  );
 
   return (
     <ChatInputRoot onSubmit={handleSubmit}>
