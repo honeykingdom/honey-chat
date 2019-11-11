@@ -2,7 +2,7 @@ import { createActions, handleActions, combineActions } from 'redux-actions';
 import { mergeDeepRight, pipe, prop, path, map, omit } from 'ramda';
 
 import { fetchBlockedUsers as apiFetchBlockedUsers } from 'utils/api';
-import storeFlags from 'utils/storeFlags';
+import { STORE_FLAGS } from 'utils/constants';
 
 const defaultState = {
   currentChannel: null,
@@ -15,7 +15,7 @@ const defaultState = {
     // }
   },
   blockedUsers: {
-    ...storeFlags.default,
+    ...STORE_FLAGS.DEFAULT,
     items: [],
   },
 };
@@ -92,19 +92,19 @@ const handleRemoveChannel = (state, { payload: channel }) => ({
 const handleFetchBlockUsers = (state, { type, payload }) => {
   if (type === fetchBlockedUsersRequest.toString()) {
     return mergeDeepRight(state, {
-      blockedUsers: { ...storeFlags.request },
+      blockedUsers: { ...STORE_FLAGS.REQUEST },
     });
   }
 
   if (type === fetchBlockedUsersSuccess.toString()) {
     return mergeDeepRight(state, {
-      blockedUsers: { ...storeFlags.success, items: payload.items },
+      blockedUsers: { ...STORE_FLAGS.SUCCESS, items: payload.items },
     });
   }
 
   if (type === fetchBlockedUsersFailure.toString()) {
     return mergeDeepRight(state, {
-      blockedUsers: { ...storeFlags.failure, error: payload.error },
+      blockedUsers: { ...STORE_FLAGS.FAILURE, error: payload.error },
     });
   }
 

@@ -12,8 +12,11 @@ import {
   channelBadgesSelector,
 } from 'reducers/badges/selectors';
 import { fetchRecentMessages as apiFetchRecentMessages } from 'utils/api';
-import { CHANNEL_MESSAGES_LIMIT, MESSAGE_TYPES } from 'utils/constants';
-import storeFlags from 'utils/storeFlags';
+import {
+  CHANNEL_MESSAGES_LIMIT,
+  MESSAGE_TYPES,
+  STORE_FLAGS,
+} from 'utils/constants';
 import formatMessage from 'utils/formatMessage';
 import getMessageBadges from 'utils/getMessageBadges';
 import normalizeRecentMessages from 'utils/normalizeRecentMessages';
@@ -87,7 +90,7 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
   if (type === fetchRecentMessagesRequest.toString()) {
     return mergeDeepRight(state, {
       [channel]: {
-        history: { ...storeFlags.request },
+        history: { ...STORE_FLAGS.REQUEST },
       },
     });
   }
@@ -95,7 +98,7 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
   if (type === fetchRecentMessagesSuccess.toString()) {
     return mergeDeepRight(state, {
       [channel]: {
-        history: { ...storeFlags.success, items: payload.items },
+        history: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
     });
   }
@@ -103,7 +106,7 @@ const handleFetchRecentMessages = (state, { type, payload }) => {
   if (type === fetchRecentMessagesFailure.toString()) {
     return mergeDeepRight(state, {
       [channel]: {
-        history: { ...storeFlags.failure, error: payload.error },
+        history: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },
     });
   }

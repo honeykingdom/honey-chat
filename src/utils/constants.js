@@ -11,3 +11,29 @@ export const MESSAGE_TYPES = {
   NOTICE_MESSAGE: 'NOTICE_MESSAGE',
   USER_NOTICE_MESSAGE: 'USER_NOTICE_MESSAGE',
 };
+
+export const STORE_FLAGS = {
+  DEFAULT: {
+    isLoading: false,
+    isLoaded: false,
+    isError: false,
+    error: null,
+  },
+  REQUEST: {
+    isLoading: true,
+    isLoaded: false,
+    isError: false,
+    error: null,
+  },
+  SUCCESS: {
+    isLoading: false,
+    isLoaded: true,
+    isError: false,
+    error: null,
+  },
+  FAILURE: {
+    isLoading: false,
+    isLoaded: false,
+    isError: true,
+  },
+};

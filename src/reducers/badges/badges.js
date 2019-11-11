@@ -5,11 +5,11 @@ import {
   fetchGlobalBadges as apiFetchGlobalBadges,
   fetchChannelBadges as apiFetchChannelBadges,
 } from 'utils/api';
-import storeFlags from 'utils/storeFlags';
+import { STORE_FLAGS } from 'utils/constants';
 
 const defaultState = {
   global: {
-    ...storeFlags.default,
+    ...STORE_FLAGS.DEFAULT,
     items: {},
   },
   channels: {
@@ -73,19 +73,19 @@ export const fetchChannelBadges = (channelId, channel) => async (dispatch) => {
 const handleFetchFfzGlobalEmotes = (state, { type, payload }) => {
   if (type === fetchGlobalBadgesRequest.toString()) {
     return mergeDeepRight(state, {
-      global: { ...storeFlags.request },
+      global: { ...STORE_FLAGS.REQUEST },
     });
   }
 
   if (type === fetchGlobalBadgesSuccess.toString()) {
     return mergeDeepRight(state, {
-      global: { ...storeFlags.success, items: payload.items },
+      global: { ...STORE_FLAGS.SUCCESS, items: payload.items },
     });
   }
 
   if (type === fetchGlobalBadgesFailure.toString()) {
     return mergeDeepRight(state, {
-      global: { ...storeFlags.failure, error: payload.error },
+      global: { ...STORE_FLAGS.FAILURE, error: payload.error },
     });
   }
 
@@ -98,7 +98,7 @@ const handleFetchFfzChannelEmotes = (state, { type, payload }) => {
   if (type === fetchChannelBadgesRequest.toString()) {
     return mergeDeepRight(state, {
       channels: {
-        [channel]: { ...storeFlags.request },
+        [channel]: { ...STORE_FLAGS.REQUEST },
       },
     });
   }
@@ -106,7 +106,7 @@ const handleFetchFfzChannelEmotes = (state, { type, payload }) => {
   if (type === fetchChannelBadgesSuccess.toString()) {
     return mergeDeepRight(state, {
       channels: {
-        [channel]: { ...storeFlags.success, items: payload.items },
+        [channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
     });
   }
@@ -114,7 +114,7 @@ const handleFetchFfzChannelEmotes = (state, { type, payload }) => {
   if (type === fetchChannelBadgesFailure.toString()) {
     return mergeDeepRight(state, {
       channels: {
-        [channel]: { ...storeFlags.failure, error: payload.error },
+        [channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },
     });
   }
