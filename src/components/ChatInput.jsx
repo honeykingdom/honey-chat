@@ -8,8 +8,8 @@ import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
 import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
 import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
-import EmotePicker from 'components/ChatInput/EmotePicker';
-import Options from 'components/ChatInput/Options';
+import EmotePicker from 'components/EmotePicker';
+import Options from 'components/Options';
 
 const ChatInputRoot = styled.form`
   padding-left: 10px;
