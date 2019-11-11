@@ -55,3 +55,6 @@ export const fetchChannelBadges = (channelId, language = 'en') =>
   apiRequest(
     `https://badges.twitch.tv/v1/badges/channels/${channelId}/display?language=${language}`,
   );
+
+export const fetchBlockedUsers = (userId) =>
+  apiRequestKraken(`/users/${userId}/blocks`);
