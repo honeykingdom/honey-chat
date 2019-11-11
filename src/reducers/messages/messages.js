@@ -1,9 +1,4 @@
-import {
-  createAction,
-  createActions,
-  handleActions,
-  combineActions,
-} from 'redux-actions';
+import { createAction, createActions, handleActions } from 'redux-actions';
 import { pathOr, mergeDeepRight, concat } from 'ramda';
 
 import { emotesSelector } from 'reducers/emotes/selectors';
@@ -82,36 +77,6 @@ export const fetchRecentMessages = (channel) => async (dispatch) => {
   } catch (error) {
     dispatch(fetchRecentMessagesFailure({ channel, error }));
   }
-};
-
-const handleFetchRecentMessages = (state, { type, payload }) => {
-  const { channel } = payload;
-
-  if (type === fetchRecentMessagesRequest.toString()) {
-    return mergeDeepRight(state, {
-      [channel]: {
-        history: { ...STORE_FLAGS.REQUEST },
-      },
-    });
-  }
-
-  if (type === fetchRecentMessagesSuccess.toString()) {
-    return mergeDeepRight(state, {
-      [channel]: {
-        history: { ...STORE_FLAGS.SUCCESS, items: payload.items },
-      },
-    });
-  }
-
-  if (type === fetchRecentMessagesFailure.toString()) {
-    return mergeDeepRight(state, {
-      [channel]: {
-        history: { ...STORE_FLAGS.FAILURE, error: payload.error },
-      },
-    });
-  }
-
-  return state;
 };
 
 export const addMessage = ({ message, tags, ...rest }) => (
@@ -207,16 +172,33 @@ const handleClearChat = (state, { payload }) => {
   };
 };
 
+const handleFetchRecentMessages = {
+  [fetchRecentMessagesRequest]: (state, { payload }) =>
+    mergeDeepRight(state, {
+      [payload.channel]: {
+        history: { ...STORE_FLAGS.REQUEST },
+      },
+    }),
+  [fetchRecentMessagesSuccess]: (state, { payload }) =>
+    mergeDeepRight(state, {
+      [payload.channel]: {
+        history: { ...STORE_FLAGS.SUCCESS, items: payload.items },
+      },
+    }),
+  [fetchRecentMessagesFailure]: (state, { payload }) =>
+    mergeDeepRight(state, {
+      [payload.channel]: {
+        history: { ...STORE_FLAGS.FAILURE, error: payload.error },
+      },
+    }),
+};
+
 const reducer = handleActions(
   {
     [addMessageEntity]: handleAddMessageEntity,
     [addRecentMessagesAction]: handleAddRecentMessages,
-    [combineActions(
-      fetchRecentMessagesRequest,
-      fetchRecentMessagesSuccess,
-      fetchRecentMessagesFailure,
-    )]: handleFetchRecentMessages,
     [clearChat]: handleClearChat,
+    ...handleFetchRecentMessages,
   },
   defaultState,
 );

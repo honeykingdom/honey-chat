@@ -1,12 +1,10 @@
-import { createActions, handleActions, combineActions } from 'redux-actions';
+import { createActions, handleActions } from 'redux-actions';
 
+import { STORE_FLAGS } from 'utils/constants';
 import { fetchTwitchEmotesBySets } from 'utils/api';
 
 const defaultState = {
-  isLoading: false,
-  isLoaded: false,
-  isError: false,
-  error: null,
+  ...STORE_FLAGS.DEFAULT,
   items: {
     // [setId]: [
     //   {
@@ -35,54 +33,28 @@ export const fetchTwitchEmotes = (userId) => async (dispatch) => {
     const data = { items: response.emoticon_sets };
 
     dispatch(fetchTwitchEmotesSuccess(data));
-  } catch (e) {
-    dispatch(fetchTwitchEmotesFailure(e));
+  } catch (error) {
+    dispatch(fetchTwitchEmotesFailure({ error }));
   }
 };
 
-const handleFetchTwitchEmotes = (state, { type, payload }) => {
-  if (type === fetchTwitchEmotesRequest.toString()) {
-    return {
-      ...state,
-      isLoading: true,
-      isLoaded: false,
-      isError: false,
-      error: null,
-    };
-  }
-
-  if (type === fetchTwitchEmotesSuccess.toString()) {
-    return {
-      ...state,
-      isLoading: false,
-      isLoaded: true,
-      isError: false,
-      ...payload,
-    };
-  }
-
-  if (type === fetchTwitchEmotesFailure.toString()) {
-    return {
-      ...state,
-      isLoading: false,
-      isLoaded: false,
-      isError: true,
-      error: payload,
-    };
-  }
-
-  return state;
+const handleFetchTwitchEmotes = {
+  [fetchTwitchEmotesRequest]: (state) => ({
+    ...state,
+    ...STORE_FLAGS.REQUEST,
+  }),
+  [fetchTwitchEmotesSuccess]: (state, { payload }) => ({
+    ...state,
+    ...STORE_FLAGS.SUCCESS,
+    items: payload.items,
+  }),
+  [fetchTwitchEmotesFailure]: (state, { payload }) => ({
+    ...state,
+    ...STORE_FLAGS.FAILURE,
+    error: payload.error,
+  }),
 };
 
-const reducer = handleActions(
-  {
-    [combineActions(
-      fetchTwitchEmotesRequest,
-      fetchTwitchEmotesSuccess,
-      fetchTwitchEmotesFailure,
-    )]: handleFetchTwitchEmotes,
-  },
-  defaultState,
-);
+const reducer = handleActions(handleFetchTwitchEmotes, defaultState);
 
 export default reducer;

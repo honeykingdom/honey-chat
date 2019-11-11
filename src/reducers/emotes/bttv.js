@@ -1,9 +1,11 @@
-import { createActions, handleActions, combineActions } from 'redux-actions';
+import { createActions, handleActions } from 'redux-actions';
+import { mergeDeepRight } from 'ramda';
 
 import {
   fetchBttvGlobalEmotes as apiFetchBttvGlobalEmotes,
   fetchBttvChannelEmotes as apiFetchBttvChannelEmotes,
 } from 'utils/api';
+import { STORE_FLAGS } from 'utils/constants';
 
 const defaultState = {
   global: {
@@ -76,115 +78,46 @@ export const fetchBttvChannelEmotes = (channelId, channel) => async (
   }
 };
 
-const handleFetchBttvGlobalEmotes = (state, { type, payload }) => {
-  if (type === fetchBttvGlobalEmotesRequest.toString()) {
-    return {
-      ...state,
-      global: {
-        ...state.global,
-        isLoading: true,
-        isLoaded: false,
-        isError: false,
-        error: null,
-      },
-    };
-  }
-
-  if (type === fetchBttvGlobalEmotesSuccess.toString()) {
-    return {
-      ...state,
-      global: {
-        ...state.global,
-        isLoading: false,
-        isLoaded: true,
-        isError: false,
-        error: null,
-        ...payload,
-      },
-    };
-  }
-
-  if (type === fetchBttvGlobalEmotesFailure.toString()) {
-    return {
-      ...state,
-      global: {
-        ...state.global,
-        isLoading: false,
-        isLoaded: false,
-        isError: true,
-        ...payload,
-      },
-    };
-  }
-
-  return state;
+const handleFetchBttvGlobalEmotes = {
+  [fetchBttvGlobalEmotesRequest]: (state) =>
+    mergeDeepRight(state, {
+      global: { ...STORE_FLAGS.REQUEST },
+    }),
+  [fetchBttvGlobalEmotesSuccess]: (state, { payload }) =>
+    mergeDeepRight(state, {
+      global: { ...STORE_FLAGS.SUCCESS, items: payload.items },
+    }),
+  [fetchBttvGlobalEmotesFailure]: (state, { payload }) =>
+    mergeDeepRight(state, {
+      global: { ...STORE_FLAGS.FAILURE, error: payload.error },
+    }),
 };
 
-const handleFetchBttvChannelEmotes = (state, { type, payload }) => {
-  const { channel } = payload;
-
-  if (type === fetchBttvChannelEmotesRequest.toString()) {
-    return {
-      ...state,
+const handleFetchBttvChannelEmotes = {
+  [fetchBttvChannelEmotesRequest]: (state, { payload }) =>
+    mergeDeepRight(state, {
       channels: {
-        ...state.channels,
-        [channel]: {
-          isLoading: true,
-          isLoaded: false,
-          isError: false,
-          error: null,
-        },
+        [payload.channel]: { ...STORE_FLAGS.REQUEST },
       },
-    };
-  }
-
-  if (type === fetchBttvChannelEmotesSuccess.toString()) {
-    return {
-      ...state,
+    }),
+  [fetchBttvChannelEmotesSuccess]: (state, { payload }) =>
+    mergeDeepRight(state, {
       channels: {
-        ...state.channels,
-        [channel]: {
-          isLoading: false,
-          isLoaded: true,
-          isError: false,
-          error: null,
-          items: payload.items,
-        },
+        [payload.channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
-    };
-  }
-
-  if (type === fetchBttvChannelEmotesFailure.toString()) {
-    return {
-      ...state,
+    }),
+  [fetchBttvChannelEmotesFailure]: (state, { payload }) =>
+    mergeDeepRight(state, {
       channels: {
-        ...state.channels,
-        [channel]: {
-          isLoading: false,
-          isLoaded: false,
-          isError: true,
-          error: payload.error,
-        },
+        [payload.channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },
-    };
-  }
-
-  return state;
+    }),
 };
 
 const reducer = handleActions(
   {
-    [combineActions(
-      fetchBttvGlobalEmotesRequest,
-      fetchBttvGlobalEmotesSuccess,
-      fetchBttvGlobalEmotesFailure,
-    )]: handleFetchBttvGlobalEmotes,
-
-    [combineActions(
-      fetchBttvChannelEmotesRequest,
-      fetchBttvChannelEmotesSuccess,
-      fetchBttvChannelEmotesFailure,
-    )]: handleFetchBttvChannelEmotes,
+    ...handleFetchBttvGlobalEmotes,
+    ...handleFetchBttvChannelEmotes,
   },
   defaultState,
 );

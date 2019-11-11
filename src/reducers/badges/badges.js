@@ -1,4 +1,4 @@
-import { createActions, handleActions, combineActions } from 'redux-actions';
+import { createActions, handleActions } from 'redux-actions';
 import { pathOr, mergeDeepRight } from 'ramda';
 
 import {
@@ -70,71 +70,46 @@ export const fetchChannelBadges = (channelId, channel) => async (dispatch) => {
   }
 };
 
-const handleFetchFfzGlobalEmotes = (state, { type, payload }) => {
-  if (type === fetchGlobalBadgesRequest.toString()) {
-    return mergeDeepRight(state, {
+const handleFetchGlobalBadges = {
+  [fetchGlobalBadgesRequest]: (state) =>
+    mergeDeepRight(state, {
       global: { ...STORE_FLAGS.REQUEST },
-    });
-  }
-
-  if (type === fetchGlobalBadgesSuccess.toString()) {
-    return mergeDeepRight(state, {
+    }),
+  [fetchGlobalBadgesSuccess]: (state, { payload }) =>
+    mergeDeepRight(state, {
       global: { ...STORE_FLAGS.SUCCESS, items: payload.items },
-    });
-  }
-
-  if (type === fetchGlobalBadgesFailure.toString()) {
-    return mergeDeepRight(state, {
+    }),
+  [fetchGlobalBadgesFailure]: (state, { payload }) =>
+    mergeDeepRight(state, {
       global: { ...STORE_FLAGS.FAILURE, error: payload.error },
-    });
-  }
-
-  return state;
+    }),
 };
 
-const handleFetchFfzChannelEmotes = (state, { type, payload }) => {
-  const { channel } = payload;
-
-  if (type === fetchChannelBadgesRequest.toString()) {
-    return mergeDeepRight(state, {
+const handleFetchChannelBadges = {
+  [fetchChannelBadgesRequest]: (state, { payload }) =>
+    mergeDeepRight(state, {
       channels: {
-        [channel]: { ...STORE_FLAGS.REQUEST },
+        [payload.channel]: { ...STORE_FLAGS.REQUEST },
       },
-    });
-  }
-
-  if (type === fetchChannelBadgesSuccess.toString()) {
-    return mergeDeepRight(state, {
+    }),
+  [fetchChannelBadgesSuccess]: (state, { payload }) =>
+    mergeDeepRight(state, {
       channels: {
-        [channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
+        [payload.channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
-    });
-  }
-
-  if (type === fetchChannelBadgesFailure.toString()) {
-    return mergeDeepRight(state, {
+    }),
+  [fetchChannelBadgesFailure]: (state, { payload }) =>
+    mergeDeepRight(state, {
       channels: {
-        [channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
+        [payload.channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },
-    });
-  }
-
-  return state;
+    }),
 };
 
 const reducer = handleActions(
   {
-    [combineActions(
-      fetchGlobalBadgesRequest,
-      fetchGlobalBadgesSuccess,
-      fetchGlobalBadgesFailure,
-    )]: handleFetchFfzGlobalEmotes,
-
-    [combineActions(
-      fetchChannelBadgesRequest,
-      fetchChannelBadgesSuccess,
-      fetchChannelBadgesFailure,
-    )]: handleFetchFfzChannelEmotes,
+    ...handleFetchGlobalBadges,
+    ...handleFetchChannelBadges,
   },
   defaultState,
 );
