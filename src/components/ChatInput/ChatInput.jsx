@@ -5,7 +5,11 @@ import { Link } from 'react-router-dom';
 import useOnClickOutside from 'use-onclickoutside';
 
 import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
-import EmotePicker from './EmotePicker';
+import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
+import ChatModal from 'components/ChatModal';
+import IconButton from 'components/IconButton';
+import EmotePicker from 'components/ChatInput/EmotePicker';
+import Options from 'components/ChatInput/Options';
 
 const ChatInputRoot = styled.form`
   padding-left: 10px;
@@ -17,6 +21,9 @@ const ChatInputRoot = styled.form`
     margin-bottom: 10px;
   }
 `;
+const ControlsWrapper = styled.div`
+  position: relative;
+`;
 const Controls = styled.div`
   display: flex;
   flex-direction: row;
@@ -24,7 +31,7 @@ const Controls = styled.div`
   align-items: center;
 
   & > :not(:last-child) {
-    margin-right: 20px;
+    margin-right: 8px;
   }
 `;
 const SendButton = styled.button`
@@ -60,12 +67,23 @@ const SendButton = styled.button`
 const TextareaWrapper = styled.div`
   position: relative;
 `;
-const EmotePickerModal = styled.div`
+const EmotesModal = styled.div`
   position: absolute;
   top: auto;
   right: 0;
   bottom: 100%;
   margin-bottom: 8px;
+  width: 320px;
+  height: 405px;
+  min-width: 0;
+  white-space: nowrap;
+`;
+const OptionsModal = styled.div`
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 10px;
   width: 320px;
   height: 405px;
   min-width: 0;
@@ -102,38 +120,17 @@ const Textarea = styled.textarea`
     pointer-events: none;
   }
 `;
-const IconsButton = styled.button.attrs({ type: 'button' })`
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const EmotesButton = styled(IconButton)`
   position: absolute;
   right: 5px;
   bottom: 5px;
-  width: 30px;
-  height: 30px;
-  background: none;
-  border: none;
-  outline: none;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  &:focus {
-    box-shadow: 0 0 6px 0 #772ce8;
-  }
 `;
 const SmileyFaceIcon = styled(SmileyFaceIconSvg)`
+  display: block;
+  width: 20px;
+  height: 20px;
+`;
+const GearsIcon = styled(GearsIconSvg)`
   display: block;
   width: 20px;
   height: 20px;
@@ -156,12 +153,16 @@ const StyledLink = styled(Link)`
 const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
   const textareaRef = useRef(null);
   const [text, setText] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const modalRef = React.useRef(null);
+  const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
+  const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
+  const textareaWrapperRef = React.useRef(null);
+  const optionsModalRef = React.useRef(null);
 
-  const handleCloseModal = () => setIsModalVisible(false);
+  const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
+  const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
 
-  useOnClickOutside(modalRef, handleCloseModal);
+  useOnClickOutside(textareaWrapperRef, handleCloseEmotesModal);
+  useOnClickOutside(optionsModalRef, handleCloseOptionsModal);
 
   const handleChange = (e) => setText(e.target.value);
 
@@ -171,7 +172,8 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
     setText('');
   };
 
-  const handleEmoteClick = (emoteName) => setText(`${text} ${emoteName}`);
+  const handleEmoteClick = (emoteName) =>
+    setText(`${text.trim()} ${emoteName} `.trimLeft());
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -197,17 +199,26 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
     };
   }, [handleKeyDown]);
 
+  const renderEmotesModal = useCallback(() => (
+    <EmotesModal>
+      <ChatModal onClose={handleCloseEmotesModal}>
+        <EmotePicker onEmoteClick={handleEmoteClick} />
+      </ChatModal>
+    </EmotesModal>
+  ));
+
+  const renderOptionsModal = useCallback(() => (
+    <OptionsModal ref={optionsModalRef}>
+      <ChatModal onClose={handleCloseOptionsModal}>
+        <Options />
+      </ChatModal>
+    </OptionsModal>
+  ));
+
   return (
     <ChatInputRoot onSubmit={handleSubmit}>
-      <TextareaWrapper>
-        {isModalVisible && (
-          <EmotePickerModal ref={modalRef}>
-            <EmotePicker
-              onClose={handleCloseModal}
-              onEmoteClick={handleEmoteClick}
-            />
-          </EmotePickerModal>
-        )}
+      <TextareaWrapper ref={textareaWrapperRef}>
+        {isEmotesModalVisible && renderEmotesModal()}
         <Textarea
           placeholder="Send a message"
           ref={textareaRef}
@@ -216,18 +227,28 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
           onChange={handleChange}
           value={text}
         />
-        <IconsButton onClick={() => setIsModalVisible(!isModalVisible)}>
+        <EmotesButton
+          onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
+        >
           <SmileyFaceIcon />
-        </IconsButton>
+        </EmotesButton>
       </TextareaWrapper>
-      <Controls>
-        {!isAuth && (
-          <StyledLink to="/chat/auth">Sign in with Twitch</StyledLink>
-        )}
-        <SendButton disabled={isDisabled} type="submit">
-          Chat
-        </SendButton>
-      </Controls>
+      <ControlsWrapper>
+        <Controls>
+          {!isAuth && (
+            <StyledLink to="/chat/auth">Sign in with Twitch</StyledLink>
+          )}
+          <IconButton
+            onClick={() => setIsOptionsModalVisible(!isOptionsModalVisible)}
+          >
+            <GearsIcon />
+          </IconButton>
+          <SendButton disabled={isDisabled} type="submit">
+            Chat
+          </SendButton>
+        </Controls>
+        {isOptionsModalVisible && renderOptionsModal()}
+      </ControlsWrapper>
     </ChatInputRoot>
   );
 };
