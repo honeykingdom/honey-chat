@@ -137,6 +137,8 @@ const Home = () => {
       client.connect();
     }
 
+    // TODO: update blocked users if the /block command was sent
+
     client.on('connected', handleConnected);
     client.on('disconnected', handleDisconnected);
     client.on('globaluserstate', handleGlobalUserState);

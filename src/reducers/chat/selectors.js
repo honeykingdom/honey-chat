@@ -1,4 +1,4 @@
-import { prop, path, pathOr, map, pipe } from 'ramda';
+import { path, pathOr } from 'ramda';
 
 export const currentChannelSelector = pathOr('', ['chat', 'currentChannel']);
 
@@ -15,7 +15,4 @@ export const isEvenSelector = (state) =>
 export const isBlockedUsersLoadedSelector = (state) =>
   state.chat.blockedUsers.isLoaded || state.chat.blockedUsers.isError;
 
-export const blockedUsersSelector = pipe(
-  path(['chat', 'blockedUsers', 'items']),
-  map(prop('name')),
-);
+export const blockedUsersSelector = path(['chat', 'blockedUsers', 'items']);

@@ -1,5 +1,5 @@
 import { createActions, handleActions, combineActions } from 'redux-actions';
-import { mergeDeepRight, pipe, prop, map, omit } from 'ramda';
+import { mergeDeepRight, pipe, prop, path, map, omit } from 'ramda';
 
 import { fetchBlockedUsers as apiFetchBlockedUsers } from 'utils/api';
 import storeFlags from 'utils/storeFlags';
@@ -46,14 +46,7 @@ const {
   'FETCH_BLOCKED_USERS_FAILURE',
 );
 
-const parseBlockedUsers = pipe(
-  prop('blocks'),
-  map(({ user: { _id: id, name, display_name: displayName } }) => ({
-    id,
-    name,
-    displayName,
-  })),
-);
+const parseBlockedUsers = pipe(prop('blocks'), map(path(['user', 'name'])));
 
 export const fetchBlockedUsers = (userId) => async (dispatch) => {
   dispatch(fetchBlockedUsersRequest());
