@@ -1,14 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
-import {
-  mergeDeepRight,
-  pipe,
-  pathOr,
-  propOr,
-  map,
-  values,
-  flatten,
-  pick,
-} from 'ramda';
+import * as R from 'ramda';
 
 import {
   fetchFfzGlobalEmotes as apiFetchFfzGlobalEmotes,
@@ -52,13 +43,18 @@ const {
 );
 
 const parseFfzGlobalEmotes = ({ default_sets: defaultSets, sets }) =>
-  pipe(pick(defaultSets), values, map(propOr([], 'emoticons')), flatten)(sets);
+  R.pipe(
+    R.pick(defaultSets),
+    R.values,
+    R.map(R.propOr([], 'emoticons')),
+    R.flatten,
+  )(sets);
 
-const parseFfzChannelEmotes = pipe(
-  pathOr({}, ['sets']),
-  values,
-  map(pathOr([], ['emoticons'])),
-  flatten,
+const parseFfzChannelEmotes = R.pipe(
+  R.pathOr({}, ['sets']),
+  R.values,
+  R.map(R.pathOr([], ['emoticons'])),
+  R.flatten,
 );
 
 export const fetchFfzGlobalEmotes = () => async (dispatch) => {
@@ -94,34 +90,34 @@ export const fetchFfzChannelEmotes = (channelId, channel) => async (
 
 const handleFetchFfzGlobalEmotes = {
   [fetchFfzGlobalEmotesRequest]: (state) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.REQUEST },
     }),
   [fetchFfzGlobalEmotesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.SUCCESS, items: payload.items },
     }),
   [fetchFfzGlobalEmotesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.FAILURE, error: payload.error },
     }),
 };
 
 const handleFetchFfzChannelEmotes = {
   [fetchFfzChannelEmotesRequest]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.REQUEST },
       },
     }),
   [fetchFfzChannelEmotesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
     }),
   [fetchFfzChannelEmotesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },

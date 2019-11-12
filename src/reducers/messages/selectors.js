@@ -1,12 +1,12 @@
-import { pathOr } from 'ramda';
+import * as R from 'ramda';
 
 import { currentChannelSelector } from 'reducers/chat/selectors';
 
 export const messagesSelector = (state) =>
-  pathOr([], ['messages', currentChannelSelector(state), 'items'], state);
+  R.pathOr([], ['messages', currentChannelSelector(state), 'items'], state);
 
 export const isHistoryLoadingSelector = (state) =>
-  pathOr(false, [
+  R.pathOr(false, [
     'messages',
     currentChannelSelector(state),
     'history',
@@ -14,7 +14,7 @@ export const isHistoryLoadingSelector = (state) =>
   ])(state);
 
 export const isHistoryLoadedSelector = (state) =>
-  pathOr(false, [
+  R.pathOr(false, [
     'messages',
     currentChannelSelector(state),
     'history',

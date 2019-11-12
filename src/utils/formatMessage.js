@@ -2,18 +2,7 @@ import pt from 'prop-types';
 import { parse as twemojiParser } from 'twemoji-parser';
 import emojilib from 'emojilib/emojis';
 import urlRegex from 'url-regex';
-import {
-  pipe,
-  toPairs,
-  map,
-  flatten,
-  find,
-  propEq,
-  join,
-  filter,
-  keys,
-  head,
-} from 'ramda';
+import * as R from 'ramda';
 
 import normalizeHref from 'utils/normalizeHref';
 
@@ -23,16 +12,16 @@ const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
 const linkRegex = urlRegex({ strict: false });
 
-const normalizeEmotesFromTags = pipe(
-  toPairs,
-  map(([id, value]) => map((v) => ({ id, ...v }), value)),
-  flatten,
+const normalizeEmotesFromTags = R.pipe(
+  R.toPairs,
+  R.map(([id, value]) => R.map((v) => ({ id, ...v }), value)),
+  R.flatten,
 );
 
-const getFfzSrcSet = pipe(
-  toPairs,
-  map(([dpi, url]) => `${url} ${dpi}x`),
-  join(', '),
+const getFfzSrcSet = R.pipe(
+  R.toPairs,
+  R.map(([dpi, url]) => `${url} ${dpi}x`),
+  R.join(', '),
 );
 
 export const createTwitchEmote = ({ id, code }) => ({
@@ -111,7 +100,7 @@ const regexMap = {
 };
 
 const findTwitchEmote = (name, twitch) =>
-  find(({ id, code }) => {
+  R.find(({ id, code }) => {
     // 1-14 - match by regex
     if (id >= 1 && id <= 14) {
       const regexString = regexMap[id] || code;
@@ -119,10 +108,10 @@ const findTwitchEmote = (name, twitch) =>
     }
     return name === code;
   }, twitch);
-const findBttvEmote = (name, bttv) => find(propEq('code', name), bttv);
-const findFfzEmote = (name, ffz) => find(propEq('name', name), ffz);
+const findBttvEmote = (name, bttv) => R.find(R.propEq('code', name), bttv);
+const findFfzEmote = (name, ffz) => R.find(R.propEq('name', name), ffz);
 const findEmoji = (char) =>
-  pipe(filter(propEq('char', char)), keys, head)(emojilib);
+  R.pipe(R.filter(R.propEq('char', char)), R.keys, R.head)(emojilib);
 
 const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
   if (parseTwitch) {
@@ -202,8 +191,8 @@ const formatMessage = (message, embeddedEmotes, emotes) => {
 
       // Check embedded twitch emotes
       if (hasEmbeddedEmotes) {
-        const embeddedEmote = find(
-          propEq('start', startIndex),
+        const embeddedEmote = R.find(
+          R.propEq('start', startIndex),
           normalizedEmbeddedEmotes,
         );
 

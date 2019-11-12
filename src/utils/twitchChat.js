@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { pathOr, omit, mergeDeepRight, mergeDeepWith, concat } from 'ramda';
+import * as R from 'ramda';
 import { EventEmitter } from 'events';
 import { parse as tekkoParse, format as tekkoFormat } from 'tekko';
 import camelCase from 'camel-case';
@@ -251,7 +251,7 @@ class Client extends EventEmitter {
     super();
     this.socket = null;
     this.channels = {};
-    this.options = mergeDeepRight({ identity: {} }, options);
+    this.options = R.mergeDeepRight({ identity: {} }, options);
     this.user = null;
     this._queue = [];
     this._messagesQueue = {};
@@ -291,7 +291,7 @@ class Client extends EventEmitter {
   }
 
   _emmitOwnMessage(tags, channel) {
-    const message = pathOr([], ['_messagesQueue', channel], this).shift();
+    const message = R.pathOr([], ['_messagesQueue', channel], this).shift();
 
     if (typeof message !== 'string') return;
 
@@ -347,7 +347,7 @@ class Client extends EventEmitter {
     }
 
     const data = parseMessageData(parsedData);
-    const channel = pathOr('', ['params', 0], data).slice(1);
+    const channel = R.pathOr('', ['params', 0], data).slice(1);
 
     // Sends a message to a channel
     if (command === 'PRIVMSG') {
@@ -360,12 +360,12 @@ class Client extends EventEmitter {
     if (command === 'USERSTATE') {
       const eventData = parseUserState(data);
 
-      this.channels = mergeDeepRight(this.channels, {
+      this.channels = R.mergeDeepRight(this.channels, {
         [channel]: { userState: eventData.tags },
       });
 
       const isSendedAfterPrivateMessage =
-        pathOr(0, ['_messagesQueue', channel, 'length'], this) > 0;
+        R.pathOr(0, ['_messagesQueue', channel, 'length'], this) > 0;
 
       if (isSendedAfterPrivateMessage) {
         this._emmitOwnMessage(eventData.tags, channel);
@@ -377,21 +377,21 @@ class Client extends EventEmitter {
 
     if (command === 'JOIN') {
       const eventData = { channel };
-      this.channels = mergeDeepRight(this.channels, { [channel]: {} });
+      this.channels = R.mergeDeepRight(this.channels, { [channel]: {} });
       this.emit('join', eventData);
       return;
     }
 
     if (command === 'PART') {
       const eventData = { channel };
-      this.channels = omit([channel], this.channels);
+      this.channels = R.omit([channel], this.channels);
       this.emit('part', eventData);
       return;
     }
 
     if (command === 'ROOMSTATE') {
       const eventData = parseRoomState(data);
-      this.channels = mergeDeepRight(this.channels, {
+      this.channels = R.mergeDeepRight(this.channels, {
         [channel]: { roomState: eventData.tags },
       });
       this.emit('roomstate', eventData);
@@ -403,7 +403,7 @@ class Client extends EventEmitter {
 
       // Last message was not sent
       if (noticeMessageTags.includes(data.tags.msgId)) {
-        pathOr([], ['_messagesQueue', channel], this).shift();
+        R.pathOr([], ['_messagesQueue', channel], this).shift();
       }
 
       this.emit('notice', eventData);
@@ -486,7 +486,7 @@ class Client extends EventEmitter {
     });
     this.sendRaw(ircMessage);
 
-    this._messagesQueue = mergeDeepWith(concat, this._messagesQueue, {
+    this._messagesQueue = R.mergeDeepWith(R.concat, this._messagesQueue, {
       [channel]: [message],
     });
   }

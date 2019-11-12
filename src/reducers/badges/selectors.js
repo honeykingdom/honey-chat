@@ -1,10 +1,10 @@
-import { pathOr } from 'ramda';
+import * as R from 'ramda';
 
 import { currentChannelSelector } from 'reducers/chat/selectors';
 
 export const globalBadgesSelector = (state) => state.badges.global.items;
 export const channelBadgesSelector = (state) =>
-  pathOr({}, ['badges', 'channels', currentChannelSelector(state), 'items']);
+  R.pathOr({}, ['badges', 'channels', currentChannelSelector(state), 'items']);
 
 const isGlobalBadgesLoadedSelector = (state) =>
   state.badges.global.isLoaded || state.badges.global.isError;
@@ -12,8 +12,8 @@ const isGlobalBadgesLoadedSelector = (state) =>
 const isChannelBadgesLoadedSelector = (state) => {
   const channel = currentChannelSelector(state);
   return (
-    pathOr(false, ['badges', 'channels', channel, 'isLoaded'], state) ||
-    pathOr(false, ['badges', 'channels', channel, 'isError'], state)
+    R.pathOr(false, ['badges', 'channels', channel, 'isLoaded'], state) ||
+    R.pathOr(false, ['badges', 'channels', channel, 'isError'], state)
   );
 };
 

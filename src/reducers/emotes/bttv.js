@@ -1,5 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
-import { mergeDeepRight } from 'ramda';
+import * as R from 'ramda';
 
 import {
   fetchBttvGlobalEmotes as apiFetchBttvGlobalEmotes,
@@ -80,34 +80,34 @@ export const fetchBttvChannelEmotes = (channelId, channel) => async (
 
 const handleFetchBttvGlobalEmotes = {
   [fetchBttvGlobalEmotesRequest]: (state) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.REQUEST },
     }),
   [fetchBttvGlobalEmotesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.SUCCESS, items: payload.items },
     }),
   [fetchBttvGlobalEmotesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.FAILURE, error: payload.error },
     }),
 };
 
 const handleFetchBttvChannelEmotes = {
   [fetchBttvChannelEmotesRequest]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.REQUEST },
       },
     }),
   [fetchBttvChannelEmotesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
     }),
   [fetchBttvChannelEmotesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },

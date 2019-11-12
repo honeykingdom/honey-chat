@@ -1,4 +1,4 @@
-import { pathOr, toPairs, map, pipe, filter } from 'ramda';
+import * as R from 'ramda';
 
 const createBadge = ({
   title,
@@ -16,17 +16,13 @@ const createBadge = ({
 const getMessageBadges = (badges, globalBadges, channelBadges) => {
   const mapBadges = ([name, version]) => {
     const badge =
-      pathOr(false, [name, 'versions', version], channelBadges) ||
-      pathOr(false, [name, 'versions', version], globalBadges);
+      R.pathOr(false, [name, 'versions', version], channelBadges) ||
+      R.pathOr(false, [name, 'versions', version], globalBadges);
 
     return badge ? createBadge(badge) : false;
   };
 
-  return pipe(
-    toPairs,
-    map(mapBadges),
-    filter(Boolean),
-  )(badges);
+  return R.pipe(R.toPairs, R.map(mapBadges), R.filter(Boolean))(badges);
 };
 
 export default getMessageBadges;

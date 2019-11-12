@@ -1,5 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
-import { pathOr, mergeDeepRight } from 'ramda';
+import * as R from 'ramda';
 
 import {
   fetchGlobalBadges as apiFetchGlobalBadges,
@@ -39,7 +39,7 @@ const {
   'FETCH_CHANNEL_BADGES_FAILURE',
 );
 
-const parseBadges = pathOr({}, ['badge_sets']);
+const parseBadges = R.pathOr({}, ['badge_sets']);
 
 export const fetchGlobalBadges = () => async (dispatch) => {
   dispatch(fetchGlobalBadgesRequest());
@@ -72,34 +72,34 @@ export const fetchChannelBadges = (channelId, channel) => async (dispatch) => {
 
 const handleFetchGlobalBadges = {
   [fetchGlobalBadgesRequest]: (state) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.REQUEST },
     }),
   [fetchGlobalBadgesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.SUCCESS, items: payload.items },
     }),
   [fetchGlobalBadgesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       global: { ...STORE_FLAGS.FAILURE, error: payload.error },
     }),
 };
 
 const handleFetchChannelBadges = {
   [fetchChannelBadgesRequest]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.REQUEST },
       },
     }),
   [fetchChannelBadgesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
     }),
   [fetchChannelBadgesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       channels: {
         [payload.channel]: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },

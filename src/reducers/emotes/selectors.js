@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pipe, path, pathOr, propOr, values, flatten, omit, map } from 'ramda';
+import * as R from 'ramda';
 
 import {
   createTwitchEmote,
@@ -9,14 +9,14 @@ import {
 import { currentChannelSelector } from 'reducers/chat/selectors';
 
 export const twitchEmotesSelector = createSelector(
-  pathOr([], ['emotes', 'twitch', 'items']),
-  pipe(values, flatten),
+  R.pathOr([], ['emotes', 'twitch', 'items']),
+  R.pipe(R.values, R.flatten),
 );
 
 const createGlobalEmotesSelector = (type) =>
-  pathOr([], ['emotes', type, 'global', 'items']);
+  R.pathOr([], ['emotes', type, 'global', 'items']);
 const createChannelEmotesSelector = (type) => (state) =>
-  pathOr(
+  R.pathOr(
     [],
     ['emotes', type, 'channels', currentChannelSelector(state), 'items'],
     state,
@@ -81,14 +81,14 @@ export const emoteCategoriesSelector = createSelector(
         title: 'FrankerFaceZ Channel Emotes',
         items: ffzChannel.map(createFfzEmote),
       },
-      ...pipe(
-        omit(['0']),
-        values,
-        map((items) => ({ items: map(createTwitchEmote, items) })),
+      ...R.pipe(
+        R.omit(['0']),
+        R.values,
+        R.map((items) => ({ items: R.map(createTwitchEmote, items) })),
       )(twitch),
       {
         title: 'Twitch',
-        items: map(createGlobalTwitchEmote, propOr([], '0', twitch)),
+        items: R.map(createGlobalTwitchEmote, R.propOr([], '0', twitch)),
       },
       {
         title: 'BetterTTV',
@@ -106,8 +106,8 @@ const createIsEmotesLoadedSelector = (type) => (state) => {
   const globalLoaded =
     state.emotes[type].global.isLoaded || state.emotes[type].global.isError;
   const channelLoaded =
-    path(['emotes', type, 'channels', channel, 'isLoaded'], state) ||
-    path(['emotes', type, 'channels', channel, 'isError'], state);
+    R.path(['emotes', type, 'channels', channel, 'isLoaded'], state) ||
+    R.path(['emotes', type, 'channels', channel, 'isError'], state);
   return globalLoaded && channelLoaded;
 };
 

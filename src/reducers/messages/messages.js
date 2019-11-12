@@ -1,5 +1,5 @@
 import { createAction, createActions, handleActions } from 'redux-actions';
-import { pathOr, mergeDeepRight, concat } from 'ramda';
+import * as R from 'ramda';
 
 import { emotesSelector } from 'reducers/emotes/selectors';
 import {
@@ -59,7 +59,11 @@ const getIsEven = (prev, addedItemsCount, isSliced) => {
 
 export const addRecentMessages = (channel) => (dispatch, getState) => {
   const state = getState();
-  const messages = pathOr([], ['messages', channel, 'history', 'items'], state);
+  const messages = R.pathOr(
+    [],
+    ['messages', channel, 'history', 'items'],
+    state,
+  );
   const data = {
     channel,
     items: normalizeRecentMessages(state, messages),
@@ -121,11 +125,11 @@ export const addUserNoticeMessage = (message) => (dispatch) => {
 
 const handleAddMessageEntity = (state, { payload: message }) => {
   const { channel } = message;
-  const oldItems = pathOr([], [channel, 'items'], state);
+  const oldItems = R.pathOr([], [channel, 'items'], state);
   const newItems = [...oldItems, message];
   const slicedMessages = sliceMessages(newItems);
   const isSliced = newItems.length > slicedMessages.length;
-  const isEven = pathOr(false, [channel, 'isEven'], state);
+  const isEven = R.pathOr(false, [channel, 'isEven'], state);
 
   return {
     ...state,
@@ -138,12 +142,12 @@ const handleAddMessageEntity = (state, { payload: message }) => {
 };
 
 const handleAddRecentMessages = (state, { payload: { channel, items } }) => {
-  const newItems = concat(items, pathOr([], [channel, 'items'], state));
+  const newItems = R.concat(items, R.pathOr([], [channel, 'items'], state));
   const slicedMessages = sliceMessages(newItems);
   const isSliced = newItems.length > slicedMessages.length;
-  const isEven = pathOr(false, [channel, 'isEven'], state);
+  const isEven = R.pathOr(false, [channel, 'isEven'], state);
 
-  return mergeDeepRight(state, {
+  return R.mergeDeepRight(state, {
     [channel]: {
       history: { items: [] },
       items: newItems,
@@ -175,19 +179,19 @@ const handleClearChat = (state, { payload }) => {
 
 const handleFetchRecentMessages = {
   [fetchRecentMessagesRequest]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       [payload.channel]: {
         history: { ...STORE_FLAGS.REQUEST },
       },
     }),
   [fetchRecentMessagesSuccess]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       [payload.channel]: {
         history: { ...STORE_FLAGS.SUCCESS, items: payload.items },
       },
     }),
   [fetchRecentMessagesFailure]: (state, { payload }) =>
-    mergeDeepRight(state, {
+    R.mergeDeepRight(state, {
       [payload.channel]: {
         history: { ...STORE_FLAGS.FAILURE, error: payload.error },
       },
