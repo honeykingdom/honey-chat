@@ -150,13 +150,13 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
+const ChatInput = ({ text, isAuth, isDisabled, onChangeText, onSubmit }) => {
   const textareaRef = useRef(null);
-  const [text, setText] = useState('');
+  const textareaWrapperRef = useRef(null);
+  const optionsModalRef = useRef(null);
+
   const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
-  const textareaWrapperRef = React.useRef(null);
-  const optionsModalRef = React.useRef(null);
 
   const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
   const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
@@ -164,12 +164,12 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
   useOnClickOutside(textareaWrapperRef, handleCloseEmotesModal);
   useOnClickOutside(optionsModalRef, handleCloseOptionsModal);
 
-  const handleChange = (e) => setText(e.target.value);
+  const handleChange = (e) => onChangeText(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(text);
-    setText('');
+    onChangeText('');
   };
 
   const handleKeyDown = useCallback(
@@ -179,11 +179,11 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
         const message = text.trim();
         if (message) {
           onSubmit(message);
-          setText('');
+          onChangeText('');
         }
       }
     },
-    [onSubmit, setText, text],
+    [onSubmit, onChangeText, text],
   );
 
   useEffect(() => {
@@ -202,13 +202,13 @@ const ChatInput = ({ isAuth, isDisabled, onSubmit }) => {
         <ChatModal onClose={handleCloseEmotesModal}>
           <EmotePicker
             onEmoteClick={(emoteName) =>
-              setText((t) => `${t.trim()} ${emoteName} `.trimLeft())
+              onChangeText((t) => `${t.trim()} ${emoteName} `.trimLeft())
             }
           />
         </ChatModal>
       </EmotesModal>
     ),
-    [],
+    [onChangeText],
   );
 
   const renderOptionsModal = useCallback(
@@ -265,8 +265,10 @@ ChatInput.defaultProps = {
 };
 
 ChatInput.propTypes = {
+  text: pt.string.isRequired,
   isAuth: pt.bool.isRequired,
   isDisabled: pt.bool,
+  onChangeText: pt.func.isRequired,
   onSubmit: pt.func.isRequired,
 };
 

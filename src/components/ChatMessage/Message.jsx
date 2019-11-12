@@ -22,6 +22,7 @@ const MessageRoot = styled.div`
 const Name = styled.span`
   font-weight: bold;
   color: ${(p) => p.color};
+  cursor: pointer;
 `;
 const Emote = styled.img`
   display: inline-block;
@@ -135,7 +136,7 @@ const renderBadges = (badges) =>
     <Badge key={key} alt={alt} aria-label={label} src={src} srcSet={srcSet} />
   ));
 
-const MESSAGE_DELETED_LABED = '<message deleted>';
+const MESSAGE_DELETED_LABEL = '<message deleted>';
 
 const Message = ({
   message: {
@@ -151,9 +152,16 @@ const Message = ({
   login,
   isEven,
   isShowTimestamps,
+  // onNameClick,
+  onNameRightClick,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const isMention = user !== login && RegExp(login, 'gi').test(message);
+
+  const handleNameRightClick = (e) => {
+    onNameRightClick(displayName);
+    e.preventDefault();
+  };
 
   return (
     <MessageRoot
@@ -168,11 +176,13 @@ const Message = ({
         <Timestamp>{format('h:mm', new Date(tmiSentTs))}</Timestamp>
       )}
       {badges.length > 0 && renderBadges(badges)}
-      <Name color={color}>{displayName}</Name>
+      <Name color={color} onContextMenu={handleNameRightClick}>
+        {displayName}
+      </Name>
       {isAction ? ' ' : ': '}
       {isDeleted && !isVisible ? (
         // eslint-disable-next-line jsx-a11y/anchor-is-valid
-        <Link onClick={() => setIsVisible(true)}>{MESSAGE_DELETED_LABED}</Link>
+        <Link onClick={() => setIsVisible(true)}>{MESSAGE_DELETED_LABEL}</Link>
       ) : (
         messageArray.map(renderMessageArray(user, login))
       )}
@@ -184,6 +194,8 @@ Message.defaultProps = {
   login: '',
   isEven: false,
   isShowTimestamps: false,
+  // onNameClick: () => {},
+  onNameRightClick: () => {},
 };
 
 Message.propTypes = {
@@ -191,6 +203,8 @@ Message.propTypes = {
   login: pt.string,
   isEven: pt.bool,
   isShowTimestamps: pt.bool,
+  // onNameClick: pt.func,
+  onNameRightClick: pt.func,
 };
 
 export default React.memo(Message);

@@ -50,6 +50,7 @@ const MoreMessagesButton = styled.button`
 `;
 
 const Chat = ({ onSendMessage }) => {
+  const [text, setText] = useState('');
   const isAuth = useSelector((state) => state.auth.isAuth);
   const messages = useSelector(messagesSelector);
   // TODO: check if the user has a rights to send messages
@@ -88,6 +89,9 @@ const Chat = ({ onSendMessage }) => {
     setIsMoreMessagesButtonVisible(isVisible);
   };
 
+  const handleNameRightClick = (name) =>
+    setText(`${text.trim()} @${name} `.trimLeft());
+
   const getIsEven = (key) => {
     if (!isSplitChat) return false;
     return isEven ? key % 2 === 1 : key % 2 === 0;
@@ -105,6 +109,7 @@ const Chat = ({ onSendMessage }) => {
                 login={login}
                 isEven={getIsEven(key)}
                 isShowTimestamps={isShowTimestamps}
+                onNameRightClick={handleNameRightClick}
               />
             ))}
           </StyledScrollbar>
@@ -116,9 +121,11 @@ const Chat = ({ onSendMessage }) => {
           </MoreMessagesButton>
         </Messages>
         <ChatInput
-          onSubmit={onSendMessage}
+          text={text}
           isDisabled={!isAuth || !isConnected}
           isAuth={isAuth}
+          onChangeText={setText}
+          onSubmit={onSendMessage}
         />
       </ChatWrapper>
     </ChatRoot>
