@@ -54,8 +54,8 @@ export const fetchBlockedUsers = (userId) => async (dispatch) => {
     const response = await apiFetchBlockedUsers(userId);
 
     dispatch(fetchBlockedUsersSuccess({ items: parseBlockedUsers(response) }));
-  } catch (error) {
-    dispatch(fetchBlockedUsersFailure({ error }));
+  } catch (e) {
+    dispatch(fetchBlockedUsersFailure({ error: e.message }));
   }
 };
 

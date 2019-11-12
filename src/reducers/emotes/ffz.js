@@ -57,8 +57,8 @@ export const fetchFfzGlobalEmotes = () => async (dispatch) => {
     const data = { items: parseFfzEmotes(response) };
 
     dispatch(fetchFfzGlobalEmotesSuccess(data));
-  } catch (error) {
-    dispatch(fetchFfzGlobalEmotesFailure({ error }));
+  } catch (e) {
+    dispatch(fetchFfzGlobalEmotesFailure({ error: e.message }));
   }
 };
 
@@ -75,8 +75,8 @@ export const fetchFfzChannelEmotes = (channelId, channel) => async (
     };
 
     dispatch(fetchFfzChannelEmotesSuccess(data));
-  } catch (error) {
-    dispatch(fetchFfzChannelEmotesFailure({ channel, error }));
+  } catch (e) {
+    dispatch(fetchFfzChannelEmotesFailure({ channel, error: e.message }));
   }
 };
 

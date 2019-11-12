@@ -55,8 +55,8 @@ export const fetchBttvGlobalEmotes = () => async (dispatch) => {
     const data = { items };
 
     dispatch(fetchBttvGlobalEmotesSuccess(data));
-  } catch (error) {
-    dispatch(fetchBttvGlobalEmotesFailure({ error }));
+  } catch (e) {
+    dispatch(fetchBttvGlobalEmotesFailure({ error: e.message }));
   }
 };
 
@@ -73,8 +73,8 @@ export const fetchBttvChannelEmotes = (channelId, channel) => async (
     };
 
     dispatch(fetchBttvChannelEmotesSuccess(data));
-  } catch (error) {
-    dispatch(fetchBttvChannelEmotesFailure({ channel, error }));
+  } catch (e) {
+    dispatch(fetchBttvChannelEmotesFailure({ channel, error: e.message }));
   }
 };
 

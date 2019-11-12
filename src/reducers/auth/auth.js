@@ -27,8 +27,8 @@ export const fetchUser = (id) => async (dispatch) => {
     localStorage.setItem('user', JSON.stringify(user));
 
     dispatch(fetchUserSuccess(user));
-  } catch (error) {
-    dispatch(fetchUserFailure(error));
+  } catch (e) {
+    dispatch(fetchUserFailure(e.message));
   }
 };
 

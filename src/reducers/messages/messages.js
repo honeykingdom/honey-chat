@@ -74,8 +74,8 @@ export const fetchRecentMessages = (channel) => async (dispatch) => {
     const data = { channel, items: response.messages };
 
     dispatch(fetchRecentMessagesSuccess(data));
-  } catch (error) {
-    dispatch(fetchRecentMessagesFailure({ channel, error }));
+  } catch (e) {
+    dispatch(fetchRecentMessagesFailure({ channel, error: e.message }));
   }
 };
 

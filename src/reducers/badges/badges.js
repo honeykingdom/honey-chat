@@ -49,8 +49,8 @@ export const fetchGlobalBadges = () => async (dispatch) => {
     const data = { items: parseBadges(response) };
 
     dispatch(fetchGlobalBadgesSuccess(data));
-  } catch (error) {
-    dispatch(fetchGlobalBadgesFailure({ error }));
+  } catch (e) {
+    dispatch(fetchGlobalBadgesFailure({ error: e.message }));
   }
 };
 
@@ -65,8 +65,8 @@ export const fetchChannelBadges = (channelId, channel) => async (dispatch) => {
     };
 
     dispatch(fetchChannelBadgesSuccess(data));
-  } catch (error) {
-    dispatch(fetchChannelBadgesFailure({ channel, error }));
+  } catch (e) {
+    dispatch(fetchChannelBadgesFailure({ channel, error: e.message }));
   }
 };
 

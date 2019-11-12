@@ -33,8 +33,8 @@ export const fetchTwitchEmotes = (userId) => async (dispatch) => {
     const data = { items: response.emoticon_sets };
 
     dispatch(fetchTwitchEmotesSuccess(data));
-  } catch (error) {
-    dispatch(fetchTwitchEmotesFailure({ error }));
+  } catch (e) {
+    dispatch(fetchTwitchEmotesFailure({ error: e.message }));
   }
 };
 
