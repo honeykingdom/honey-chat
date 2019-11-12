@@ -44,8 +44,6 @@ export const fetchFfzGlobalEmotes = () =>
 export const fetchFfzChannelEmotes = (channelId) =>
   apiRequest(`https://api.frankerfacez.com/v1/room/id/${channelId}`);
 
-// apiRequest(`https://api.betterttv.net/3/cached/frankerfacez/users/twitch/${channelId}`);
-
 export const fetchRecentMessages = (channel) =>
   apiRequest(
     `https://recent-messages.robotty.de/api/v2/recent-messages/${channel}?clearchatToNotice=true`,
