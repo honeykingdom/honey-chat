@@ -1,5 +1,14 @@
 import { createActions, handleActions } from 'redux-actions';
-import { mergeDeepRight, pipe, pathOr, map, values, flatten } from 'ramda';
+import {
+  mergeDeepRight,
+  pipe,
+  pathOr,
+  propOr,
+  map,
+  values,
+  flatten,
+  pick,
+} from 'ramda';
 
 import {
   fetchFfzGlobalEmotes as apiFetchFfzGlobalEmotes,
@@ -42,7 +51,10 @@ const {
   'FETCH_FFZ_CHANNEL_EMOTES_FAILURE',
 );
 
-const parseFfzEmotes = pipe(
+const parseFfzGlobalEmotes = ({ default_sets: defaultSets, sets }) =>
+  pipe(pick(defaultSets), values, map(propOr([], 'emoticons')), flatten)(sets);
+
+const parseFfzChannelEmotes = pipe(
   pathOr({}, ['sets']),
   values,
   map(pathOr([], ['emoticons'])),
@@ -54,7 +66,7 @@ export const fetchFfzGlobalEmotes = () => async (dispatch) => {
 
   try {
     const response = await apiFetchFfzGlobalEmotes();
-    const data = { items: parseFfzEmotes(response) };
+    const data = { items: parseFfzGlobalEmotes(response) };
 
     dispatch(fetchFfzGlobalEmotesSuccess(data));
   } catch (e) {
@@ -71,7 +83,7 @@ export const fetchFfzChannelEmotes = (channelId, channel) => async (
     const response = await apiFetchFfzChannelEmotes(channelId);
     const data = {
       channel,
-      items: parseFfzEmotes(response),
+      items: parseFfzChannelEmotes(response),
     };
 
     dispatch(fetchFfzChannelEmotesSuccess(data));
