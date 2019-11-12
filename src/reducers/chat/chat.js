@@ -1,4 +1,4 @@
-import { createActions, handleActions, combineActions } from 'redux-actions';
+import { createActions, handleActions } from 'redux-actions';
 import { mergeDeepRight, pipe, prop, path, map, omit } from 'ramda';
 
 import { fetchBlockedUsers as apiFetchBlockedUsers } from 'utils/api';
@@ -71,44 +71,35 @@ const handleUpdateGlobalUserState = (state, { payload: { tags } }) => ({
   ...state,
   globalState: { ...state.globalState, ...tags },
 });
-const handleUpdateUserState = (state, { payload: { channel, tags } }) => ({
-  ...state,
-  channels: {
-    ...state.channels,
-    [channel]: { ...state.channels[channel], userState: tags },
-  },
-});
-const handleUpdateRoomState = (state, { payload: { channel, tags } }) => ({
-  ...state,
-  channels: {
-    ...state.channels,
-    [channel]: { ...state.channels[channel], roomState: tags },
-  },
-});
+const handleUpdateUserState = (state, { payload: { channel, tags } }) =>
+  mergeDeepRight(state, {
+    channels: {
+      [channel]: { userState: tags },
+    },
+  });
+const handleUpdateRoomState = (state, { payload: { channel, tags } }) =>
+  mergeDeepRight(state, {
+    channels: {
+      [channel]: { roomState: tags },
+    },
+  });
 const handleRemoveChannel = (state, { payload: channel }) => ({
   ...state,
   channels: omit([channel], state.channels),
 });
-const handleFetchBlockUsers = (state, { type, payload }) => {
-  if (type === fetchBlockedUsersRequest.toString()) {
-    return mergeDeepRight(state, {
+const handleFetchBlockUsers = {
+  [fetchBlockedUsersRequest]: (state) =>
+    mergeDeepRight(state, {
       blockedUsers: { ...STORE_FLAGS.REQUEST },
-    });
-  }
-
-  if (type === fetchBlockedUsersSuccess.toString()) {
-    return mergeDeepRight(state, {
+    }),
+  [fetchBlockedUsersSuccess]: (state, { payload }) =>
+    mergeDeepRight(state, {
       blockedUsers: { ...STORE_FLAGS.SUCCESS, items: payload.items },
-    });
-  }
-
-  if (type === fetchBlockedUsersFailure.toString()) {
-    return mergeDeepRight(state, {
+    }),
+  [fetchBlockedUsersFailure]: (state, { payload }) =>
+    mergeDeepRight(state, {
       blockedUsers: { ...STORE_FLAGS.FAILURE, error: payload.error },
-    });
-  }
-
-  return state;
+    }),
 };
 
 const reducer = handleActions(
@@ -119,11 +110,7 @@ const reducer = handleActions(
     [updateUserState]: handleUpdateUserState,
     [updateRoomState]: handleUpdateRoomState,
     [removeChannel]: handleRemoveChannel,
-    [combineActions(
-      fetchBlockedUsersRequest,
-      fetchBlockedUsersSuccess,
-      fetchBlockedUsersFailure,
-    )]: handleFetchBlockUsers,
+    ...handleFetchBlockUsers,
   },
   defaultState,
 );
