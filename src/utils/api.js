@@ -1,7 +1,28 @@
-export const TWITCH_API_HELIX = 'https://api.twitch.tv/helix';
-export const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';
+import { API_REQUESTS_TIMEOUT } from 'utils/constants';
 
-// TODO: throw an error if fetch completed with not 2** code
+const TWITCH_API_HELIX = 'https://api.twitch.tv/helix';
+const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';
+
+const myFetch = async (url, options = {}) => {
+  let fetchOptions = { ...options };
+
+  if (options.timeout) {
+    const controller = new AbortController();
+    delete fetchOptions.timeout;
+    fetchOptions = { ...fetchOptions, signal: controller.signal };
+    setTimeout(() => controller.abort(), options.timeout);
+  }
+
+  const response = await fetch(url, fetchOptions);
+
+  if (!response.ok) {
+    throw Error(`${response.status} ${response.statusText}`);
+  }
+
+  const body = await response.json();
+
+  return body;
+};
 
 const getHelixHeaders = () => ({
   Authorization: `Bearer ${localStorage.accessToken}`,
@@ -13,17 +34,20 @@ const getKrakenHeaders = () => ({
   Authorization: `OAuth ${localStorage.accessToken}`,
 });
 
-const apiRequestHelix = (url) =>
-  fetch(`${TWITCH_API_HELIX}${url}`, {
+const apiRequest = (url, options) =>
+  myFetch(url, { ...options, timeout: API_REQUESTS_TIMEOUT });
+
+const apiRequestHelix = (url, options) =>
+  apiRequest(`${TWITCH_API_HELIX}${url}`, {
+    ...options,
     headers: getHelixHeaders(),
-  }).then((response) => response.json());
+  });
 
-const apiRequestKraken = (url) =>
-  fetch(`${TWITCH_API_KRAKEN}${url}`, {
+const apiRequestKraken = (url, options) =>
+  apiRequest(`${TWITCH_API_KRAKEN}${url}`, {
+    ...options,
     headers: getKrakenHeaders(),
-  }).then((response) => response.json());
-
-const apiRequest = (url) => fetch(url).then((response) => response.json());
+  });
 
 export const fetchUser = (id) => apiRequestHelix(`/users?id=${id}`);
 
