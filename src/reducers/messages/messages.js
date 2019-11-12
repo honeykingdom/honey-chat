@@ -31,18 +31,19 @@ const defaultState = {
 
 const {
   addMessageEntity,
+  addRecentMessages: addRecentMessagesAction,
   fetchRecentMessagesRequest,
   fetchRecentMessagesSuccess,
   fetchRecentMessagesFailure,
 } = createActions(
   'ADD_MESSAGE_ENTITY',
+  'ADD_RECENT_MESSAGES',
   'FETCH_RECENT_MESSAGES_REQUEST',
   'FETCH_RECENT_MESSAGES_SUCCESS',
   'FETCH_RECENT_MESSAGES_FAILURE',
 );
 
 export const clearChat = createAction('CLEAR_CHAT');
-export const addRecentMessagesAction = createAction('ADD_RECENT_MESSAGES');
 
 const sliceMessages = (items) => {
   const diff = items.length - CHANNEL_MESSAGES_LIMIT;
