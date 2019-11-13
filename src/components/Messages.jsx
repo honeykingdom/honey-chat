@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import pt from 'prop-types';
-// import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Scrollbar from 'components/Scrollbar';
