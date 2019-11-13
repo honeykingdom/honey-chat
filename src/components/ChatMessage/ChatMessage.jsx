@@ -9,7 +9,7 @@ import UserNotice from './UserNotice';
 
 const ChatMessage = ({
   message,
-  login,
+  userLogin,
   isEven,
   isShowTimestamps,
   onNameClick,
@@ -19,7 +19,7 @@ const ChatMessage = ({
     return (
       <Message
         message={message}
-        login={login}
+        userLogin={userLogin}
         isEven={isEven}
         isShowTimestamps={isShowTimestamps}
         onNameClick={onNameClick}
@@ -40,7 +40,7 @@ const ChatMessage = ({
 };
 
 ChatMessage.defaultProps = {
-  login: '',
+  userLogin: '',
   isEven: false,
   isShowTimestamps: false,
   onNameClick: () => {},
@@ -49,11 +49,11 @@ ChatMessage.defaultProps = {
 
 ChatMessage.propTypes = {
   message: pt.oneOfType([messageType, noticeType, userNoticeType]).isRequired,
-  login: pt.string,
+  userLogin: pt.string,
   isEven: pt.bool,
   isShowTimestamps: pt.bool,
   onNameClick: pt.func,
   onNameRightClick: pt.func,
 };
 
-export default ChatMessage;
+export default React.memo(ChatMessage);

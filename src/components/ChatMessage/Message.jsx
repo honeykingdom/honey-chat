@@ -83,7 +83,7 @@ const Badge = styled.img`
   border-radius: 3px;
 `;
 
-const renderMessageArray = (user, login) => (item, key) => {
+const renderMessageArray = (user, userLogin) => (item, key) => {
   if (typeof item !== 'object') return item;
 
   if (
@@ -106,8 +106,8 @@ const renderMessageArray = (user, login) => (item, key) => {
     return (
       <Mention
         key={key}
-        isActive={item.target === login}
-        isOwnMessage={user === login}
+        isActive={item.target === userLogin}
+        isOwnMessage={user === userLogin}
       >
         {item.text}
       </Mention>
@@ -149,14 +149,14 @@ const Message = ({
     isAction,
     isDeleted,
   },
-  login,
+  userLogin,
   isEven,
   isShowTimestamps,
   // onNameClick,
   onNameRightClick,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const isMention = user !== login && RegExp(login, 'gi').test(message);
+  const isMention = user !== userLogin && RegExp(userLogin, 'gi').test(message);
 
   const handleNameRightClick = (e) => {
     onNameRightClick(displayName);
@@ -184,14 +184,14 @@ const Message = ({
         // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <Link onClick={() => setIsVisible(true)}>{MESSAGE_DELETED_LABEL}</Link>
       ) : (
-        messageArray.map(renderMessageArray(user, login))
+        messageArray.map(renderMessageArray(user, userLogin))
       )}
     </MessageRoot>
   );
 };
 
 Message.defaultProps = {
-  login: '',
+  userLogin: '',
   isEven: false,
   isShowTimestamps: false,
   // onNameClick: () => {},
@@ -200,7 +200,7 @@ Message.defaultProps = {
 
 Message.propTypes = {
   message: messageType.isRequired,
-  login: pt.string,
+  userLogin: pt.string,
   isEven: pt.bool,
   isShowTimestamps: pt.bool,
   // onNameClick: pt.func,
