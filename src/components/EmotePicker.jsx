@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import pt from 'prop-types';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { emoteCategoriesSelector } from 'reducers/emotes/selectors';
 import Scrollbar from 'components/Scrollbar';
 
 const EmotePickerRoot = styled.div`
@@ -43,9 +41,7 @@ const Emote = styled.img`
   }
 `;
 
-const EmotePicker = ({ onEmoteClick }) => {
-  const emoteCategories = useSelector(emoteCategoriesSelector);
-
+const EmotePicker = ({ emoteCategories, onEmoteClick }) => {
   const renderCategory = useCallback(
     ({ title, items }, key) => (
       <Category key={key}>
@@ -75,10 +71,13 @@ const EmotePicker = ({ onEmoteClick }) => {
   );
 };
 
-EmotePicker.defaultProps = {};
+EmotePicker.defaultProps = {
+  emoteCategories: [],
+};
 
 EmotePicker.propTypes = {
   onEmoteClick: pt.func.isRequired,
+  emoteCategories: pt.arrayOf(pt.shape({})),
 };
 
 export default EmotePicker;

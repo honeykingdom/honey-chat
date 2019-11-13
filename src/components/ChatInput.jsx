@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import pt from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useOnClickOutside from 'use-onclickoutside';
 
+import { emoteCategoriesSelector } from 'reducers/emotes/selectors';
 import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
 import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
 import ChatModal from 'components/ChatModal';
@@ -154,6 +156,7 @@ const ChatInput = ({ text, isAuth, isDisabled, onChangeText, onSubmit }) => {
   const textareaRef = useRef(null);
   const textareaWrapperRef = useRef(null);
   const optionsModalRef = useRef(null);
+  const emoteCategories = useSelector(emoteCategoriesSelector);
 
   const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
@@ -201,6 +204,7 @@ const ChatInput = ({ text, isAuth, isDisabled, onChangeText, onSubmit }) => {
       <EmotesModal>
         <ChatModal onClose={handleCloseEmotesModal}>
           <EmotePicker
+            emoteCategories={emoteCategories}
             onEmoteClick={(emoteName) =>
               onChangeText((t) => `${t.trim()} ${emoteName} `.trimLeft())
             }
@@ -208,7 +212,7 @@ const ChatInput = ({ text, isAuth, isDisabled, onChangeText, onSubmit }) => {
         </ChatModal>
       </EmotesModal>
     ),
-    [onChangeText],
+    [onChangeText, emoteCategories],
   );
 
   const renderOptionsModal = useCallback(
@@ -225,7 +229,6 @@ const ChatInput = ({ text, isAuth, isDisabled, onChangeText, onSubmit }) => {
   return (
     <ChatInputRoot onSubmit={handleSubmit}>
       <TextareaWrapper ref={textareaWrapperRef}>
-        {isEmotesModalVisible && renderEmotesModal()}
         <Textarea
           placeholder="Send a message"
           ref={textareaRef}
@@ -234,11 +237,14 @@ const ChatInput = ({ text, isAuth, isDisabled, onChangeText, onSubmit }) => {
           onChange={handleChange}
           value={text}
         />
-        <EmotesButton
-          onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
-        >
-          <SmileyFaceIcon />
-        </EmotesButton>
+        {!!emoteCategories.length && (
+          <EmotesButton
+            onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
+          >
+            <SmileyFaceIcon />
+          </EmotesButton>
+        )}
+        {isEmotesModalVisible && renderEmotesModal()}
       </TextareaWrapper>
       <ControlsWrapper>
         <Controls>
