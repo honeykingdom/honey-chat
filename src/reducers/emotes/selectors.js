@@ -44,6 +44,26 @@ export const emotesSelector = (state) => ({
   ffz: ffzEmotesSelector(state),
 });
 
+const createIsEmotesLoadedSelector = (type) => (state) => {
+  const channel = currentChannelSelector(state);
+  const globalLoaded =
+    state.emotes[type].global.isLoaded || state.emotes[type].global.isError;
+  const channelLoaded =
+    R.path(['emotes', type, 'channels', channel, 'isLoaded'], state) ||
+    R.path(['emotes', type, 'channels', channel, 'isError'], state);
+  return globalLoaded && channelLoaded;
+};
+
+export const isBttvEmotesLoadedSelector = createIsEmotesLoadedSelector('bttv');
+export const isFfzEmotesLoadedSelector = createIsEmotesLoadedSelector('ffz');
+export const isTwitchEmotesLoadedSelector = (state) =>
+  state.emotes.twitch.isLoaded || state.emotes.twitch.isError;
+
+export const isEmotesLoadedSelector = (state) =>
+  isTwitchEmotesLoadedSelector(state) &&
+  isBttvEmotesLoadedSelector(state) &&
+  isFfzEmotesLoadedSelector(state);
+
 // prettier-ignore
 const regexEmotesMap = {
   '[oO](_|\\.)[oO]': 'O_o',
@@ -66,13 +86,16 @@ const createGlobalTwitchEmote = ({ id, code }) =>
   createTwitchEmote({ id, code: regexEmotesMap[code] || code });
 
 export const emoteCategoriesSelector = createSelector(
+  isEmotesLoadedSelector,
   (state) => state.emotes.twitch.items,
   bttvGlobalEmotesSelector,
   bttvChannelEmotesSelector,
   ffzGlobalEmotesSelector,
   ffzChannelEmotesSelector,
-  (twitch, bttvGlobal, bttvChannel, ffzGlobal, ffzChannel) =>
-    [
+  (isEmotesLoaded, twitch, bttvGlobal, bttvChannel, ffzGlobal, ffzChannel) => {
+    if (!isEmotesLoaded) return [];
+
+    return [
       {
         title: 'BetterTTV Channel Emotes',
         items: bttvChannel.map(createBttvEmote),
@@ -98,25 +121,6 @@ export const emoteCategoriesSelector = createSelector(
         title: 'FrankerFaceZ',
         items: ffzGlobal.map(createFfzEmote),
       },
-    ].filter(({ items }) => items.length > 0),
+    ].filter(({ items }) => items.length > 0);
+  },
 );
-
-const createIsEmotesLoadedSelector = (type) => (state) => {
-  const channel = currentChannelSelector(state);
-  const globalLoaded =
-    state.emotes[type].global.isLoaded || state.emotes[type].global.isError;
-  const channelLoaded =
-    R.path(['emotes', type, 'channels', channel, 'isLoaded'], state) ||
-    R.path(['emotes', type, 'channels', channel, 'isError'], state);
-  return globalLoaded && channelLoaded;
-};
-
-export const isBttvEmotesLoadedSelector = createIsEmotesLoadedSelector('bttv');
-export const isFfzEmotesLoadedSelector = createIsEmotesLoadedSelector('ffz');
-export const isTwitchEmotesLoadedSelector = (state) =>
-  state.emotes.twitch.isLoaded || state.emotes.twitch.isError;
-
-export const isEmotesLoadedSelector = (state) =>
-  isTwitchEmotesLoadedSelector(state) &&
-  isBttvEmotesLoadedSelector(state) &&
-  isFfzEmotesLoadedSelector(state);
