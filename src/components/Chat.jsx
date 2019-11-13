@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import pt from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { messagesSelector } from 'reducers/messages/selectors';
-import { isEvenSelector } from 'reducers/chat/selectors';
+import { messagesSelector, isEvenSelector } from 'reducers/messages/selectors';
+import { isConnectedSelector } from 'reducers/chat/selectors';
 import {
   isShowTimestampsSelector,
   isSplitChatSelector,
 } from 'reducers/options/selectors';
-import Scrollbar from 'components/Scrollbar';
+import { userLoginSelector, isAuthSelector } from 'reducers/auth/selectors';
+import { emoteCategoriesSelector } from 'reducers/emotes/selectors';
 import ChatInput from 'components/ChatInput';
-import ChatMessage from 'components/ChatMessage';
-
-const MORE_MESSAGES_OFFSET = 100;
+import ChatControls from 'components/ChatControls';
+import Messages from 'components/Messages';
 
 const ChatRoot = styled.div`
   height: 100vh;
@@ -25,107 +25,73 @@ const ChatWrapper = styled.div`
   height: 100%;
   background-color: #18181b;
 `;
-const Messages = styled.div`
-  position: relative;
-  flex-grow: 1;
-`;
-const StyledScrollbar = styled(Scrollbar)`
-  .ScrollbarsCustom-Content {
-    padding-bottom: 10px !important;
-  }
-`;
-const MoreMessagesButton = styled.button`
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  display: ${(p) => (p.visible ? 'block' : 'none')};
-  padding: 5px 20px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border-radius: 4px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  transform: translateX(-50%);
-`;
+
+// TODO: check if the user has a rights to send messages
 
 const Chat = ({ onSendMessage }) => {
   const [text, setText] = useState('');
-  const isAuth = useSelector((state) => state.auth.isAuth);
   const messages = useSelector(messagesSelector);
-  // TODO: check if the user has a rights to send messages
-  const isConnected = useSelector((state) => state.chat.isConnected);
+  const userLogin = useSelector(userLoginSelector);
+  const emoteCategories = useSelector(emoteCategoriesSelector);
+  const isAuth = useSelector(isAuthSelector);
+  const isConnected = useSelector(isConnectedSelector);
   const isEven = useSelector(isEvenSelector);
-  const login = useSelector((state) => state.auth.user.login);
   const isShowTimestamps = useSelector(isShowTimestampsSelector);
   const isSplitChat = useSelector(isSplitChatSelector);
-  const [
-    isMoreMessagesButtonVisible,
-    setIsMoreMessagesButtonVisible,
-  ] = useState(false);
-  const scrollbarRef = useRef(null);
+  const chatInputRef = useRef(null);
 
-  const handleScrollToBottom = () => {
-    if (scrollbarRef.current && scrollbarRef.current.scrollToBottom) {
-      scrollbarRef.current.scrollToBottom();
-    }
-  };
+  // Ref to avoid multiple renders
+  const textRef = useRef(text);
+  textRef.current = text;
 
-  useEffect(() => {
-    if (!isMoreMessagesButtonVisible) {
-      handleScrollToBottom();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
+  const handleNameRightClick = useCallback(
+    (name) => {
+      setText((t) => `${t.trim()} @${name} `.trimLeft());
+      if (chatInputRef.current) {
+        chatInputRef.current.focus();
+      }
+    },
+    [setText, chatInputRef],
+  );
 
-  const handleScrollUpdate = ({
-    clientHeight,
-    contentScrollHeight,
-    scrollTop,
-  }) => {
-    const maxScrollTop = contentScrollHeight - clientHeight;
-    const isVisible = scrollTop + MORE_MESSAGES_OFFSET < maxScrollTop;
+  const handleEmoteClick = useCallback(
+    (emoteName) => {
+      setText((t) => `${t.trim()} ${emoteName} `.trimLeft());
+    },
+    [setText],
+  );
 
-    setIsMoreMessagesButtonVisible(isVisible);
-  };
-
-  const handleNameRightClick = (name) =>
-    setText(`${text.trim()} @${name} `.trimLeft());
-
-  const getIsEven = (key) => {
-    if (!isSplitChat) return false;
-    return isEven ? key % 2 === 1 : key % 2 === 0;
-  };
+  const handleSendMessage = useCallback(() => {
+    if (!textRef.current) return;
+    onSendMessage(textRef.current);
+    setText('');
+  }, [onSendMessage, textRef, setText]);
 
   return (
     <ChatRoot>
       <ChatWrapper>
-        <Messages>
-          <StyledScrollbar onUpdate={handleScrollUpdate} ref={scrollbarRef}>
-            {messages.map((message, key) => (
-              <ChatMessage
-                key={message.tags.id}
-                message={message}
-                login={login}
-                isEven={getIsEven(key)}
-                isShowTimestamps={isShowTimestamps}
-                onNameRightClick={handleNameRightClick}
-              />
-            ))}
-          </StyledScrollbar>
-          <MoreMessagesButton
-            onClick={handleScrollToBottom}
-            visible={isMoreMessagesButtonVisible}
-          >
-            More messages below
-          </MoreMessagesButton>
-        </Messages>
+        <Messages
+          messages={messages}
+          userLogin={userLogin}
+          isEven={isSplitChat ? isEven : false}
+          isShowTimestamps={isShowTimestamps}
+          isSplitChat={isSplitChat}
+          onNameRightClick={handleNameRightClick}
+        />
         <ChatInput
+          ref={chatInputRef}
           text={text}
+          emoteCategories={emoteCategories}
           isDisabled={!isAuth || !isConnected}
           isAuth={isAuth}
           onChangeText={setText}
-          onSubmit={onSendMessage}
+          onSendMessage={handleSendMessage}
+          onEmoteClick={handleEmoteClick}
+        />
+        <ChatControls
+          isDisabled={!isAuth || !isConnected}
+          isAuth={isAuth}
+          onSendMessage={handleSendMessage}
         />
       </ChatWrapper>
     </ChatRoot>

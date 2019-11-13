@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useFetchChatData from 'hooks/useFetchChatData';
@@ -13,10 +13,10 @@ import Chat from 'components/Chat';
 const Home = () => {
   const dispatch = useDispatch();
 
-  const login = useSelector(userLoginSelector);
+  const userLogin = useSelector(userLoginSelector);
   const currentChannel = useSelector(currentChannelSelector);
 
-  const client = useTwitchClient(login, localStorage.accessToken);
+  const client = useTwitchClient(userLogin, localStorage.accessToken);
 
   useCurrentChannel();
   useFetchChatData();
@@ -33,11 +33,14 @@ const Home = () => {
     // TODO: try to connect to the chat. if there is an error, set isAuth to false and connect without login
   }, [dispatch]);
 
-  const handleSendMessage = (message) => {
-    if (!client) return;
-    const normalizedMessage = replaceEmojis(message.trim());
-    client.say(currentChannel, normalizedMessage);
-  };
+  const handleSendMessage = useCallback(
+    (message) => {
+      if (!client) return;
+      const normalizedMessage = replaceEmojis(message.trim());
+      client.say(currentChannel, normalizedMessage);
+    },
+    [client, currentChannel],
+  );
 
   return <Chat onSendMessage={handleSendMessage} />;
 };
