@@ -1,11 +1,13 @@
 import { createAction, handleActions } from 'redux-actions';
+import * as R from 'ramda';
 
+import { STORE_FLAGS } from 'utils/constants';
 import { fetchUser as apiFetchUser } from 'utils/api';
 
 const defaultState = {
   isAuth: false,
-  isLoading: false,
   user: {
+    ...STORE_FLAGS.default,
     id: null,
     login: null,
     displayName: null,
@@ -28,7 +30,7 @@ export const fetchUser = (id) => async (dispatch) => {
 
     dispatch(fetchUserSuccess(user));
   } catch (e) {
-    dispatch(fetchUserFailure(e.message));
+    dispatch(fetchUserFailure({ error: e.message }));
   }
 };
 
@@ -38,29 +40,34 @@ const handleSetIsAuth = (state, { payload: { isAuth, user } }) => ({
   user: { ...state.user, ...user },
 });
 
-const handleFetchUserRequest = (state) => ({
-  ...state,
-  isLoading: true,
-});
-const handleFetchUserSuccess = (state, { payload }) => ({
-  ...state,
-  isAuth: true,
-  isLoading: false,
-  user: payload,
-});
-const handleFetchUserFailure = (state, { payload }) => ({
-  ...state,
-  isAuth: false,
-  isLoading: false,
-  error: payload,
-});
+const handleFetchUser = {
+  [fetchUserRequest]: (state) =>
+    R.mergeDeepRight(state, {
+      isAuth: false,
+      user: { ...STORE_FLAGS.REQUEST },
+    }),
+  [fetchUserSuccess]: (state, { payload }) =>
+    R.mergeDeepRight(state, {
+      isAuth: true,
+      user: {
+        ...STORE_FLAGS.SUCCESS,
+        ...payload,
+      },
+    }),
+  [fetchUserFailure]: (state, { payload }) =>
+    R.mergeDeepRight(state, {
+      isAuth: false,
+      user: {
+        ...STORE_FLAGS.FAILURE,
+        error: payload.error,
+      },
+    }),
+};
 
 const reducer = handleActions(
   {
     [setIsAuth]: handleSetIsAuth,
-    [fetchUserRequest]: handleFetchUserRequest,
-    [fetchUserSuccess]: handleFetchUserSuccess,
-    [fetchUserFailure]: handleFetchUserFailure,
+    ...handleFetchUser,
   },
   defaultState,
 );
