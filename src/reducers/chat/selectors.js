@@ -9,8 +9,7 @@ export const currentChannelIdSelector = (state) =>
     state,
   );
 
-export const isEvenSelector = (state) =>
-  R.pathOr(false, ['messages', currentChannelSelector(state), 'isEven'], state);
+export const isConnectedSelector = (state) => state.chat.isConnected;
 
 export const isBlockedUsersLoadedSelector = (state) =>
   state.chat.blockedUsers.isLoaded || state.chat.blockedUsers.isError;

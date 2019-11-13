@@ -20,3 +20,6 @@ export const isHistoryLoadedSelector = (state) =>
     'history',
     'isLoaded',
   ])(state);
+
+export const isEvenSelector = (state) =>
+  R.pathOr(false, ['messages', currentChannelSelector(state), 'isEven'], state);
