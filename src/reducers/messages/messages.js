@@ -103,6 +103,7 @@ export const addMessage = ({ message, tags, user, ...rest }) => (
     message,
     messageArray: formatMessage(message, tags.emotes, emotes),
     tags,
+    user,
     badges: getMessageBadges(tags.badges, globalBadges, channelBadges),
     ...rest,
   };
