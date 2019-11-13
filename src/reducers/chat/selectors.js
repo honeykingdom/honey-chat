@@ -2,7 +2,7 @@ import * as R from 'ramda';
 
 export const currentChannelSelector = R.pathOr('', ['chat', 'currentChannel']);
 
-export const channelIdSelector = (state) =>
+export const currentChannelIdSelector = (state) =>
   R.pathOr(
     null,
     ['chat', 'channels', currentChannelSelector(state), 'roomState', 'roomId'],
