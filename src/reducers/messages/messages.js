@@ -6,6 +6,7 @@ import {
   globalBadgesSelector,
   channelBadgesSelector,
 } from 'reducers/badges/selectors';
+import { blockedUsersSelector } from 'reducers/chat/selectors';
 import { fetchRecentMessages as apiFetchRecentMessages } from 'utils/api';
 import {
   CHANNEL_MESSAGES_LIMIT,
@@ -84,11 +85,15 @@ export const fetchRecentMessages = (channel) => async (dispatch) => {
   }
 };
 
-export const addMessage = ({ message, tags, ...rest }) => (
+export const addMessage = ({ message, tags, user, ...rest }) => (
   dispatch,
   getState,
 ) => {
   const state = getState();
+  const blockedUsers = blockedUsersSelector(state);
+
+  if (blockedUsers.includes(user)) return;
+
   const globalBadges = globalBadgesSelector(state);
   const channelBadges = channelBadgesSelector(state);
   const emotes = emotesSelector(state);
