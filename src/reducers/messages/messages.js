@@ -31,14 +31,12 @@ const defaultState = {
 };
 
 const {
-  addMessageEntity,
-  addRecentMessages: addRecentMessagesAction,
+  addMessages,
   fetchRecentMessagesRequest,
   fetchRecentMessagesSuccess,
   fetchRecentMessagesFailure,
 } = createActions(
-  'ADD_MESSAGE_ENTITY',
-  'ADD_RECENT_MESSAGES',
+  'ADD_MESSAGES',
   'FETCH_RECENT_MESSAGES_REQUEST',
   'FETCH_RECENT_MESSAGES_SUCCESS',
   'FETCH_RECENT_MESSAGES_FAILURE',
@@ -66,11 +64,11 @@ export const addRecentMessages = (channel) => (dispatch, getState) => {
     state,
   );
   const data = {
-    channel,
     items: normalizeRecentMessages(state, messages),
+    isHistory: true,
   };
 
-  dispatch(addRecentMessagesAction(data));
+  dispatch(addMessages(data));
 };
 
 export const fetchRecentMessages = (channel) => async (dispatch) => {
@@ -85,10 +83,8 @@ export const fetchRecentMessages = (channel) => async (dispatch) => {
   }
 };
 
-export const addMessage = ({ message, tags, user, ...rest }) => (
-  dispatch,
-  getState,
-) => {
+export const addMessage = (payload) => (dispatch, getState) => {
+  const { message, tags, user } = payload;
   const state = getState();
   const blockedUsers = blockedUsersSelector(state);
 
@@ -99,16 +95,13 @@ export const addMessage = ({ message, tags, user, ...rest }) => (
   const emotes = emotesSelector(state);
 
   const normalizedMessage = {
+    ...payload,
     type: MESSAGE_TYPES.MESSAGE,
-    message,
     messageArray: formatMessage(message, tags.emotes, emotes),
-    tags,
-    user,
     badges: getMessageBadges(tags.badges, globalBadges, channelBadges),
-    ...rest,
   };
 
-  dispatch(addMessageEntity(normalizedMessage));
+  dispatch(addMessages({ items: [normalizedMessage] }));
 };
 
 export const addNoticeMessage = (message) => (dispatch) => {
@@ -117,7 +110,7 @@ export const addNoticeMessage = (message) => (dispatch) => {
     type: MESSAGE_TYPES.NOTICE_MESSAGE,
   };
 
-  dispatch(addMessageEntity(normalizedMessage));
+  dispatch(addMessages({ items: [normalizedMessage] }));
 };
 
 export const addUserNoticeMessage = (message) => (dispatch) => {
@@ -126,38 +119,29 @@ export const addUserNoticeMessage = (message) => (dispatch) => {
     type: MESSAGE_TYPES.USER_NOTICE_MESSAGE,
   };
 
-  dispatch(addMessageEntity(normalizedMessage));
+  dispatch(addMessages({ items: [normalizedMessage] }));
 };
 
-const handleAddMessageEntity = (state, { payload: message }) => {
-  const { channel } = message;
-  const oldItems = R.pathOr([], [channel, 'items'], state);
-  const newItems = [...oldItems, message];
+const handleAddMessages = (state, { payload }) => {
+  const { items, isHistory } = payload;
+  const channel = R.path([0, 'channel'], items);
+  const prevItems = R.pathOr([], [channel, 'items'], state);
+  const newItems = isHistory
+    ? [...items, ...prevItems]
+    : [...prevItems, ...items];
   const slicedMessages = sliceMessages(newItems);
-  const isSliced = newItems.length > slicedMessages.length;
-  const isEven = R.pathOr(false, [channel, 'isEven'], state);
 
-  return {
-    ...state,
-    [channel]: {
-      ...state[channel],
-      isEven: getIsEven(isEven, 1, isSliced),
-      items: slicedMessages,
-    },
-  };
-};
-
-const handleAddRecentMessages = (state, { payload: { channel, items } }) => {
-  const newItems = R.concat(items, R.pathOr([], [channel, 'items'], state));
-  const slicedMessages = sliceMessages(newItems);
   const isSliced = newItems.length > slicedMessages.length;
-  const isEven = R.pathOr(false, [channel, 'isEven'], state);
+  const prevIsEven = R.pathOr(false, [channel, 'isEven'], state);
+  const isEven = getIsEven(prevIsEven, items.length, isSliced);
+
+  const clearHistory = isHistory ? { history: { items: [] } } : {};
 
   return R.mergeDeepRight(state, {
     [channel]: {
-      history: { items: [] },
-      items: newItems,
-      isEven: getIsEven(isEven, items.length, isSliced),
+      ...clearHistory,
+      items: slicedMessages,
+      isEven,
     },
   });
 };
@@ -206,8 +190,7 @@ const handleFetchRecentMessages = {
 
 const reducer = handleActions(
   {
-    [addMessageEntity]: handleAddMessageEntity,
-    [addRecentMessagesAction]: handleAddRecentMessages,
+    [addMessages]: handleAddMessages,
     [clearChat]: handleClearChat,
     ...handleFetchRecentMessages,
   },
