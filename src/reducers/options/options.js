@@ -13,6 +13,7 @@ const defaultState = {
   splitChat: true,
   blacklistKeywords: '',
   highlightKeywords: '',
+  fixedWidth: false,
   ...getOptionsFromLocalStorage(),
 };
 

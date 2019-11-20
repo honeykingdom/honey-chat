@@ -18,6 +18,14 @@ export const optionsSelector = (state) => [
         description: '',
         value: state.options.splitChat,
       },
+      {
+        type: 'SWITCH',
+        id: 'fixed-width',
+        name: 'fixedWidth',
+        title: 'Fixed Width',
+        description: '',
+        value: state.options.fixedWidth,
+      },
       // {
       //   type: 'INPUT',
       //   id: 'blacklist-keywords',
@@ -40,3 +48,4 @@ export const optionsSelector = (state) => [
 
 export const isShowTimestampsSelector = (state) => state.options.showTimestamps;
 export const isSplitChatSelector = (state) => state.options.splitChat;
+export const isFixedWidthSelector = (state) => state.options.fixedWidth;

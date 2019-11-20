@@ -8,6 +8,7 @@ import { isConnectedSelector } from 'reducers/chat/selectors';
 import {
   isShowTimestampsSelector,
   isSplitChatSelector,
+  isFixedWidthSelector,
 } from 'reducers/options/selectors';
 import { userLoginSelector, isAuthSelector } from 'reducers/auth/selectors';
 import { emoteCategoriesSelector } from 'reducers/emotes/selectors';
@@ -18,10 +19,12 @@ import Messages from 'components/Messages';
 const ChatRoot = styled.div`
   height: 100vh;
   font-size: 12px;
+  background-color: #0e0e10;
 `;
 const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: ${(p) => (p.isFixedWidth ? '340px' : 'auto')};
   height: 100%;
   background-color: #18181b;
 `;
@@ -38,6 +41,7 @@ const Chat = ({ onSendMessage }) => {
   const isEven = useSelector(isEvenSelector);
   const isShowTimestamps = useSelector(isShowTimestampsSelector);
   const isSplitChat = useSelector(isSplitChatSelector);
+  const isFixedWidth = useSelector(isFixedWidthSelector);
   const chatInputRef = useRef(null);
 
   // Ref to avoid multiple renders
@@ -69,7 +73,7 @@ const Chat = ({ onSendMessage }) => {
 
   return (
     <ChatRoot>
-      <ChatWrapper>
+      <ChatWrapper isFixedWidth={isFixedWidth}>
         <Messages
           messages={messages}
           userLogin={userLogin}
