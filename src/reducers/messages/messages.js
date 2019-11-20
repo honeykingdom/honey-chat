@@ -10,6 +10,7 @@ import { blockedUsersSelector } from 'reducers/chat/selectors';
 import { fetchRecentMessages as apiFetchRecentMessages } from 'utils/api';
 import {
   CHANNEL_MESSAGES_LIMIT,
+  STORE_USERS_LIMIT,
   MESSAGE_TYPES,
   STORE_FLAGS,
 } from 'utils/constants';
@@ -27,6 +28,7 @@ const defaultState = {
   //   },
   //   isEven: false,
   //   items: [],
+  //   users: [],
   // },
 };
 
@@ -47,6 +49,11 @@ export const clearChat = createAction('CLEAR_CHAT');
 const sliceMessages = (items) => {
   const diff = items.length - CHANNEL_MESSAGES_LIMIT;
   return diff > 0 ? items.slice(diff) : items;
+};
+
+const sliceUsers = (users) => {
+  const diff = users.length - STORE_USERS_LIMIT;
+  return diff > 0 ? users.slice(diff) : users;
 };
 
 const getIsEven = (prev, addedItemsCount, isSliced) => {
@@ -137,10 +144,20 @@ const handleAddMessages = (state, { payload }) => {
 
   const clearHistory = isHistory ? { history: { items: [] } } : {};
 
+  let users = R.pathOr([], [channel, 'users'], state);
+  items.forEach((message) => {
+    const displayName = R.path(['tags', 'displayName'], message);
+    if (displayName && !users.includes(displayName)) {
+      users = [...users, displayName];
+    }
+  });
+  users = sliceUsers(users);
+
   return R.mergeDeepRight(state, {
     [channel]: {
       ...clearHistory,
       items: slicedMessages,
+      users,
       isEven,
     },
   });

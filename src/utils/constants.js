@@ -5,6 +5,7 @@ export const TWITCH_API_REDIRECT_URI =
   process.env.REACT_APP_TWITCH_API_REDIRECT_URI;
 
 export const CHANNEL_MESSAGES_LIMIT = 500;
+export const STORE_USERS_LIMIT = 500;
 
 export const API_REQUESTS_TIMEOUT = 10000;
 
