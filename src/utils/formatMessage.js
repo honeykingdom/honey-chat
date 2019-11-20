@@ -142,7 +142,6 @@ const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
     }
   }
 
-  // TODO: Use unicode regex if it supports
   const mentionMatch = word.match(mentionRegex);
   if (mentionMatch) {
     const [text, target] = mentionMatch;
