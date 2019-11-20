@@ -11,7 +11,7 @@ import {
   getIsAction,
   normalizeActionMessage,
   parseMessageTags,
-} from 'utils/twitchChat';
+} from 'twitch-simple-irc';
 import formatMessage from 'utils/formatMessage';
 import getMessageBadges from 'utils/getMessageBadges';
 
