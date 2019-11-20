@@ -40,3 +40,26 @@ export const STORE_FLAGS = {
     isError: true,
   },
 };
+
+export const NOTICE_MESSAGE_TAGS = [
+  'msg_banned',
+  'msg_bad_characters',
+  'msg_channel_blocked',
+  'msg_channel_suspended',
+  'msg_duplicate',
+  'msg_emoteonly',
+  'msg_facebook',
+  'msg_followersonly',
+  'msg_followersonly_followed',
+  'msg_followersonly_zero',
+  'msg_r9k',
+  'msg_ratelimit',
+  'msg_rejected',
+  'msg_rejected_mandatory',
+  'msg_room_not_found',
+  'msg_slowmode',
+  'msg_subsonly',
+  'msg_suspended',
+  'msg_timedout',
+  'msg_verified_email',
+];
