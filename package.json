@@ -28,6 +28,7 @@
     "styled-components": "^5.0.0-rc.2",
     "tekko": "^2.4.0",
     "twemoji-parser": "^12.1.1",
+    "twitch-simple-irc": "github:honeykingdom/twitch-simple-irc",
     "url-regex": "^5.0.0",
     "use-onclickoutside": "^0.3.1",
     "uuid": "^3.3.3"
