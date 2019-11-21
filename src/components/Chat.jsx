@@ -75,6 +75,8 @@ const replaceSuggestionText = (
   text,
   { type, items, activeIndex, start, end },
 ) => {
+  if (items.length === 0) return text;
+
   const currentItem = items[activeIndex];
   const insertedText = type === 'users' ? `@${currentItem}` : currentItem.alt;
 
