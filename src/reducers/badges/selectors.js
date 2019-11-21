@@ -10,10 +10,10 @@ export const channelBadgesSelector = (state) =>
     state,
   );
 
-const isGlobalBadgesLoadedSelector = (state) =>
+export const isGlobalBadgesLoadedSelector = (state) =>
   state.badges.global.isLoaded || state.badges.global.isError;
 
-const isChannelBadgesLoadedSelector = (state) => {
+export const isChannelBadgesLoadedSelector = (state) => {
   const channel = currentChannelSelector(state);
   return (
     R.pathOr(false, ['badges', 'channels', channel, 'isLoaded'], state) ||
