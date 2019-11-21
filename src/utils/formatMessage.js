@@ -99,36 +99,72 @@ const regexMap = {
   9: '<3', // '\\&lt\\;3'
 };
 
-const findTwitchEmote = (name, twitch) =>
+const findTwitchEmote = (name, items) =>
   R.find(({ id, code }) => {
     // 1-14 - match by regex
     if (id >= 1 && id <= 14) {
       const regexString = regexMap[id] || code;
       return RegExp(`^${regexString}$`).test(name);
     }
+
     return name === code;
-  }, twitch);
-const findBttvEmote = (name, bttv) => R.find(R.propEq('code', name), bttv);
-const findFfzEmote = (name, ffz) => R.find(R.propEq('name', name), ffz);
+  }, items);
+const findTwitchEmoteInSets = (name, sets) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const set of Object.values(sets)) {
+    const result = findTwitchEmote(name, set);
+
+    if (result) return result;
+  }
+
+  return null;
+};
+
+const findBttvEmote = (name, items) => R.find(R.propEq('code', name), items);
+const findFfzEmote = (name, items) => R.find(R.propEq('name', name), items);
 const findEmoji = (char) =>
   R.pipe(R.filter(R.propEq('char', char)), R.keys, R.head)(emojilib);
 
-const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
+const findEntity = (word, emotes, { parseTwitch = false }) => {
+  if (!emotes) return null;
+
+  const {
+    twitchGlobal,
+    twitchUser,
+    bttvGlobal,
+    bttvChannel,
+    ffzGlobal,
+    ffzChannel,
+  } = emotes;
+
   if (parseTwitch) {
-    const twitchEmote = findTwitchEmote(word, twitch);
-    if (twitchEmote)
+    const twitchEmote =
+      findTwitchEmoteInSets(word, twitchGlobal) ||
+      findTwitchEmoteInSets(word, twitchUser);
+
+    if (twitchEmote) {
       return createTwitchEmote({ id: twitchEmote.id, code: word });
+    }
   }
 
-  const bttvEmote = findBttvEmote(word, bttv);
-  if (bttvEmote) return createBttvEmote(bttvEmote);
+  const bttvEmote =
+    findBttvEmote(word, bttvGlobal) || findBttvEmote(word, bttvChannel);
 
-  const ffzEmote = findFfzEmote(word, ffz);
-  if (ffzEmote) return createFfzEmote(ffzEmote);
+  if (bttvEmote) {
+    return createBttvEmote(bttvEmote);
+  }
+
+  const ffzEmote =
+    findFfzEmote(word, ffzGlobal) || findFfzEmote(word, ffzChannel);
+
+  if (ffzEmote) {
+    return createFfzEmote(ffzEmote);
+  }
 
   // Don't parse two or more emotes without spaces between
   // Don't parse emote if it's not in the emojilib package
   const emojiMatch = twemojiParser(word, { assetType: 'png' });
+
   if (
     emojiMatch &&
     emojiMatch.length === 1 &&
@@ -138,13 +174,16 @@ const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
 
     if (emoji) {
       const [{ url }] = emojiMatch;
+
       return createEmoji(emoji, url);
     }
   }
 
   const mentionMatch = word.match(mentionRegex);
+
   if (mentionMatch) {
     const [text, target] = mentionMatch;
+
     return [
       createMention(text, target.toLowerCase()),
       word.length - text.length,
@@ -152,6 +191,7 @@ const findEntity = (word, { twitch, bttv, ffz }, { parseTwitch = false }) => {
   }
 
   const linkMatch = word.match(linkRegex);
+
   if (linkMatch && linkMatch[0].length === word.length) {
     return createLink(word);
   }
