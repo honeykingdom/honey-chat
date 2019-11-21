@@ -5,6 +5,7 @@ import { STORE_FLAGS } from 'utils/constants';
 import { fetchUser as apiFetchUser } from 'utils/api';
 
 const defaultState = {
+  isAuthReady: false,
   isAuth: false,
   user: {
     ...STORE_FLAGS.default,
@@ -39,11 +40,13 @@ const handleSetAuth = (state, { payload }) => R.mergeDeepRight(state, payload);
 const handleFetchUser = {
   [fetchUserRequest]: (state) =>
     R.mergeDeepRight(state, {
+      isAuthReady: false,
       isAuth: false,
       user: { ...STORE_FLAGS.REQUEST },
     }),
   [fetchUserSuccess]: (state, { payload }) =>
     R.mergeDeepRight(state, {
+      isAuthReady: true,
       isAuth: true,
       user: {
         ...STORE_FLAGS.SUCCESS,
@@ -52,6 +55,7 @@ const handleFetchUser = {
     }),
   [fetchUserFailure]: (state, { payload }) =>
     R.mergeDeepRight(state, {
+      isAuthReady: true,
       isAuth: false,
       user: {
         ...STORE_FLAGS.FAILURE,

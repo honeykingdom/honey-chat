@@ -1,3 +1,4 @@
+export const isAuthReadySelector = (state) => state.auth.isAuthReady;
 export const isAuthSelector = (state) => state.auth.isAuth;
 export const userLoginSelector = (state) => state.auth.user.login;
 export const userIdSelector = (state) => state.auth.user.id;
