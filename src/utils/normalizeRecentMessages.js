@@ -13,7 +13,7 @@ import {
   parseMessageTags,
 } from 'twitch-simple-irc';
 import formatMessage from 'utils/formatMessage';
-import getMessageBadges from 'utils/getMessageBadges';
+import createBadges from 'utils/createBadges';
 
 const normalizeRecentMessages = (state, messages) => {
   const globalBadges = globalBadgesSelector(state);
@@ -40,7 +40,7 @@ const normalizeRecentMessages = (state, messages) => {
       message: normalizedMessage,
       messageArray: formatMessage(normalizedMessage, parsedTags.emotes, emotes),
       tags: parsedTags,
-      badges: getMessageBadges(parsedTags.badges, globalBadges, channelBadges),
+      badges: createBadges(parsedTags.badges, globalBadges, channelBadges),
       user,
       channel: channel.slice(1),
       isAction,

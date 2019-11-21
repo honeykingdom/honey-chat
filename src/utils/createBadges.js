@@ -13,7 +13,7 @@ const createBadge = ({
   srcSet: `${imageUrl1x} 1x, ${imageUrl2x} 2x, ${imageUrl4x} 4x`,
 });
 
-const getMessageBadges = (badges, globalBadges, channelBadges) => {
+const createBadges = (badges, globalBadges, channelBadges) => {
   const mapBadges = ([name, version]) => {
     const badge =
       R.pathOr(false, [name, 'versions', version], channelBadges) ||
@@ -25,4 +25,4 @@ const getMessageBadges = (badges, globalBadges, channelBadges) => {
   return R.pipe(R.toPairs, R.map(mapBadges), R.filter(Boolean))(badges);
 };
 
-export default getMessageBadges;
+export default createBadges;

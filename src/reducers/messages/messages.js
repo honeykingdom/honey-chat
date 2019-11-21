@@ -15,7 +15,7 @@ import {
   STORE_FLAGS,
 } from 'utils/constants';
 import formatMessage from 'utils/formatMessage';
-import getMessageBadges from 'utils/getMessageBadges';
+import createBadges from 'utils/createBadges';
 import normalizeRecentMessages from 'utils/normalizeRecentMessages';
 
 const defaultState = {
@@ -105,7 +105,7 @@ export const addMessage = (payload) => (dispatch, getState) => {
     ...payload,
     type: MESSAGE_TYPES.MESSAGE,
     messageArray: formatMessage(message, tags.emotes, emotes),
-    badges: getMessageBadges(tags.badges, globalBadges, channelBadges),
+    badges: createBadges(tags.badges, globalBadges, channelBadges),
   };
 
   dispatch(addMessages({ items: [normalizedMessage] }));
@@ -145,8 +145,6 @@ const handleAddMessages = (state, { payload }) => {
   const isSliced = newItems.length > slicedMessages.length;
   const prevIsEven = R.pathOr(false, [channel, 'isEven'], state);
   const isEven = getIsEven(prevIsEven, items.length, isSliced);
-
-  const clearHistory = isHistory ? { history: { items: [] } } : {};
 
   let users = R.pathOr([], [channel, 'users'], state);
   items.forEach((message) => {
