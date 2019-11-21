@@ -12,7 +12,7 @@ import GlobalStyles from 'styles';
 const getHomeComponent = () =>
   isAuthRedirect(window.location.hash) ? AuthCallback : Home;
 
-const App = ({ store }) => (
+const App: React.FC = ({ store }) => (
   <>
     <Provider store={store}>
       <Router>
