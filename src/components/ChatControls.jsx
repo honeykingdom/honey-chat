@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import useOnClickOutside from 'use-onclickoutside';
 
 import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
+import { ReactComponent as TwitchIconSvg } from 'icons/twitch.svg';
 import IconButton from 'components/IconButton';
 import ChatModal from 'components/ChatModal';
 import Options from 'components/Options';
@@ -17,8 +18,6 @@ const ChatControlsRoot = styled.div`
 `;
 const Controls = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
 
   & > :not(:last-child) {
@@ -36,7 +35,10 @@ const OptionsModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-const SendButton = styled.button.attrs({ type: 'button' })`
+const Button = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 10px;
   height: 30px;
   border: none;
@@ -45,6 +47,7 @@ const SendButton = styled.button.attrs({ type: 'button' })`
   outline: none;
   font-size: 12px;
   border-radius: 4px;
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
@@ -66,27 +69,29 @@ const SendButton = styled.button.attrs({ type: 'button' })`
     cursor: not-allowed;
   }
 `;
+const OptionsButton = styled(IconButton)`
+  margin-left: auto;
+`;
 const GearsIcon = styled(GearsIconSvg)`
   display: block;
   width: 20px;
   height: 20px;
 `;
-const StyledLink = styled(Link)`
-  color: #bf94ff;
-  text-decoration: none;
-
-  &:focus,
-  &:hover {
-    color: #a970ff;
-    text-decoration: underline;
-  }
-
-  &:visited {
-    color: #a970ff;
-  }
+const TwitchIcon = styled(TwitchIconSvg)`
+  display: block;
+  margin-right: 4px;
+  width: 20px;
+  height: 20px;
 `;
 
-const ChatControls = ({ isAuth, isDisabled, onSendMessage }) => {
+const ChatControls = ({
+  userDisplayName,
+  userColor,
+  userBadgesImages,
+  isAuth,
+  isDisabled,
+  onSendMessage,
+}) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
   const optionsModalRef = useRef(null);
 
@@ -94,39 +99,56 @@ const ChatControls = ({ isAuth, isDisabled, onSendMessage }) => {
 
   useOnClickOutside(optionsModalRef, handleCloseOptionsModal);
 
+  const renderSignInButton = () => (
+    <Button as={Link} to="/chat/auth">
+      <TwitchIcon />
+      Sign in with Twitch
+    </Button>
+  );
+
+  const renderOptionsModal = () => (
+    <OptionsModal ref={optionsModalRef}>
+      <ChatModal onClose={handleCloseOptionsModal}>
+        <Options
+          isAuth={isAuth}
+          userDisplayName={userDisplayName}
+          userColor={userColor}
+          userBadgesImages={userBadgesImages}
+        />
+      </ChatModal>
+    </OptionsModal>
+  );
+
   return (
     <ChatControlsRoot>
       <Controls>
-        {!isAuth && (
-          <StyledLink to="/chat/auth">Sign in with Twitch</StyledLink>
-        )}
-        <IconButton
+        {!isAuth && renderSignInButton()}
+        <OptionsButton
           onClick={() => setIsOptionsModalVisible(!isOptionsModalVisible)}
         >
           <GearsIcon />
-        </IconButton>
-        <SendButton disabled={isDisabled} onClick={onSendMessage}>
+        </OptionsButton>
+        <Button disabled={isDisabled} onClick={onSendMessage}>
           Chat
-        </SendButton>
+        </Button>
       </Controls>
-      {isOptionsModalVisible && (
-        <OptionsModal ref={optionsModalRef}>
-          <ChatModal onClose={handleCloseOptionsModal}>
-            <Options />
-          </ChatModal>
-        </OptionsModal>
-      )}
+      {isOptionsModalVisible && renderOptionsModal()}
     </ChatControlsRoot>
   );
 };
 
 ChatControls.defaultProps = {
-  isAuth: false,
+  userDisplayName: '',
+  userColor: '',
+  userBadgesImages: [],
   isDisabled: false,
 };
 
 ChatControls.propTypes = {
-  isAuth: pt.bool,
+  userDisplayName: pt.string,
+  userColor: pt.string,
+  userBadgesImages: pt.arrayOf(pt.shape({})),
+  isAuth: pt.bool.isRequired,
   isDisabled: pt.bool,
   onSendMessage: pt.func.isRequired,
 };
