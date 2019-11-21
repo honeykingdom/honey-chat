@@ -9,7 +9,11 @@ import {
   isEvenSelector,
   usersSelector,
 } from 'reducers/messages/selectors';
-import { isConnectedSelector } from 'reducers/chat/selectors';
+import {
+  isConnectedSelector,
+  userColorSelector,
+  userBadgesImagesSelector,
+} from 'reducers/chat/selectors';
 import {
   isShowTimestampsSelector,
   isSplitChatSelector,
@@ -85,6 +89,8 @@ const Chat = ({ onSendMessage }) => {
   const messages = useSelector(messagesSelector);
   const userLogin = useSelector(userLoginSelector);
   const userDisplayName = useSelector(userDisplayNameSelector);
+  const userColor = useSelector(userColorSelector);
+  const userBadgesImages = useSelector(userBadgesImagesSelector);
   const emoteCategories = useSelector(emoteCategoriesSelector);
   const emotes = useSelector(emotesSelector);
   const users = useSelector(usersSelector);
@@ -263,6 +269,9 @@ const Chat = ({ onSendMessage }) => {
           onBlur={handleBlur}
         />
         <ChatControls
+          userDisplayName={userDisplayName}
+          userColor={userColor}
+          userBadgesImages={userBadgesImages}
           isDisabled={isDisabled}
           isAuth={isAuth}
           onSendMessage={handleSendMessage}
