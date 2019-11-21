@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { isAuthSelector, userIdSelector } from 'reducers/auth/selectors';
+import {
+  isAuthReadySelector,
+  isAuthSelector,
+  userIdSelector,
+} from 'reducers/auth/selectors';
 import { fetchTwitchEmotes } from 'reducers/emotes/twitch';
 import {
   fetchBttvGlobalEmotes,
@@ -17,7 +21,10 @@ import {
   isFfzEmotesLoadedSelector,
 } from 'reducers/emotes/selectors';
 import { fetchRecentMessages, addRecentMessages } from 'reducers/messages';
-import { isHistoryLoadedSelector } from 'reducers/messages/selectors';
+import {
+  isHistoryLoadedSelector,
+  isHistoryAddedSelector,
+} from 'reducers/messages/selectors';
 import { fetchBlockedUsers } from 'reducers/chat';
 import {
   currentChannelSelector,
@@ -30,6 +37,7 @@ import { isBadgesLoadedSelector } from 'reducers/badges/selectors';
 const useFetchChatData = () => {
   const dispatch = useDispatch();
 
+  const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
   const userId = useSelector(userIdSelector);
   const currentChannel = useSelector(currentChannelSelector);
@@ -41,15 +49,20 @@ const useFetchChatData = () => {
   const isBadgesLoaded = useSelector(isBadgesLoadedSelector);
   const isHistoryLoaded = useSelector(isHistoryLoadedSelector);
   const isBlockedUsersLoaded = useSelector(isBlockedUsersLoadedSelector);
+  const isHistoryAdded = useSelector(isHistoryAddedSelector);
 
-  const isReadyToAddRecentMessages =
+  const isReadyToAddHistory =
+    isAuthReady &&
     currentChannel &&
+    !isHistoryAdded &&
     (isAuth ? isTwitchEmotesLoaded : true) &&
     (isAuth ? isBlockedUsersLoaded : true) &&
     isBttvEmotesLoaded &&
     isFfzEmotesLoaded &&
     isBadgesLoaded &&
     isHistoryLoaded;
+
+  // TODO: check if emotes and badges is already in the store
 
   useEffect(() => {
     dispatch(fetchBttvGlobalEmotes());
@@ -58,26 +71,25 @@ const useFetchChatData = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentChannel) {
+    if (!isHistoryAdded && currentChannel) {
       dispatch(fetchRecentMessages(currentChannel));
     }
-  }, [dispatch, currentChannel]);
+  }, [dispatch, currentChannel, isHistoryAdded]);
 
   useEffect(() => {
-    if (isReadyToAddRecentMessages) {
+    if (isReadyToAddHistory) {
       dispatch(addRecentMessages(currentChannel));
     }
-  }, [dispatch, currentChannel, isReadyToAddRecentMessages]);
+  }, [dispatch, currentChannel, isReadyToAddHistory]);
 
   useEffect(() => {
-    if (userId) {
+    if (isAuthReady && isAuth && userId) {
       dispatch(fetchTwitchEmotes(userId));
       dispatch(fetchBlockedUsers(userId));
     }
-  }, [dispatch, userId]);
+  }, [dispatch, isAuthReady, isAuth, userId]);
 
   useEffect(() => {
-    // TODO: check if emotes for the current channel is already in the store
     if (currentChannel && currentChannelId) {
       dispatch(fetchBttvChannelEmotes(currentChannelId, currentChannel));
       dispatch(fetchFfzChannelEmotes(currentChannelId, currentChannel));
