@@ -1,11 +1,6 @@
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import jwt from 'jsonwebtoken';
-
-import { fetchUser } from 'reducers/auth';
 
 const AuthCallback = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
 
   if (!window.location.hash) return null;
@@ -20,13 +15,10 @@ const AuthCallback = () => {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('idToken', idToken);
 
-  const { sub: id } = jwt.decode(idToken);
-
-  dispatch(fetchUser(id));
-
-  const lastChannel = localStorage.getItem('lastChannel');
-
-  history.push(lastChannel ? `/chat/#${lastChannel}` : '/chat/');
+  history.push({
+    pathname: '/chat/',
+    hash: localStorage.lastChannel || '',
+  });
 
   return null;
 };
