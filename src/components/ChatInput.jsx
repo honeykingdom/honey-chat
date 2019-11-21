@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import pt from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import useOnClickOutside from 'use-onclickoutside';
 
-import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
+import {
+  twitchEmoteType,
+  bttvEmoteType,
+  ffzEmoteType,
+} from 'utils/formatMessage';
 import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
 import EmotePicker from 'components/EmotePicker';
+import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
 
 const ChatInputRoot = styled.div`
   padding-left: 10px;
@@ -18,8 +23,73 @@ const ChatInputRoot = styled.div`
     margin-bottom: 10px;
   }
 `;
-const TextareaWrapper = styled.div`
+const ChatInputInner = styled.div`
   position: relative;
+`;
+const Suggestions = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  margin-left: -5px;
+  margin-bottom: -5px;
+  margin-right: -5px;
+  margin-bottom: 0;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: none;
+  background-color: #18181b;
+  color: #fff;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0px 2px rgba(0, 0, 0, 0.1); */
+`;
+const SuggestionItem = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 2px;
+  background-color: ${(p) =>
+    p.isActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'};
+  cursor: pointer;
+`;
+const SuggestionImage = styled.img`
+  margin-right: 8px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+`;
+const TextareaInput = styled.div`
+  position: relative;
+`;
+const TextareaWrapper = styled.div`
+  ${(p) =>
+    p.isSuggestions &&
+    css`
+      margin-left: -5px;
+      margin-bottom: -5px;
+      margin-right: -5px;
+      padding: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: none;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      /* box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.1),
+        0 2px 2px -2px rgba(0, 0, 0, 0.02); */
+
+      & > ${TextareaInput} {
+        margin-left: -1px;
+        margin-bottom: -1px;
+        margin-right: -1px;
+      }
+    `};
 `;
 const EmotesModal = styled.div`
   position: absolute;
@@ -79,71 +149,89 @@ const ChatInput = React.forwardRef(
     {
       text,
       emoteCategories,
+      suggestions,
       isDisabled,
-      onChangeText,
-      onSendMessage,
       onEmoteClick,
+      onChange,
+      onKeyUp,
+      onKeyDown,
+      onBlur,
     },
     textareaRef,
   ) => {
-    const textareaWrapperRef = useRef(null);
+    const chatInputRef = useRef(null);
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
 
     const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
 
-    useOnClickOutside(textareaWrapperRef, handleCloseEmotesModal);
+    useOnClickOutside(chatInputRef, handleCloseEmotesModal);
 
-    const handleChange = (e) => onChangeText(e.target.value);
+    /* eslint-disable react/prop-types */
+    const renderSuggestions = ({ type, items, activeIndex }) => {
+      const renderUser = (name, index) => (
+        <SuggestionItem key={name} isActive={index === activeIndex}>
+          {name}
+        </SuggestionItem>
+      );
 
-    const handleKeyDown = useCallback(
-      (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          onSendMessage();
-        }
-      },
-      [onSendMessage],
+      const renderEmote = ({ src, srcSet, alt }, index) => (
+        <SuggestionItem key={alt} isActive={index === activeIndex}>
+          <SuggestionImage src={src} srcSet={srcSet} alt={alt} />
+          {alt}
+        </SuggestionItem>
+      );
+
+      return (
+        <Suggestions>
+          {items.length
+            ? items.map(type === 'users' ? renderUser : renderEmote)
+            : 'No matches'}
+        </Suggestions>
+      );
+    };
+    /* eslint-enable react/prop-types */
+
+    const renderEmotesButton = () => (
+      <EmotesButton
+        onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
+      >
+        <SmileyFaceIcon />
+      </EmotesButton>
     );
 
-    useEffect(() => {
-      const textareaNode = textareaRef.current;
-
-      textareaNode.addEventListener('keydown', handleKeyDown, false);
-
-      return () => {
-        textareaNode.removeEventListener('keydown', handleKeyDown, false);
-      };
-    }, [handleKeyDown, textareaRef]);
+    const renderEmotesModal = () => (
+      <EmotesModal>
+        <ChatModal onClose={handleCloseEmotesModal}>
+          <EmotePicker
+            emoteCategories={emoteCategories}
+            onEmoteClick={onEmoteClick}
+          />
+        </ChatModal>
+      </EmotesModal>
+    );
 
     return (
-      <ChatInputRoot>
-        <TextareaWrapper ref={textareaWrapperRef}>
-          <Textarea
-            placeholder="Send a message"
-            ref={textareaRef}
-            maxLength={500}
-            disabled={isDisabled}
-            onChange={handleChange}
-            value={text}
-          />
-          {!!emoteCategories.length && (
-            <EmotesButton
-              onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
-            >
-              <SmileyFaceIcon />
-            </EmotesButton>
-          )}
-          {isEmotesModalVisible && (
-            <EmotesModal>
-              <ChatModal onClose={handleCloseEmotesModal}>
-                <EmotePicker
-                  emoteCategories={emoteCategories}
-                  onEmoteClick={onEmoteClick}
-                />
-              </ChatModal>
-            </EmotesModal>
-          )}
-        </TextareaWrapper>
+      <ChatInputRoot ref={chatInputRef}>
+        <ChatInputInner>
+          {suggestions.isActive && renderSuggestions(suggestions)}
+          <TextareaWrapper isSuggestions={suggestions.isActive}>
+            <TextareaInput>
+              <Textarea
+                ref={textareaRef}
+                value={text}
+                placeholder="Send a message"
+                maxLength={500}
+                disabled={isDisabled}
+                onChange={onChange}
+                onKeyUp={onKeyUp}
+                onKeyDown={onKeyDown}
+                onBlur={onBlur}
+              />
+              {!!emoteCategories.length && renderEmotesButton()}
+            </TextareaInput>
+          </TextareaWrapper>
+          {isEmotesModalVisible && renderEmotesModal()}
+        </ChatInputInner>
       </ChatInputRoot>
     );
   },
@@ -157,10 +245,22 @@ ChatInput.defaultProps = {
 ChatInput.propTypes = {
   text: pt.string.isRequired,
   emoteCategories: pt.arrayOf(pt.shape({})),
+  suggestions: pt.shape({
+    isActive: pt.bool,
+    items: pt.oneOfType([
+      pt.arrayOf(pt.string),
+      pt.arrayOf(pt.oneOfType([twitchEmoteType, bttvEmoteType, ffzEmoteType])),
+    ]),
+    activeIndex: pt.number,
+    cursorPosition: pt.number,
+    prefix: pt.string,
+  }).isRequired,
   isDisabled: pt.bool,
-  onChangeText: pt.func.isRequired,
-  onSendMessage: pt.func.isRequired,
   onEmoteClick: pt.func.isRequired,
+  onChange: pt.func.isRequired,
+  onKeyUp: pt.func.isRequired,
+  onKeyDown: pt.func.isRequired,
+  onBlur: pt.func.isRequired,
 };
 
 export default React.memo(ChatInput);
