@@ -8,42 +8,6 @@ import {
 } from 'utils/formatMessage';
 import { currentChannelSelector } from 'reducers/chat/selectors';
 
-export const twitchEmotesSelector = createSelector(
-  R.pathOr([], ['emotes', 'twitch', 'items']),
-  R.pipe(R.values, R.flatten),
-);
-
-const createGlobalEmotesSelector = (type) =>
-  R.pathOr([], ['emotes', type, 'global', 'items']);
-const createChannelEmotesSelector = (type) => (state) =>
-  R.pathOr(
-    [],
-    ['emotes', type, 'channels', currentChannelSelector(state), 'items'],
-    state,
-  );
-
-const bttvGlobalEmotesSelector = createGlobalEmotesSelector('bttv');
-const bttvChannelEmotesSelector = createChannelEmotesSelector('bttv');
-export const bttvEmotesSelector = createSelector(
-  bttvGlobalEmotesSelector,
-  bttvChannelEmotesSelector,
-  (bttvGlobal, bttvChannel) => [...bttvGlobal, ...bttvChannel],
-);
-
-const ffzGlobalEmotesSelector = createGlobalEmotesSelector('ffz');
-const ffzChannelEmotesSelector = createChannelEmotesSelector('ffz');
-export const ffzEmotesSelector = createSelector(
-  ffzGlobalEmotesSelector,
-  ffzChannelEmotesSelector,
-  (ffzGlobal, ffzChannel) => [...ffzGlobal, ...ffzChannel],
-);
-
-export const emotesSelector = (state) => ({
-  twitch: twitchEmotesSelector(state),
-  bttv: bttvEmotesSelector(state),
-  ffz: ffzEmotesSelector(state),
-});
-
 const createIsEmotesLoadedSelector = (type) => (state) => {
   const channel = currentChannelSelector(state);
   const globalLoaded =
@@ -63,6 +27,62 @@ export const isEmotesLoadedSelector = (state) =>
   isTwitchEmotesLoadedSelector(state) &&
   isBttvEmotesLoadedSelector(state) &&
   isFfzEmotesLoadedSelector(state);
+
+const twitchEmotesSelector = R.pathOr([], ['emotes', 'twitch', 'items']);
+const twitchGlobalEmotesSelector = createSelector(
+  twitchEmotesSelector,
+  R.pick(['0']),
+);
+const twitchUserEmotesSelector = createSelector(
+  twitchEmotesSelector,
+  R.omit(['0']),
+);
+
+const createGlobalEmotesSelector = (type) =>
+  R.pathOr([], ['emotes', type, 'global', 'items']);
+
+const createChannelEmotesSelector = (type) => (state) =>
+  R.pathOr(
+    [],
+    ['emotes', type, 'channels', currentChannelSelector(state), 'items'],
+    state,
+  );
+
+const bttvGlobalEmotesSelector = createGlobalEmotesSelector('bttv');
+const bttvChannelEmotesSelector = createChannelEmotesSelector('bttv');
+
+const ffzGlobalEmotesSelector = createGlobalEmotesSelector('ffz');
+const ffzChannelEmotesSelector = createChannelEmotesSelector('ffz');
+
+export const emotesSelector = createSelector(
+  isEmotesLoadedSelector,
+  twitchGlobalEmotesSelector,
+  twitchUserEmotesSelector,
+  bttvGlobalEmotesSelector,
+  bttvChannelEmotesSelector,
+  ffzGlobalEmotesSelector,
+  ffzChannelEmotesSelector,
+  (
+    isEmotesLoaded,
+    twitchGlobal,
+    twitchUser,
+    bttvGlobal,
+    bttvChannel,
+    ffzGlobal,
+    ffzChannel,
+  ) => {
+    if (!isEmotesLoaded) return null;
+
+    return {
+      twitchGlobal,
+      twitchUser,
+      bttvGlobal,
+      bttvChannel,
+      ffzGlobal,
+      ffzChannel,
+    };
+  },
+);
 
 // prettier-ignore
 const regexEmotesMap = {
@@ -86,14 +106,18 @@ const createGlobalTwitchEmote = ({ id, code }) =>
   createTwitchEmote({ id, code: regexEmotesMap[code] || code });
 
 export const emoteCategoriesSelector = createSelector(
-  isEmotesLoadedSelector,
-  (state) => state.emotes.twitch.items,
-  bttvGlobalEmotesSelector,
-  bttvChannelEmotesSelector,
-  ffzGlobalEmotesSelector,
-  ffzChannelEmotesSelector,
-  (isEmotesLoaded, twitch, bttvGlobal, bttvChannel, ffzGlobal, ffzChannel) => {
-    if (!isEmotesLoaded) return [];
+  emotesSelector,
+  (emotes) => {
+    if (!emotes) return [];
+
+    const {
+      twitchGlobal,
+      twitchUser,
+      bttvGlobal,
+      bttvChannel,
+      ffzGlobal,
+      ffzChannel,
+    } = emotes;
 
     return [
       {
@@ -105,13 +129,12 @@ export const emoteCategoriesSelector = createSelector(
         items: ffzChannel.map(createFfzEmote),
       },
       ...R.pipe(
-        R.omit(['0']),
         R.values,
         R.map((items) => ({ items: R.map(createTwitchEmote, items) })),
-      )(twitch),
+      )(twitchUser),
       {
         title: 'Twitch',
-        items: R.map(createGlobalTwitchEmote, R.propOr([], '0', twitch)),
+        items: R.map(createGlobalTwitchEmote, R.propOr([], '0', twitchGlobal)),
       },
       {
         title: 'BetterTTV',
