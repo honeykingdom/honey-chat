@@ -15,6 +15,19 @@ export const MESSAGE_TYPES = {
   USER_NOTICE_MESSAGE: 'USER_NOTICE_MESSAGE',
 };
 
+export const SUGGESTION_TYPES = {
+  users: {
+    name: 'users',
+    limit: 5,
+    regex: /^@([\w\d_]*)$/,
+  },
+  emotes: {
+    name: 'emotes',
+    limit: 10,
+    regex: /^:([\w\d_]{2,})$/,
+  },
+};
+
 export const STORE_FLAGS = {
   DEFAULT: {
     isLoading: false,
