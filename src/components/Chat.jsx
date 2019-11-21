@@ -67,6 +67,19 @@ const setSuggestionsIndexDown = ({ activeIndex, items, ...rest }) => ({
   ...rest,
 });
 
+const replaceSuggestionText = (
+  text,
+  { type, items, activeIndex, start, end },
+) => {
+  const currentItem = items[activeIndex];
+  const insertedText = type === 'users' ? `@${currentItem}` : currentItem.alt;
+
+  const textBefore = text.substring(0, start);
+  const testAfter = text.substring(end) || ' ';
+
+  return `${textBefore}${insertedText}${testAfter}`;
+};
+
 const Chat = ({ onSendMessage }) => {
   const [text, setText] = useState('');
   const messages = useSelector(messagesSelector);
@@ -196,23 +209,7 @@ const Chat = ({ onSendMessage }) => {
       if (suggestionsRef.current.isActive) {
         if (e.key === 'Enter' || e.key === 'Tab') {
           e.preventDefault();
-          setText((t) => {
-            const {
-              type,
-              items,
-              activeIndex,
-              start,
-              end,
-            } = suggestionsRef.current;
-            const currentItem = items[activeIndex];
-            const insertedText =
-              type === 'users' ? `@${currentItem}` : currentItem.alt;
-
-            const textBefore = t.substring(0, start);
-            const testAfter = t.substring(end) || ' ';
-
-            return `${textBefore}${insertedText}${testAfter}`;
-          });
+          setText((t) => replaceSuggestionText(t, suggestionsRef.current));
           setSuggestions(suggestionsInitialState);
 
           return;
