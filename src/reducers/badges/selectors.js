@@ -4,7 +4,11 @@ import { currentChannelSelector } from 'reducers/chat/selectors';
 
 export const globalBadgesSelector = (state) => state.badges.global.items;
 export const channelBadgesSelector = (state) =>
-  R.pathOr({}, ['badges', 'channels', currentChannelSelector(state), 'items']);
+  R.pathOr(
+    {},
+    ['badges', 'channels', currentChannelSelector(state), 'items'],
+    state,
+  );
 
 const isGlobalBadgesLoadedSelector = (state) =>
   state.badges.global.isLoaded || state.badges.global.isError;
