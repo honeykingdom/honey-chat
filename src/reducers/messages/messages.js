@@ -129,6 +129,10 @@ export const addUserNoticeMessage = (message) => (dispatch) => {
   dispatch(addMessages({ items: [normalizedMessage] }));
 };
 
+const historyAddedPatch = {
+  history: { isAdded: true, items: [] },
+};
+
 const handleAddMessages = (state, { payload }) => {
   const { items, isHistory } = payload;
   const channel = R.path([0, 'channel'], items);
@@ -155,7 +159,7 @@ const handleAddMessages = (state, { payload }) => {
 
   return R.mergeDeepRight(state, {
     [channel]: {
-      ...clearHistory,
+      ...(isHistory ? historyAddedPatch : {}),
       items: slicedMessages,
       users,
       isEven,
