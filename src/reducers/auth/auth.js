@@ -14,7 +14,7 @@ const defaultState = {
   },
 };
 
-export const setIsAuth = createAction('SET_IS_AUTH');
+export const setAuth = createAction('SET_AUTH');
 const fetchUserRequest = createAction('FETCH_USER_REQUEST');
 const fetchUserSuccess = createAction('FETCH_USER_SUCCESS');
 const fetchUserFailure = createAction('FETCH_USER_FAILURE');
@@ -34,11 +34,7 @@ export const fetchUser = (id) => async (dispatch) => {
   }
 };
 
-const handleSetIsAuth = (state, { payload: { isAuth, user } }) => ({
-  ...state,
-  isAuth: isAuth === undefined ? state.isAuth : isAuth,
-  user: { ...state.user, ...user },
-});
+const handleSetAuth = (state, { payload }) => R.mergeDeepRight(state, payload);
 
 const handleFetchUser = {
   [fetchUserRequest]: (state) =>
@@ -66,7 +62,7 @@ const handleFetchUser = {
 
 const reducer = handleActions(
   {
-    [setIsAuth]: handleSetIsAuth,
+    [setAuth]: handleSetAuth,
     ...handleFetchUser,
   },
   defaultState,
