@@ -1,0 +1,16 @@
+export default {
+  data: [
+    {
+      id: '38259425',
+      login: 'dmitryscaletta',
+      display_name: 'DmitryScaletta',
+      type: '',
+      broadcaster_type: '',
+      description: '',
+      profile_image_url:
+        'https://static-cdn.jtvnw.net/jtv_user_pictures/dmitryscaletta-profile_image-41b036d0ef640053-300x300.jpeg',
+      offline_image_url: '',
+      view_count: 162,
+    },
+  ],
+};
