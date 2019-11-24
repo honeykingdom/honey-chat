@@ -1,5 +1,4 @@
 import React from 'react';
-import pt from 'prop-types';
 import styled from 'styled-components';
 
 import { ReactComponent as CloseIconSvg } from 'icons/close.svg';
@@ -25,7 +24,12 @@ const CloseIcon = styled(CloseIconSvg)`
   height: 20px;
 `;
 
-const ChatModal = ({ children, onClose }) => (
+interface Props {
+  children: React.ReactNode;
+  onClose: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+const ChatModal = ({ children, onClose }: Props) => (
   <ChatModalRoot>
     <CloseButton onClick={onClose}>
       <CloseIcon />
@@ -35,10 +39,5 @@ const ChatModal = ({ children, onClose }) => (
 );
 
 ChatModal.defaultProps = {};
-
-ChatModal.propTypes = {
-  children: pt.node.isRequired,
-  onClose: pt.func.isRequired,
-};
 
 export default ChatModal;

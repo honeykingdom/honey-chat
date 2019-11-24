@@ -1,4 +1,3 @@
-import pt from 'prop-types';
 import styled, { css } from 'styled-components';
 
 const sizes = {
@@ -13,7 +12,9 @@ const sizes = {
   // large: css``,
 };
 
-const IconButton = styled.button.attrs({ type: 'button' })`
+const IconButton = styled.button.attrs({
+  type: 'button',
+})<{ size: 'small' | 'medium' }>`
   margin: 0;
   padding: 0;
   display: flex;
@@ -44,10 +45,6 @@ const IconButton = styled.button.attrs({ type: 'button' })`
 
 IconButton.defaultProps = {
   size: 'medium',
-};
-
-IconButton.propTypes = {
-  size: pt.oneOf(Object.keys(sizes)),
 };
 
 export default IconButton;

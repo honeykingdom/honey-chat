@@ -1,5 +1,4 @@
 import React from 'react';
-import pt from 'prop-types';
 import styled from 'styled-components';
 
 const SwitchRoot = styled.div`
@@ -63,11 +62,19 @@ const Input = styled.input.attrs({ type: 'checkbox' })`
   }
 `;
 
-const Switch = ({ id, label, checked, readOnly, onChange }) => (
+interface Props {
+  id: string;
+  label: string;
+  checked?: boolean;
+  readOnly?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const Switch = ({ id, label, checked, readOnly, onChange }: Props) => (
   <SwitchRoot>
     <Input
       id={id}
-      label={label}
+      aria-label={label}
       checked={checked}
       readOnly={readOnly}
       onChange={onChange}
@@ -80,14 +87,6 @@ Switch.defaultProps = {
   checked: false,
   readOnly: false,
   onChange: () => {},
-};
-
-Switch.propTypes = {
-  id: pt.string.isRequired,
-  label: pt.string.isRequired,
-  checked: pt.bool,
-  readOnly: pt.bool,
-  onChange: pt.func,
 };
 
 export default Switch;
