@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import * as twitchApi from 'api/twitch';
@@ -69,10 +70,10 @@ const chat = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    updateIsConnected: (state, { payload }: PayloadAction<boolean>) => {
+    updateIsConnected: (state, { payload }: PayloadAction<boolean>): void => {
       state.isConnected = payload;
     },
-    updateCurrentChannel: (state, { payload }: PayloadAction<string>) => {
+    updateCurrentChannel: (state, { payload }: PayloadAction<string>): void => {
       state.currentChannel = payload;
     },
 
@@ -93,7 +94,6 @@ export const {
   // messages
   clearChat,
   addMessage,
-  addOwnMessage,
   addChatHistory,
   fetchChatHistoryRequest,
   fetchChatHistorySuccess,
@@ -143,7 +143,7 @@ export default chat.reducer;
 
 export const fetchChatHistory = (channel: string): AppThunk => async (
   dispatch,
-) => {
+): Promise<void> => {
   try {
     dispatch(fetchChatHistoryRequest({ channel }));
     const data = await chatHistoryApi.fetchChatHistory(channel);
@@ -155,7 +155,7 @@ export const fetchChatHistory = (channel: string): AppThunk => async (
 
 export const fetchTwitchEmotes = (userId: string): AppThunk => async (
   dispatch,
-) => {
+): Promise<void> => {
   try {
     dispatch(fetchTwitchEmotesRequest());
     const data = await twitchApi.fetchTwitchEmotes(userId);
@@ -165,7 +165,9 @@ export const fetchTwitchEmotes = (userId: string): AppThunk => async (
   }
 };
 
-export const fetchBttvGlobalEmotes = (): AppThunk => async (dispatch) => {
+export const fetchBttvGlobalEmotes = (): AppThunk => async (
+  dispatch,
+): Promise<void> => {
   try {
     dispatch(fetchBttvGlobalEmotesRequest());
     const data = await bttvApi.fetchBttvGlobalEmotes();
@@ -178,7 +180,7 @@ export const fetchBttvGlobalEmotes = (): AppThunk => async (dispatch) => {
 export const fetchBttvChannelEmotes = (
   channel: string,
   channelId: string,
-): AppThunk => async (dispatch) => {
+): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(fetchBttvChannelEmotesRequest({ channel }));
     const data = await bttvApi.fetchBttvChannelEmotes(channelId);
@@ -188,7 +190,9 @@ export const fetchBttvChannelEmotes = (
   }
 };
 
-export const fetchFfzGlobalEmotes = (): AppThunk => async (dispatch) => {
+export const fetchFfzGlobalEmotes = (): AppThunk => async (
+  dispatch,
+): Promise<void> => {
   try {
     dispatch(fetchFfzGlobalEmotesRequest());
     const data = await ffzApi.fetchFfzGlobalEmotes();
@@ -201,7 +205,7 @@ export const fetchFfzGlobalEmotes = (): AppThunk => async (dispatch) => {
 export const fetchFfzChannelEmotes = (
   channel: string,
   channelId: string,
-): AppThunk => async (dispatch) => {
+): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(fetchFfzChannelEmotesRequest({ channel }));
     const data = await ffzApi.fetchFfzChannelEmotes(channelId);
@@ -211,7 +215,9 @@ export const fetchFfzChannelEmotes = (
   }
 };
 
-export const fetchGlobalBadges = (): AppThunk => async (dispatch) => {
+export const fetchGlobalBadges = (): AppThunk => async (
+  dispatch,
+): Promise<void> => {
   try {
     dispatch(fetchGlobalBadgesRequest());
     const data = await twitchApi.fetchGlobalBadges();
@@ -224,7 +230,7 @@ export const fetchGlobalBadges = (): AppThunk => async (dispatch) => {
 export const fetchChannelBadges = (
   channel: string,
   channelId: string,
-): AppThunk => async (dispatch) => {
+): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(fetchChannelBadgesRequest({ channel }));
     const data = await twitchApi.fetchChannelBadges(channelId);
@@ -236,7 +242,7 @@ export const fetchChannelBadges = (
 
 export const fetchBlockedUsers = (userId: string): AppThunk => async (
   dispatch,
-) => {
+): Promise<void> => {
   try {
     dispatch(fetchBlockedUsersRequest());
     const data = await twitchApi.fetchBlockedUsers(userId);

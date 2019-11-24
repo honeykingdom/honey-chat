@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 import * as R from 'ramda';
 
@@ -22,14 +23,14 @@ export const twitchEmotesInitialState: TwitchEmotesState = {
 };
 
 export const twitchEmotesReducers = {
-  fetchTwitchEmotesRequest: (state: ChatState) => {
+  fetchTwitchEmotesRequest: (state: ChatState): void => {
     setFetchFlags(state.twitchEmotes, 'request');
   },
 
   fetchTwitchEmotesSuccess: (
     state: ChatState,
     { payload }: PayloadAction<TwitchEmotesResponse>,
-  ) => {
+  ): void => {
     state.twitchEmotes.global = R.pick(['0'], payload.emoticon_sets);
     state.twitchEmotes.user = R.omit(['0'], payload.emoticon_sets);
 
@@ -39,7 +40,7 @@ export const twitchEmotesReducers = {
   fetchTwitchEmotesFailure: (
     state: ChatState,
     { payload }: PayloadAction<string>,
-  ) => {
+  ): void => {
     setFetchFlags(state.twitchEmotes, 'failure', payload);
   },
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import {
@@ -41,7 +42,7 @@ export const bttvEmotesReducers = {
   fetchBttvGlobalEmotesSuccess: (
     state: ChatState,
     { payload }: PayloadAction<BttvGlobalEmote[]>,
-  ) => {
+  ): void => {
     state.bttvEmotes.global.items = payload;
 
     setFetchFlags(state.bttvEmotes.global, 'success');
@@ -50,14 +51,14 @@ export const bttvEmotesReducers = {
   fetchBttvGlobalEmotesFailure: (
     state: ChatState,
     { payload }: PayloadAction<string>,
-  ) => {
+  ): void => {
     setFetchFlags(state.bttvEmotes.global, 'failure', payload);
   },
 
   fetchBttvChannelEmotesRequest: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string }>,
-  ) => {
+  ): void => {
     const { channel } = payload;
 
     if (!state.bttvEmotes.byChannels[channel]) {
@@ -72,7 +73,7 @@ export const bttvEmotesReducers = {
     {
       payload,
     }: PayloadAction<{ channel: string; data: BttvChannelEmotesResponse }>,
-  ) => {
+  ): void => {
     const { channel, data } = payload;
 
     state.bttvEmotes.byChannels[channel].items = [
@@ -86,7 +87,7 @@ export const bttvEmotesReducers = {
   fetchBttvChannelEmotesFailure: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string; error: string }>,
-  ) => {
+  ): void => {
     const { channel, error } = payload;
 
     setFetchFlags(state.bttvEmotes.byChannels[channel], 'failure', error);

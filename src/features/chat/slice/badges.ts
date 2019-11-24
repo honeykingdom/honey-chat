@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { TwitchBadges, TwitchBadgesResponse } from 'api/twitch';
@@ -37,7 +38,7 @@ export const badgesReducers = {
   fetchGlobalBadgesSuccess: (
     state: ChatState,
     { payload }: PayloadAction<TwitchBadgesResponse>,
-  ) => {
+  ): void => {
     state.badges.global.items = payload.badge_sets;
 
     setFetchFlags(state.badges.global, 'success');
@@ -46,14 +47,14 @@ export const badgesReducers = {
   fetchGlobalBadgesFailure: (
     state: ChatState,
     { payload }: PayloadAction<string>,
-  ) => {
+  ): void => {
     setFetchFlags(state.badges.global, 'failure', payload);
   },
 
   fetchChannelBadgesRequest: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string }>,
-  ) => {
+  ): void => {
     const { channel } = payload;
 
     if (!state.badges.byChannels[channel]) {
@@ -66,7 +67,7 @@ export const badgesReducers = {
   fetchChannelBadgesSuccess: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string; data: TwitchBadgesResponse }>,
-  ) => {
+  ): void => {
     const { channel, data } = payload;
 
     state.badges.byChannels[channel].items = data.badge_sets;
@@ -77,7 +78,7 @@ export const badgesReducers = {
   fetchChannelBadgesFailure: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string; error: string }>,
-  ) => {
+  ): void => {
     const { channel, error } = payload;
 
     setFetchFlags(state.badges.byChannels[channel], 'failure', error);

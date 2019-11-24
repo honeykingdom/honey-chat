@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 import * as R from 'ramda';
 
@@ -64,7 +65,7 @@ export const ffzEmotesReducers = {
   fetchFfzGlobalEmotesSuccess: (
     state: ChatState,
     { payload }: PayloadAction<FfzGlobalEmotesResponse>,
-  ) => {
+  ): void => {
     state.ffzEmotes.global.items = parseFfzGlobalEmotes(payload);
 
     setFetchFlags(state.ffzEmotes.global, 'success');
@@ -73,14 +74,14 @@ export const ffzEmotesReducers = {
   fetchFfzGlobalEmotesFailure: (
     state: ChatState,
     { payload }: PayloadAction<string>,
-  ) => {
+  ): void => {
     setFetchFlags(state.ffzEmotes.global, 'failure', payload);
   },
 
   fetchFfzChannelEmotesRequest: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string }>,
-  ) => {
+  ): void => {
     const { channel } = payload;
 
     if (!state.ffzEmotes.byChannels[channel]) {
@@ -95,7 +96,7 @@ export const ffzEmotesReducers = {
     {
       payload,
     }: PayloadAction<{ channel: string; data: FfzChannelEmotesResponse }>,
-  ) => {
+  ): void => {
     const { channel, data } = payload;
 
     state.ffzEmotes.byChannels[channel].items = parseFfzChannelEmotes(data);
@@ -106,7 +107,7 @@ export const ffzEmotesReducers = {
   fetchFfzChannelEmotesFailure: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string; error: string }>,
-  ) => {
+  ): void => {
     const { channel, error } = payload;
 
     setFetchFlags(state.ffzEmotes.byChannels[channel], 'failure', error);

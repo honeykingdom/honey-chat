@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 import * as R from 'ramda';
 
@@ -22,14 +23,14 @@ const parseBlockedUsers = R.pipe(
 );
 
 export const blockedUsersReducers = {
-  fetchBlockedUsersRequest: (state: ChatState) => {
+  fetchBlockedUsersRequest: (state: ChatState): void => {
     setFetchFlags(state.blockedUsers, 'request');
   },
 
   fetchBlockedUsersSuccess: (
     state: ChatState,
     { payload }: PayloadAction<TwitchBlockedUsersResponse>,
-  ) => {
+  ): void => {
     state.blockedUsers.items = parseBlockedUsers(payload);
 
     setFetchFlags(state.blockedUsers, 'success');
@@ -38,7 +39,7 @@ export const blockedUsersReducers = {
   fetchBlockedUsersFailure: (
     state: ChatState,
     { payload }: PayloadAction<string>,
-  ) => {
+  ): void => {
     setFetchFlags(state.blockedUsers, 'failure', payload);
   },
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 import TwitchIrc from 'twitch-simple-irc';
 
@@ -27,14 +28,14 @@ export const paramsReducers = {
   updateGlobalUserParams: (
     state: ChatState,
     { payload }: PayloadAction<TwitchIrc.GlobalUserStateEvent>,
-  ) => {
+  ): void => {
     state.params.global = payload.tags;
   },
 
   updateUserParams: (
     state: ChatState,
     { payload }: PayloadAction<TwitchIrc.UserStateEvent>,
-  ) => {
+  ): void => {
     const { channel, tags } = payload;
 
     if (!state.params.byChannels[channel]) {
@@ -47,7 +48,7 @@ export const paramsReducers = {
   updateRoomParams: (
     state: ChatState,
     { payload }: PayloadAction<TwitchIrc.RoomStateEvent>,
-  ) => {
+  ): void => {
     const { channel, tags } = payload;
 
     if (!state.params.byChannels[channel]) {

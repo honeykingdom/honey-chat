@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 import TwitchIrc from 'twitch-simple-irc';
 
@@ -132,23 +133,23 @@ const messagesChannelInitialState = {
   users: [],
 };
 
-const sliceMessages = (items: any[]) => {
+function sliceMessages<T>(items: T[]): T[] {
   const diff = items.length - CHANNEL_MESSAGES_LIMIT;
 
   return diff > 0 ? items.slice(diff) : items;
-};
+}
 
-const sliceUsers = (users: any[]) => {
+function sliceUsers<T>(users: T[]): T[] {
   const diff = users.length - STORE_USERS_LIMIT;
 
   return diff > 0 ? users.slice(diff) : users;
-};
+}
 
 const getIsEven = (
   prev: boolean,
   addedItemsCount: number,
   isSliced: boolean,
-) => {
+): boolean => {
   if (isSliced) {
     return addedItemsCount % 2 ? !prev : prev;
   }
@@ -183,12 +184,13 @@ export const messagesReducers = {
   clearChat: (
     state: ChatState,
     { payload }: PayloadAction<TwitchIrc.ClearChatEvent>,
-  ) => {
+  ): void => {
     const {
       channel,
       tags: { targetUserId },
     } = payload;
 
+    // eslint-disable-next-line no-restricted-syntax
     for (const message of state.messages[channel].items) {
       if (
         message.type === 'message' &&
@@ -203,7 +205,7 @@ export const messagesReducers = {
   addMessage: (
     state: ChatState,
     { payload }: PayloadAction<AddMessagePayload>,
-  ) => {
+  ): void => {
     const message = normalizePayload(payload, state);
 
     if (!message) return;
@@ -211,7 +213,7 @@ export const messagesReducers = {
     const { channel } = message;
 
     const prevItems = state.messages[channel].items;
-    const newItems = [...prevItems, payload];
+    const newItems = [...prevItems, message];
     const slicedMessages = sliceMessages(newItems);
 
     const isSliced = newItems.length > slicedMessages.length;
@@ -221,7 +223,7 @@ export const messagesReducers = {
     state.messages[channel].items = slicedMessages;
 
     // add user
-    const users = state.messages[channel].users;
+    const { users } = state.messages[channel];
 
     if (
       message.type === 'message' &&
@@ -233,16 +235,10 @@ export const messagesReducers = {
     state.messages[channel].users = sliceUsers(users);
   },
 
-  addOwnMessage: (
+  addChatHistory: (
     state: ChatState,
-    {
-      payload,
-    }: PayloadAction<{ channel: string; message: string; id: string }>,
-  ) => {
-    //
-  },
-
-  addChatHistory: (state: ChatState, { payload }: PayloadAction<string>) => {
+    { payload }: PayloadAction<string>,
+  ): void => {
     const channel = payload;
 
     const rawHistory = state.messages[channel].history.items;
@@ -262,7 +258,7 @@ export const messagesReducers = {
     state.messages[channel].items = slicedMessages;
 
     // add users
-    const users = state.messages[channel].users;
+    const { users } = state.messages[channel];
 
     history.forEach((message) => {
       if (
@@ -280,7 +276,7 @@ export const messagesReducers = {
   fetchChatHistoryRequest: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string }>,
-  ) => {
+  ): void => {
     const { channel } = payload;
 
     if (!state.messages[channel]) {
@@ -293,7 +289,7 @@ export const messagesReducers = {
   fetchChatHistorySuccess: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string; data: ChatHistoryResponse }>,
-  ) => {
+  ): void => {
     const { channel, data } = payload;
 
     state.messages[channel].history.items = data.messages;
@@ -304,7 +300,7 @@ export const messagesReducers = {
   fetchChatHistoryFailure: (
     state: ChatState,
     { payload }: PayloadAction<{ channel: string; error: string }>,
-  ) => {
+  ): void => {
     const { channel, error } = payload;
 
     setFetchFlags(state.messages[channel].history, 'failure', error);
