@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
-import pt from 'prop-types';
 import styled, { css } from 'styled-components';
 import { format } from 'date-fns/fp';
 
-import { messageType } from './types';
+import {
+  Message as MessageType,
+  MessageEntity,
+} from 'features/chat/slice/messages';
+import { HtmlEntityBadge } from 'features/chat/utils/htmlEntity';
 
-const getChatMessageBg = (p) => {
+type MessageRootProps = {
+  isAction: boolean;
+  isHistory: boolean;
+  isDeleted: boolean;
+  isMention: boolean;
+  isEven: boolean;
+};
+
+const getChatMessageBg = (p: MessageRootProps) => {
   if (p.isMention) return 'rgba(255, 0, 0, 0.3)';
   if (p.isEven) return '#1f1925';
   return 'transparent';
 };
 
-const MessageRoot = styled.div`
+const MessageRoot = styled.div<MessageRootProps>`
   padding: 5px 20px;
   color: ${(p) => (p.isAction ? p.color : '#fff')};
   opacity: ${(p) => (p.isHistory || p.isDeleted ? '0.5' : '1')};
@@ -37,7 +48,7 @@ const Emoji = styled.img`
   height: auto;
   vertical-align: middle;
 `;
-const Mention = styled.span`
+const Mention = styled.span<{ isActive: boolean; isOwnMessage: boolean }>`
   ${(p) =>
     (p.isActive || p.isOwnMessage) &&
     css`
@@ -83,7 +94,10 @@ const Badge = styled.img`
   border-radius: 3px;
 `;
 
-const renderMessageArray = (user, userLogin) => (item, key) => {
+const renderMessageArray = (login: string, userLogin: string | null) => (
+  item: MessageEntity,
+  key: number,
+) => {
   if (typeof item !== 'object') return item;
 
   if (
@@ -97,9 +111,7 @@ const renderMessageArray = (user, userLogin) => (item, key) => {
   }
 
   if (item.type === 'emoji') {
-    return (
-      <Emoji key={key} src={item.src} srcSet={item.srcSet} alt={item.alt} />
-    );
+    return <Emoji key={key} src={item.src} alt={item.alt} />;
   }
 
   if (item.type === 'mention') {
@@ -107,7 +119,7 @@ const renderMessageArray = (user, userLogin) => (item, key) => {
       <Mention
         key={key}
         isActive={item.target === userLogin}
-        isOwnMessage={user === userLogin}
+        isOwnMessage={login === userLogin}
       >
         {item.text}
       </Mention>
@@ -130,21 +142,28 @@ const renderMessageArray = (user, userLogin) => (item, key) => {
   return null;
 };
 
-const renderBadges = (badges) =>
-  badges.map(({ alt, label, src, srcSet }, key) => (
+const renderBadges = (badges: HtmlEntityBadge[]) =>
+  badges.map(({ alt, label, src, srcSet }, key: number) => (
     // eslint-disable-next-line react/no-array-index-key
     <Badge key={key} alt={alt} aria-label={label} src={src} srcSet={srcSet} />
   ));
+
+interface Props {
+  message: MessageType;
+  userLogin: string | null;
+  isEven: boolean;
+  isShowTimestamps: boolean;
+  onNameRightClick: (name: string) => void;
+}
 
 const MESSAGE_DELETED_LABEL = '<message deleted>';
 
 const Message = ({
   message: {
     message,
-    messageArray,
-    tags: { color, displayName, tmiSentTs },
-    badges,
-    user,
+    entities,
+    user: { login, color, displayName, badges },
+    timestamp,
     isHistory,
     isAction,
     isDeleted,
@@ -154,11 +173,14 @@ const Message = ({
   isShowTimestamps,
   // onNameClick,
   onNameRightClick,
-}) => {
+}: Props) => {
   const [isVisible, setIsVisible] = useState(false);
-  const isMention = user !== userLogin && RegExp(userLogin, 'gi').test(message);
+  const isMention =
+    login !== userLogin && RegExp(userLogin as string, 'gi').test(message);
 
-  const handleNameRightClick = (e) => {
+  const handleNameRightClick = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+  ) => {
     onNameRightClick(displayName);
     e.preventDefault();
   };
@@ -173,7 +195,7 @@ const Message = ({
       color={color}
     >
       {isShowTimestamps && (
-        <Timestamp>{format('h:mm', new Date(tmiSentTs))}</Timestamp>
+        <Timestamp>{format('h:mm', new Date(timestamp))}</Timestamp>
       )}
       {badges.length > 0 && renderBadges(badges)}
       <Name color={color} onContextMenu={handleNameRightClick}>
@@ -184,7 +206,7 @@ const Message = ({
         // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <Link onClick={() => setIsVisible(true)}>{MESSAGE_DELETED_LABEL}</Link>
       ) : (
-        messageArray.map(renderMessageArray(user, userLogin))
+        entities.map(renderMessageArray(login, userLogin))
       )}
     </MessageRoot>
   );
@@ -196,15 +218,6 @@ Message.defaultProps = {
   isShowTimestamps: false,
   // onNameClick: () => {},
   onNameRightClick: () => {},
-};
-
-Message.propTypes = {
-  message: messageType.isRequired,
-  userLogin: pt.string,
-  isEven: pt.bool,
-  isShowTimestamps: pt.bool,
-  // onNameClick: pt.func,
-  onNameRightClick: pt.func,
 };
 
 export default React.memo(Message);

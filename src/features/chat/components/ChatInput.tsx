@@ -1,17 +1,15 @@
 import React, { useState, useRef } from 'react';
-import pt from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import useOnClickOutside from 'use-onclickoutside';
 
-import {
-  twitchEmoteType,
-  bttvEmoteType,
-  ffzEmoteType,
-} from 'utils/formatMessage';
 import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
-import EmotePicker from 'components/EmotePicker';
 import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
+import EmotePicker from 'features/chat/components/EmotePicker';
+import { SuggestionsState } from 'features/chat/components/Chat';
+import { isEmotesLoadedSelector } from 'features/chat/selectors';
+import { HtmlEntityEmote } from 'features/chat/utils/htmlEntity';
 
 const ChatInputRoot = styled.div`
   padding-left: 10px;
@@ -47,7 +45,7 @@ const Suggestions = styled.div`
   border-top-right-radius: 6px;
   /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0px 2px rgba(0, 0, 0, 0.1); */
 `;
-const SuggestionItem = styled.div`
+const SuggestionItem = styled.div<{ isActive: boolean }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -69,7 +67,7 @@ const SuggestionImage = styled.img`
 const TextareaInput = styled.div`
   position: relative;
 `;
-const TextareaWrapper = styled.div`
+const TextareaWrapper = styled.div<{ isSuggestions: boolean }>`
   ${(p) =>
     p.isSuggestions &&
     css`
@@ -144,11 +142,21 @@ const SmileyFaceIcon = styled(SmileyFaceIconSvg)`
   height: 20px;
 `;
 
-const ChatInput = React.forwardRef(
+type Props = {
+  text: string;
+  suggestions: SuggestionsState;
+  isDisabled: boolean;
+  onEmoteClick: (name: string) => void;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeyUp: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onBlur: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
+};
+
+const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
   (
     {
       text,
-      emoteCategories,
       suggestions,
       isDisabled,
       onEmoteClick,
@@ -162,36 +170,47 @@ const ChatInput = React.forwardRef(
     const chatInputRef = useRef(null);
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
 
+    const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
+
     const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
 
     useOnClickOutside(chatInputRef, handleCloseEmotesModal);
 
     /* eslint-disable react/prop-types */
-    const renderSuggestions = ({ type, items, activeIndex }) => {
-      const renderUser = (name, index) => (
+    const renderSuggestions = ({
+      type,
+      items,
+      activeIndex,
+    }: SuggestionsState) => {
+      const renderUser = (name: string, index: number) => (
         <SuggestionItem key={name} isActive={index === activeIndex}>
           {name}
         </SuggestionItem>
       );
 
-      const renderEmote = ({ src, srcSet, alt }, index) => (
+      const renderEmote = (
+        { src, srcSet, alt }: HtmlEntityEmote,
+        index: number,
+      ) => (
         <SuggestionItem key={alt} isActive={index === activeIndex}>
           <SuggestionImage src={src} srcSet={srcSet} alt={alt} />
           {alt}
         </SuggestionItem>
       );
 
+      const renderItems = () =>
+        type === 'users'
+          ? (items as string[]).map(renderUser)
+          : (items as HtmlEntityEmote[]).map(renderEmote);
+
       return (
-        <Suggestions>
-          {items.length
-            ? items.map(type === 'users' ? renderUser : renderEmote)
-            : 'No matches'}
-        </Suggestions>
+        <Suggestions>{items.length ? renderItems() : 'No matches'}</Suggestions>
       );
     };
     /* eslint-enable react/prop-types */
 
     const renderEmotesButton = () => (
+      // @ts-ignore
       <EmotesButton
         onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
       >
@@ -202,10 +221,7 @@ const ChatInput = React.forwardRef(
     const renderEmotesModal = () => (
       <EmotesModal>
         <ChatModal onClose={handleCloseEmotesModal}>
-          <EmotePicker
-            emoteCategories={emoteCategories}
-            onEmoteClick={onEmoteClick}
-          />
+          <EmotePicker onEmoteClick={onEmoteClick} />
         </ChatModal>
       </EmotesModal>
     );
@@ -227,7 +243,7 @@ const ChatInput = React.forwardRef(
                 onKeyDown={onKeyDown}
                 onBlur={onBlur}
               />
-              {!!emoteCategories.length && renderEmotesButton()}
+              {isEmotesLoaded && renderEmotesButton()}
             </TextareaInput>
           </TextareaWrapper>
           {isEmotesModalVisible && renderEmotesModal()}
@@ -238,29 +254,7 @@ const ChatInput = React.forwardRef(
 );
 
 ChatInput.defaultProps = {
-  emoteCategories: [],
   isDisabled: false,
-};
-
-ChatInput.propTypes = {
-  text: pt.string.isRequired,
-  emoteCategories: pt.arrayOf(pt.shape({})),
-  suggestions: pt.shape({
-    isActive: pt.bool,
-    items: pt.oneOfType([
-      pt.arrayOf(pt.string),
-      pt.arrayOf(pt.oneOfType([twitchEmoteType, bttvEmoteType, ffzEmoteType])),
-    ]),
-    activeIndex: pt.number,
-    cursorPosition: pt.number,
-    prefix: pt.string,
-  }).isRequired,
-  isDisabled: pt.bool,
-  onEmoteClick: pt.func.isRequired,
-  onChange: pt.func.isRequired,
-  onKeyUp: pt.func.isRequired,
-  onKeyDown: pt.func.isRequired,
-  onBlur: pt.func.isRequired,
 };
 
 export default React.memo(ChatInput);

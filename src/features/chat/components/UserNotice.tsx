@@ -1,8 +1,7 @@
 import React from 'react';
-// import pt from 'prop-types';
 import styled from 'styled-components';
 
-import { userNoticeType } from './types';
+import { UserNotice as UserNoticeType } from 'features/chat/slice/messages';
 
 const UserNoticeRoot = styled.div`
   padding: 5px 20px 5px 16px;
@@ -12,14 +11,12 @@ const UserNoticeRoot = styled.div`
   color: #fff;
 `;
 
-const UserNotice = ({
-  message: {
-    tags: { systemMsg },
-  },
-}) => <UserNoticeRoot>{systemMsg}</UserNoticeRoot>;
+interface Props {
+  message: UserNoticeType;
+}
 
-UserNotice.propTypes = {
-  message: userNoticeType.isRequired,
-};
+const UserNotice = ({ message: { systemMessage } }: Props) => (
+  <UserNoticeRoot>{systemMessage}</UserNoticeRoot>
+);
 
 export default React.memo(UserNotice);

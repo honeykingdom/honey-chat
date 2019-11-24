@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import pt from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import ScrollbarType from 'react-scrollbars-custom';
+import { ScrollState } from 'react-scrollbars-custom/dist/types/types';
 
 import Scrollbar from 'components/Scrollbar';
-import ChatMessage from 'components/ChatMessage';
+import ChatMessage from 'features/chat/components/ChatMessage';
+import { messagesSelector, isEvenSelector } from 'features/chat/selectors';
+import { userLoginSelector } from 'features/auth/authSlice';
+import {
+  isShowTimestampsSelector,
+  isSplitChatSelector,
+} from 'features/options/optionsSelectors';
 
 const MORE_MESSAGES_OFFSET = 100;
 
@@ -16,11 +24,11 @@ const StyledScrollbar = styled(Scrollbar)`
     padding-bottom: 10px !important;
   }
 `;
-const MoreMessagesButton = styled.button`
+const MoreMessagesButton = styled.button<{ isVisible: boolean }>`
   position: absolute;
   left: 50%;
   bottom: 10px;
-  display: ${(p) => (p.visible ? 'block' : 'none')};
+  display: ${(p) => (p.isVisible ? 'block' : 'none')};
   padding: 5px 20px;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -31,34 +39,38 @@ const MoreMessagesButton = styled.button`
   transform: translateX(-50%);
 `;
 
-const Messages = ({
-  messages,
-  userLogin,
-  isEven,
-  isSplitChat,
-  isShowTimestamps,
-  onNameRightClick,
-}) => {
+type Props = {
+  onNameRightClick: (name: string) => void;
+};
+
+const Messages = ({ onNameRightClick }: Props) => {
   const [
     isMoreMessagesButtonVisible,
     setIsMoreMessagesButtonVisible,
   ] = useState(false);
 
+  const messages = useSelector(messagesSelector);
+  const userLogin = useSelector(userLoginSelector);
+
+  const isEven = useSelector(isEvenSelector);
+  const isShowTimestamps = useSelector(isShowTimestampsSelector);
+  const isSplitChat = useSelector(isSplitChatSelector);
+
   const handleScrollUpdate = ({
     clientHeight,
     contentScrollHeight,
     scrollTop,
-  }) => {
+  }: ScrollState) => {
     const maxScrollTop = contentScrollHeight - clientHeight;
     const isVisible = scrollTop + MORE_MESSAGES_OFFSET < maxScrollTop;
 
     setIsMoreMessagesButtonVisible(isVisible);
   };
 
-  const scrollbarRef = useRef(null);
+  const scrollbarRef = useRef<ScrollbarType>(null);
 
   const handleScrollToBottom = () => {
-    if (scrollbarRef.current && scrollbarRef.current.scrollToBottom) {
+    if (scrollbarRef.current) {
       scrollbarRef.current.scrollToBottom();
     }
   };
@@ -70,7 +82,7 @@ const Messages = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
-  const getIsEven = (key) => {
+  const getIsEven = (key: number) => {
     if (!isSplitChat) return false;
     return isEven ? key % 2 === 1 : key % 2 === 0;
   };
@@ -80,7 +92,7 @@ const Messages = ({
       <StyledScrollbar onUpdate={handleScrollUpdate} ref={scrollbarRef}>
         {messages.map((message, key) => (
           <ChatMessage
-            key={message.tags.id}
+            key={message.id}
             message={message}
             userLogin={userLogin}
             isEven={getIsEven(key)}
@@ -91,7 +103,7 @@ const Messages = ({
       </StyledScrollbar>
       <MoreMessagesButton
         onClick={handleScrollToBottom}
-        visible={isMoreMessagesButtonVisible}
+        isVisible={isMoreMessagesButtonVisible}
       >
         More messages below
       </MoreMessagesButton>
@@ -100,21 +112,7 @@ const Messages = ({
 };
 
 Messages.defaultProps = {
-  messages: [],
-  userLogin: '',
-  isEven: false,
-  isSplitChat: true,
-  isShowTimestamps: false,
   onNameRightClick: () => {},
-};
-
-Messages.propTypes = {
-  messages: pt.arrayOf(pt.shape({})),
-  userLogin: pt.string,
-  isEven: pt.bool,
-  isSplitChat: pt.bool,
-  isShowTimestamps: pt.bool,
-  onNameRightClick: pt.func,
 };
 
 export default React.memo(Messages);

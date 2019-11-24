@@ -1,8 +1,12 @@
-import React, { useCallback } from 'react';
-import pt from 'prop-types';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Scrollbar from 'components/Scrollbar';
+import {
+  EmoteCategory,
+  emoteCategoriesSelector,
+} from 'features/chat/selectors';
 
 const EmotePickerRoot = styled.div`
   padding-top: 32px;
@@ -41,25 +45,28 @@ const Emote = styled.img`
   }
 `;
 
-const EmotePicker = ({ emoteCategories, onEmoteClick }) => {
-  const renderCategory = useCallback(
-    ({ title, items }, key) => (
-      <Category key={key}>
-        {!!title && <CategoryHeader>{title}</CategoryHeader>}
-        <CategoryItems>
-          {items.map(({ alt, src, srcSet }) => (
-            <Emote
-              key={alt}
-              alt={alt}
-              src={src}
-              srcSet={srcSet}
-              onClick={() => onEmoteClick(alt)}
-            />
-          ))}
-        </CategoryItems>
-      </Category>
-    ),
-    [onEmoteClick],
+interface Props {
+  onEmoteClick: (name: string) => void;
+}
+
+const EmotePicker = ({ onEmoteClick }: Props) => {
+  const emoteCategories = useSelector(emoteCategoriesSelector);
+
+  const renderCategory = ({ title, items }: EmoteCategory, key: number) => (
+    <Category key={key}>
+      {!!title && <CategoryHeader>{title}</CategoryHeader>}
+      <CategoryItems>
+        {items.map(({ alt, src, srcSet }) => (
+          <Emote
+            key={alt}
+            alt={alt}
+            src={src}
+            srcSet={srcSet}
+            onClick={() => onEmoteClick(alt)}
+          />
+        ))}
+      </CategoryItems>
+    </Category>
   );
 
   return (
@@ -69,15 +76,6 @@ const EmotePicker = ({ emoteCategories, onEmoteClick }) => {
       </Categories>
     </EmotePickerRoot>
   );
-};
-
-EmotePicker.defaultProps = {
-  emoteCategories: [],
-};
-
-EmotePicker.propTypes = {
-  onEmoteClick: pt.func.isRequired,
-  emoteCategories: pt.arrayOf(pt.shape({})),
 };
 
 export default EmotePicker;

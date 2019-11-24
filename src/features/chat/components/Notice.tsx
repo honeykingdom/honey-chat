@@ -1,10 +1,9 @@
 import React from 'react';
-import pt from 'prop-types';
 import styled from 'styled-components';
 
-import { noticeType } from './types';
+import { Notice as NoticeType } from 'features/chat/slice/messages';
 
-const NoticeRoot = styled.div`
+const NoticeRoot = styled.div<{ isEven: boolean }>`
   padding: 5px 20px;
   color: rgba(255, 255, 255, 0.6);
   line-height: 20px;
@@ -12,17 +11,17 @@ const NoticeRoot = styled.div`
   background-color: ${(p) => (p.isEven ? '#1f1925' : 'transparent')};
 `;
 
-const Notice = ({ message: { message }, isEven }) => (
+interface Props {
+  message: NoticeType;
+  isEven: boolean;
+}
+
+const Notice = ({ message: { message }, isEven }: Props) => (
   <NoticeRoot isEven={isEven}>{message}</NoticeRoot>
 );
 
 Notice.defaultProps = {
   isEven: false,
-};
-
-Notice.propTypes = {
-  message: noticeType.isRequired,
-  isEven: pt.bool,
 };
 
 export default React.memo(Notice);

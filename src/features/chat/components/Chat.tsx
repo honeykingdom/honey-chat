@@ -1,46 +1,35 @@
 import React, { useState, useCallback, useRef } from 'react';
-import pt from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import useSetState from 'hooks/useSetState';
-import {
-  messagesSelector,
-  isEvenSelector,
-  usersSelector,
-} from 'reducers/messages/selectors';
-import {
-  isConnectedSelector,
-  userColorSelector,
-  userBadgesImagesSelector,
-} from 'reducers/chat/selectors';
-import {
-  isShowTimestampsSelector,
-  isSplitChatSelector,
-  isFixedWidthSelector,
-} from 'reducers/options/selectors';
-import {
-  userLoginSelector,
-  userDisplayNameSelector,
-  isAuthSelector,
-} from 'reducers/auth/selectors';
-import {
-  emotesSelector,
-  emoteCategoriesSelector,
-} from 'reducers/emotes/selectors';
 import { SUGGESTION_TYPES } from 'utils/constants';
-import getUserSuggestions from 'utils/getUserSuggestions';
-import getEmoteSuggestions from 'utils/getEmoteSuggestions';
-import ChatInput from 'components/ChatInput';
-import ChatControls from 'components/ChatControls';
-import Messages from 'components/Messages';
+import { isAuthSelector } from 'features/auth/authSlice';
+import { isFixedWidthSelector } from 'features/options/optionsSelectors';
+import useInitializeAuth from 'features/chat/hooks/useInitializeAuth';
+import useFetchChatData from 'features/chat/hooks/useFetchChatData';
+import useCurrentChannel from 'features/chat/hooks/useCurrentChannel';
+import useTwitchClient from 'features/chat/hooks/useTwitchClient';
+import {
+  currentChannelSelector,
+  usersSelector,
+  emotesSelector,
+  isConnectedSelector,
+} from 'features/chat/selectors';
+import getUserSuggestions from 'features/chat/utils/getUserSuggestions';
+import getEmoteSuggestions from 'features/chat/utils/getEmoteSuggestions';
+import { HtmlEntityEmote } from 'features/chat/utils/htmlEntity';
+import replaceEmojis from 'features/chat/utils/replaceEmojis';
+import ChatInput from 'features/chat/components/ChatInput';
+import ChatControls from 'features/chat/components/ChatControls';
+import Messages from 'features/chat/components/Messages';
 
 const ChatRoot = styled.div`
   height: 100vh;
   font-size: 12px;
   background-color: #0e0e10;
 `;
-const ChatWrapper = styled.div`
+const ChatWrapper = styled.div<{ isFixedWidth: boolean }>`
   display: flex;
   flex-direction: column;
   width: ${(p) => (p.isFixedWidth ? '340px' : 'auto')};
@@ -48,10 +37,25 @@ const ChatWrapper = styled.div`
   background-color: #18181b;
 `;
 
-// TODO: check if the user has a rights to send messages
+interface ASuggestions {
+  isActive: boolean;
+  activeIndex: number;
+  start: number;
+  end: number;
+}
 
-const suggestionsInitialState = {
-  type: null,
+interface UserSuggestions extends ASuggestions {
+  type: 'users';
+  items: string[];
+}
+interface EmoteSuggestions extends ASuggestions {
+  type: 'emotes';
+  items: HtmlEntityEmote[];
+}
+export type SuggestionsState = UserSuggestions | EmoteSuggestions;
+
+const suggestionsInitialState: SuggestionsState = {
+  type: 'users',
   isActive: false,
   items: [],
   activeIndex: 0,
@@ -59,26 +63,37 @@ const suggestionsInitialState = {
   end: 0,
 };
 
-const setSuggestionsIndexUp = ({ activeIndex, items, ...rest }) => ({
-  activeIndex: activeIndex === 0 ? items.length - 1 : activeIndex - 1,
+const setSuggestionsIndexUp = ({
+  activeIndex,
   items,
-  ...rest,
-});
+  ...rest
+}: SuggestionsState) =>
+  ({
+    activeIndex: activeIndex === 0 ? items.length - 1 : activeIndex - 1,
+    items,
+    ...rest,
+  } as SuggestionsState);
 
-const setSuggestionsIndexDown = ({ activeIndex, items, ...rest }) => ({
-  activeIndex: activeIndex === items.length - 1 ? 0 : activeIndex + 1,
+const setSuggestionsIndexDown = ({
+  activeIndex,
   items,
-  ...rest,
-});
+  ...rest
+}: SuggestionsState) =>
+  ({
+    activeIndex: activeIndex === items.length - 1 ? 0 : activeIndex + 1,
+    items,
+    ...rest,
+  } as SuggestionsState);
 
 const replaceSuggestionText = (
-  text,
-  { type, items, activeIndex, start, end },
+  text: string,
+  { type, items, activeIndex, start, end }: SuggestionsState,
 ) => {
   if (items.length === 0) return text;
 
   const currentItem = items[activeIndex];
-  const insertedText = type === 'users' ? `@${currentItem}` : currentItem.alt;
+  const insertedText =
+    type === 'users' ? `@${currentItem}` : (currentItem as HtmlEntityEmote).alt;
 
   const textBefore = text.substring(0, start);
   const testAfter = text.substring(end) || ' ';
@@ -86,24 +101,26 @@ const replaceSuggestionText = (
   return `${textBefore}${insertedText}${testAfter}`;
 };
 
-const Chat = ({ onSendMessage }) => {
+const Chat = () => {
   const [text, setText] = useState('');
-  const messages = useSelector(messagesSelector);
-  const userLogin = useSelector(userLoginSelector);
-  const userDisplayName = useSelector(userDisplayNameSelector);
-  const userColor = useSelector(userColorSelector);
-  const userBadgesImages = useSelector(userBadgesImagesSelector);
-  const emoteCategories = useSelector(emoteCategoriesSelector);
+
+  const client = useTwitchClient();
+
+  useInitializeAuth();
+  useCurrentChannel();
+  useFetchChatData();
+
+  const currentChannel = useSelector(currentChannelSelector);
   const emotes = useSelector(emotesSelector);
   const users = useSelector(usersSelector);
   const isAuth = useSelector(isAuthSelector);
   const isConnected = useSelector(isConnectedSelector);
-  const isEven = useSelector(isEvenSelector);
-  const isShowTimestamps = useSelector(isShowTimestampsSelector);
-  const isSplitChat = useSelector(isSplitChatSelector);
+
   const isFixedWidth = useSelector(isFixedWidthSelector);
-  const chatInputRef = useRef(null);
-  const [suggestions, setSuggestions] = useSetState(suggestionsInitialState);
+  const chatInputRef = useRef<HTMLTextAreaElement>(null);
+  const [suggestions, setSuggestions] = useSetState<SuggestionsState>(
+    suggestionsInitialState,
+  );
 
   // Refs to avoid multiple renders
   const textRef = useRef(text);
@@ -117,8 +134,17 @@ const Chat = ({ onSendMessage }) => {
 
   const isDisabled = !isAuth || !isConnected;
 
+  const onSendMessage = useCallback(
+    (message) => {
+      if (!client) return;
+      const normalizedMessage = replaceEmojis(message.trim());
+      client.say(currentChannel, normalizedMessage);
+    },
+    [client, currentChannel],
+  );
+
   const handleNameRightClick = useCallback(
-    (name) => {
+    (name: string) => {
       setText((t) => `${t.trim()} @${name} `.trimLeft());
       if (chatInputRef.current) {
         chatInputRef.current.focus();
@@ -128,8 +154,8 @@ const Chat = ({ onSendMessage }) => {
   );
 
   const handleEmoteClick = useCallback(
-    (emoteName) => {
-      setText((t) => `${t.trim()} ${emoteName} `.trimLeft());
+    (name: string) => {
+      setText((t) => `${t.trim()} ${name} `.trimLeft());
     },
     [setText],
   );
@@ -165,12 +191,11 @@ const Chat = ({ onSendMessage }) => {
         const items = getUserSuggestions(
           beginText,
           usersRef.current,
-          userDisplayName,
           SUGGESTION_TYPES.users.limit,
         );
 
         setSuggestions({
-          type: SUGGESTION_TYPES.users.name,
+          type: 'users',
           isActive: true,
           items,
           activeIndex: 0,
@@ -183,7 +208,7 @@ const Chat = ({ onSendMessage }) => {
 
       const emotesMatch = SUGGESTION_TYPES.emotes.regex.exec(word);
 
-      if (emotesMatch) {
+      if (emotesMatch && emotesRef.current) {
         const [, beginText] = emotesMatch;
         const items = getEmoteSuggestions(
           beginText,
@@ -192,7 +217,7 @@ const Chat = ({ onSendMessage }) => {
         );
 
         setSuggestions({
-          type: SUGGESTION_TYPES.emotes.name,
+          type: 'emotes',
           isActive: true,
           items,
           activeIndex: 0,
@@ -207,7 +232,7 @@ const Chat = ({ onSendMessage }) => {
         setSuggestions(suggestionsInitialState);
       }
     },
-    [setText, setSuggestions, suggestionsRef, userDisplayName],
+    [setText, setSuggestions, suggestionsRef],
   );
 
   const handleKeyUp = useCallback(() => {}, []);
@@ -249,21 +274,12 @@ const Chat = ({ onSendMessage }) => {
   return (
     <ChatRoot>
       <ChatWrapper isFixedWidth={isFixedWidth}>
-        <Messages
-          messages={messages}
-          userLogin={userLogin}
-          isEven={isSplitChat ? isEven : false}
-          isShowTimestamps={isShowTimestamps}
-          isSplitChat={isSplitChat}
-          onNameRightClick={handleNameRightClick}
-        />
+        <Messages onNameRightClick={handleNameRightClick} />
         <ChatInput
           ref={chatInputRef}
           text={text}
-          emoteCategories={emoteCategories}
           suggestions={suggestions}
           isDisabled={isDisabled}
-          isAuth={isAuth}
           onEmoteClick={handleEmoteClick}
           onChange={handleChange}
           onKeyUp={handleKeyUp}
@@ -271,20 +287,12 @@ const Chat = ({ onSendMessage }) => {
           onBlur={handleBlur}
         />
         <ChatControls
-          userDisplayName={userDisplayName}
-          userColor={userColor}
-          userBadgesImages={userBadgesImages}
           isDisabled={isDisabled}
-          isAuth={isAuth}
           onSendMessage={handleSendMessage}
         />
       </ChatWrapper>
     </ChatRoot>
   );
-};
-
-Chat.propTypes = {
-  onSendMessage: pt.func.isRequired,
 };
 
 export default Chat;

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import pt from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useOnClickOutside from 'use-onclickoutside';
@@ -8,7 +8,8 @@ import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
 import { ReactComponent as TwitchIconSvg } from 'icons/twitch.svg';
 import IconButton from 'components/IconButton';
 import ChatModal from 'components/ChatModal';
-import Options from 'components/Options';
+import Options from 'features/options/Options';
+import { isAuthSelector } from 'features/auth/authSlice';
 
 const ChatControlsRoot = styled.div`
   position: relative;
@@ -27,7 +28,7 @@ const Controls = styled.div`
 const OptionsModal = styled.div`
   position: absolute;
   top: auto;
-  right: 0;
+  right: 10px;
   bottom: 100%;
   margin-bottom: 10px;
   width: 320px;
@@ -84,22 +85,23 @@ const TwitchIcon = styled(TwitchIconSvg)`
   height: 20px;
 `;
 
-const ChatControls = ({
-  userDisplayName,
-  userColor,
-  userBadgesImages,
-  isAuth,
-  isDisabled,
-  onSendMessage,
-}) => {
+interface Props {
+  isDisabled: boolean;
+  onSendMessage: () => void;
+}
+
+const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
   const optionsModalRef = useRef(null);
+
+  const isAuth = useSelector(isAuthSelector);
 
   const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
 
   useOnClickOutside(optionsModalRef, handleCloseOptionsModal);
 
   const renderSignInButton = () => (
+    // @ts-ignore
     <Button as={Link} to="/chat/auth">
       <TwitchIcon />
       Sign in with Twitch
@@ -109,25 +111,25 @@ const ChatControls = ({
   const renderOptionsModal = () => (
     <OptionsModal ref={optionsModalRef}>
       <ChatModal onClose={handleCloseOptionsModal}>
-        <Options
-          isAuth={isAuth}
-          userDisplayName={userDisplayName}
-          userColor={userColor}
-          userBadgesImages={userBadgesImages}
-        />
+        <Options />
       </ChatModal>
     </OptionsModal>
+  );
+
+  const optionsButton = (
+    // @ts-ignore
+    <OptionsButton
+      onClick={() => setIsOptionsModalVisible(!isOptionsModalVisible)}
+    >
+      <GearsIcon />
+    </OptionsButton>
   );
 
   return (
     <ChatControlsRoot>
       <Controls>
         {!isAuth && renderSignInButton()}
-        <OptionsButton
-          onClick={() => setIsOptionsModalVisible(!isOptionsModalVisible)}
-        >
-          <GearsIcon />
-        </OptionsButton>
+        {optionsButton}
         <Button disabled={isDisabled} onClick={onSendMessage}>
           Chat
         </Button>
@@ -138,19 +140,7 @@ const ChatControls = ({
 };
 
 ChatControls.defaultProps = {
-  userDisplayName: '',
-  userColor: '',
-  userBadgesImages: [],
   isDisabled: false,
-};
-
-ChatControls.propTypes = {
-  userDisplayName: pt.string,
-  userColor: pt.string,
-  userBadgesImages: pt.arrayOf(pt.shape({})),
-  isAuth: pt.bool.isRequired,
-  isDisabled: pt.bool,
-  onSendMessage: pt.func.isRequired,
 };
 
 export default React.memo(ChatControls);
