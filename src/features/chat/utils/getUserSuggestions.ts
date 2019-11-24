@@ -1,4 +1,8 @@
-const getUserSuggestions = (beginText: string, users: string[], limit = 5) => {
+const getUserSuggestions = (
+  beginText: string,
+  users: string[],
+  limit = 5,
+): string[] => {
   const result = [];
   const beginTextLower = beginText.toLowerCase();
 

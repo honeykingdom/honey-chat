@@ -131,8 +131,10 @@ export const createBadges = (
   badges: TwitchIrc.Badges,
   globalBadges: TwitchBadges,
   channelBadges: TwitchBadges,
-) => {
-  const mapBadges = ([name, version]: [string, string]) => {
+): HtmlEntityBadge[] => {
+  const mapBadges = ([name, version]: [string, string]):
+    | HtmlEntityBadge
+    | false => {
     const badge =
       R.pathOr(false, [name, 'versions', version], channelBadges) ||
       R.pathOr(false, [name, 'versions', version], globalBadges);

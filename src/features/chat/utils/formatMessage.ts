@@ -1,9 +1,14 @@
+import * as R from 'ramda';
 import { parse as twemojiParser } from 'twemoji-parser';
 import { lib as emojilib } from 'emojilib';
 import urlRegex from 'url-regex';
-import * as R from 'ramda';
 import TwitchIrc from 'twitch-simple-irc';
+
+import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
+import { TwitchEmote } from 'api/twitch';
+import { FfzEmote } from 'api/ffz';
 import { StateEmotes } from 'features/chat/selectors/chatSelectors';
+import { MessageEntity } from 'features/chat/slice/messages';
 import {
   createTwitchEmote,
   createBttvEmote,
@@ -11,11 +16,13 @@ import {
   createEmoji,
   createMention,
   createLink,
+  HtmlEntityTwitchEmote,
+  HtmlEntityBttvEmote,
+  HtmlEntityFfzEmote,
   HtmlEntityMention,
-} from './htmlEntity';
-import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
-import { TwitchEmote } from 'api/twitch';
-import { FfzEmote } from 'api/ffz';
+  HtmlEntityLink,
+  HtmlEntityEmoji,
+} from 'features/chat/utils/htmlEntity';
 
 const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
 const linkRegex = urlRegex({ strict: false });
@@ -33,7 +40,10 @@ const regexMap: { [id: number]: string } = {
   9: '<3', // '\\&lt\\;3'
 };
 
-const findTwitchEmote = (name: string, items: TwitchEmote[]) =>
+const findTwitchEmote = (
+  name: string,
+  items: TwitchEmote[],
+): TwitchEmote | undefined =>
   R.find(({ id, code }) => {
     // 1-14 - match by regex
     if (id >= 1 && id <= 14) {
@@ -47,7 +57,7 @@ const findTwitchEmote = (name: string, items: TwitchEmote[]) =>
 const findTwitchEmoteInSets = (
   name: string,
   sets: { [setId: string]: TwitchEmote[] },
-) => {
+): TwitchEmote | null => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
     const result = findTwitchEmote(name, set);
@@ -61,12 +71,13 @@ const findTwitchEmoteInSets = (
 const findBttvEmote = (
   name: string,
   items: Array<BttvGlobalEmote | BttvChannelEmote>,
-) => R.find(R.propEq('code', name), items);
+): BttvGlobalEmote | BttvChannelEmote | undefined =>
+  R.find(R.propEq('code', name), items);
 
-const findFfzEmote = (name: string, items: FfzEmote[]) =>
+const findFfzEmote = (name: string, items: FfzEmote[]): FfzEmote | undefined =>
   R.find(R.propEq('name', name), items);
 
-const findEmoji = (char: string) =>
+const findEmoji = (char: string): string | undefined =>
   // @ts-ignore
   R.pipe(R.filter(R.propEq('char', char)), R.keys, R.head)(emojilib);
 
@@ -74,7 +85,14 @@ const findEntity = (
   word: string,
   emotes: StateEmotes,
   parseTwitch: boolean,
-) => {
+):
+  | HtmlEntityTwitchEmote
+  | HtmlEntityBttvEmote
+  | HtmlEntityFfzEmote
+  | HtmlEntityEmoji
+  | [HtmlEntityMention, number]
+  | HtmlEntityLink
+  | null => {
   if (!emotes) return null;
 
   const {
@@ -153,7 +171,7 @@ const formatMessage = (
   emotes: StateEmotes | null,
   embeddedEmotes: TwitchIrc.Emotes | null,
   { parseTwitch = false }: { parseTwitch?: boolean } = {},
-) => {
+): MessageEntity[] => {
   // If the message was sent by the current user, there is no embedded emotes
   // So we need to parse twitch emotes manually
 

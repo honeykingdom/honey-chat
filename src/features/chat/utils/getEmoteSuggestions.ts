@@ -17,7 +17,7 @@ const checkTwitch = (
   },
   beginText: string,
   limit: number,
-) => {
+): boolean => {
   for (const items of Object.values(sets)) {
     for (const emote of items) {
       if (result.length === limit) return true;
@@ -36,7 +36,7 @@ const checkBttv = (
   items: Array<BttvGlobalEmote | BttvChannelEmote>,
   beginText: string,
   limit: number,
-) => {
+): boolean => {
   for (const emote of items) {
     if (result.length === limit) return true;
 
@@ -53,7 +53,7 @@ const checkFfz = (
   items: FfzEmote[],
   beginText: string,
   limit: number,
-) => {
+): boolean => {
   for (const emote of items) {
     if (result.length === limit) return true;
 
@@ -69,7 +69,7 @@ const getEmoteSuggestions = (
   beginText: string,
   emotes: StateEmotes,
   limit = 10,
-) => {
+): HtmlEntityEmote[] => {
   if (!emotes) return [];
 
   const result: HtmlEntityEmote[] = [];
