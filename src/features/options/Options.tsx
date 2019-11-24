@@ -1,13 +1,18 @@
 import React, { useCallback } from 'react';
-import pt from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { changeOption } from 'reducers/options';
-import { optionsSelector } from 'reducers/options/selectors';
 import Scrollbar from 'components/Scrollbar';
 import Switch from 'components/Switch';
+import {
+  userDisplayNameSelector,
+  userColorSelector,
+  userBadgesImagesSelector,
+} from 'features/chat/selectors';
+import { isAuthSelector } from 'features/auth/authSlice';
+import { changeOption } from 'features/options/optionsSlice';
+import { optionsSelector } from 'features/options/optionsSelectors';
 
 const OptionsRoot = styled.div`
   padding: 16px;
@@ -73,15 +78,21 @@ const Badge = styled.img`
   border-radius: 3px;
 `;
 
-const Options = ({ isAuth, userDisplayName, userColor, userBadgesImages }) => {
+const Options = () => {
   const dispatch = useDispatch();
   const options = useSelector(optionsSelector);
+
+  const isAuth = useSelector(isAuthSelector);
+
+  const userDisplayName = useSelector(userDisplayNameSelector);
+  const userColor = useSelector(userColorSelector);
+  const userBadgesImages = useSelector(userBadgesImagesSelector);
 
   const renderOption = useCallback(
     ({ id, name, title, description, value }) => (
       <Option
         key={id}
-        onClick={() => dispatch(changeOption(name, !value))}
+        onClick={() => dispatch(changeOption({ name, value: !value }))}
         title={description}
       >
         <OptionText>{title}</OptionText>
@@ -89,36 +100,43 @@ const Options = ({ isAuth, userDisplayName, userColor, userBadgesImages }) => {
           id={id}
           label={title}
           checked={value}
-          onChange={() => dispatch(changeOption(name, value))}
+          onChange={() => dispatch(changeOption({ name, value }))}
         />
       </Option>
     ),
     [dispatch],
   );
 
-  const renderProfileCategory = () => (
-    <Category>
-      <CategoryHeader>Profile</CategoryHeader>
-      <CategoryItems>
-        <Profile>
-          {userBadgesImages.map(({ alt, label, src, srcSet }, key) => (
-            <Badge
-              // eslint-disable-next-line react/no-array-index-key
-              key={key}
-              alt={alt}
-              aria-label={label}
-              src={src}
-              srcSet={srcSet}
-            />
-          ))}
-          <UserName color={userColor}>{userDisplayName}</UserName>
-          <LogOutButton as={Link} to="/chat/logout">
-            Log Out
-          </LogOutButton>
-        </Profile>
-      </CategoryItems>
-    </Category>
-  );
+  const renderProfileCategory = () => {
+    const logOutButton = (
+      // @ts-ignore
+      <LogOutButton as={Link} to="/chat/logout">
+        Log Out
+      </LogOutButton>
+    );
+
+    return (
+      <Category>
+        <CategoryHeader>Profile</CategoryHeader>
+        <CategoryItems>
+          <Profile>
+            {userBadgesImages.map(({ alt, label, src, srcSet }, key) => (
+              <Badge
+                // eslint-disable-next-line react/no-array-index-key
+                key={key}
+                alt={alt}
+                aria-label={label}
+                src={src}
+                srcSet={srcSet}
+              />
+            ))}
+            <UserName color={userColor}>{userDisplayName}</UserName>
+            {logOutButton}
+          </Profile>
+        </CategoryItems>
+      </Category>
+    );
+  };
 
   const renderOptionsCategory = useCallback(
     ({ title, items }, key) => (
@@ -139,19 +157,6 @@ const Options = ({ isAuth, userDisplayName, userColor, userBadgesImages }) => {
       </Categories>
     </OptionsRoot>
   );
-};
-
-Options.defaultProps = {
-  userDisplayName: '',
-  userColor: '',
-  userBadgesImages: [],
-};
-
-Options.propTypes = {
-  isAuth: pt.bool.isRequired,
-  userDisplayName: pt.string,
-  userColor: pt.string,
-  userBadgesImages: pt.arrayOf(pt.shape({})),
 };
 
 export default Options;
