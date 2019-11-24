@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import ReactGA from 'react-ga';
 
-import isAuthRedirect from 'utils/isAuthRedirect';
-import store from 'store';
-import App from './App';
-// import * as serviceWorker from './serviceWorker';
+import isAuthRedirect from 'features/auth/utils/isAuthRedirect';
+import store from 'app/store';
 
 if (process.env.NODE_ENV === 'production') {
   ReactGA.initialize('UA-139550930-3');
@@ -17,9 +16,19 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-ReactDOM.render(<App store={store} />, document.getElementById('root'));
+const render = () => {
+  const App = require('./app/App').default;
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.unregister();
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root'),
+  );
+};
+
+render();
+
+if (process.env.NODE_ENV === 'development' && (module as any).hot) {
+  (module as any).hot.accept('./app/App', render);
+}
