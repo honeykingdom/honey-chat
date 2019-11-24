@@ -9,12 +9,6 @@ export const STORE_USERS_LIMIT = 500;
 
 export const API_REQUESTS_TIMEOUT = 10000;
 
-export const MESSAGE_TYPES = {
-  MESSAGE: 'MESSAGE',
-  NOTICE_MESSAGE: 'NOTICE_MESSAGE',
-  USER_NOTICE_MESSAGE: 'USER_NOTICE_MESSAGE',
-};
-
 export const SUGGESTION_TYPES = {
   users: {
     name: 'users',
@@ -25,32 +19,6 @@ export const SUGGESTION_TYPES = {
     name: 'emotes',
     limit: 10,
     regex: /^:([\w\d_]{2,})$/,
-  },
-};
-
-export const STORE_FLAGS = {
-  DEFAULT: {
-    isLoading: false,
-    isLoaded: false,
-    isError: false,
-    error: null,
-  },
-  REQUEST: {
-    isLoading: true,
-    isLoaded: false,
-    isError: false,
-    error: null,
-  },
-  SUCCESS: {
-    isLoading: false,
-    isLoaded: true,
-    isError: false,
-    error: null,
-  },
-  FAILURE: {
-    isLoading: false,
-    isLoaded: false,
-    isError: true,
   },
 };
 
@@ -76,3 +44,17 @@ export const NOTICE_MESSAGE_TAGS = [
   'msg_timedout',
   'msg_verified_email',
 ];
+
+export type FetchFlags = {
+  isLoading: boolean;
+  isLoaded: boolean;
+  isError: boolean;
+  error: string | null;
+};
+
+export const initialFetchFlags: FetchFlags = {
+  isLoading: false,
+  isLoaded: false,
+  isError: false,
+  error: null,
+};
