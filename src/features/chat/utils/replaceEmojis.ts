@@ -1,9 +1,9 @@
-import emojilib from 'emojilib/emojis';
+import { lib as emojilib } from 'emojilib';
 
-const replaceEmojis = (text) =>
+const replaceEmojis = (text: string) =>
   text
     .split(' ')
-    .map((word) => {
+    .map((word: string) => {
       if (word[0] !== ':' || word[word.length - 1] !== ':') {
         return word;
       }

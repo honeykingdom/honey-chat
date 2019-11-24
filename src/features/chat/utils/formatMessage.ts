@@ -1,105 +1,39 @@
-import pt from 'prop-types';
 import { parse as twemojiParser } from 'twemoji-parser';
-import emojilib from 'emojilib/emojis';
+import { lib as emojilib } from 'emojilib';
 import urlRegex from 'url-regex';
 import * as R from 'ramda';
-
-import normalizeHref from 'utils/normalizeHref';
-
-const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
-const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
+import TwitchIrc from 'twitch-simple-irc';
+import { StateEmotes } from 'features/chat/selectors/chatSelectors';
+import {
+  createTwitchEmote,
+  createBttvEmote,
+  createFfzEmote,
+  createEmoji,
+  createMention,
+  createLink,
+  HtmlEntityMention,
+} from './htmlEntity';
+import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
+import { TwitchEmote } from 'api/twitch';
+import { FfzEmote } from 'api/ffz';
 
 const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
 const linkRegex = urlRegex({ strict: false });
 
 const normalizeEmotesFromTags = R.pipe(
+  // @ts-ignore
   R.toPairs,
+  // @ts-ignore
   R.map(([id, value]) => R.map((v) => ({ id, ...v }), value)),
   R.flatten,
 );
 
-const getFfzSrcSet = R.pipe(
-  R.toPairs,
-  R.map(([dpi, url]) => `${url} ${dpi}x`),
-  R.join(', '),
-);
-
-export const createTwitchEmote = ({ id, code }) => ({
-  type: 'twitch-emote',
-  alt: code,
-  src: `${TWITCH_EMOTES_CDN}/${id}/1.0`,
-  srcSet: `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`,
-});
-export const createBttvEmote = ({ id, code }) => ({
-  type: 'bttv-emote',
-  alt: code,
-  src: `${BTTV_EMOTES_CDN}/${id}/1x`,
-  srcSet: `${BTTV_EMOTES_CDN}/${id}/2x 2x, ${BTTV_EMOTES_CDN}/${id}/3x 4x`,
-});
-export const createFfzEmote = ({ name, urls }) => ({
-  type: 'ffz-emote',
-  alt: name,
-  src: urls[1],
-  srcSet: getFfzSrcSet(urls),
-});
-export const createEmoji = (alt, src) => ({
-  type: 'emoji',
-  alt: `:${alt}:`,
-  src,
-  srcSet: null,
-});
-export const createMention = (text, target) => ({
-  type: 'mention',
-  text,
-  target,
-});
-export const createLink = (href) => ({
-  type: 'link',
-  text: href,
-  href: normalizeHref(href),
-});
-
-export const twitchEmoteType = pt.shape({
-  type: pt.oneOf(['twitch-emote']).isRequired,
-  alt: pt.string.isRequired,
-  src: pt.string.isRequired,
-  srcSet: pt.string.isRequired,
-});
-export const bttvEmoteType = pt.shape({
-  type: pt.oneOf(['bttv-emote']).isRequired,
-  alt: pt.string.isRequired,
-  src: pt.string.isRequired,
-  srcSet: pt.string.isRequired,
-});
-export const ffzEmoteType = pt.shape({
-  type: pt.oneOf(['ffz-emote']).isRequired,
-  alt: pt.string.isRequired,
-  src: pt.string.isRequired,
-  srcSet: pt.string.isRequired,
-});
-export const emojiType = pt.shape({
-  type: pt.oneOf(['emoji']).isRequired,
-  alt: pt.string.isRequired,
-  src: pt.string.isRequired,
-  srcSet: pt.string,
-});
-export const mentionType = pt.shape({
-  type: pt.oneOf(['mention']).isRequired,
-  text: pt.string.isRequired,
-  target: pt.string.isRequired,
-});
-export const linkType = pt.shape({
-  type: pt.oneOf(['link']).isRequired,
-  text: pt.string.isRequired,
-  href: pt.string.isRequired,
-});
-
-const regexMap = {
+const regexMap: { [id: number]: string } = {
   4: '>\\(', // '\\&gt\\;\\('
   9: '<3', // '\\&lt\\;3'
 };
 
-const findTwitchEmote = (name, items) =>
+const findTwitchEmote = (name: string, items: TwitchEmote[]) =>
   R.find(({ id, code }) => {
     // 1-14 - match by regex
     if (id >= 1 && id <= 14) {
@@ -109,7 +43,11 @@ const findTwitchEmote = (name, items) =>
 
     return name === code;
   }, items);
-const findTwitchEmoteInSets = (name, sets) => {
+
+const findTwitchEmoteInSets = (
+  name: string,
+  sets: { [setId: string]: TwitchEmote[] },
+) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
     const result = findTwitchEmote(name, set);
@@ -120,12 +58,23 @@ const findTwitchEmoteInSets = (name, sets) => {
   return null;
 };
 
-const findBttvEmote = (name, items) => R.find(R.propEq('code', name), items);
-const findFfzEmote = (name, items) => R.find(R.propEq('name', name), items);
-const findEmoji = (char) =>
+const findBttvEmote = (
+  name: string,
+  items: Array<BttvGlobalEmote | BttvChannelEmote>,
+) => R.find(R.propEq('code', name), items);
+
+const findFfzEmote = (name: string, items: FfzEmote[]) =>
+  R.find(R.propEq('name', name), items);
+
+const findEmoji = (char: string) =>
+  // @ts-ignore
   R.pipe(R.filter(R.propEq('char', char)), R.keys, R.head)(emojilib);
 
-const findEntity = (word, emotes, { parseTwitch = false }) => {
+const findEntity = (
+  word: string,
+  emotes: StateEmotes,
+  parseTwitch: boolean,
+) => {
   if (!emotes) return null;
 
   const {
@@ -187,7 +136,7 @@ const findEntity = (word, emotes, { parseTwitch = false }) => {
     return [
       createMention(text, target.toLowerCase()),
       word.length - text.length,
-    ];
+    ] as [HtmlEntityMention, number];
   }
 
   const linkMatch = word.match(linkRegex);
@@ -199,14 +148,14 @@ const findEntity = (word, emotes, { parseTwitch = false }) => {
   return null;
 };
 
-const formatMessage = (message, embeddedEmotes, emotes) => {
+const formatMessage = (
+  message: string,
+  emotes: StateEmotes | null,
+  embeddedEmotes: TwitchIrc.Emotes | null,
+  { parseTwitch = false }: { parseTwitch?: boolean } = {},
+) => {
   // If the message was sent by the current user, there is no embedded emotes
   // So we need to parse twitch emotes manually
-
-  const isOwnMessage = embeddedEmotes === undefined || embeddedEmotes === null;
-  const hasEmbeddedEmotes =
-    embeddedEmotes && Object.keys(embeddedEmotes).length > 0;
-  const normalizedEmbeddedEmotes = normalizeEmotesFromTags(embeddedEmotes);
 
   const result = [];
   let offset = 0;
@@ -229,7 +178,15 @@ const formatMessage = (message, embeddedEmotes, emotes) => {
       let entity = null;
 
       // Check embedded twitch emotes
-      if (hasEmbeddedEmotes) {
+      if (
+        !parseTwitch &&
+        embeddedEmotes &&
+        Object.keys(embeddedEmotes).length > 0
+      ) {
+        const normalizedEmbeddedEmotes = normalizeEmotesFromTags(
+          embeddedEmotes,
+        );
+
         const embeddedEmote = R.find(
           R.propEq('start', startIndex),
           normalizedEmbeddedEmotes,
@@ -242,7 +199,7 @@ const formatMessage = (message, embeddedEmotes, emotes) => {
 
       // Check other entities
       if (!entity) {
-        entity = findEntity(word, emotes, { parseTwitch: isOwnMessage });
+        entity = findEntity(word, emotes, parseTwitch);
       }
 
       if (entity) {

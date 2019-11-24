@@ -3,9 +3,21 @@ import {
   createTwitchEmote,
   createBttvEmote,
   createFfzEmote,
-} from 'utils/formatMessage';
+  HtmlEntityEmote,
+} from 'features/chat/utils/htmlEntity';
+import { StateEmotes } from 'features/chat/selectors/chatSelectors';
+import { TwitchEmote } from 'api/twitch';
+import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
+import { FfzEmote } from 'api/ffz';
 
-const checkTwitch = (result, sets, beginText, limit) => {
+const checkTwitch = (
+  result: any[],
+  sets: {
+    [setId: string]: TwitchEmote[];
+  },
+  beginText: string,
+  limit: number,
+) => {
   for (const items of Object.values(sets)) {
     for (const emote of items) {
       if (result.length === limit) return true;
@@ -19,7 +31,12 @@ const checkTwitch = (result, sets, beginText, limit) => {
   return false;
 };
 
-const checkBttv = (result, items, beginText, limit) => {
+const checkBttv = (
+  result: any[],
+  items: Array<BttvGlobalEmote | BttvChannelEmote>,
+  beginText: string,
+  limit: number,
+) => {
   for (const emote of items) {
     if (result.length === limit) return true;
 
@@ -31,7 +48,12 @@ const checkBttv = (result, items, beginText, limit) => {
   return false;
 };
 
-const checkFfz = (result, items, beginText, limit) => {
+const checkFfz = (
+  result: any[],
+  items: FfzEmote[],
+  beginText: string,
+  limit: number,
+) => {
   for (const emote of items) {
     if (result.length === limit) return true;
 
@@ -43,10 +65,14 @@ const checkFfz = (result, items, beginText, limit) => {
   return false;
 };
 
-const getEmoteSuggestions = (beginText, emotes, limit = 10) => {
+const getEmoteSuggestions = (
+  beginText: string,
+  emotes: StateEmotes,
+  limit = 10,
+) => {
   if (!emotes) return [];
 
-  const result = [];
+  const result: HtmlEntityEmote[] = [];
   const {
     twitchGlobal,
     twitchUser,
@@ -58,7 +84,7 @@ const getEmoteSuggestions = (beginText, emotes, limit = 10) => {
 
   const beginTextLower = beginText.toLowerCase();
 
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const isOver =
     checkBttv(result, bttvChannel, beginTextLower, limit) ||
     checkFfz(result, ffzChannel, beginTextLower, limit) ||
