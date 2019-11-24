@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { setAuth } from 'reducers/auth';
+import { invalidateAuth } from 'features/auth/authSlice';
 
 const Logout = () => {
   const history = useHistory();
@@ -11,7 +11,7 @@ const Logout = () => {
   localStorage.removeItem('idToken');
   localStorage.removeItem('user');
 
-  dispatch(setAuth({ isAuthReady: false, isAuth: false }));
+  dispatch(invalidateAuth());
 
   history.push({
     pathname: '/chat/',
