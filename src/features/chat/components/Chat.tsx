@@ -6,7 +6,7 @@ import useSetState from 'hooks/useSetState';
 import { SUGGESTION_TYPES } from 'utils/constants';
 import { isAuthSelector } from 'features/auth/authSlice';
 import { isFixedWidthSelector } from 'features/options/optionsSelectors';
-import useInitializeAuth from 'features/chat/hooks/useInitializeAuth';
+import useInitializeAuth from 'features/auth/hooks/useInitializeAuth';
 import useFetchChatData from 'features/chat/hooks/useFetchChatData';
 import useCurrentChannel from 'features/chat/hooks/useCurrentChannel';
 import useTwitchClient from 'features/chat/hooks/useTwitchClient';
