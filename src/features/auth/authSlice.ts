@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from 'app/store';
 import { fetchUser as apiFetchUser, TwitchUsersResponse } from 'api/twitch';
 import { RootState } from 'app/rootReducer';
-import { writeUserToLocatStorage } from 'features/auth/utils/storedUser';
+import { writeUserToLocatStorage } from 'features/auth/authUtils';
 
 interface AuthState {
   isAuthReady: boolean;

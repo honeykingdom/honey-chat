@@ -4,6 +4,12 @@ import {
   TWITCH_API_REDIRECT_URI,
 } from 'utils/constants';
 
+type StoredUser = {
+  id: string;
+  login: string;
+};
+
+/* eslint-disable @typescript-eslint/camelcase */
 const authParams = {
   client_id: TWITCH_API_CLIENT_ID,
   redirect_uri: TWITCH_API_REDIRECT_URI,
@@ -22,10 +28,12 @@ const authParams = {
   claims: JSON.stringify({
     id_token: { email_verified: null, picture: null, preferred_username: null },
   }),
+  // TODO:
   // state: uid(),
 };
+/* eslint-enable @typescript-eslint/camelcase */
 
-const getAuthUrl = () => {
+export const getAuthUrl = (): string => {
   const search = Object.entries(authParams)
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
@@ -33,4 +41,23 @@ const getAuthUrl = () => {
   return `${TWITCH_API_AUTH_BASE}?${search}`;
 };
 
-export default getAuthUrl;
+export const isAuthRedirect = (hash: string): boolean =>
+  hash.startsWith('#access_token=');
+
+export const writeUserToLocatStorage = (user: StoredUser): void => {
+  localStorage.setItem('user', JSON.stringify(user));
+};
+
+export const readUserFromLocatStorage = (): StoredUser | null => {
+  let user;
+
+  try {
+    user = JSON.parse(localStorage.user);
+  } catch (e) {
+    user = null;
+  }
+
+  if (!user || !user.id || !user.login) return null;
+
+  return user as StoredUser;
+};
