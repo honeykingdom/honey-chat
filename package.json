@@ -41,6 +41,8 @@
     "@types/react-router-dom": "^5.1.2",
     "@types/styled-components": "^4.4.0",
     "@types/uuid": "^3.4.6",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
     "eslint": "^6.7.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.7.0",
@@ -64,14 +66,18 @@
     "test": "react-scripts test"
   },
   "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
     "extends": [
       "airbnb",
+      "plugin:@typescript-eslint/recommended",
       "prettier",
-      "prettier/react"
+      "prettier/react",
+      "prettier/@typescript-eslint"
     ],
     "plugins": [
       "prettier",
-      "react-hooks"
+      "react-hooks",
+      "@typescript-eslint"
     ],
     "globals": {
       "fetch": true,
@@ -94,7 +100,10 @@
         }
       }
     },
-    "parser": "babel-eslint"
+    "rules": {
+      "import/no-unresolved": "off",
+      "react/jsx-filename-extension": "off"
+    }
   },
   "prettier": {
     "singleQuote": true,
