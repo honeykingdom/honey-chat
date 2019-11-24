@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import ReactGA from 'react-ga';
 
-import isAuthRedirect from 'features/auth/utils/isAuthRedirect';
+import { isAuthRedirect } from 'features/auth/authUtils';
 import store from 'app/store';
 
 if (process.env.NODE_ENV === 'production') {
@@ -17,6 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const render = () => {
+  // eslint-disable-next-line global-require
   const App = require('./app/App').default;
 
   ReactDOM.render(
