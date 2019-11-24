@@ -7,6 +7,7 @@ import {
   initializeAuth,
   fetchUser,
 } from 'features/auth/authSlice';
+import { readUserFromLocatStorage } from 'features/auth/utils/storedUser';
 
 const useInitializeAuth = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,8 @@ const useInitializeAuth = () => {
   useEffect(() => {
     if (isAuthReady) return;
 
-    const { user, idToken } = localStorage;
+    const { idToken } = localStorage;
+    const user = readUserFromLocatStorage();
 
     if (!idToken) {
       dispatch(initializeAuth({ isAuth: false }));
@@ -23,7 +25,7 @@ const useInitializeAuth = () => {
     }
 
     if (user) {
-      const { id, login } = JSON.parse(user);
+      const { id, login } = user;
       const params = { isAuth: true, userId: id, userLogin: login };
 
       dispatch(initializeAuth(params));

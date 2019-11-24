@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from 'app/store';
 import { fetchUser as apiFetchUser, TwitchUsersResponse } from 'api/twitch';
 import { RootState } from 'app/rootReducer';
+import { writeUserToLocatStorage } from 'features/auth/utils/storedUser';
 
 interface AuthState {
   isAuthReady: boolean;
@@ -80,6 +81,8 @@ export const fetchUser = (userId: string): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchUserRequest());
     const users = await apiFetchUser(userId);
+    const { id, login } = users.data[0];
+    writeUserToLocatStorage({ id, login });
     dispatch(fetchUserSuccess(users));
   } catch (e) {
     dispatch(fetchUserFailure(e));
