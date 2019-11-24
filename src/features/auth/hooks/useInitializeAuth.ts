@@ -7,7 +7,7 @@ import {
   initializeAuth,
   fetchUser,
 } from 'features/auth/authSlice';
-import { readUserFromLocatStorage } from 'features/auth/utils/storedUser';
+import { readUserFromLocatStorage } from 'features/auth/authUtils';
 
 const useInitializeAuth = () => {
   const dispatch = useDispatch();
