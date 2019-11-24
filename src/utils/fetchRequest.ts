@@ -1,5 +1,11 @@
-const fetchRequest = async (url, options = {}) => {
-  let fetchOptions = { ...options };
+import { API_REQUESTS_TIMEOUT } from 'utils/constants';
+
+export interface FetchRequestOptions extends RequestInit {
+  timeout?: number;
+}
+
+const fetchRequest = async (url: string, options: FetchRequestOptions = {}) => {
+  let fetchOptions = { timeout: API_REQUESTS_TIMEOUT, ...options };
 
   if (options.timeout) {
     const controller = new AbortController();
@@ -14,7 +20,7 @@ const fetchRequest = async (url, options = {}) => {
 
   if (!response.ok) {
     const error = Error(response.statusText);
-    error.data = body;
+    // error.data = body;
     throw error;
   }
 
