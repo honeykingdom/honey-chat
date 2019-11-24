@@ -9,7 +9,7 @@ import { ReactComponent as TwitchIconSvg } from 'icons/twitch.svg';
 import IconButton from 'components/IconButton';
 import ChatModal from 'components/ChatModal';
 import Options from 'features/options/Options';
-import { isAuthSelector } from 'features/auth/authSlice';
+import { isAuthSelector, isAuthReadySelector } from 'features/auth/authSlice';
 
 const ChatControlsRoot = styled.div`
   position: relative;
@@ -94,6 +94,7 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
   const optionsModalRef = useRef(null);
 
+  const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
 
   const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
@@ -128,7 +129,7 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   return (
     <ChatControlsRoot>
       <Controls>
-        {!isAuth && renderSignInButton()}
+        {isAuthReady && !isAuth && renderSignInButton()}
         {optionsButton}
         <Button disabled={isDisabled} onClick={onSendMessage}>
           Chat
