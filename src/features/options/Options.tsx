@@ -11,7 +11,7 @@ import {
   userBadgesImagesSelector,
 } from 'features/chat/selectors';
 import { isAuthSelector } from 'features/auth/authSlice';
-import { changeOption } from 'features/options/optionsSlice';
+import { changeChatOption } from 'features/options/optionsSlice';
 import { optionsSelector } from 'features/options/optionsSelectors';
 
 const OptionsRoot = styled.div`
@@ -92,7 +92,7 @@ const Options = () => {
     ({ id, name, title, description, value }) => (
       <Option
         key={id}
-        onClick={() => dispatch(changeOption({ name, value: !value }))}
+        onClick={() => dispatch(changeChatOption({ name, value: !value }))}
         title={description}
       >
         <OptionText>{title}</OptionText>
@@ -100,7 +100,7 @@ const Options = () => {
           id={id}
           label={title}
           checked={value}
-          onChange={() => dispatch(changeOption({ name, value }))}
+          onChange={() => dispatch(changeChatOption({ name, value }))}
         />
       </Option>
     ),
