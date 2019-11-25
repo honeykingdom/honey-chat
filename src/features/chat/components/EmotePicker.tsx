@@ -3,10 +3,8 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Scrollbar from 'components/Scrollbar';
-import {
-  EmoteCategory,
-  emoteCategoriesSelector,
-} from 'features/chat/selectors';
+import { emoteCategoriesSelector } from 'features/chat/selectors';
+import { EmoteCategory } from 'features/chat/utils/createEmoteCategories';
 
 const EmotePickerRoot = styled.div`
   padding-top: 32px;
