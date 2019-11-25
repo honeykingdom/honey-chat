@@ -52,6 +52,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "gh-pages": "^2.1.1",
+    "jest-localstorage-mock": "^2.4.0",
     "prettier": "^1.19.1",
     "source-map-explorer": "^2.1.1",
     "tslint": "^5.20.1",
