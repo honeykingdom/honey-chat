@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import useOnClickOutside from 'use-onclickoutside';
 
+import useOnClickOutside from 'hooks/useOnClickOutside';
 import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
 import { ReactComponent as TwitchIconSvg } from 'icons/twitch.svg';
 import IconButton from 'components/IconButton';

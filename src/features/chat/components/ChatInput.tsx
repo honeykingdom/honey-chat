@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import useOnClickOutside from 'use-onclickoutside';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
@@ -150,7 +151,9 @@ type Props = {
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyUp: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  onBlur: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
+  onBlur: () => void;
+  onSuggestionMouseEnter: (index: number) => void;
+  onSuggestionClick: (index: number) => void;
 };
 
 const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
@@ -164,26 +167,38 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       onKeyUp,
       onKeyDown,
       onBlur,
+      onSuggestionMouseEnter,
+      onSuggestionClick,
     },
     textareaRef,
   ) => {
     const chatInputRef = useRef(null);
+    const suggestionsRef = useRef<HTMLDivElement>(null);
+    const suggestionNodesRef = useRef<React.RefObject<HTMLElement>[]>([
+      textareaRef,
+      suggestionsRef,
+    ] as React.RefObject<HTMLElement>[]);
+
+    useOnClickOutside(suggestionNodesRef, () => onBlur());
+
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
-
     const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
-
     const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
 
     useOnClickOutside(chatInputRef, handleCloseEmotesModal);
 
-    /* eslint-disable react/prop-types */
     const renderSuggestions = ({
       type,
       items,
       activeIndex,
     }: SuggestionsState) => {
       const renderUser = (name: string, index: number) => (
-        <SuggestionItem key={name} isActive={index === activeIndex}>
+        <SuggestionItem
+          key={name}
+          isActive={index === activeIndex}
+          onMouseEnter={() => onSuggestionMouseEnter(index)}
+          onClick={() => onSuggestionClick(index)}
+        >
           {name}
         </SuggestionItem>
       );
@@ -192,7 +207,12 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
         { src, srcSet, alt }: HtmlEntityEmote,
         index: number,
       ) => (
-        <SuggestionItem key={alt} isActive={index === activeIndex}>
+        <SuggestionItem
+          key={alt}
+          isActive={index === activeIndex}
+          onMouseEnter={() => onSuggestionMouseEnter(index)}
+          onClick={() => onSuggestionClick(index)}
+        >
           <SuggestionImage src={src} srcSet={srcSet} alt={alt} />
           {alt}
         </SuggestionItem>
@@ -204,10 +224,11 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
           : (items as HtmlEntityEmote[]).map(renderEmote);
 
       return (
-        <Suggestions>{items.length ? renderItems() : 'No matches'}</Suggestions>
+        <Suggestions ref={suggestionsRef}>
+          {items.length ? renderItems() : 'No matches'}
+        </Suggestions>
       );
     };
-    /* eslint-enable react/prop-types */
 
     const renderEmotesButton = () => (
       // @ts-ignore
@@ -241,7 +262,6 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
                 onChange={onChange}
                 onKeyUp={onKeyUp}
                 onKeyDown={onKeyDown}
-                onBlur={onBlur}
               />
               {isEmotesLoaded && renderEmotesButton()}
             </TextareaInput>
