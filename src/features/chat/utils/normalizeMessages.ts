@@ -17,7 +17,7 @@ import {
   emotesSelector,
   StateEmotes,
 } from 'features/chat/selectors';
-import formatMessage from 'features/chat/utils/formatMessage';
+import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
 import { createBadges } from 'features/chat/utils/htmlEntity';
 
 export const normalizeMessage = (
@@ -38,7 +38,7 @@ export const normalizeMessage = (
     id: tags.id,
     message,
     channel,
-    entities: formatMessage(message, emotes, tags.emotes),
+    entities: parseMessageEntities(message, emotes, tags.emotes),
     user: {
       id: tags.userId,
       login: user,
@@ -96,7 +96,9 @@ export const normalizeOwnMessage = (
     id,
     message: isAction ? message.slice(4) : message,
     channel,
-    entities: formatMessage(message, emotes, null, { parseTwitch: true }),
+    entities: parseMessageEntities(message, emotes, null, {
+      parseTwitch: true,
+    }),
     user: {
       id: userId,
       login: userLogin,
@@ -130,7 +132,11 @@ export const normalizeHistoryMessage = (
     id: parsedTags.id,
     message,
     channel: channel.slice(1),
-    entities: formatMessage(normalizedMessage, emotes, parsedTags.emotes),
+    entities: parseMessageEntities(
+      normalizedMessage,
+      emotes,
+      parsedTags.emotes,
+    ),
     user: {
       id: parsedTags.userId,
       login: prefix ? prefix.name : '',
