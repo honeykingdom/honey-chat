@@ -51,3 +51,11 @@ export const parseFfzChannelEmotes: (
   R.map(R.pathOr([], ['emoticons'])),
   R.flatten,
 );
+
+export const parseBlockedUsers = R.pipe<
+  TwitchBlockedUsersResponse,
+  {}[],
+  string[]
+>(R.prop('blocks'), R.map(R.path(['user', 'name'])) as () => string[]);
+
+export const parseBadges = R.prop('badge_sets');
