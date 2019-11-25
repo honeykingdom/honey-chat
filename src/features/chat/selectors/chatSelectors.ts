@@ -122,6 +122,7 @@ export const emotesSelector = createSelector(
 
 export const emoteCategoriesSelector = createSelector(
   emotesSelector,
+  (_: any, text: string) => text,
   createEmoteCategories,
 );
 

@@ -8,6 +8,7 @@ import {
   HtmlEntityEmote,
 } from 'features/chat/utils/htmlEntity';
 import { StateEmotes } from 'features/chat/selectors';
+import getEmotesByText from 'features/chat/utils/getEmotesByText';
 
 // prettier-ignore
 const regexEmotesMap: { [value: string]: string } = {
@@ -35,7 +36,7 @@ export type EmoteCategory = {
   items: HtmlEntityEmote[];
 };
 
-const createEmoteCategories = (emotes: StateEmotes) => {
+const createEmoteCategories = (emotes: StateEmotes, text: string) => {
   if (!emotes) return [];
 
   const {
@@ -46,6 +47,15 @@ const createEmoteCategories = (emotes: StateEmotes) => {
     ffzGlobal,
     ffzChannel,
   } = emotes;
+
+  // TODO: Frequently Used
+
+  if (text) {
+    const items = getEmotesByText(text, emotes);
+    const title = `${items.length ? '' : 'No '}Search Results for "${text}"`;
+
+    return [{ title, items }];
+  }
 
   return [
     {
