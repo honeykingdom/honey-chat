@@ -5,6 +5,7 @@ export interface ChatHistoryResponse {
   error: null;
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export const fetchChatHistory = (
   channel: string,
 ): Promise<ChatHistoryResponse> =>

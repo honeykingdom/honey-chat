@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { FetchFlags } from 'utils/constants';
 
 function setFetchFlags(obj: FetchFlags, type: 'request'): void;

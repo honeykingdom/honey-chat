@@ -157,7 +157,7 @@ const useTwitchClient = () => {
             userLogin,
           } as OwnMessage;
           dispatch(addMessage({ type: 'own-message', message: ownMessage }));
-          // eslint-disable-next-line no-use-before-define
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           removeListeners();
         }
       }
@@ -167,7 +167,7 @@ const useTwitchClient = () => {
           data.channel === channel &&
           NOTICE_MESSAGE_TAGS.includes(data.tags.msgId)
         ) {
-          // eslint-disable-next-line no-use-before-define
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           removeListeners();
         }
       }
