@@ -1,5 +1,6 @@
 import React from 'react';
 
+import assertNever from 'utils/assertNever';
 import { ChatMessage as ChatMessageType } from 'features/chat/slice/messages';
 import Message from 'features/chat/components/Message';
 import Notice from 'features/chat/components/Notice';
@@ -43,15 +44,7 @@ const ChatMessage = ({
     return <UserNotice message={message} />;
   }
 
-  return null as never;
-};
-
-ChatMessage.defaultProps = {
-  userLogin: '',
-  isEven: false,
-  isShowTimestamps: false,
-  // onNameClick: () => {},
-  onNameRightClick: () => {},
+  return assertNever(message);
 };
 
 export default React.memo(ChatMessage);

@@ -38,6 +38,4 @@ const ChatModal = ({ children, onClose }: Props) => (
   </ChatModalRoot>
 );
 
-ChatModal.defaultProps = {};
-
 export default ChatModal;

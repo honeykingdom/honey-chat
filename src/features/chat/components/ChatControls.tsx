@@ -142,8 +142,4 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   );
 };
 
-ChatControls.defaultProps = {
-  isDisabled: false,
-};
-
 export default React.memo(ChatControls);

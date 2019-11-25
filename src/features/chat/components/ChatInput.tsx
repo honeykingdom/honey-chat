@@ -272,8 +272,4 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
   },
 );
 
-ChatInput.defaultProps = {
-  isDisabled: false,
-};
-
 export default React.memo(ChatInput);

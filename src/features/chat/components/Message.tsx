@@ -212,12 +212,4 @@ const Message = ({
   );
 };
 
-Message.defaultProps = {
-  userLogin: '',
-  isEven: false,
-  isShowTimestamps: false,
-  // onNameClick: () => {},
-  onNameRightClick: () => {},
-};
-
 export default React.memo(Message);
