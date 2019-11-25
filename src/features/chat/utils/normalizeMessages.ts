@@ -90,13 +90,14 @@ export const normalizeOwnMessage = (
   const emotes = emotesSelector(fakeState);
 
   const isAction = message.startsWith('/me ');
+  const normalizedMessage = isAction ? message.slice(4) : message;
 
   return {
     type: 'message',
     id,
-    message: isAction ? message.slice(4) : message,
+    message: normalizedMessage,
     channel,
-    entities: parseMessageEntities(message, emotes, null, {
+    entities: parseMessageEntities(normalizedMessage, emotes, null, {
       parseTwitch: true,
     }),
     user: {
