@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uuid from 'uuid/v4';
-import TwitchIrc from 'twitch-simple-irc';
+import twitchIrc from 'twitch-simple-irc';
 
 import usePrevious from 'hooks/usePrevious';
 import { NOTICE_MESSAGE_TAGS } from 'utils/constants';
@@ -36,7 +36,7 @@ const useTwitchClient = () => {
   const isConnected = useSelector(isConnectedSelector);
   const currentChannel = useSelector(currentChannelSelector);
   const prevChannel = usePrevious(currentChannel);
-  const clientRef = useRef<TwitchIrc.Client | null>(null);
+  const clientRef = useRef<twitchIrc.Client | null>(null);
 
   const registerEvents = useCallback(
     (client: typeof clientRef) => {
@@ -46,19 +46,19 @@ const useTwitchClient = () => {
 
       const handleDisconnect = () => dispatch(updateIsConnected(false));
 
-      const handleGlobalUserState = (data: TwitchIrc.GlobalUserStateEvent) =>
+      const handleGlobalUserState = (data: twitchIrc.GlobalUserStateEvent) =>
         dispatch(updateGlobalUserParams(data));
 
-      const handleUserState = (data: TwitchIrc.UserStateEvent) =>
+      const handleUserState = (data: twitchIrc.UserStateEvent) =>
         dispatch(updateUserParams(data));
 
-      const handleRoomState = (data: TwitchIrc.RoomStateEvent) =>
+      const handleRoomState = (data: twitchIrc.RoomStateEvent) =>
         dispatch(updateRoomParams(data));
 
-      const handleMessage = (message: TwitchIrc.MessageEvent) =>
+      const handleMessage = (message: twitchIrc.MessageEvent) =>
         dispatch(addMessage({ type: 'message', message }));
 
-      const handleNotice = (message: TwitchIrc.NoticeEvent) => {
+      const handleNotice = (message: twitchIrc.NoticeEvent) => {
         if (
           client.current &&
           message.message === 'Login authentication failed'
@@ -73,10 +73,10 @@ const useTwitchClient = () => {
         dispatch(addMessage({ type: 'notice', message, id: uuid() }));
       };
 
-      const handleUserNotice = (message: TwitchIrc.UserNoticeEvent) =>
+      const handleUserNotice = (message: twitchIrc.UserNoticeEvent) =>
         dispatch(addMessage({ type: 'user-notice', message }));
 
-      const handleClearChat = (data: TwitchIrc.ClearChatEvent) => {
+      const handleClearChat = (data: twitchIrc.ClearChatEvent) => {
         if (!data.tags.targetUserId) return;
         dispatch(clearChat(data));
       };
@@ -112,7 +112,7 @@ const useTwitchClient = () => {
         : null;
 
       (async () => {
-        clientRef.current = new TwitchIrc.Client(options);
+        clientRef.current = new twitchIrc.Client(options);
 
         registerEvents(clientRef);
 
@@ -145,7 +145,7 @@ const useTwitchClient = () => {
 
       clientRef.current.say(channel, message);
 
-      function handleUserState(data: TwitchIrc.UserStateEvent) {
+      function handleUserState(data: twitchIrc.UserStateEvent) {
         if (data.channel === channel) {
           const ownMessage = {
             message,
@@ -162,7 +162,7 @@ const useTwitchClient = () => {
         }
       }
 
-      function handleNotice(data: TwitchIrc.NoticeEvent) {
+      function handleNotice(data: twitchIrc.NoticeEvent) {
         if (
           data.channel === channel &&
           NOTICE_MESSAGE_TAGS.includes(data.tags.msgId)

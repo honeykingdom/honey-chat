@@ -1,4 +1,4 @@
-import TwitchIrc from 'twitch-simple-irc';
+import twitchIrc from 'twitch-simple-irc';
 import * as tekko from 'tekko';
 
 import { TwitchBadges } from 'api/twitch';
@@ -21,7 +21,7 @@ import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
 import { createBadges } from 'features/chat/utils/htmlEntity';
 
 export const normalizeMessage = (
-  { message, tags, user, channel, isAction }: TwitchIrc.MessageEvent,
+  { message, tags, user, channel, isAction }: twitchIrc.MessageEvent,
   chatState: ChatState,
 ): Message | null => {
   const fakeState = { chat: chatState } as RootState;
@@ -54,7 +54,7 @@ export const normalizeMessage = (
 };
 
 export const normalizeNotice = (
-  { message, channel, tags: { msgId } }: TwitchIrc.NoticeEvent,
+  { message, channel, tags: { msgId } }: twitchIrc.NoticeEvent,
   id: string,
 ): Notice => ({
   type: 'notice',
@@ -68,7 +68,7 @@ export const normalizeUserNotice = ({
   message,
   channel,
   tags: { id, msgId, login, systemMsg },
-}: TwitchIrc.UserNoticeEvent): UserNotice => ({
+}: twitchIrc.UserNoticeEvent): UserNotice => ({
   type: 'user-notice',
   id,
   message,
@@ -119,13 +119,13 @@ export const normalizeHistoryMessage = (
   globalBadges: TwitchBadges,
   channelBadges: TwitchBadges,
 ): Message => {
-  const isAction = TwitchIrc.getIsAction(message);
+  const isAction = twitchIrc.getIsAction(message);
   const normalizedMessage = isAction
-    ? TwitchIrc.normalizeActionMessage(message)
+    ? twitchIrc.normalizeActionMessage(message)
     : message;
-  const parsedTags = (TwitchIrc.parseMessageTags(
+  const parsedTags = (twitchIrc.parseMessageTags(
     tags,
-  ) as unknown) as TwitchIrc.MessageTags;
+  ) as unknown) as twitchIrc.MessageTags;
 
   return {
     type: 'message',

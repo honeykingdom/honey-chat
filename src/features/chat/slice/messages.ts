@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
-import TwitchIrc from 'twitch-simple-irc';
+import twitchIrc from 'twitch-simple-irc';
 
 import { ChatHistoryResponse } from 'api/chatHistory';
 import {
@@ -69,7 +69,7 @@ export type UserNotice = {
   id: string;
   message: string;
   channel: string;
-  noticeType: keyof typeof TwitchIrc.UserNoticeType;
+  noticeType: keyof typeof twitchIrc.UserNoticeType;
   systemMessage: string;
   user: {
     login: string;
@@ -82,7 +82,7 @@ export type OwnMessage = {
   message: string;
   id: string;
   channel: string;
-  tags: TwitchIrc.UserStateTags;
+  tags: twitchIrc.UserStateTags;
   timestamp: number;
   userId: string;
   userLogin: string;
@@ -90,16 +90,16 @@ export type OwnMessage = {
 
 type AddMessage = {
   type: 'message';
-  message: TwitchIrc.MessageEvent;
+  message: twitchIrc.MessageEvent;
 };
 type AddNotice = {
   type: 'notice';
   id: string;
-  message: TwitchIrc.NoticeEvent;
+  message: twitchIrc.NoticeEvent;
 };
 type AddUserNotice = {
   type: 'user-notice';
-  message: TwitchIrc.UserNoticeEvent;
+  message: twitchIrc.UserNoticeEvent;
 };
 type AddOwnMessage = {
   type: 'own-message';
@@ -183,7 +183,7 @@ const normalizePayload = (
 export const messagesReducers = {
   clearChat: (
     state: ChatState,
-    { payload }: PayloadAction<TwitchIrc.ClearChatEvent>,
+    { payload }: PayloadAction<twitchIrc.ClearChatEvent>,
   ): void => {
     const {
       channel,

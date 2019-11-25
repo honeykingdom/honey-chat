@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import TwitchIrc from 'twitch-simple-irc';
+import twitchIrc from 'twitch-simple-irc';
 
 import normalizeHref from 'utils/normalizeHref';
 import { TwitchEmote, TwitchBadgeVersion, TwitchBadges } from 'api/twitch';
@@ -128,7 +128,7 @@ export const createBadge = ({
 });
 
 export const createBadges = (
-  badges: TwitchIrc.Badges,
+  badges: twitchIrc.Badges,
   globalBadges: TwitchBadges,
   channelBadges: TwitchBadges,
 ): HtmlEntityBadge[] => {

@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import { parse as twemojiParser } from 'twemoji-parser';
 import { lib as emojilib } from 'emojilib';
 import urlRegex from 'url-regex';
-import TwitchIrc from 'twitch-simple-irc';
+import twitchIrc from 'twitch-simple-irc';
 
 import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
 import { TwitchEmote, TwitchEmoteSets } from 'api/twitch';
@@ -169,7 +169,7 @@ const findEntity = (
 const formatMessage = (
   message: string,
   emotes: StateEmotes | null,
-  embeddedEmotes: TwitchIrc.Emotes | null,
+  embeddedEmotes: twitchIrc.Emotes | null,
   { parseTwitch = false }: { parseTwitch?: boolean } = {},
 ): MessageEntity[] => {
   // If the message was sent by the current user, there is no embedded emotes
