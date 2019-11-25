@@ -19,6 +19,8 @@ export interface BttvChannelEmote extends BttvEmote {
   };
 }
 
+export type BttvGlobalEmotesResponse = BttvGlobalEmote[];
+
 export interface BttvChannelEmotesResponse {
   id: string;
   bots: string[];
@@ -26,7 +28,7 @@ export interface BttvChannelEmotesResponse {
   sharedEmotes: BttvChannelEmote[];
 }
 
-export const fetchBttvGlobalEmotes = (): Promise<BttvGlobalEmote[]> =>
+export const fetchBttvGlobalEmotes = (): Promise<BttvGlobalEmotesResponse> =>
   fetchRequest('https://api.betterttv.net/3/cached/emotes/global');
 
 export const fetchBttvChannelEmotes = (

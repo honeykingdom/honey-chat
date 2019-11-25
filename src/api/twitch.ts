@@ -46,10 +46,12 @@ export interface TwitchEmote {
   code: string;
 }
 
+export interface TwitchEmoteSets {
+  [id: string]: TwitchEmote[];
+}
+
 export interface TwitchEmotesResponse {
-  emoticon_sets: {
-    [id: string]: TwitchEmote[];
-  };
+  emoticon_sets: TwitchEmoteSets;
 }
 
 export interface TwitchBadgeVersion {
