@@ -23,8 +23,8 @@ import {
   userIdSelector,
   isAuthReadySelector,
   userLoginSelector,
+  invalidateAuth,
 } from 'features/auth/authSlice';
-import { invalidateAuth } from 'features/auth/authSlice';
 
 const useTwitchClient = () => {
   const dispatch = useDispatch();
