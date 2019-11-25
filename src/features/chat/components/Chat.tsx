@@ -259,6 +259,11 @@ const Chat = () => {
           setSuggestions(setSuggestionsIndexDown);
           return;
         }
+
+        if (e.key === 'Escape') {
+          setSuggestions({ isActive: false });
+          return;
+        }
       }
 
       if (!suggestionsRef.current.isActive) {
