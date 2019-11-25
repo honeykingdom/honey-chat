@@ -276,6 +276,26 @@ const Chat = () => {
     [handleSendMessage, setSuggestions, suggestionsRef],
   );
 
+  const onSuggestionMouseEnter = useCallback(
+    (activeIndex: number) => setSuggestions({ activeIndex }),
+    [setSuggestions],
+  );
+
+  const onSuggestionClick = useCallback(
+    (activeIndex: number) => {
+      setText((t) =>
+        replaceSuggestionText(t, { ...suggestionsRef.current, activeIndex }),
+      );
+
+      if (chatInputRef.current) {
+        chatInputRef.current.focus();
+      }
+
+      setSuggestions(suggestionsInitialState);
+    },
+    [setText, setSuggestions, chatInputRef],
+  );
+
   return (
     <ChatRoot>
       <ChatWrapper isFixedWidth={isFixedWidth}>
@@ -290,6 +310,8 @@ const Chat = () => {
           onKeyUp={handleKeyUp}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
+          onSuggestionMouseEnter={onSuggestionMouseEnter}
+          onSuggestionClick={onSuggestionClick}
         />
         <ChatControls
           isDisabled={isDisabled}
