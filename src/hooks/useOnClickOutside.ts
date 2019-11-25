@@ -38,15 +38,13 @@ const useOnClickOutside = (
     const listener = (event: PossibleEvent) => {
       if (!ref.current || !handlerRef.current) return;
 
-      if (Array.isArray(ref.current)) {
-        const isContains = ref.current.some((r) =>
-          isContainsNode(r.current, event.target as Node),
-        );
+      const isContains = Array.isArray(ref.current)
+        ? ref.current.some((r) =>
+            isContainsNode(r.current, event.target as Node),
+          )
+        : isContainsNode(ref.current, event.target as Node);
 
-        if (isContains) {
-          return;
-        }
-      } else if (isContainsNode(ref.current, event.target as Node)) {
+      if (isContains) {
         return;
       }
 
