@@ -1,23 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit';
-import * as R from 'ramda';
 
-import {
-  TwitchEmote,
-  TwitchEmoteSets,
-  TwitchBadge,
-  TwitchBadges,
-} from 'api/twitch';
+import { TwitchEmoteSets } from 'api/twitch';
 import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
 import { FfzEmote } from 'api/ffz';
 import { RootState } from 'app/rootReducer';
-import {
-  createTwitchEmote,
-  createBttvEmote,
-  createFfzEmote,
-  createBadges,
-  HtmlEntityEmote,
-} from 'features/chat/utils/htmlEntity';
+import { createBadges } from 'features/chat/utils/htmlEntity';
 import { ChatMessage } from 'features/chat/slice/messages';
+import createEmoteCategories from 'features/chat/utils/createEmoteCategories';
 
 export type StateEmotes = {
   twitchGlobal: TwitchEmoteSets;
@@ -168,74 +157,9 @@ export const emotesSelector = createSelector(
   },
 );
 
-// prettier-ignore
-const regexEmotesMap: { [value: string]: string } = {
-    '[oO](_|\\.)[oO]': 'O_o',
-    '\\&gt\\;\\(':     '>(',
-    '\\&lt\\;3':       '<3',
-    '\\:-?(o|O)':      ':O',
-    '\\:-?(p|P)':      ':P',
-    '\\:-?[\\\\/]':    ':/',
-    '\\:-?[z|Z|\\|]':  ':Z',
-    '\\:-?\\(':        ':(',
-    '\\:-?\\)':        ':)',
-    '\\:-?D':          ':D',
-    '\\;-?(p|P)':      ';P',
-    '\\;-?\\)':        ';)',
-    'R-?\\)':          'R)',
-    'B-?\\)':          'B)',
-  };
-
-const createGlobalTwitchEmote = ({ id, code }: TwitchEmote) =>
-  createTwitchEmote({ id, code: regexEmotesMap[code] || code });
-
-export type EmoteCategory = {
-  title?: string;
-  items: HtmlEntityEmote[];
-};
-
 export const emoteCategoriesSelector = createSelector(
   emotesSelector,
-  (emotes) => {
-    if (!emotes) return [];
-
-    const {
-      twitchGlobal,
-      twitchUser,
-      bttvGlobal,
-      bttvChannel,
-      ffzGlobal,
-      ffzChannel,
-    } = emotes;
-
-    return [
-      {
-        title: 'BetterTTV Channel Emotes',
-        items: bttvChannel.map(createBttvEmote),
-      },
-      {
-        title: 'FrankerFaceZ Channel Emotes',
-        items: ffzChannel.map(createFfzEmote),
-      },
-      ...R.pipe(
-        // @ts-ignore
-        R.values,
-        R.map((items) => ({ items: R.map(createTwitchEmote, items) })),
-      )(twitchUser),
-      {
-        title: 'Twitch',
-        items: R.map(createGlobalTwitchEmote, R.propOr([], '0', twitchGlobal)),
-      },
-      {
-        title: 'BetterTTV',
-        items: bttvGlobal.map(createBttvEmote),
-      },
-      {
-        title: 'FrankerFaceZ',
-        items: ffzGlobal.map(createFfzEmote),
-      },
-    ].filter(({ items }) => items.length > 0) as EmoteCategory[];
-  },
+  createEmoteCategories,
 );
 
 // Badges
