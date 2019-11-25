@@ -20,7 +20,7 @@ interface ChangeOption {
   value: any;
 }
 
-const initialState: OptionsState = {
+export const initialState: OptionsState = {
   showTimestamps: false,
   splitChat: true,
   blacklistKeywords: '',
@@ -40,11 +40,9 @@ const options = createSlice({
   },
 });
 
-// export const {} = options.actions;
+export const { changeOption } = options.actions;
 
 export default options.reducer;
-
-const { changeOption } = options.actions;
 
 export const changeChatOption = ({
   name,
