@@ -9,6 +9,7 @@ import {
   CHANNEL_MESSAGES_LIMIT,
   STORE_USERS_LIMIT,
 } from 'utils/constants';
+import assertNever from 'utils/assertNever';
 import setFetchFlags from 'utils/setFetchFlags';
 import {
   HtmlEntityTwitchEmote,
@@ -177,7 +178,7 @@ const normalizePayload = (
     return normalizeOwnMessage(data.message, chatState);
   }
 
-  return null as never;
+  return assertNever(data);
 };
 
 export const messagesReducers = {
