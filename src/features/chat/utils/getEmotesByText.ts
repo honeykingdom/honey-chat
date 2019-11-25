@@ -15,14 +15,14 @@ const checkTwitch = (
   sets: {
     [setId: string]: TwitchEmote[];
   },
-  beginText: string,
+  text: string,
   limit: number,
 ): boolean => {
   for (const items of Object.values(sets)) {
     for (const emote of items) {
       if (result.length === limit) return true;
 
-      if (emote.code.toLowerCase().includes(beginText)) {
+      if (emote.code.toLowerCase().includes(text)) {
         result.push(createTwitchEmote(emote));
       }
     }
@@ -34,13 +34,13 @@ const checkTwitch = (
 const checkBttv = (
   result: any[],
   items: Array<BttvGlobalEmote | BttvChannelEmote>,
-  beginText: string,
+  text: string,
   limit: number,
 ): boolean => {
   for (const emote of items) {
     if (result.length === limit) return true;
 
-    if (emote.code.toLowerCase().includes(beginText)) {
+    if (emote.code.toLowerCase().includes(text)) {
       result.push(createBttvEmote(emote));
     }
   }
@@ -51,13 +51,13 @@ const checkBttv = (
 const checkFfz = (
   result: any[],
   items: FfzEmote[],
-  beginText: string,
+  text: string,
   limit: number,
 ): boolean => {
   for (const emote of items) {
     if (result.length === limit) return true;
 
-    if (emote.name.toLowerCase().includes(beginText)) {
+    if (emote.name.toLowerCase().includes(text)) {
       result.push(createFfzEmote(emote));
     }
   }
@@ -65,10 +65,10 @@ const checkFfz = (
   return false;
 };
 
-const getEmoteSuggestions = (
-  beginText: string,
+const getEmotesByText = (
+  text: string,
   emotes: StateEmotes,
-  limit = 10,
+  limit = -1,
 ): HtmlEntityEmote[] => {
   if (!emotes) return [];
 
@@ -82,18 +82,18 @@ const getEmoteSuggestions = (
     ffzChannel,
   } = emotes;
 
-  const beginTextLower = beginText.toLowerCase();
+  const textLower = text.toLowerCase();
 
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const isOver =
-    checkBttv(result, bttvChannel, beginTextLower, limit) ||
-    checkFfz(result, ffzChannel, beginTextLower, limit) ||
-    checkTwitch(result, twitchUser, beginTextLower, limit) ||
-    checkTwitch(result, twitchGlobal, beginTextLower, limit) ||
-    checkBttv(result, bttvGlobal, beginTextLower, limit) ||
-    checkFfz(result, ffzGlobal, beginTextLower, limit);
+    checkBttv(result, bttvChannel, textLower, limit) ||
+    checkFfz(result, ffzChannel, textLower, limit) ||
+    checkTwitch(result, twitchUser, textLower, limit) ||
+    checkTwitch(result, twitchGlobal, textLower, limit) ||
+    checkBttv(result, bttvGlobal, textLower, limit) ||
+    checkFfz(result, ffzGlobal, textLower, limit);
 
   return result;
 };
 
-export default getEmoteSuggestions;
+export default getEmotesByText;
