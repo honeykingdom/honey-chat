@@ -16,10 +16,9 @@ const useCurrentChannel = () => {
 
       localStorage.setItem('lastChannel', channel);
 
-      // @ts-ignore
       document.title = channel
         ? `#${channel} - ${process.env.REACT_APP_NAME} `
-        : process.env.REACT_APP_NAME;
+        : (process.env.REACT_APP_NAME as string);
     }
   }, [dispatch, hash]);
 };

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import useOnClickOutside from 'hooks/useOnClickOutside';
@@ -36,7 +36,7 @@ const OptionsModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-const Button = styled.button.attrs({ type: 'button' })`
+const buttonStyles = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,6 +70,12 @@ const Button = styled.button.attrs({ type: 'button' })`
     cursor: not-allowed;
   }
 `;
+const Button = styled.button.attrs({ type: 'button' })`
+  ${buttonStyles};
+`;
+const SignInButton = styled(Link)`
+  ${buttonStyles};
+`;
 const OptionsButton = styled(IconButton)`
   margin-left: auto;
 `;
@@ -102,11 +108,10 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   useOnClickOutside(optionsModalRef, handleCloseOptionsModal);
 
   const renderSignInButton = () => (
-    // @ts-ignore
-    <Button as={Link} to="/chat/auth">
+    <SignInButton to="/chat/auth">
       <TwitchIcon />
       Sign in with Twitch
-    </Button>
+    </SignInButton>
   );
 
   const renderOptionsModal = () => (
@@ -118,10 +123,7 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   );
 
   const optionsButton = (
-    // @ts-ignore
-    <OptionsButton
-      onClick={() => setIsOptionsModalVisible(!isOptionsModalVisible)}
-    >
+    <OptionsButton onClick={() => setIsOptionsModalVisible((prev) => !prev)}>
       <GearsIcon />
     </OptionsButton>
   );

@@ -55,7 +55,7 @@ const UserName = styled.div`
   font-weight: bold;
   color: ${(p) => p.color};
 `;
-const LogOutButton = styled.a`
+const LogOutButton = styled(Link)`
   margin-left: auto;
   color: #bf94ff;
   text-decoration: none;
@@ -108,13 +108,6 @@ const Options = () => {
   );
 
   const renderProfileCategory = () => {
-    const logOutButton = (
-      // @ts-ignore
-      <LogOutButton as={Link} to="/chat/logout">
-        Log Out
-      </LogOutButton>
-    );
-
     return (
       <Category>
         <CategoryHeader>Profile</CategoryHeader>
@@ -131,7 +124,7 @@ const Options = () => {
               />
             ))}
             <UserName color={userColor}>{userDisplayName}</UserName>
-            {logOutButton}
+            <LogOutButton to="/chat/logout">Log Out</LogOutButton>
           </Profile>
         </CategoryItems>
       </Category>

@@ -231,7 +231,6 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
     };
 
     const renderEmotesButton = () => (
-      // @ts-ignore
       <EmotesButton
         onClick={() => setIsEmotesModalVisible(!isEmotesModalVisible)}
       >
