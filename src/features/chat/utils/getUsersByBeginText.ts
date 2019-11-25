@@ -1,4 +1,4 @@
-const getUserSuggestions = (
+const getUsersByBeginText = (
   beginText: string,
   users: string[],
   limit = 5,
@@ -20,4 +20,4 @@ const getUserSuggestions = (
   return result;
 };
 
-export default getUserSuggestions;
+export default getUsersByBeginText;
