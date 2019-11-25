@@ -8,6 +8,7 @@
   "homepage": "https://honeykingdom.github.io/chat",
   "dependencies": {
     "@reduxjs/toolkit": "^1.0.4",
+    "are-passive-events-supported": "^1.1.1",
     "date-fns": "^2.8.1",
     "emojilib": "^2.4.0",
     "jsonwebtoken": "^8.5.1",
@@ -27,7 +28,7 @@
     "twemoji-parser": "^12.1.1",
     "twitch-simple-irc": "github:honeykingdom/twitch-simple-irc",
     "url-regex": "^5.0.0",
-    "use-onclickoutside": "^0.3.1",
+    "use-latest": "^1.0.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
@@ -61,7 +62,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
+    "start": "set BROWSER=none&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
@@ -102,7 +103,8 @@
     },
     "rules": {
       "import/no-unresolved": "off",
-      "react/jsx-filename-extension": "off"
+      "react/jsx-filename-extension": "off",
+      "@typescript-eslint/explicit-function-return-type": "off"
     }
   },
   "prettier": {
