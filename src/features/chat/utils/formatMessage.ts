@@ -5,7 +5,7 @@ import urlRegex from 'url-regex';
 import TwitchIrc from 'twitch-simple-irc';
 
 import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
-import { TwitchEmote } from 'api/twitch';
+import { TwitchEmote, TwitchEmoteSets } from 'api/twitch';
 import { FfzEmote } from 'api/ffz';
 import { StateEmotes } from 'features/chat/selectors/chatSelectors';
 import { MessageEntity } from 'features/chat/slice/messages';
@@ -56,7 +56,7 @@ const findTwitchEmote = (
 
 const findTwitchEmoteInSets = (
   name: string,
-  sets: { [setId: string]: TwitchEmote[] },
+  sets: TwitchEmoteSets,
 ): TwitchEmote | null => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {

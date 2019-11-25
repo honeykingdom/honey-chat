@@ -1,7 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit';
 import * as R from 'ramda';
 
-import { TwitchEmote, TwitchBadge, TwitchBadges } from 'api/twitch';
+import {
+  TwitchEmote,
+  TwitchEmoteSets,
+  TwitchBadge,
+  TwitchBadges,
+} from 'api/twitch';
 import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
 import { FfzEmote } from 'api/ffz';
 import { RootState } from 'app/rootReducer';
@@ -15,12 +20,8 @@ import {
 import { ChatMessage } from 'features/chat/slice/messages';
 
 export type StateEmotes = {
-  twitchGlobal: {
-    [setId: string]: TwitchEmote[];
-  };
-  twitchUser: {
-    [setId: string]: TwitchEmote[];
-  };
+  twitchGlobal: TwitchEmoteSets;
+  twitchUser: TwitchEmoteSets;
   bttvGlobal: BttvGlobalEmote[];
   bttvChannel: BttvChannelEmote[];
   ffzGlobal: FfzEmote[];

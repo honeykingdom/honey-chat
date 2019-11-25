@@ -2,18 +2,14 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import * as R from 'ramda';
 
-import { TwitchEmote, TwitchEmotesResponse } from 'api/twitch';
+import { TwitchEmoteSets, TwitchEmotesResponse } from 'api/twitch';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
 
 export interface TwitchEmotesState extends FetchFlags {
-  global: {
-    [setId: string]: TwitchEmote[];
-  };
-  user: {
-    [setId: string]: TwitchEmote[];
-  };
+  global: TwitchEmoteSets;
+  user: TwitchEmoteSets;
 }
 
 export const twitchEmotesInitialState: TwitchEmotesState = {
