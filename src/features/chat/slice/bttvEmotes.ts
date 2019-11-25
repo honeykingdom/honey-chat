@@ -4,11 +4,16 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import {
   BttvGlobalEmote,
   BttvChannelEmote,
+  BttvGlobalEmotesResponse,
   BttvChannelEmotesResponse,
 } from 'api/bttv';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
+import {
+  parseBttvGlobalEmotes,
+  parseBttvChannelEmotes,
+} from 'features/chat/utils/parseApiResponse';
 
 export interface BttvEmotesState {
   global: {
@@ -41,9 +46,9 @@ export const bttvEmotesReducers = {
 
   fetchBttvGlobalEmotesSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<BttvGlobalEmote[]>,
+    { payload }: PayloadAction<BttvGlobalEmotesResponse>,
   ): void => {
-    state.bttvEmotes.global.items = payload;
+    state.bttvEmotes.global.items = parseBttvGlobalEmotes(payload);
 
     setFetchFlags(state.bttvEmotes.global, 'success');
   },
@@ -76,10 +81,7 @@ export const bttvEmotesReducers = {
   ): void => {
     const { channel, data } = payload;
 
-    state.bttvEmotes.byChannels[channel].items = [
-      ...data.channelEmotes,
-      ...data.sharedEmotes,
-    ];
+    state.bttvEmotes.byChannels[channel].items = parseBttvChannelEmotes(data);
 
     setFetchFlags(state.bttvEmotes.byChannels[channel], 'success');
   },

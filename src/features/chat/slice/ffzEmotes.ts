@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
-import * as R from 'ramda';
 
 import {
   FfzEmote,
@@ -10,6 +9,10 @@ import {
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
+import {
+  parseFfzGlobalEmotes,
+  parseFfzChannelEmotes,
+} from 'features/chat/utils/parseApiResponse';
 
 export interface FfzEmotesState {
   global: {
@@ -34,28 +37,6 @@ const ffzChannelEmotesInitialState = {
   ...initialFetchFlags,
   items: [],
 };
-
-const parseFfzGlobalEmotes = ({
-  default_sets: defaultSets,
-  sets,
-}: FfzGlobalEmotesResponse): FfzEmote[] =>
-  R.pipe(
-    // @ts-ignore
-    R.pick(defaultSets),
-    // @ts-ignore
-    R.values,
-    R.map(R.propOr([], 'emoticons')),
-    R.flatten,
-  )(sets);
-
-const parseFfzChannelEmotes: (
-  data: FfzChannelEmotesResponse,
-) => FfzEmote[] = R.pipe(
-  R.pathOr({}, ['sets']),
-  R.values,
-  R.map(R.pathOr([], ['emoticons'])),
-  R.flatten,
-);
 
 export const ffzEmotesReducers = {
   fetchFfzGlobalEmotesRequest: (state: ChatState) => {
