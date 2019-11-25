@@ -24,40 +24,20 @@ export const isConnectedSelector = (state: RootState) => state.chat.isConnected;
 
 // messages
 
-export const messagesSelector = (state: RootState): ChatMessage[] => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'messages', channel, 'items'];
+export const messagesSelector = (state: RootState): ChatMessage[] =>
+  state.chat.messages[currentChannelSelector(state)]?.items || [];
 
-  return R.pathOr([], path, state);
-};
+export const usersSelector = (state: RootState): string[] =>
+  state.chat.messages[currentChannelSelector(state)]?.users || [];
 
-export const usersSelector = (state: RootState): string[] => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'messages', channel, 'users'];
+export const isHistoryLoadedSelector = (state: RootState) =>
+  state.chat.messages[currentChannelSelector(state)]?.history.isLoaded || false;
 
-  return R.pathOr([], path, state);
-};
+export const isHistoryAddedSelector = (state: RootState) =>
+  state.chat.messages[currentChannelSelector(state)]?.history.isAdded || false;
 
-export const isHistoryLoadedSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'messages', channel, 'history', 'isLoaded'];
-
-  return R.pathOr(false, path, state);
-};
-
-export const isHistoryAddedSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'messages', channel, 'history', 'isAdded'];
-
-  return R.pathOr(false, path, state);
-};
-
-export const isEvenSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'messages', channel, 'isEven'];
-
-  return R.pathOr(false, path, state);
-};
+export const isEvenSelector = (state: RootState) =>
+  state.chat.messages[currentChannelSelector(state)]?.isEven || false;
 
 // emotes isLoaded
 
@@ -67,12 +47,9 @@ export const isTwitchEmotesLoadedSelector = (state: RootState) =>
 export const isBttvGlobalEmotesLoadedSelector = (state: RootState) =>
   state.chat.bttvEmotes.global.isLoaded;
 
-export const isBttvChannelEmotesLoadedSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'bttvEmotes', 'byChannels', channel, 'isLoaded'];
-
-  return R.pathOr(false, path, state);
-};
+export const isBttvChannelEmotesLoadedSelector = (state: RootState) =>
+  state.chat.bttvEmotes.byChannels[currentChannelSelector(state)]?.isLoaded ||
+  false;
 
 export const isBttvEmotesLoadedSelector = (state: RootState) =>
   isBttvGlobalEmotesLoadedSelector(state) &&
@@ -81,12 +58,9 @@ export const isBttvEmotesLoadedSelector = (state: RootState) =>
 export const isFfzGlobalEmotesLoadedSelector = (state: RootState) =>
   state.chat.ffzEmotes.global.isLoaded;
 
-export const isFfzChannelEmotesLoadedSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'ffzEmotes', 'byChannels', channel, 'isLoaded'];
-
-  return R.pathOr(false, path, state);
-};
+export const isFfzChannelEmotesLoadedSelector = (state: RootState) =>
+  state.chat.ffzEmotes.byChannels[currentChannelSelector(state)]?.isLoaded ||
+  false;
 
 export const isFfzEmotesLoadedSelector = (state: RootState) =>
   isFfzGlobalEmotesLoadedSelector(state) &&
@@ -106,26 +80,15 @@ const twitchGlobalEmotesSelector = (state: RootState) =>
 const twitchUserEmotesSelector = (state: RootState) =>
   state.chat.twitchEmotes.user;
 
-const createChannelEmotesSelector = <T>(type: 'bttvEmotes' | 'ffzEmotes') => (
-  state: RootState,
-): T[] => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', type, 'byChannels', channel, 'items'];
-
-  return R.pathOr([], path, state);
-};
-
 const bttvGlobalEmotesSelector = (state: RootState) =>
   state.chat.bttvEmotes.global.items;
-const bttvChannelEmotesSelector = createChannelEmotesSelector<BttvChannelEmote>(
-  'bttvEmotes',
-);
+const bttvChannelEmotesSelector = (state: RootState) =>
+  state.chat.bttvEmotes.byChannels[currentChannelSelector(state)]?.items || [];
 
 const ffzGlobalEmotesSelector = (state: RootState) =>
   state.chat.ffzEmotes.global.items;
-const ffzChannelEmotesSelector = createChannelEmotesSelector<FfzEmote>(
-  'ffzEmotes',
-);
+const ffzChannelEmotesSelector = (state: RootState) =>
+  state.chat.ffzEmotes.byChannels[currentChannelSelector(state)]?.items || [];
 
 export const emotesSelector = createSelector(
   isEmotesLoadedSelector,
@@ -164,26 +127,16 @@ export const emoteCategoriesSelector = createSelector(
 
 // Badges
 
-export const userBadgesSelector = (
-  state: RootState,
-): {
-  [name: string]: TwitchBadge;
-} => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'params', 'byChannels', channel, 'user', 'badges'];
-
-  return R.pathOr({}, path, state);
-};
+export const userBadgesSelector = (state: RootState) =>
+  state.chat.params.byChannels[currentChannelSelector(state)]?.user?.badges ||
+  {};
 
 export const isGlobalBadgesLoadedSelector = (state: RootState) =>
   state.chat.badges.global.isLoaded;
 
-export const isChannelBadgesLoadedSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'badges', 'byChannels', channel, 'isLoaded'];
-
-  return R.pathOr(false, path, state);
-};
+export const isChannelBadgesLoadedSelector = (state: RootState) =>
+  state.chat.badges.byChannels[currentChannelSelector(state)]?.isLoaded ||
+  false;
 
 export const isBadgesLoadedSelector = (state: RootState) =>
   isGlobalBadgesLoadedSelector(state) && isChannelBadgesLoadedSelector(state);
@@ -191,43 +144,29 @@ export const isBadgesLoadedSelector = (state: RootState) =>
 export const globalBadgesSelector = (state: RootState) =>
   state.chat.badges.global.items;
 
-export const channelBadgesSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'badges', 'byChannels', channel, 'items'];
-
-  return R.pathOr({}, path, state) as TwitchBadges;
-};
+export const channelBadgesSelector = (state: RootState) =>
+  state.chat.badges.byChannels[currentChannelSelector(state)]?.items || {};
 
 export const userBadgesImagesSelector = createSelector(
   userBadgesSelector,
   globalBadgesSelector,
   channelBadgesSelector,
-  (userBadges, globalBadges, channelBadges) =>
-    createBadges(userBadges, globalBadges, channelBadges),
+  createBadges,
 );
 
 // params
 
-export const currentChannelIdSelector = (state: RootState): string | null => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'params', 'byChannels', channel, 'room', 'roomId'];
+export const currentChannelIdSelector = (state: RootState) =>
+  state.chat.params.byChannels[currentChannelSelector(state)]?.room?.roomId ||
+  '';
 
-  return R.pathOr(null, path, state);
-};
+export const userColorSelector = (state: RootState) =>
+  state.chat.params.byChannels[currentChannelSelector(state)]?.user?.color ||
+  '';
 
-export const userColorSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'params', 'byChannels', channel, 'user', 'color'];
-
-  return R.pathOr('', path, state);
-};
-
-export const userDisplayNameSelector = (state: RootState) => {
-  const channel = currentChannelSelector(state);
-  const path = ['chat', 'params', 'byChannels', channel, 'user', 'displayName'];
-
-  return R.pathOr('', path, state);
-};
+export const userDisplayNameSelector = (state: RootState) =>
+  state.chat.params.byChannels[currentChannelSelector(state)]?.user
+    ?.displayName || '';
 
 // blocked users
 

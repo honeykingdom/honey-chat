@@ -135,8 +135,8 @@ export const createBadges = (
     | HtmlEntityBadge
     | false => {
     const badge =
-      R.pathOr(false, [name, 'versions', version], channelBadges) ||
-      R.pathOr(false, [name, 'versions', version], globalBadges);
+      channelBadges[name]?.versions[version] ||
+      globalBadges[name]?.versions[version];
 
     return badge ? createBadge(badge) : false;
   };
