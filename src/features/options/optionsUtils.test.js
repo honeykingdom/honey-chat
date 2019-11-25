@@ -9,6 +9,8 @@ describe('options utils', () => {
   });
 
   it('should read options from local storage', () => {
+    expect(readOptionsFromLocalStorage()).toEqual({});
+
     const options = JSON.stringify({
       showTimestamps: true,
       splitChat: false,
