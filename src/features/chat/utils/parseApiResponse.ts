@@ -10,17 +10,23 @@ import {
   BttvChannelEmotesResponse,
   BttvChannelEmote,
 } from 'api/bttv';
-import { TwitchEmotesResponse, TwitchEmoteSets } from 'api/twitch';
+import {
+  TwitchEmotesResponse,
+  TwitchEmoteSets,
+  TwitchBlockedUsersResponse,
+} from 'api/twitch';
 
-export const parseTwitchGlobalEmotes = R.pipe(
-  R.prop('emoticon_sets'),
-  R.pick(['0']),
-) as (data: TwitchEmotesResponse) => TwitchEmoteSets;
+export const parseTwitchGlobalEmotes = R.pipe<
+  TwitchEmotesResponse,
+  TwitchEmoteSets,
+  TwitchEmoteSets
+>(R.prop('emoticon_sets'), R.pick(['0']));
 
-export const parseTwitchChannelEmotes = R.pipe(
-  R.prop('emoticon_sets'),
-  R.omit(['0']),
-) as (data: TwitchEmotesResponse) => TwitchEmoteSets;
+export const parseTwitchChannelEmotes = R.pipe<
+  TwitchEmotesResponse,
+  TwitchEmoteSets,
+  TwitchEmoteSets
+>(R.prop('emoticon_sets'), R.omit(['0']));
 
 export const parseBttvGlobalEmotes = (
   data: BttvGlobalEmotesResponse,
@@ -34,10 +40,8 @@ export const parseFfzGlobalEmotes = ({
   default_sets: defaultSets,
   sets,
 }: FfzGlobalEmotesResponse): FfzEmote[] =>
-  R.pipe(
-    // @ts-ignore
-    R.pick(defaultSets),
-    // @ts-ignore
+  R.pipe<{}, {}, any[], any[], any[]>(
+    R.pick((defaultSets as unknown) as string[]),
     R.values,
     R.map(R.propOr([], 'emoticons')),
     R.flatten,

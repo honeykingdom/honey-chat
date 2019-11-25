@@ -27,10 +27,8 @@ import {
 const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
 const linkRegex = urlRegex({ strict: false });
 
-const normalizeEmotesFromTags = R.pipe(
-  // @ts-ignore
+const normalizeEmotesFromTags = R.pipe<{}, [string, any][], any[][], any[]>(
   R.toPairs,
-  // @ts-ignore
   R.map(([id, value]) => R.map((v) => ({ id, ...v }), value)),
   R.flatten,
 );
@@ -78,8 +76,11 @@ const findFfzEmote = (name: string, items: FfzEmote[]): FfzEmote | undefined =>
   R.find(R.propEq('name', name), items);
 
 const findEmoji = (char: string): string | undefined =>
-  // @ts-ignore
-  R.pipe(R.filter(R.propEq('char', char)), R.keys, R.head)(emojilib);
+  R.pipe<{}, {}, string[], string | undefined>(
+    R.filter(R.propEq('char', char)),
+    R.keys,
+    R.head,
+  )(emojilib);
 
 const findEntity = (
   word: string,

@@ -55,8 +55,7 @@ export type HtmlEntityEmote =
 const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
 const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 
-const getFfzSrcSet = R.pipe(
-  // @ts-ignore
+const getFfzSrcSet = R.pipe<{}, [string, string][], string[], string>(
   R.toPairs,
   R.map(([dpi, url]) => `${url} ${dpi}x`),
   R.join(', '),
@@ -142,10 +141,9 @@ export const createBadges = (
     return badge ? createBadge(badge) : false;
   };
 
-  return R.pipe(
-    // @ts-ignore
+  return R.pipe<{}, [string, string][], any[], any[]>(
     R.toPairs,
     R.map(mapBadges),
     R.filter(Boolean),
-  )(badges) as HtmlEntityBadge[];
+  )(badges);
 };
