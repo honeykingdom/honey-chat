@@ -5,6 +5,7 @@ import { TwitchBadges, TwitchBadgesResponse } from 'api/twitch';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
+import { parseBadges } from 'features/chat/utils/parseApiResponse';
 
 export interface BadgesState {
   global: {
@@ -39,7 +40,7 @@ export const badgesReducers = {
     state: ChatState,
     { payload }: PayloadAction<TwitchBadgesResponse>,
   ): void => {
-    state.badges.global.items = payload.badge_sets;
+    state.badges.global.items = parseBadges(payload);
 
     setFetchFlags(state.badges.global, 'success');
   },
@@ -70,7 +71,7 @@ export const badgesReducers = {
   ): void => {
     const { channel, data } = payload;
 
-    state.badges.byChannels[channel].items = data.badge_sets;
+    state.badges.byChannels[channel].items = parseBadges(data);
 
     setFetchFlags(state.badges.byChannels[channel], 'success');
   },
