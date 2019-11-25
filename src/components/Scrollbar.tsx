@@ -6,6 +6,10 @@ const Scrollbar = styled(CustomScrollbar).attrs({
 })`
   overflow-y: auto;
 
+  .ScrollbarsCustom-Content {
+    padding: 0 !important;
+  }
+
   .ScrollbarsCustom-TrackY {
     background: none !important;
   }
