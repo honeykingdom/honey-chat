@@ -20,8 +20,4 @@ const Notice = ({ message: { message }, isEven }: Props) => (
   <NoticeRoot isEven={isEven}>{message}</NoticeRoot>
 );
 
-Notice.defaultProps = {
-  isEven: false,
-};
-
-export default React.memo(Notice);
+export default Notice;

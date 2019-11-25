@@ -19,4 +19,4 @@ const UserNotice = ({ message: { systemMessage } }: Props) => (
   <UserNoticeRoot>{systemMessage}</UserNoticeRoot>
 );
 
-export default React.memo(UserNotice);
+export default UserNotice;

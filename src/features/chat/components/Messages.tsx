@@ -111,8 +111,4 @@ const Messages = ({ onNameRightClick }: Props) => {
   );
 };
 
-Messages.defaultProps = {
-  onNameRightClick: () => {},
-};
-
-export default React.memo(Messages);
+export default Messages;
