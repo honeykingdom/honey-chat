@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 import useSetState from 'hooks/useSetState';
 import { SUGGESTION_TYPES } from 'utils/constants';
-import getUserSuggestions from 'features/chat/utils/getUserSuggestions';
-import getEmoteSuggestions from 'features/chat/utils/getEmoteSuggestions';
+import getUsersByBeginText from 'features/chat/utils/getUsersByBeginText';
+import getEmotesByText from 'features/chat/utils/getEmotesByText';
 import { HtmlEntityEmote } from 'features/chat/utils/htmlEntity';
 import { usersSelector, emotesSelector } from 'features/chat/selectors';
 
@@ -108,7 +108,7 @@ const useChatInput = (
 
       if (usersMatch) {
         const [, beginText] = usersMatch;
-        const items = getUserSuggestions(
+        const items = getUsersByBeginText(
           beginText,
           usersRef.current,
           SUGGESTION_TYPES.users.limit,
@@ -129,9 +129,9 @@ const useChatInput = (
       const emotesMatch = SUGGESTION_TYPES.emotes.regex.exec(word);
 
       if (emotesMatch && emotesRef.current) {
-        const [, beginText] = emotesMatch;
-        const items = getEmoteSuggestions(
-          beginText,
+        const [, text] = emotesMatch;
+        const items = getEmotesByText(
+          text,
           emotesRef.current,
           SUGGESTION_TYPES.emotes.limit,
         );
