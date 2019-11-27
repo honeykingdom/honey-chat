@@ -1,46 +1,32 @@
 import * as R from 'ramda';
-import {
-  FfzEmote,
-  FfzGlobalEmotesResponse,
-  FfzChannelEmotesResponse,
-} from 'api/ffz';
-import {
-  BttvGlobalEmote,
-  BttvGlobalEmotesResponse,
-  BttvChannelEmotesResponse,
-  BttvChannelEmote,
-} from 'api/bttv';
-import {
-  TwitchEmotesResponse,
-  TwitchEmoteSets,
-  TwitchBlockedUsersResponse,
-} from 'api/twitch';
+
+import * as api from 'api';
 
 export const parseTwitchGlobalEmotes = R.pipe<
-  TwitchEmotesResponse,
-  TwitchEmoteSets,
-  TwitchEmoteSets
+  api.TwitchEmotesResponse,
+  Record<string, api.TwitchEmote[]>,
+  Record<string, api.TwitchEmote[]>
 >(R.prop('emoticon_sets'), R.pick(['0']));
 
 export const parseTwitchChannelEmotes = R.pipe<
-  TwitchEmotesResponse,
-  TwitchEmoteSets,
-  TwitchEmoteSets
+  api.TwitchEmotesResponse,
+  Record<string, api.TwitchEmote[]>,
+  Record<string, api.TwitchEmote[]>
 >(R.prop('emoticon_sets'), R.omit(['0']));
 
 export const parseBttvGlobalEmotes = (
-  data: BttvGlobalEmotesResponse,
-): BttvGlobalEmote[] => data;
+  data: api.BttvGlobalEmotesResponse,
+): api.BttvGlobalEmote[] => data;
 
 export const parseBttvChannelEmotes = (
-  data: BttvChannelEmotesResponse,
-): BttvChannelEmote[] => [...data.channelEmotes, ...data.sharedEmotes];
+  data: api.BttvChannelEmotesResponse,
+): api.BttvChannelEmote[] => [...data.channelEmotes, ...data.sharedEmotes];
 
 export const parseFfzGlobalEmotes = ({
   default_sets: defaultSets,
   sets,
-}: FfzGlobalEmotesResponse): FfzEmote[] =>
-  R.pipe<{}, {}, any[], any[], any[]>(
+}: api.FfzGlobalEmotesResponse): api.FfzEmote[] =>
+  R.pipe<any, any, any, any, api.FfzEmote[]>(
     R.pick((defaultSets as unknown) as string[]),
     R.values,
     R.map(R.propOr([], 'emoticons')),
@@ -48,8 +34,8 @@ export const parseFfzGlobalEmotes = ({
   )(sets);
 
 export const parseFfzChannelEmotes: (
-  data: FfzChannelEmotesResponse,
-) => FfzEmote[] = R.pipe(
+  data: api.FfzChannelEmotesResponse,
+) => api.FfzEmote[] = R.pipe(
   R.pathOr({}, ['sets']),
   R.values,
   R.map(R.pathOr([], ['emoticons'])),
@@ -57,9 +43,9 @@ export const parseFfzChannelEmotes: (
 );
 
 export const parseBlockedUsers = R.pipe<
-  TwitchBlockedUsersResponse,
+  api.TwitchBlockedUsersResponse,
   {}[],
   string[]
->(R.prop('blocks'), R.map(R.path(['user', 'name'])) as () => string[]);
+>(R.prop('blocks'), R.map<any, any>(R.path(['user', 'name'])));
 
 export const parseBadges = R.prop('badge_sets');
