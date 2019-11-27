@@ -1,7 +1,8 @@
+import { LS_OPTIONS } from 'utils/constants';
 import {
   readOptionsFromLocalStorage,
   writeOptionsToLocalStore,
-} from './optionsUtils';
+} from 'features/options/optionsUtils';
 
 describe('options utils', () => {
   beforeEach(() => {
@@ -16,7 +17,7 @@ describe('options utils', () => {
       splitChat: false,
     });
 
-    localStorage.setItem('options', options);
+    localStorage.setItem(LS_OPTIONS, options);
 
     const result = readOptionsFromLocalStorage();
 

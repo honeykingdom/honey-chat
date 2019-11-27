@@ -1,9 +1,11 @@
-import { readUserFromLocatStorage, writeUserToLocatStorage } from './authUtils';
+import { LS_USER } from 'utils/constants';
+import {
+  readUserFromLocatStorage,
+  writeUserToLocatStorage,
+} from 'features/auth/authUtils';
 
 describe('auth utils', () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
+  beforeEach(() => localStorage.clear());
 
   it('should read user from local storage', () => {
     expect(readUserFromLocatStorage()).toBe(null);
@@ -13,7 +15,7 @@ describe('auth utils', () => {
       login: 'twitch',
     });
 
-    localStorage.setItem('user', user);
+    localStorage.setItem(LS_USER, user);
 
     const result = readUserFromLocatStorage();
 
@@ -27,7 +29,7 @@ describe('auth utils', () => {
       login: 'twitch',
     });
 
-    const result = JSON.parse(localStorage.user);
+    const result = JSON.parse(localStorage.getItem(LS_USER));
 
     expect(result.id).toBe('123456');
     expect(result.login).toBe('twitch');
