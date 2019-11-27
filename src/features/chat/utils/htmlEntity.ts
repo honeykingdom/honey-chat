@@ -1,61 +1,76 @@
 import * as R from 'ramda';
 import twitchIrc from 'twitch-simple-irc';
 
+import * as api from 'api';
 import normalizeHref from 'utils/normalizeHref';
-import { TwitchEmote, TwitchBadgeVersion, TwitchBadges } from 'api/twitch';
-import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
-import { FfzEmote } from 'api/ffz';
 
-export interface HtmlEntityTwitchEmote {
+export interface TwitchEmote {
   type: 'twitch-emote';
+  id: number;
   alt: string;
   src: string;
   srcSet: string;
 }
-export interface HtmlEntityBttvEmote {
+export interface BttvEmote {
   type: 'bttv-emote';
+  id: string;
   alt: string;
   src: string;
   srcSet: string;
 }
-export interface HtmlEntityFfzEmote {
+export interface FfzEmote {
   type: 'ffz-emote';
+  id: number;
   alt: string;
   src: string;
   srcSet: string;
 }
-export interface HtmlEntityEmoji {
+export interface Emoji {
   type: 'emoji';
   alt: string;
   src: string;
-  srcSet: null;
 }
-export interface HtmlEntityMention {
+export interface Mention {
   type: 'mention';
   text: string;
   target: string;
 }
-export interface HtmlEntityLink {
+export interface Link {
   type: 'link';
   text: string;
   href: string;
 }
-export interface HtmlEntityBadge {
+export interface Badge {
   alt: string;
   label: string;
   src: string;
   srcSet: string;
 }
 
-export type HtmlEntityEmote =
-  | HtmlEntityTwitchEmote
-  | HtmlEntityBttvEmote
-  | HtmlEntityFfzEmote;
+export type Emote = TwitchEmote | BttvEmote | FfzEmote;
 
 const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
 const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 
-const getFfzSrcSet = R.pipe<{}, [string, string][], string[], string>(
+// prettier-ignore
+export const regexEmotesMap: Record<string, string> = {
+  '[oO](_|\\.)[oO]': 'O_o',
+  '\\&gt\\;\\(':     '>(',
+  '\\&lt\\;3':       '<3',
+  '\\:-?(o|O)':      ':O',
+  '\\:-?(p|P)':      ':P',
+  '\\:-?[\\\\/]':    ':/',
+  '\\:-?[z|Z|\\|]':  ':Z',
+  '\\:-?\\(':        ':(',
+  '\\:-?\\)':        ':)',
+  '\\:-?D':          ':D',
+  '\\;-?(p|P)':      ';P',
+  '\\;-?\\)':        ';)',
+  'R-?\\)':          'R)',
+  'B-?\\)':          'B)',
+};
+
+export const getFfzSrcSet = R.pipe<{}, [string, string][], string[], string>(
   R.toPairs,
   R.map(([dpi, url]) => `${url} ${dpi}x`),
   R.join(', '),
@@ -64,9 +79,10 @@ const getFfzSrcSet = R.pipe<{}, [string, string][], string[], string>(
 export const createTwitchEmote = ({
   id,
   code,
-}: TwitchEmote): HtmlEntityTwitchEmote => ({
+}: api.TwitchEmote): TwitchEmote => ({
   type: 'twitch-emote',
-  alt: code,
+  id,
+  alt: regexEmotesMap[code] || code,
   src: `${TWITCH_EMOTES_CDN}/${id}/1.0`,
   srcSet: `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`,
 });
@@ -74,40 +90,35 @@ export const createTwitchEmote = ({
 export const createBttvEmote = ({
   id,
   code,
-}: BttvGlobalEmote | BttvChannelEmote): HtmlEntityBttvEmote => ({
+}: api.BttvGlobalEmote | api.BttvChannelEmote): BttvEmote => ({
   type: 'bttv-emote',
+  id,
   alt: code,
   src: `${BTTV_EMOTES_CDN}/${id}/1x`,
   srcSet: `${BTTV_EMOTES_CDN}/${id}/2x 2x, ${BTTV_EMOTES_CDN}/${id}/3x 4x`,
 });
 
-export const createFfzEmote = ({
-  name,
-  urls,
-}: FfzEmote): HtmlEntityFfzEmote => ({
+export const createFfzEmote = ({ id, name, urls }: api.FfzEmote): FfzEmote => ({
   type: 'ffz-emote',
+  id,
   alt: name,
   src: urls[1],
   srcSet: getFfzSrcSet(urls),
 });
 
-export const createEmoji = (alt: string, src: string): HtmlEntityEmoji => ({
+export const createEmoji = (alt: string, src: string): Emoji => ({
   type: 'emoji',
   alt: `:${alt}:`,
   src,
-  srcSet: null,
 });
 
-export const createMention = (
-  text: string,
-  target: string,
-): HtmlEntityMention => ({
+export const createMention = (text: string, target: string): Mention => ({
   type: 'mention',
   text,
   target,
 });
 
-export const createLink = (href: string): HtmlEntityLink => ({
+export const createLink = (href: string): Link => ({
   type: 'link',
   text: href,
   href: normalizeHref(href),
@@ -119,7 +130,7 @@ export const createBadge = ({
   image_url_1x: imageUrl1x,
   image_url_2x: imageUrl2x,
   image_url_4x: imageUrl4x,
-}: TwitchBadgeVersion): HtmlEntityBadge => ({
+}: api.TwitchBadgeVersion): Badge => ({
   alt: title,
   label: description,
   src: imageUrl1x,
@@ -128,12 +139,10 @@ export const createBadge = ({
 
 export const createBadges = (
   badges: twitchIrc.Badges,
-  globalBadges: TwitchBadges,
-  channelBadges: TwitchBadges,
-): HtmlEntityBadge[] => {
-  const mapBadges = ([name, version]: [string, string]):
-    | HtmlEntityBadge
-    | false => {
+  globalBadges: Record<string, api.TwitchBadge>,
+  channelBadges: Record<string, api.TwitchBadge>,
+): Badge[] => {
+  const mapBadges = ([name, version]: [string, string]): Badge | false => {
     const badge =
       channelBadges[name]?.versions[version] ||
       globalBadges[name]?.versions[version];
