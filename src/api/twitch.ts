@@ -1,16 +1,17 @@
+import { LS_ACCESS_TOKEN } from 'utils/constants';
 import fetchRequest, { FetchRequestOptions } from 'utils/fetchRequest';
 
 const TWITCH_API_HELIX = 'https://api.twitch.tv/helix';
 const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';
 
 const getHelixHeaders = () => ({
-  Authorization: `Bearer ${localStorage.accessToken}`,
+  Authorization: `Bearer ${localStorage.getItem(LS_ACCESS_TOKEN)}`,
 });
 
 const getKrakenHeaders = () => ({
   Accept: 'application/vnd.twitchtv.v5+json',
   'Client-ID': process.env.REACT_APP_TWITCH_API_CLIENT_ID,
-  Authorization: `OAuth ${localStorage.accessToken}`,
+  Authorization: `OAuth ${localStorage.getItem(LS_ACCESS_TOKEN)}`,
 });
 
 const apiRequestHelix = (url: string, options?: FetchRequestOptions) =>

@@ -1,5 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
+import { LS_ACCESS_TOKEN, LS_ID_TOKEN, LS_LAST_CHANNEL } from 'utils/constants';
+
 const AuthCallback = () => {
   const history = useHistory();
 
@@ -12,12 +14,12 @@ const AuthCallback = () => {
 
   if (!accessToken || !idToken) return null;
 
-  localStorage.setItem('accessToken', accessToken);
-  localStorage.setItem('idToken', idToken);
+  localStorage.setItem(LS_ACCESS_TOKEN, accessToken);
+  localStorage.setItem(LS_ID_TOKEN, idToken);
 
   history.push({
     pathname: '/chat/',
-    hash: localStorage.lastChannel || '',
+    hash: localStorage.getItem(LS_LAST_CHANNEL) || '',
   });
 
   return null;

@@ -4,7 +4,7 @@ import uuid from 'uuid/v4';
 import twitchIrc from 'twitch-simple-irc';
 
 import usePrevious from 'hooks/usePrevious';
-import { NOTICE_MESSAGE_TAGS } from 'utils/constants';
+import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';
 import {
   addMessage,
   clearChat,
@@ -108,7 +108,10 @@ const useTwitchClient = () => {
 
     if (!clientRef.current) {
       const options = isAuth
-        ? { name: userLogin as string, auth: localStorage.accessToken }
+        ? {
+            name: userLogin as string,
+            auth: localStorage.getItem(LS_ACCESS_TOKEN),
+          }
         : null;
 
       (async () => {

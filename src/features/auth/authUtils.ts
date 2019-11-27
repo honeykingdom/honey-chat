@@ -2,6 +2,7 @@ import {
   TWITCH_API_AUTH_BASE,
   TWITCH_API_CLIENT_ID,
   TWITCH_API_REDIRECT_URI,
+  LS_USER,
 } from 'utils/constants';
 
 type StoredUser = {
@@ -45,14 +46,14 @@ export const isAuthRedirect = (hash: string): boolean =>
   hash.startsWith('#access_token=');
 
 export const writeUserToLocatStorage = (user: StoredUser): void => {
-  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem(LS_USER, JSON.stringify(user));
 };
 
 export const readUserFromLocatStorage = (): StoredUser | null => {
   let user;
 
   try {
-    user = JSON.parse(localStorage.user);
+    user = JSON.parse(localStorage.getItem(LS_USER) as string);
   } catch (e) {
     user = null;
   }
