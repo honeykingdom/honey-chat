@@ -1,8 +1,10 @@
+import uuid from 'uuid/v4';
 import twitchIrc from 'twitch-simple-irc';
 import * as tekko from 'tekko';
 
-import { TwitchBadges } from 'api/twitch';
+import * as api from 'api';
 import { RootState } from 'app/rootReducer';
+import { userIdSelector, userLoginSelector } from 'features/auth/authSlice';
 import {
   Message,
   Notice,
@@ -18,7 +20,8 @@ import {
   StateEmotes,
 } from 'features/chat/selectors';
 import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
-import { createBadges } from 'features/chat/utils/htmlEntity';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
+import { writeEmotesUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
 
 export const normalizeMessage = (
   { message, tags, user, channel, isAction }: twitchIrc.MessageEvent,
@@ -44,7 +47,7 @@ export const normalizeMessage = (
       login: user,
       displayName: tags.displayName,
       color: tags.color,
-      badges: createBadges(tags.badges, globalBadges, channelBadges),
+      badges: htmlEntity.createBadges(tags.badges, globalBadges, channelBadges),
     },
     timestamp: tags.tmiSentTs,
     isAction,
@@ -81,33 +84,35 @@ export const normalizeUserNotice = ({
 });
 
 export const normalizeOwnMessage = (
-  { message, id, channel, tags, timestamp, userId, userLogin }: OwnMessage,
-  chatState: ChatState,
+  { message, channel, tags }: OwnMessage,
+  state: RootState,
 ): Message => {
-  const fakeState = { chat: chatState } as RootState;
-  const globalBadges = globalBadgesSelector(fakeState);
-  const channelBadges = channelBadgesSelector(fakeState);
-  const emotes = emotesSelector(fakeState);
+  const globalBadges = globalBadgesSelector(state);
+  const channelBadges = channelBadgesSelector(state);
+  const emotes = emotesSelector(state);
+  const userId = userIdSelector(state);
+  const userLogin = userLoginSelector(state);
 
   const isAction = message.startsWith('/me ');
   const normalizedMessage = isAction ? message.slice(4) : message;
 
+  const entities = parseMessageEntities(normalizedMessage, emotes, null, true);
+  writeEmotesUsageStatistic(entities);
+
   return {
     type: 'message',
-    id,
+    id: uuid(),
     message: normalizedMessage,
     channel,
-    entities: parseMessageEntities(normalizedMessage, emotes, null, {
-      parseTwitch: true,
-    }),
+    entities,
     user: {
-      id: userId,
-      login: userLogin,
+      id: userId as string,
+      login: userLogin as string,
       displayName: tags.displayName,
       color: tags.color,
-      badges: createBadges(tags.badges, globalBadges, channelBadges),
+      badges: htmlEntity.createBadges(tags.badges, globalBadges, channelBadges),
     },
-    timestamp,
+    timestamp: Date.now(),
     isAction,
     isHistory: false,
     isDeleted: false,
@@ -117,8 +122,8 @@ export const normalizeOwnMessage = (
 export const normalizeHistoryMessage = (
   { tags, params: [channel, message], prefix }: tekko.Message,
   emotes: StateEmotes,
-  globalBadges: TwitchBadges,
-  channelBadges: TwitchBadges,
+  globalBadges: Record<string, api.TwitchBadge>,
+  channelBadges: Record<string, api.TwitchBadge>,
 ): Message => {
   const isAction = twitchIrc.getIsAction(message);
   const normalizedMessage = isAction
@@ -143,7 +148,11 @@ export const normalizeHistoryMessage = (
       login: prefix ? prefix.name : '',
       displayName: parsedTags.displayName,
       color: parsedTags.color,
-      badges: createBadges(parsedTags.badges, globalBadges, channelBadges),
+      badges: htmlEntity.createBadges(
+        parsedTags.badges,
+        globalBadges,
+        channelBadges,
+      ),
     },
     timestamp: parsedTags.tmiSentTs,
     isAction,
