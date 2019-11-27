@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import * as api from 'api';
 import { RootState } from 'app/rootReducer';
-import { createBadges } from 'features/chat/utils/htmlEntity';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { ChatMessage } from 'features/chat/slice/messages';
 import createEmoteCategories from 'features/chat/utils/createEmoteCategories';
 
@@ -118,11 +118,11 @@ export const emotesSelector = createSelector(
   },
 );
 
-export const emoteCategoriesSelector = createSelector(
-  emotesSelector,
-  (_: any, text: string) => text,
-  createEmoteCategories,
-);
+export const emoteCategoriesSelector = (state: RootState, search: string) => {
+  const emotes = emotesSelector(state);
+
+  return createEmoteCategories(emotes, search);
+};
 
 // Badges
 
@@ -150,7 +150,7 @@ export const userBadgesImagesSelector = createSelector(
   userBadgesSelector,
   globalBadgesSelector,
   channelBadgesSelector,
-  createBadges,
+  htmlEntity.createBadges,
 );
 
 // params

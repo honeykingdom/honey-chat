@@ -10,7 +10,7 @@ import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
 import EmotePicker from 'features/chat/components/EmotePicker';
 import { SuggestionsState } from 'features/chat/hooks/useChatInput';
 import { isEmotesLoadedSelector } from 'features/chat/selectors';
-import { HtmlEntityEmote } from 'features/chat/utils/htmlEntity';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
 
 const ChatInputRoot = styled.div`
   padding-left: 10px;
@@ -204,7 +204,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       );
 
       const renderEmote = (
-        { src, srcSet, alt }: HtmlEntityEmote,
+        { src, srcSet, alt }: htmlEntity.Emote,
         index: number,
       ) => (
         <SuggestionItem
@@ -221,7 +221,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       const renderItems = () =>
         type === 'users'
           ? (items as string[]).map(renderUser)
-          : (items as HtmlEntityEmote[]).map(renderEmote);
+          : (items as htmlEntity.Emote[]).map(renderEmote);
 
       return (
         <Suggestions ref={suggestionsRef}>

@@ -6,7 +6,7 @@ import {
   Message as MessageType,
   MessageEntity,
 } from 'features/chat/slice/messages';
-import { HtmlEntityBadge } from 'features/chat/utils/htmlEntity';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
 
 type MessageRootProps = {
   isAction: boolean;
@@ -142,19 +142,19 @@ const renderMessageArray = (login: string, userLogin: string | null) => (
   return null;
 };
 
-const renderBadges = (badges: HtmlEntityBadge[]) =>
+const renderBadges = (badges: htmlEntity.Badge[]) =>
   badges.map(({ alt, label, src, srcSet }, key: number) => (
     // eslint-disable-next-line react/no-array-index-key
     <Badge key={key} alt={alt} aria-label={label} src={src} srcSet={srcSet} />
   ));
 
-interface Props {
+type Props = {
   message: MessageType;
   userLogin: string | null;
   isEven: boolean;
   isShowTimestamps: boolean;
   onNameRightClick: (name: string) => void;
-}
+};
 
 const MESSAGE_DELETED_LABEL = '<message deleted>';
 

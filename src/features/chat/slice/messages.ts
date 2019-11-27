@@ -11,31 +11,22 @@ import {
 } from 'utils/constants';
 import assertNever from 'utils/assertNever';
 import setFetchFlags from 'utils/setFetchFlags';
-import {
-  HtmlEntityTwitchEmote,
-  HtmlEntityBttvEmote,
-  HtmlEntityFfzEmote,
-  HtmlEntityEmoji,
-  HtmlEntityMention,
-  HtmlEntityLink,
-  HtmlEntityBadge,
-} from 'features/chat/utils/htmlEntity';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import {
   normalizeMessage,
   normalizeNotice,
   normalizeUserNotice,
-  normalizeOwnMessage,
   normalizeHistoryMessages,
 } from 'features/chat/utils/normalizeMessages';
 import { ChatState } from 'features/chat/slice';
 
 export type MessageEntity =
-  | HtmlEntityTwitchEmote
-  | HtmlEntityBttvEmote
-  | HtmlEntityFfzEmote
-  | HtmlEntityEmoji
-  | HtmlEntityMention
-  | HtmlEntityLink
+  | htmlEntity.TwitchEmote
+  | htmlEntity.BttvEmote
+  | htmlEntity.FfzEmote
+  | htmlEntity.Emoji
+  | htmlEntity.Mention
+  | htmlEntity.Link
   | string;
 
 export type Message = {
@@ -49,7 +40,7 @@ export type Message = {
     login: string;
     displayName: string;
     color: string;
-    badges: HtmlEntityBadge[];
+    badges: htmlEntity.Badge[];
   };
   timestamp: number;
   isAction: boolean;
@@ -81,12 +72,8 @@ export type ChatMessage = Message | Notice | UserNotice;
 
 export type OwnMessage = {
   message: string;
-  id: string;
   channel: string;
   tags: twitchIrc.UserStateTags;
-  timestamp: number;
-  userId: string;
-  userLogin: string;
 };
 
 type AddMessage = {
@@ -104,20 +91,20 @@ type AddUserNotice = {
 };
 type AddOwnMessage = {
   type: 'own-message';
-  message: OwnMessage;
+  message: Message;
 };
 
 type AddMessagePayload = AddMessage | AddNotice | AddUserNotice | AddOwnMessage;
 
 type MessagesStateChannel = {
-    history: {
-      isAdded: boolean;
-      items: string[];
-    } & FetchFlags;
-    isEven: boolean;
-    items: ChatMessage[];
-    users: string[];
-  };
+  history: {
+    isAdded: boolean;
+    items: string[];
+  } & FetchFlags;
+  isEven: boolean;
+  items: ChatMessage[];
+  users: string[];
+};
 
 export type MessagesState = Record<string, MessagesStateChannel>;
 
@@ -175,7 +162,7 @@ const normalizePayload = (
   }
 
   if (data.type === 'own-message') {
-    return normalizeOwnMessage(data.message, chatState);
+    return data.message;
   }
 
   return assertNever(data);

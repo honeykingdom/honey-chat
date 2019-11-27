@@ -5,7 +5,7 @@ import useSetState from 'hooks/useSetState';
 import { SUGGESTION_TYPES } from 'utils/constants';
 import getUsersByBeginText from 'features/chat/utils/getUsersByBeginText';
 import getEmotesByText from 'features/chat/utils/getEmotesByText';
-import { HtmlEntityEmote } from 'features/chat/utils/htmlEntity';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { usersSelector, emotesSelector } from 'features/chat/selectors';
 
 interface ASuggestions {
@@ -20,7 +20,7 @@ interface UserSuggestions extends ASuggestions {
 }
 interface EmoteSuggestions extends ASuggestions {
   type: 'emotes';
-  items: HtmlEntityEmote[];
+  items: htmlEntity.Emote[];
 }
 export type SuggestionsState = UserSuggestions | EmoteSuggestions;
 
@@ -63,7 +63,9 @@ const replaceSuggestionText = (
 
   const currentItem = items[activeIndex];
   const insertedText =
-    type === 'users' ? `@${currentItem}` : (currentItem as HtmlEntityEmote).alt;
+    type === 'users'
+      ? `@${currentItem}`
+      : (currentItem as htmlEntity.Emote).alt;
 
   const textBefore = text.substring(0, start);
   const testAfter = text.substring(end) || ' ';
