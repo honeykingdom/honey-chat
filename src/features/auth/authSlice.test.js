@@ -2,7 +2,7 @@ import auth, {
   initialState,
   initializeAuth,
   invalidateAuth,
-} from './authSlice';
+} from 'features/auth/authSlice';
 
 describe('auth reducer', () => {
   it('should handle initial state', () => {

@@ -1,4 +1,7 @@
-import options, { initialState, changeOption } from './optionsSlice';
+import options, {
+  initialState,
+  changeOption,
+} from 'features/options/optionsSlice';
 
 describe('options reducer', () => {
   it('should handle initial state', () => {
