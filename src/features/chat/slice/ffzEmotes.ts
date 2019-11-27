@@ -39,7 +39,7 @@ export const ffzEmotesReducers = {
 
   fetchFfzGlobalEmotesSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<FfzGlobalEmotesResponse>,
+    { payload }: PayloadAction<api.FfzGlobalEmotesResponse>,
   ): void => {
     state.ffzEmotes.global.items = parseFfzGlobalEmotes(payload);
 
@@ -70,7 +70,7 @@ export const ffzEmotesReducers = {
     state: ChatState,
     {
       payload,
-    }: PayloadAction<{ channel: string; data: FfzChannelEmotesResponse }>,
+    }: PayloadAction<{ channel: string; data: api.FfzChannelEmotesResponse }>,
   ): void => {
     const { channel, data } = payload;
 
