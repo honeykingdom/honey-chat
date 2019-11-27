@@ -9,6 +9,14 @@ export const STORE_USERS_LIMIT = 500;
 
 export const API_REQUESTS_TIMEOUT = 10000;
 
+// local storage keys
+export const LS_ACCESS_TOKEN = 'accessToken';
+export const LS_ID_TOKEN = 'idToken';
+export const LS_LAST_CHANNEL = 'lastChannel';
+export const LS_USER = 'user';
+export const LS_EMOTES_USAGE_STATISTIC = 'emotesUsageStatistic';
+export const LS_OPTIONS = 'options';
+
 export const SUGGESTION_TYPES = {
   users: {
     name: 'users',
