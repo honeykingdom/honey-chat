@@ -1,42 +1,27 @@
 import * as R from 'ramda';
 
-import { TwitchEmote, TwitchEmoteSets } from 'api/twitch';
-import {
-  createTwitchEmote,
-  createBttvEmote,
-  createFfzEmote,
-  HtmlEntityEmote,
-} from 'features/chat/utils/htmlEntity';
+import * as api from 'api';
+import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { StateEmotes } from 'features/chat/selectors';
 import getEmotesByText from 'features/chat/utils/getEmotesByText';
-
-// prettier-ignore
-const regexEmotesMap: { [value: string]: string } = {
-  '[oO](_|\\.)[oO]': 'O_o',
-  '\\&gt\\;\\(':     '>(',
-  '\\&lt\\;3':       '<3',
-  '\\:-?(o|O)':      ':O',
-  '\\:-?(p|P)':      ':P',
-  '\\:-?[\\\\/]':    ':/',
-  '\\:-?[z|Z|\\|]':  ':Z',
-  '\\:-?\\(':        ':(',
-  '\\:-?\\)':        ':)',
-  '\\:-?D':          ':D',
-  '\\;-?(p|P)':      ';P',
-  '\\;-?\\)':        ';)',
-  'R-?\\)':          'R)',
-  'B-?\\)':          'B)',
-};
-
-const createGlobalTwitchEmote = ({ id, code }: TwitchEmote) =>
-  createTwitchEmote({ id, code: regexEmotesMap[code] || code });
+import { getEmotesFromUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
+import { createSelector } from '@reduxjs/toolkit';
 
 export type EmoteCategory = {
   title?: string;
-  items: HtmlEntityEmote[];
+  items: htmlEntity.Emote[];
 };
 
-const createEmoteCategories = (emotes: StateEmotes, text: string) => {
+const getTwitchUserEmoteCategories = R.pipe<
+  Record<string, api.TwitchEmote[]>,
+  api.TwitchEmote[][],
+  EmoteCategory[]
+>(
+  R.values,
+  R.map((items) => ({ items: R.map(htmlEntity.createTwitchEmote, items) })),
+);
+
+const createMainEmoteCategories = (emotes: StateEmotes) => {
   if (!emotes) return [];
 
   const {
@@ -48,7 +33,41 @@ const createEmoteCategories = (emotes: StateEmotes, text: string) => {
     ffzChannel,
   } = emotes;
 
-  // TODO: Frequently Used
+  return [
+    {
+      title: 'BetterTTV Channel Emotes',
+      items: bttvChannel.map(htmlEntity.createBttvEmote),
+    },
+    {
+      title: 'FrankerFaceZ Channel Emotes',
+      items: ffzChannel.map(htmlEntity.createFfzEmote),
+    },
+    ...getTwitchUserEmoteCategories(twitchUser),
+    {
+      title: 'Twitch',
+      items: R.map(
+        htmlEntity.createTwitchEmote,
+        R.propOr([], '0', twitchGlobal),
+      ),
+    },
+    {
+      title: 'BetterTTV',
+      items: bttvGlobal.map(htmlEntity.createBttvEmote),
+    },
+    {
+      title: 'FrankerFaceZ',
+      items: ffzGlobal.map(htmlEntity.createFfzEmote),
+    },
+  ].filter(R.path(['items', 'length'])) as EmoteCategory[];
+};
+
+const getMainEmoteCategories = createSelector(
+  (emotes: any) => emotes,
+  createMainEmoteCategories,
+);
+
+const createEmoteCategories = (emotes: StateEmotes, text: string) => {
+  if (!emotes) return [];
 
   if (text) {
     const items = getEmotesByText(text, emotes);
@@ -57,32 +76,19 @@ const createEmoteCategories = (emotes: StateEmotes, text: string) => {
     return [{ title, items }];
   }
 
-  return [
-    {
-      title: 'BetterTTV Channel Emotes',
-      items: bttvChannel.map(createBttvEmote),
-    },
-    {
-      title: 'FrankerFaceZ Channel Emotes',
-      items: ffzChannel.map(createFfzEmote),
-    },
-    ...R.pipe<TwitchEmoteSets, TwitchEmote[][], EmoteCategory[]>(
-      R.values,
-      R.map((items) => ({ items: R.map(createTwitchEmote, items) })),
-    )(twitchUser),
-    {
-      title: 'Twitch',
-      items: R.map(createGlobalTwitchEmote, R.propOr([], '0', twitchGlobal)),
-    },
-    {
-      title: 'BetterTTV',
-      items: bttvGlobal.map(createBttvEmote),
-    },
-    {
-      title: 'FrankerFaceZ',
-      items: ffzGlobal.map(createFfzEmote),
-    },
-  ].filter(({ items }) => items.length > 0) as EmoteCategory[];
+  const mainEmoteCategories = getMainEmoteCategories(emotes);
+  const frequentlyUsed = getEmotesFromUsageStatistic(emotes);
+
+  if (!frequentlyUsed.length) {
+    return mainEmoteCategories;
+  }
+
+  const frequentlyUsedCategory = {
+    title: 'Frequently Used',
+    items: frequentlyUsed,
+  };
+
+  return [frequentlyUsedCategory, ...mainEmoteCategories] as EmoteCategory[];
 };
 
 export default createEmoteCategories;
