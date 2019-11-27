@@ -10,13 +10,13 @@ import {
   parseBttvChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
 
-type BttvGlobalEmotes = {
+type BttvGlobalEmotes = FetchFlags & {
   items: api.BttvGlobalEmote[];
-} & FetchFlags;
+};
 
-type BttvChannelEmotes = {
+type BttvChannelEmotes = FetchFlags & {
   items: api.BttvChannelEmote[];
-} & FetchFlags;
+};
 
 export type BttvEmotesState = {
   global: BttvGlobalEmotes;

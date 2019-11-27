@@ -10,10 +10,10 @@ import {
   parseTwitchChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
 
-export type TwitchEmotesState = {
+export type TwitchEmotesState = FetchFlags & {
   global: Record<string, api.TwitchEmote[]>;
   user: Record<string, api.TwitchEmote[]>;
-} & FetchFlags;
+};
 
 export const twitchEmotesInitialState: TwitchEmotesState = {
   ...initialFetchFlags,

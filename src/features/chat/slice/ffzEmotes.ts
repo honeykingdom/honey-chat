@@ -10,9 +10,9 @@ import {
   parseFfzChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
 
-type FfzEmotes = {
+type FfzEmotes = FetchFlags & {
   items: api.FfzEmote[];
-} & FetchFlags;
+};
 
 export type FfzEmotesState = {
   global: FfzEmotes;

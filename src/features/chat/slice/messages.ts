@@ -97,10 +97,10 @@ type AddOwnMessage = {
 type AddMessagePayload = AddMessage | AddNotice | AddUserNotice | AddOwnMessage;
 
 type MessagesStateChannel = {
-  history: {
+  history: FetchFlags & {
     isAdded: boolean;
     items: string[];
-  } & FetchFlags;
+  };
   isEven: boolean;
   items: ChatMessage[];
   users: string[];

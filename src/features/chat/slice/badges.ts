@@ -7,9 +7,9 @@ import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
 import { parseBadges } from 'features/chat/utils/parseApiResponse';
 
-type Badges = {
+type Badges = FetchFlags & {
   items: Record<string, api.TwitchBadge>;
-} & FetchFlags;
+};
 
 export type BadgesState = {
   global: Badges;
