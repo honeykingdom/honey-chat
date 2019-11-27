@@ -6,18 +6,18 @@ import { AppThunk } from 'app/store';
 import { RootState } from 'app/rootReducer';
 import { writeUserToLocatStorage } from 'features/auth/authUtils';
 
-interface AuthState {
+type AuthState = {
   isAuthReady: boolean;
   isAuth: boolean;
   userId: string | null;
   userLogin: string | null;
-}
+};
 
-interface InitializeAuth {
+type InitializeAuth = {
   isAuth: boolean;
   userId?: string;
   userLogin?: string;
-}
+};
 
 export const initialState: AuthState = {
   isAuthReady: false,

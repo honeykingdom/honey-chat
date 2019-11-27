@@ -6,14 +6,14 @@ import Message from 'features/chat/components/Message';
 import Notice from 'features/chat/components/Notice';
 import UserNotice from 'features/chat/components/UserNotice';
 
-interface Props {
+type Props = {
   message: ChatMessageType;
   userLogin: string | null;
   isEven: boolean;
   isShowTimestamps: boolean;
   // onNameClick: (name: string) => void;
   onNameRightClick: (name: string) => void;
-}
+};
 
 const ChatMessage = ({
   message,

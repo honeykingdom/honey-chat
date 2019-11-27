@@ -11,10 +11,10 @@ const NoticeRoot = styled.div<{ isEven: boolean }>`
   background-color: ${(p) => (p.isEven ? '#1f1925' : 'transparent')};
 `;
 
-interface Props {
+type Props = {
   message: NoticeType;
   isEven: boolean;
-}
+};
 
 const Notice = ({ message: { message }, isEven }: Props) => (
   <NoticeRoot isEven={isEven}>{message}</NoticeRoot>

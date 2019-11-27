@@ -62,13 +62,13 @@ const Input = styled.input.attrs({ type: 'checkbox' })`
   }
 `;
 
-interface Props {
+type Props = {
   id: string;
   label: string;
   checked?: boolean;
   readOnly?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
 const Switch = ({ id, label, checked, readOnly, onChange }: Props) => (
   <SwitchRoot>

@@ -7,9 +7,9 @@ import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
 import { parseBlockedUsers } from 'features/chat/utils/parseApiResponse';
 
-export interface BlockedUsersState extends FetchFlags {
+export type BlockedUsersState = {
   items: string[];
-}
+} & FetchFlags;
 
 export const blockedUsersInitialState = {
   ...initialFetchFlags,

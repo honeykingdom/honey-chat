@@ -11,9 +11,9 @@ const UserNoticeRoot = styled.div`
   color: #fff;
 `;
 
-interface Props {
+type Props = {
   message: UserNoticeType;
-}
+};
 
 const UserNotice = ({ message: { systemMessage } }: Props) => (
   <UserNoticeRoot>{systemMessage}</UserNoticeRoot>

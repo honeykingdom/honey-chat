@@ -42,7 +42,7 @@ import {
   BlockedUsersState,
 } from 'features/chat/slice/blockedUsers';
 
-export interface ChatState {
+export type ChatState = {
   isConnected: boolean;
   currentChannel: string;
   messages: MessagesState;
@@ -52,7 +52,7 @@ export interface ChatState {
   badges: BadgesState;
   params: ParamsState;
   blockedUsers: BlockedUsersState;
-}
+};
 
 const initialState: ChatState = {
   isConnected: false,

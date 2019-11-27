@@ -91,10 +91,10 @@ const TwitchIcon = styled(TwitchIconSvg)`
   height: 20px;
 `;
 
-interface Props {
+type Props = {
   isDisabled: boolean;
   onSendMessage: () => void;
-}
+};
 
 const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);

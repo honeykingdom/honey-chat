@@ -7,18 +7,18 @@ import {
   readOptionsFromLocalStorage,
 } from 'features/options/optionsUtils';
 
-interface OptionsState {
+type OptionsState = {
   showTimestamps: boolean;
   splitChat: boolean;
   blacklistKeywords: string;
   highlightKeywords: string;
   fixedWidth: boolean;
-}
+};
 
-interface ChangeOption {
+type ChangeOption = {
   name: keyof OptionsState;
   value: any;
-}
+};
 
 export const initialState: OptionsState = {
   showTimestamps: false,

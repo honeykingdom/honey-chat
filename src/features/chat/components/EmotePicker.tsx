@@ -81,9 +81,9 @@ const SearchIcon = styled(SearchIconSvg)`
   transform: translateY(-50%);
 `;
 
-interface Props {
+type Props = {
   onEmoteClick: (name: string) => void;
-}
+};
 
 const EmotePicker = ({ onEmoteClick }: Props) => {
   const [search, setSearch] = useState('');

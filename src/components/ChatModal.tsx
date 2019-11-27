@@ -24,10 +24,10 @@ const CloseIcon = styled(CloseIconSvg)`
   height: 20px;
 `;
 
-interface Props {
+type Props = {
   children: React.ReactNode;
   onClose: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
+};
 
 const ChatModal = ({ children, onClose }: Props) => (
   <ChatModalRoot>
