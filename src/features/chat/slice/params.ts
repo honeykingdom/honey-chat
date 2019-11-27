@@ -4,15 +4,15 @@ import twitchIrc from 'twitch-simple-irc';
 
 import { ChatState } from 'features/chat/slice';
 
-export interface ParamsState {
+type Params = {
+  room: twitchIrc.RoomStateTags | null;
+  user: twitchIrc.UserStateTags | null;
+};
+
+export type ParamsState = {
   global: twitchIrc.GlobalUserStateTags | null;
-  byChannels: {
-    [channel: string]: {
-      room: twitchIrc.RoomStateTags | null;
-      user: twitchIrc.UserStateTags | null;
-    };
-  };
-}
+  byChannels: Record<string, Params>;
+};
 
 export const paramsInitialState: ParamsState = {
   global: null,

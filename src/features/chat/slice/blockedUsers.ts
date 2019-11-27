@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { TwitchBlockedUsersResponse } from 'api/twitch';
+import * as api from 'api';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
@@ -23,7 +23,7 @@ export const blockedUsersReducers = {
 
   fetchBlockedUsersSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<TwitchBlockedUsersResponse>,
+    { payload }: PayloadAction<api.TwitchBlockedUsersResponse>,
   ): void => {
     state.blockedUsers.items = parseBlockedUsers(payload);
 

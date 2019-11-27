@@ -2,7 +2,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import twitchIrc from 'twitch-simple-irc';
 
-import { ChatHistoryResponse } from 'api/chatHistory';
+import * as api from 'api';
 import {
   FetchFlags,
   initialFetchFlags,
@@ -109,8 +109,7 @@ type AddOwnMessage = {
 
 type AddMessagePayload = AddMessage | AddNotice | AddUserNotice | AddOwnMessage;
 
-export interface MessagesState {
-  [channel: string]: {
+type MessagesStateChannel = {
     history: {
       isAdded: boolean;
       items: string[];
@@ -119,7 +118,8 @@ export interface MessagesState {
     items: ChatMessage[];
     users: string[];
   };
-}
+
+export type MessagesState = Record<string, MessagesStateChannel>;
 
 export const messagesInitialState: MessagesState = {};
 
@@ -289,7 +289,9 @@ export const messagesReducers = {
 
   fetchChatHistorySuccess: (
     state: ChatState,
-    { payload }: PayloadAction<{ channel: string; data: ChatHistoryResponse }>,
+    {
+      payload,
+    }: PayloadAction<{ channel: string; data: api.ChatHistoryResponse }>,
   ): void => {
     const { channel, data } = payload;
 

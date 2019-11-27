@@ -1,12 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  BttvGlobalEmote,
-  BttvChannelEmote,
-  BttvGlobalEmotesResponse,
-  BttvChannelEmotesResponse,
-} from 'api/bttv';
+import * as api from 'api';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
@@ -15,16 +10,18 @@ import {
   parseBttvChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
 
-export interface BttvEmotesState {
-  global: {
-    items: BttvGlobalEmote[];
-  } & FetchFlags;
-  byChannels: {
-    [channel: string]: {
-      items: BttvChannelEmote[];
-    } & FetchFlags;
-  };
-}
+type BttvGlobalEmotes = {
+  items: api.BttvGlobalEmote[];
+} & FetchFlags;
+
+type BttvChannelEmotes = {
+  items: api.BttvChannelEmote[];
+} & FetchFlags;
+
+export type BttvEmotesState = {
+  global: BttvGlobalEmotes;
+  byChannels: Record<string, BttvChannelEmotes>;
+};
 
 export const bttvEmotesInitialState: BttvEmotesState = {
   global: {
@@ -46,7 +43,7 @@ export const bttvEmotesReducers = {
 
   fetchBttvGlobalEmotesSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<BttvGlobalEmotesResponse>,
+    { payload }: PayloadAction<api.BttvGlobalEmotesResponse>,
   ): void => {
     state.bttvEmotes.global.items = parseBttvGlobalEmotes(payload);
 
@@ -77,7 +74,7 @@ export const bttvEmotesReducers = {
     state: ChatState,
     {
       payload,
-    }: PayloadAction<{ channel: string; data: BttvChannelEmotesResponse }>,
+    }: PayloadAction<{ channel: string; data: api.BttvChannelEmotesResponse }>,
   ): void => {
     const { channel, data } = payload;
 

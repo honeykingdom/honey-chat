@@ -1,20 +1,18 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { TwitchEmoteSets } from 'api/twitch';
-import { BttvGlobalEmote, BttvChannelEmote } from 'api/bttv';
-import { FfzEmote } from 'api/ffz';
+import * as api from 'api';
 import { RootState } from 'app/rootReducer';
 import { createBadges } from 'features/chat/utils/htmlEntity';
 import { ChatMessage } from 'features/chat/slice/messages';
 import createEmoteCategories from 'features/chat/utils/createEmoteCategories';
 
 export type StateEmotes = {
-  twitchGlobal: TwitchEmoteSets;
-  twitchUser: TwitchEmoteSets;
-  bttvGlobal: BttvGlobalEmote[];
-  bttvChannel: BttvChannelEmote[];
-  ffzGlobal: FfzEmote[];
-  ffzChannel: FfzEmote[];
+  twitchGlobal: Record<string, api.TwitchEmote[]>;
+  twitchUser: Record<string, api.TwitchEmote[]>;
+  bttvGlobal: api.BttvGlobalEmote[];
+  bttvChannel: api.BttvChannelEmote[];
+  ffzGlobal: api.FfzEmote[];
+  ffzChannel: api.FfzEmote[];
 } | null;
 
 export const currentChannelSelector = (state: RootState) =>

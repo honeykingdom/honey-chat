@@ -1,10 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import * as twitchApi from 'api/twitch';
-import * as bttvApi from 'api/bttv';
-import * as ffzApi from 'api/ffz';
-import * as chatHistoryApi from 'api/chatHistory';
+import * as api from 'api';
 import { AppThunk } from 'app/store';
 import {
   messagesInitialState,
@@ -146,7 +143,7 @@ export const fetchChatHistory = (channel: string): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchChatHistoryRequest({ channel }));
-    const data = await chatHistoryApi.fetchChatHistory(channel);
+    const data = await api.fetchChatHistory(channel);
     dispatch(fetchChatHistorySuccess({ channel, data }));
   } catch (error) {
     dispatch(fetchChatHistoryFailure({ channel, error }));
@@ -158,7 +155,7 @@ export const fetchTwitchEmotes = (userId: string): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchTwitchEmotesRequest());
-    const data = await twitchApi.fetchTwitchEmotes(userId);
+    const data = await api.fetchTwitchEmotes(userId);
     dispatch(fetchTwitchEmotesSuccess(data));
   } catch (error) {
     dispatch(fetchTwitchEmotesFailure(error));
@@ -170,7 +167,7 @@ export const fetchBttvGlobalEmotes = (): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchBttvGlobalEmotesRequest());
-    const data = await bttvApi.fetchBttvGlobalEmotes();
+    const data = await api.fetchBttvGlobalEmotes();
     dispatch(fetchBttvGlobalEmotesSuccess(data));
   } catch (error) {
     dispatch(fetchBttvGlobalEmotesFailure(error));
@@ -183,7 +180,7 @@ export const fetchBttvChannelEmotes = (
 ): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(fetchBttvChannelEmotesRequest({ channel }));
-    const data = await bttvApi.fetchBttvChannelEmotes(channelId);
+    const data = await api.fetchBttvChannelEmotes(channelId);
     dispatch(fetchBttvChannelEmotesSuccess({ channel, data }));
   } catch (error) {
     dispatch(fetchBttvChannelEmotesFailure({ channel, error }));
@@ -195,7 +192,7 @@ export const fetchFfzGlobalEmotes = (): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchFfzGlobalEmotesRequest());
-    const data = await ffzApi.fetchFfzGlobalEmotes();
+    const data = await api.fetchFfzGlobalEmotes();
     dispatch(fetchFfzGlobalEmotesSuccess(data));
   } catch (error) {
     dispatch(fetchFfzGlobalEmotesFailure(error));
@@ -208,7 +205,7 @@ export const fetchFfzChannelEmotes = (
 ): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(fetchFfzChannelEmotesRequest({ channel }));
-    const data = await ffzApi.fetchFfzChannelEmotes(channelId);
+    const data = await api.fetchFfzChannelEmotes(channelId);
     dispatch(fetchFfzChannelEmotesSuccess({ channel, data }));
   } catch (error) {
     dispatch(fetchFfzChannelEmotesFailure({ channel, error }));
@@ -220,7 +217,7 @@ export const fetchGlobalBadges = (): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchGlobalBadgesRequest());
-    const data = await twitchApi.fetchGlobalBadges();
+    const data = await api.fetchGlobalBadges();
     dispatch(fetchGlobalBadgesSuccess(data));
   } catch (error) {
     dispatch(fetchGlobalBadgesFailure(error));
@@ -233,7 +230,7 @@ export const fetchChannelBadges = (
 ): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(fetchChannelBadgesRequest({ channel }));
-    const data = await twitchApi.fetchChannelBadges(channelId);
+    const data = await api.fetchChannelBadges(channelId);
     dispatch(fetchChannelBadgesSuccess({ channel, data }));
   } catch (error) {
     dispatch(fetchChannelBadgesFailure({ channel, error }));
@@ -245,7 +242,7 @@ export const fetchBlockedUsers = (userId: string): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchBlockedUsersRequest());
-    const data = await twitchApi.fetchBlockedUsers(userId);
+    const data = await api.fetchBlockedUsers(userId);
     dispatch(fetchBlockedUsersSuccess(data));
   } catch (error) {
     dispatch(fetchBlockedUsersFailure(error));

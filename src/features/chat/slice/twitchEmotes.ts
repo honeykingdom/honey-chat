@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { TwitchEmoteSets, TwitchEmotesResponse } from 'api/twitch';
+import * as api from 'api';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
@@ -10,10 +10,10 @@ import {
   parseTwitchChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
 
-export interface TwitchEmotesState extends FetchFlags {
-  global: TwitchEmoteSets;
-  user: TwitchEmoteSets;
-}
+export type TwitchEmotesState = {
+  global: Record<string, api.TwitchEmote[]>;
+  user: Record<string, api.TwitchEmote[]>;
+} & FetchFlags;
 
 export const twitchEmotesInitialState: TwitchEmotesState = {
   ...initialFetchFlags,
@@ -28,7 +28,7 @@ export const twitchEmotesReducers = {
 
   fetchTwitchEmotesSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<TwitchEmotesResponse>,
+    { payload }: PayloadAction<api.TwitchEmotesResponse>,
   ): void => {
     state.twitchEmotes.global = parseTwitchGlobalEmotes(payload);
     state.twitchEmotes.user = parseTwitchChannelEmotes(payload);

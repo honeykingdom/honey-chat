@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchUser as apiFetchUser, TwitchUsersResponse } from 'api/twitch';
+import * as api from 'api';
 import { AppThunk } from 'app/store';
 import { RootState } from 'app/rootReducer';
 import { writeUserToLocatStorage } from 'features/auth/authUtils';
@@ -55,7 +55,7 @@ const auth = createSlice({
 
     fetchUserSuccess: (
       state,
-      { payload }: PayloadAction<TwitchUsersResponse>,
+      { payload }: PayloadAction<api.TwitchUsersResponse>,
     ): void => {
       state.isAuthReady = true;
       state.isAuth = true;
@@ -86,7 +86,7 @@ export const fetchUser = (userId: string): AppThunk => async (
 ): Promise<void> => {
   try {
     dispatch(fetchUserRequest());
-    const users = await apiFetchUser(userId);
+    const users = await api.fetchUser(userId);
     const { id, login } = users.data[0];
     writeUserToLocatStorage({ id, login });
     dispatch(fetchUserSuccess(users));

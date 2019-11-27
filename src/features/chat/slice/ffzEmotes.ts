@@ -1,11 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  FfzEmote,
-  FfzGlobalEmotesResponse,
-  FfzChannelEmotesResponse,
-} from 'api/ffz';
+import * as api from 'api';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
@@ -14,16 +10,14 @@ import {
   parseFfzChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
 
-export interface FfzEmotesState {
-  global: {
-    items: FfzEmote[];
-  } & FetchFlags;
-  byChannels: {
-    [channel: string]: {
-      items: FfzEmote[];
-    } & FetchFlags;
-  };
-}
+type FfzEmotes = {
+  items: api.FfzEmote[];
+} & FetchFlags;
+
+export type FfzEmotesState = {
+  global: FfzEmotes;
+  byChannels: Record<string, FfzEmotes>;
+};
 
 export const ffzEmotesInitialState: FfzEmotesState = {
   global: {

@@ -1,22 +1,20 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { TwitchBadges, TwitchBadgesResponse } from 'api/twitch';
+import * as api from 'api';
 import { FetchFlags, initialFetchFlags } from 'utils/constants';
 import setFetchFlags from 'utils/setFetchFlags';
 import { ChatState } from 'features/chat/slice';
 import { parseBadges } from 'features/chat/utils/parseApiResponse';
 
-export interface BadgesState {
-  global: {
-    items: TwitchBadges;
-  } & FetchFlags;
-  byChannels: {
-    [channel: string]: {
-      items: TwitchBadges;
-    } & FetchFlags;
-  };
-}
+type Badges = {
+  items: Record<string, api.TwitchBadge>;
+} & FetchFlags;
+
+export type BadgesState = {
+  global: Badges;
+  byChannels: Record<string, Badges>;
+};
 
 export const badgesInitialState: BadgesState = {
   global: {
@@ -38,7 +36,7 @@ export const badgesReducers = {
 
   fetchGlobalBadgesSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<TwitchBadgesResponse>,
+    { payload }: PayloadAction<api.TwitchBadgesResponse>,
   ): void => {
     state.badges.global.items = parseBadges(payload);
 
@@ -67,7 +65,9 @@ export const badgesReducers = {
 
   fetchChannelBadgesSuccess: (
     state: ChatState,
-    { payload }: PayloadAction<{ channel: string; data: TwitchBadgesResponse }>,
+    {
+      payload,
+    }: PayloadAction<{ channel: string; data: api.TwitchBadgesResponse }>,
   ): void => {
     const { channel, data } = payload;
 
