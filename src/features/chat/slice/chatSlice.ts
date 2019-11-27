@@ -7,6 +7,7 @@ import {
   messagesInitialState,
   messagesReducers,
   MessagesState,
+  OwnMessage,
 } from 'features/chat/slice/messages';
 import {
   twitchEmotesInitialState,
@@ -38,6 +39,7 @@ import {
   blockedUsersReducers,
   BlockedUsersState,
 } from 'features/chat/slice/blockedUsers';
+import { normalizeOwnMessage } from 'features/chat/utils/normalizeMessages';
 
 export type ChatState = {
   isConnected: boolean;
@@ -92,6 +94,17 @@ export const {
   clearChat,
   addMessage,
   addChatHistory,
+
+  // params
+  updateGlobalUserParams,
+  updateUserParams,
+  updateRoomParams,
+} = chat.actions;
+
+export default chat.reducer;
+
+const {
+  // messages
   fetchChatHistoryRequest,
   fetchChatHistorySuccess,
   fetchChatHistoryFailure,
@@ -125,22 +138,15 @@ export const {
   fetchChannelBadgesSuccess,
   fetchChannelBadgesFailure,
 
-  // params
-  updateGlobalUserParams,
-  updateUserParams,
-  updateRoomParams,
-
   // blocked users
   fetchBlockedUsersRequest,
   fetchBlockedUsersSuccess,
   fetchBlockedUsersFailure,
 } = chat.actions;
 
-export default chat.reducer;
-
 export const fetchChatHistory = (channel: string): AppThunk => async (
   dispatch,
-): Promise<void> => {
+) => {
   try {
     dispatch(fetchChatHistoryRequest({ channel }));
     const data = await api.fetchChatHistory(channel);
@@ -152,7 +158,7 @@ export const fetchChatHistory = (channel: string): AppThunk => async (
 
 export const fetchTwitchEmotes = (userId: string): AppThunk => async (
   dispatch,
-): Promise<void> => {
+) => {
   try {
     dispatch(fetchTwitchEmotesRequest());
     const data = await api.fetchTwitchEmotes(userId);
@@ -162,9 +168,7 @@ export const fetchTwitchEmotes = (userId: string): AppThunk => async (
   }
 };
 
-export const fetchBttvGlobalEmotes = (): AppThunk => async (
-  dispatch,
-): Promise<void> => {
+export const fetchBttvGlobalEmotes = (): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchBttvGlobalEmotesRequest());
     const data = await api.fetchBttvGlobalEmotes();
@@ -177,7 +181,7 @@ export const fetchBttvGlobalEmotes = (): AppThunk => async (
 export const fetchBttvChannelEmotes = (
   channel: string,
   channelId: string,
-): AppThunk => async (dispatch): Promise<void> => {
+): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchBttvChannelEmotesRequest({ channel }));
     const data = await api.fetchBttvChannelEmotes(channelId);
@@ -187,9 +191,7 @@ export const fetchBttvChannelEmotes = (
   }
 };
 
-export const fetchFfzGlobalEmotes = (): AppThunk => async (
-  dispatch,
-): Promise<void> => {
+export const fetchFfzGlobalEmotes = (): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchFfzGlobalEmotesRequest());
     const data = await api.fetchFfzGlobalEmotes();
@@ -202,7 +204,7 @@ export const fetchFfzGlobalEmotes = (): AppThunk => async (
 export const fetchFfzChannelEmotes = (
   channel: string,
   channelId: string,
-): AppThunk => async (dispatch): Promise<void> => {
+): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchFfzChannelEmotesRequest({ channel }));
     const data = await api.fetchFfzChannelEmotes(channelId);
@@ -212,9 +214,7 @@ export const fetchFfzChannelEmotes = (
   }
 };
 
-export const fetchGlobalBadges = (): AppThunk => async (
-  dispatch,
-): Promise<void> => {
+export const fetchGlobalBadges = (): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchGlobalBadgesRequest());
     const data = await api.fetchGlobalBadges();
@@ -227,7 +227,7 @@ export const fetchGlobalBadges = (): AppThunk => async (
 export const fetchChannelBadges = (
   channel: string,
   channelId: string,
-): AppThunk => async (dispatch): Promise<void> => {
+): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchChannelBadgesRequest({ channel }));
     const data = await api.fetchChannelBadges(channelId);
@@ -239,7 +239,7 @@ export const fetchChannelBadges = (
 
 export const fetchBlockedUsers = (userId: string): AppThunk => async (
   dispatch,
-): Promise<void> => {
+) => {
   try {
     dispatch(fetchBlockedUsersRequest());
     const data = await api.fetchBlockedUsers(userId);
@@ -247,4 +247,14 @@ export const fetchBlockedUsers = (userId: string): AppThunk => async (
   } catch (error) {
     dispatch(fetchBlockedUsersFailure(error));
   }
+};
+
+export const addOwnMessage = (ownMessage: OwnMessage): AppThunk => async (
+  dispatch,
+  getState,
+) => {
+  const state = getState();
+  const message = normalizeOwnMessage(ownMessage, state);
+
+  dispatch(addMessage({ type: 'own-message', message }));
 };
