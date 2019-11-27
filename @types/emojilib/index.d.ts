@@ -6,7 +6,7 @@ declare module 'emojilib' {
     category: string;
   }
 
-  export const lib: { [name: string]: Emoji };
+  export const lib: Record<string, Emoji>;
 
   export const ordered: string[];
 
