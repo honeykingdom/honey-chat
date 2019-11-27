@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import * as api from 'api';
 import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { StateEmotes } from 'features/chat/selectors/chatSelectors';
+import { EmotesByText } from 'features/chat/utils/getEmotesByText';
 
 // by id
 
@@ -111,17 +112,21 @@ const findFfzEmoteByName = (
 
 /* eslint-disable no-restricted-syntax */
 const findTwitchEmotesByText = (
-  result: any[],
+  result: EmotesByText,
   sets: Record<string, api.TwitchEmote[]>,
   text: string,
   limit: number,
 ): boolean => {
   for (const items of Object.values(sets)) {
     for (const emote of items) {
-      if (result.length === limit) return true;
+      if (result.begins.length + result.contains.length === limit) return true;
 
-      if (emote.code.toLowerCase().includes(text)) {
-        result.push(htmlEntity.createTwitchEmote(emote));
+      const index = emote.code.toLowerCase().indexOf(text);
+
+      if (index !== -1) {
+        const type = index === 0 ? 'begins' : 'contains';
+
+        result[type].push(htmlEntity.createTwitchEmote(emote));
       }
     }
   }
@@ -130,16 +135,20 @@ const findTwitchEmotesByText = (
 };
 
 const findBttvEmotesByText = (
-  result: any[],
+  result: EmotesByText,
   bttv: api.BttvGlobalEmote[] | api.BttvChannelEmote[],
   text: string,
   limit: number,
 ): boolean => {
   for (const emote of bttv) {
-    if (result.length === limit) return true;
+    if (result.begins.length + result.contains.length === limit) return true;
 
-    if (emote.code.toLowerCase().includes(text)) {
-      result.push(htmlEntity.createBttvEmote(emote));
+    const index = emote.code.toLowerCase().indexOf(text);
+
+    if (index !== -1) {
+      const type = index === 0 ? 'begins' : 'contains';
+
+      result[type].push(htmlEntity.createBttvEmote(emote));
     }
   }
 
@@ -147,16 +156,20 @@ const findBttvEmotesByText = (
 };
 
 const findFfzEmotesByText = (
-  result: any[],
+  result: EmotesByText,
   ffz: api.FfzEmote[],
   text: string,
   limit: number,
 ): boolean => {
   for (const emote of ffz) {
-    if (result.length === limit) return true;
+    if (result.begins.length + result.contains.length === limit) return true;
 
-    if (emote.name.toLowerCase().includes(text)) {
-      result.push(htmlEntity.createFfzEmote(emote));
+    const index = emote.name.toLowerCase().indexOf(text);
+
+    if (index !== -1) {
+      const type = index === 0 ? 'begins' : 'contains';
+
+      result[type].push(htmlEntity.createFfzEmote(emote));
     }
   }
 

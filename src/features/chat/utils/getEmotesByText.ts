@@ -3,6 +3,11 @@ import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { StateEmotes } from 'features/chat/selectors/chatSelectors';
 import findEmote from 'features/chat/utils/findEmote';
 
+export type EmotesByText = {
+  begins: htmlEntity.Emote[];
+  contains: htmlEntity.Emote[];
+};
+
 const getEmotesByText = (
   text: string,
   emotes: StateEmotes,
@@ -10,7 +15,10 @@ const getEmotesByText = (
 ): htmlEntity.Emote[] => {
   if (!emotes) return [];
 
-  const result: htmlEntity.Emote[] = [];
+  const result: EmotesByText = {
+    begins: [],
+    contains: [],
+  };
   const textLower = text.toLowerCase();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,7 +30,7 @@ const getEmotesByText = (
     findEmote.bttv.byText(result, emotes.bttvGlobal, textLower, limit) ||
     findEmote.ffz.byText(result, emotes.ffzGlobal, textLower, limit);
 
-  return result;
+  return [...result.begins, ...result.contains];
 };
 
 export default getEmotesByText;
