@@ -13,7 +13,6 @@ import {
   currentChannelSelector,
   isConnectedSelector,
 } from 'features/chat/selectors';
-import replaceEmojis from 'features/chat/utils/replaceEmojis';
 import ChatInput from 'features/chat/components/ChatInput';
 import ChatControls from 'features/chat/components/ChatControls';
 import Messages from 'features/chat/components/Messages';
@@ -56,9 +55,7 @@ const Chat = () => {
   const handleSendMessage = useCallback(() => {
     if (!client || !textRef.current) return;
 
-    const normalizedMessage = replaceEmojis(textRef.current.trim());
-
-    client.say(currentChannel, normalizedMessage);
+    client.say(currentChannel, textRef.current);
 
     setText('');
   }, [client, currentChannel, textRef, setText]);

@@ -12,15 +12,15 @@ import {
   updateGlobalUserParams,
   updateUserParams,
   updateRoomParams,
+  addOwnMessage,
 } from 'features/chat/slice';
 import {
   currentChannelSelector,
   isConnectedSelector,
 } from 'features/chat/selectors';
-import { OwnMessage } from 'features/chat/slice/messages';
+import replaceEmojis from 'features/chat/utils/replaceEmojis';
 import {
   isAuthSelector,
-  userIdSelector,
   isAuthReadySelector,
   userLoginSelector,
   invalidateAuth,
@@ -31,7 +31,6 @@ const useTwitchClient = () => {
 
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
-  const userId = useSelector(userIdSelector);
   const userLogin = useSelector(userLoginSelector);
   const isConnected = useSelector(isConnectedSelector);
   const currentChannel = useSelector(currentChannelSelector);
@@ -144,22 +143,21 @@ const useTwitchClient = () => {
 
   const client = () => ({
     say(channel: string, message: string) {
-      if (!clientRef.current) return;
+      if (!clientRef.current || !message.trim()) return;
 
-      clientRef.current.say(channel, message);
+      const normalizedMessage = replaceEmojis(message.trim());
+
+      clientRef.current.say(channel, normalizedMessage);
 
       function handleUserState(data: twitchIrc.UserStateEvent) {
         if (data.channel === channel) {
-          const ownMessage = {
-            message,
-            id: uuid(),
-            channel,
-            tags: data.tags,
-            timestamp: new Date().getTime(),
-            userId,
-            userLogin,
-          } as OwnMessage;
-          dispatch(addMessage({ type: 'own-message', message: ownMessage }));
+          dispatch(
+            addOwnMessage({
+              message: normalizedMessage,
+              channel,
+              tags: data.tags,
+            }),
+          );
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           removeListeners();
         }
@@ -189,7 +187,7 @@ const useTwitchClient = () => {
     },
   });
 
-  return useMemo(client, [clientRef, dispatch, userLogin, userId]);
+  return useMemo(client, [clientRef, dispatch]);
 };
 
 export default useTwitchClient;
