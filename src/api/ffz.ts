@@ -23,22 +23,20 @@ export interface FfzEmote {
   width: number;
 }
 
+interface FfzEmoteSet {
+  _type: number;
+  css: null;
+  description: null;
+  emoticons: FfzEmote[];
+  icon: null;
+  id: number;
+  title: string;
+}
+
 export interface FfzGlobalEmotesResponse {
   default_sets: number[];
-  sets: {
-    [id: string]: {
-      _type: number;
-      css: null;
-      description: null;
-      emoticons: FfzEmote[];
-      icon: null;
-      id: number;
-      title: string;
-    };
-  };
-  users: {
-    [id: string]: string[];
-  };
+  sets: Record<string, FfzEmoteSet>;
+  users: Record<string, string[]>;
 }
 
 export interface FfzChannelEmotesResponse {
@@ -54,17 +52,7 @@ export interface FfzChannelEmotesResponse {
     twitch_id: number;
     user_badges: {};
   };
-  sets: {
-    [id: string]: {
-      _type: number;
-      css: null;
-      description: null;
-      emoticons: FfzEmote[];
-      icon: null;
-      id: number;
-      title: number;
-    };
-  };
+  sets: Record<string, FfzEmoteSet>;
 }
 
 export const fetchFfzGlobalEmotes = (): Promise<FfzGlobalEmotesResponse> =>

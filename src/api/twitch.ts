@@ -46,12 +46,8 @@ export interface TwitchEmote {
   code: string;
 }
 
-export interface TwitchEmoteSets {
-  [id: string]: TwitchEmote[];
-}
-
 export interface TwitchEmotesResponse {
-  emoticon_sets: TwitchEmoteSets;
+  emoticon_sets: Record<string, TwitchEmote[]>;
 }
 
 export interface TwitchBadgeVersion {
@@ -66,17 +62,11 @@ export interface TwitchBadgeVersion {
 }
 
 export interface TwitchBadge {
-  versions: {
-    [version: string]: TwitchBadgeVersion;
-  };
-}
-
-export interface TwitchBadges {
-  [name: string]: TwitchBadge;
+  versions: Record<string, TwitchBadgeVersion>;
 }
 
 export interface TwitchBadgesResponse {
-  badge_sets: TwitchBadges;
+  badge_sets: Record<string, TwitchBadge>;
 }
 
 export interface TwitchBlockedUser {
@@ -92,9 +82,9 @@ export interface TwitchBlockedUser {
 
 export interface TwitchBlockedUsersResponse {
   _total: number;
-  blocks: Array<{
+  blocks: {
     user: TwitchBlockedUser;
-  }>;
+  }[];
 }
 
 export const fetchUser = (userId: string): Promise<TwitchUsersResponse> =>
