@@ -13,15 +13,15 @@ type AUsageItem = {
   uses: number;
 };
 
-type UsageItemTwitchFfz = {
+type UsageItemTwitchFfz = AUsageItem & {
   type: 'twitch-emote' | 'ffz-emote';
   id: number;
-} & AUsageItem;
+};
 
-type UsageItemBttv = {
+type UsageItemBttv = AUsageItem & {
   type: 'bttv-emote';
   id: string;
-} & AUsageItem;
+};
 
 type UsageItem = UsageItemTwitchFfz | UsageItemBttv;
 
