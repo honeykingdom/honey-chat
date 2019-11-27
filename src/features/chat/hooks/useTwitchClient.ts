@@ -109,7 +109,7 @@ const useTwitchClient = () => {
       const options = isAuth
         ? {
             name: userLogin as string,
-            auth: localStorage.getItem(LS_ACCESS_TOKEN),
+            auth: localStorage.getItem(LS_ACCESS_TOKEN) as string,
           }
         : null;
 
