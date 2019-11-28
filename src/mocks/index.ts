@@ -1,9 +1,9 @@
 import * as api from 'api';
-import twitchEmotes from 'mocks/twitchEmotes';
-import bttvGlobal from 'mocks/bttvGlobalEmotes';
-import bttvChannel from 'mocks/bttvChannelEmotes';
-import ffzGlobal from 'mocks/ffzGlobalEmotes';
-import ffzChannel from 'mocks/ffzChannelEmotes';
+import twitchEmotes from 'mocks/twitchEmotes.json';
+import bttvGlobal from 'mocks/bttvGlobalEmotes.json';
+import bttvChannel from 'mocks/bttvChannelEmotes.json';
+import ffzGlobal from 'mocks/ffzGlobalEmotes.json';
+import ffzChannel from 'mocks/ffzChannelEmotes.json';
 import {
   parseTwitchGlobalEmotes,
   parseTwitchChannelEmotes,

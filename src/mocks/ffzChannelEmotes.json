@@ -1,0 +1,573 @@
+{
+  "room": {
+    "_id": 311975,
+    "css": null,
+    "display_name": "DmitryScaletta",
+    "id": "dmitryscaletta",
+    "is_group": false,
+    "mod_urls": null,
+    "moderator_badge": null,
+    "set": 311987,
+    "twitch_id": 38259425,
+    "user_badges": {}
+  },
+  "sets": {
+    "311987": {
+      "_type": 1,
+      "css": null,
+      "description": null,
+      "emoticons": [
+        {
+          "css": null,
+          "height": 20,
+          "hidden": false,
+          "id": 19972,
+          "margins": null,
+          "modifier": false,
+          "name": "DICKS",
+          "offset": null,
+          "owner": {
+            "_id": 2913,
+            "display_name": "FierceFrankie",
+            "name": "fiercefrankie"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/1e4adb53c6a94a9163d24d2ab888b6b7.png"
+          },
+          "width": 100
+        },
+        {
+          "css": null,
+          "height": 28,
+          "hidden": false,
+          "id": 313588,
+          "margins": null,
+          "modifier": false,
+          "name": "peepoPooPoo",
+          "offset": null,
+          "owner": {
+            "_id": 325177,
+            "display_name": "Pigzit",
+            "name": "pigzit"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/dad07501373b1217530ea262a14fd551.PNG",
+            "2": "//cdn.frankerfacez.com/dbe705bb30c56beb590ae4e5f0ea7da0.PNG",
+            "4": "//cdn.frankerfacez.com/67df60b84bc5c32e4f670ce1bc78837a.png"
+          },
+          "width": 27
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 321688,
+          "margins": null,
+          "modifier": false,
+          "name": "Dovolen",
+          "offset": null,
+          "owner": {
+            "_id": 254348,
+            "display_name": "MaxAsabin",
+            "name": "maxasabin"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/f6871915c340e6f32250c5f27905a9c2.PNG",
+            "2": "//cdn.frankerfacez.com/2efa0f24174a2941dd412701aa6fc9a8.png",
+            "4": "//cdn.frankerfacez.com/3b2d044729afb2605f0ce4b2cf8c8699.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 318914,
+          "margins": null,
+          "modifier": false,
+          "name": "peepoClown",
+          "offset": null,
+          "owner": {
+            "_id": 254133,
+            "display_name": "NisseOnTwitch",
+            "name": "nisseontwitch"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/ff0ff924d1025b0dd2bf729f38f0163a.PNG",
+            "2": "//cdn.frankerfacez.com/7c6aaf87ac59eff7561f148a6a1d5dd7.PNG",
+            "4": "//cdn.frankerfacez.com/581c3f8594f17406d00e8d913cbd0d61.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 28,
+          "hidden": false,
+          "id": 226912,
+          "margins": null,
+          "modifier": false,
+          "name": "4Shrug",
+          "offset": null,
+          "owner": {
+            "_id": 181397,
+            "display_name": "sleepyspaceraccoon",
+            "name": "sleepyspaceraccoon"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/7e49d483e5166ee4f253324e5c11e0bd.PNG",
+            "2": "//cdn.frankerfacez.com/bb51998bbacf4eed8fa6327d9599e064.PNG",
+            "4": "//cdn.frankerfacez.com/b2f3fa71627b937673ee466d9eb0a062.png"
+          },
+          "width": 27
+        },
+        {
+          "css": null,
+          "height": 26,
+          "hidden": false,
+          "id": 182473,
+          "margins": null,
+          "modifier": false,
+          "name": "FeelsWowMan",
+          "offset": null,
+          "owner": {
+            "_id": 67384,
+            "display_name": "Nobody0532",
+            "name": "nobody0532"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/81bf0adbb2a8609e75357976039a53ba.PNG",
+            "2": "//cdn.frankerfacez.com/19acff72fada96784e34aa6106e8582a.PNG",
+            "4": "//cdn.frankerfacez.com/3959452f30ab9b58a6319b0af010cb71.png"
+          },
+          "width": 27
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 263833,
+          "margins": null,
+          "modifier": false,
+          "name": "PepeLaugh",
+          "offset": null,
+          "owner": {
+            "_id": 60591,
+            "display_name": "pajlada",
+            "name": "pajlada"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/7b0f7c6a578993506d80b82dda3e6569.PNG",
+            "2": "//cdn.frankerfacez.com/6fd5dabebddc5e004262589865f24f52.PNG",
+            "4": "//cdn.frankerfacez.com/a7243ec66e009f177a5d49a16bce3c7c.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 20,
+          "hidden": false,
+          "id": 165784,
+          "margins": null,
+          "modifier": false,
+          "name": "4HEader",
+          "offset": null,
+          "owner": {
+            "_id": 62764,
+            "display_name": "KaiOwei",
+            "name": "kaiowei"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/0cebc02c5561cdf2ae22a29d6de99747.PNG",
+            "2": "//cdn.frankerfacez.com/fa72fb20d49843c5573508be5b0f55ba.PNG",
+            "4": "//cdn.frankerfacez.com/3ac2bb0eb8629665ae811c35bafdeaf6.png"
+          },
+          "width": 56
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 381875,
+          "margins": null,
+          "modifier": false,
+          "name": "KEKW",
+          "offset": null,
+          "owner": {
+            "_id": 454990,
+            "display_name": "Keesual",
+            "name": "keesual"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/97/6a/976a9687bd2d093921b5124d6ffd44b9.PNG",
+            "2": "//cdn.frankerfacez.com/44/f4/44f469f1d50facd38188d221792cc399.PNG",
+            "4": "//cdn.frankerfacez.com/5c/8f/5c8f8d7f6a32563775514af496f3a0bd.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 274406,
+          "margins": null,
+          "modifier": false,
+          "name": "3Head",
+          "offset": null,
+          "owner": {
+            "_id": 313221,
+            "display_name": "timmytoina",
+            "name": "timmytoina"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/de0f5b7104447083879bcdd17420330d.png",
+            "2": "//cdn.frankerfacez.com/911a229840c487ce04ffaa31f56490df.PNG",
+            "4": "//cdn.frankerfacez.com/5d189dd8596221a15f0c0aaf25053131.PNG"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 19,
+          "hidden": false,
+          "id": 270930,
+          "margins": null,
+          "modifier": false,
+          "name": "widepeepoHappy",
+          "offset": null,
+          "owner": {
+            "_id": 306186,
+            "display_name": "black__tic_tac",
+            "name": "black__tic_tac"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/f5072cb5ccddd6ebbedcd70016440c2d.PNG",
+            "2": "//cdn.frankerfacez.com/8d266bf47a26566fd1f6f65035a749a8.PNG",
+            "4": "//cdn.frankerfacez.com/5fd758ec6440505156dc420c9293b0ee.png"
+          },
+          "width": 80
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 262468,
+          "margins": null,
+          "modifier": false,
+          "name": "WeirdChamp",
+          "offset": null,
+          "owner": {
+            "_id": 101816,
+            "display_name": "nedddus",
+            "name": "nedddus"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/6406881ab91dc9487ca642220e44ad6e.PNG",
+            "2": "//cdn.frankerfacez.com/0692715e8ea9e13abe44a455d2576366.PNG",
+            "4": "//cdn.frankerfacez.com/bd575eeced306c2a74b0b8c2dc41530b.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 25,
+          "hidden": false,
+          "id": 243789,
+          "margins": null,
+          "modifier": false,
+          "name": "Pepega",
+          "offset": null,
+          "owner": {
+            "_id": 219625,
+            "display_name": "adew",
+            "name": "adew"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/98ad06b77d31d7dd67141ecf0d16c887.PNG",
+            "2": "//cdn.frankerfacez.com/17845d283178777940a3e2a2dc2bed23.PNG",
+            "4": "//cdn.frankerfacez.com/e42146cc17957b0d3f60a3f8cfc97d58.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 239504,
+          "margins": null,
+          "modifier": false,
+          "name": "5Head",
+          "offset": null,
+          "owner": {
+            "_id": 209159,
+            "display_name": "SublimedTV",
+            "name": "sublimedtv"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/d5a0a62e3ee4378509dd3485fd27a4a3.PNG",
+            "2": "//cdn.frankerfacez.com/94ea07d3127652eced30e60ea927b787.PNG",
+            "4": "//cdn.frankerfacez.com/f1a096541e416f3601e40e5d90fdf2cf.png"
+          },
+          "width": 26
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 231552,
+          "margins": null,
+          "modifier": false,
+          "name": "PepeHands",
+          "offset": null,
+          "owner": {
+            "_id": 73302,
+            "display_name": "garych",
+            "name": "garych"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/a5be672a70476162e4c1cc228ea32d34.png",
+            "2": "//cdn.frankerfacez.com/8eb4ee9e410589bbe4f255e09ca9742b.png",
+            "4": "//cdn.frankerfacez.com/b97ed9ea44a548134578aecd47348784.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 20,
+          "hidden": false,
+          "id": 229760,
+          "margins": null,
+          "modifier": false,
+          "name": "HandsUp",
+          "offset": null,
+          "owner": {
+            "_id": 32533,
+            "display_name": "Zugren",
+            "name": "zugren"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/11692c00b5d91d0815ef5a7d8d92bb3d.PNG",
+            "2": "//cdn.frankerfacez.com/e6512ce65c667d73c7247dd1b2da5fc7.PNG",
+            "4": "//cdn.frankerfacez.com/e73a70e8368be6e3eb29e9fb696588ff.png"
+          },
+          "width": 38
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 229486,
+          "margins": null,
+          "modifier": false,
+          "name": "KKonaW",
+          "offset": null,
+          "owner": {
+            "_id": 54361,
+            "display_name": "FabulousPotato69",
+            "name": "fabulouspotato69"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/51fd556a38a7bb3167da78d2785c4849.PNG",
+            "2": "//cdn.frankerfacez.com/28aa6d2ccee611286fde0eb4776d67e7.PNG",
+            "4": "//cdn.frankerfacez.com/c6db760da85f7489263b3d037729b02c.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 21,
+          "hidden": false,
+          "id": 218860,
+          "margins": null,
+          "modifier": false,
+          "name": "Kapp",
+          "offset": null,
+          "owner": {
+            "_id": 69782,
+            "display_name": "Teyn",
+            "name": "teyn"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/55c2fc5e38e679aab5ce5001e3e9fd34.PNG",
+            "2": "//cdn.frankerfacez.com/47a4fce69096d92bdefe2a79fd1eaef7.PNG",
+            "4": "//cdn.frankerfacez.com/c3a83357caa0ac302e0fb6c17360ad20.png"
+          },
+          "width": 8
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 214681,
+          "margins": null,
+          "modifier": false,
+          "name": "monkaW",
+          "offset": null,
+          "owner": {
+            "_id": 102274,
+            "display_name": "voparoS_",
+            "name": "voparos_"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/bc3bcac1618d167fa641bae643e5511a.PNG",
+            "2": "//cdn.frankerfacez.com/b0122f03fdd702880ce1da773460039c.PNG",
+            "4": "//cdn.frankerfacez.com/2935bbb653399b87d4d58de4cbbaab85.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 28,
+          "hidden": false,
+          "id": 210748,
+          "margins": null,
+          "modifier": false,
+          "name": "Pog",
+          "offset": null,
+          "owner": {
+            "_id": 69782,
+            "display_name": "Teyn",
+            "name": "teyn"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/8b0bdafc59ef0782dcd99ab57434699d.PNG",
+            "2": "//cdn.frankerfacez.com/7c4a79a81eb71b28bf67a3a390455237.png"
+          },
+          "width": 28
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 204717,
+          "margins": null,
+          "modifier": false,
+          "name": "HYPERBRUH",
+          "offset": null,
+          "owner": {
+            "_id": 81952,
+            "display_name": "Goran42069",
+            "name": "goran42069"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/de02fdb9721af300ac68de088b69a5fb.PNG",
+            "2": "//cdn.frankerfacez.com/ad6ffc171d00d318082a524f3d6d20bc.PNG",
+            "4": "//cdn.frankerfacez.com/178e5305cb52d17ec15710713c62454d.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 31,
+          "hidden": false,
+          "id": 162146,
+          "margins": null,
+          "modifier": false,
+          "name": "AYAYA",
+          "offset": null,
+          "owner": {
+            "_id": 89216,
+            "display_name": "FoveVever",
+            "name": "fovevever"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/50ced72ed450c028614734f16bb37d77.PNG",
+            "2": "//cdn.frankerfacez.com/53940d93219ba92b666e780f64f54c00.PNG",
+            "4": "//cdn.frankerfacez.com/80e55da6204c651f404b95fd98ce510e.png"
+          },
+          "width": 32
+        },
+        {
+          "css": null,
+          "height": 28,
+          "hidden": false,
+          "id": 145916,
+          "margins": null,
+          "modifier": false,
+          "name": "KKomrade",
+          "offset": null,
+          "owner": {
+            "_id": 73302,
+            "display_name": "garych",
+            "name": "garych"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/97236421b4149cf050a8616e9218e96f.PNG",
+            "2": "//cdn.frankerfacez.com/94736d83c45f302cba9ba0c7d74c181e.PNG",
+            "4": "//cdn.frankerfacez.com/47927d04fc8f5b93868cef8aaab57faa.png"
+          },
+          "width": 28
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 139407,
+          "margins": null,
+          "modifier": false,
+          "name": "LULW",
+          "offset": null,
+          "owner": {
+            "_id": 53544,
+            "display_name": "Ian678",
+            "name": "ian678"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/17c1c57d01c492f4041bb203d5580c9f.PNG",
+            "2": "//cdn.frankerfacez.com/0558f207f535249a5bfbd4da24eac870.PNG",
+            "4": "//cdn.frankerfacez.com/9c95779ff5ea8d958cca6d206baadd36.png"
+          },
+          "width": 28
+        },
+        {
+          "css": null,
+          "height": 32,
+          "hidden": false,
+          "id": 128054,
+          "margins": null,
+          "modifier": false,
+          "name": "OMEGALUL",
+          "offset": null,
+          "owner": {
+            "_id": 40215,
+            "display_name": "DourGent",
+            "name": "dourgent"
+          },
+          "public": true,
+          "urls": {
+            "1": "//cdn.frankerfacez.com/c7fad0924d4a89328aab8972b7363028.PNG",
+            "2": "//cdn.frankerfacez.com/8e53f0c8f8b62c57a2765098dc668dd3.PNG",
+            "4": "//cdn.frankerfacez.com/6cba66f9bc9eee8edecb01e12d752822.png"
+          },
+          "width": 31
+        }
+      ],
+      "icon": null,
+      "id": 311987,
+      "title": "Channel: DmitryScaletta"
+    }
+  }
+}
