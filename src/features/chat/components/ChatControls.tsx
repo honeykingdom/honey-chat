@@ -99,13 +99,14 @@ type Props = {
 const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
   const optionsModalRef = useRef(null);
+  const optionsButtonRef = useRef(null);
+  const optionsNodesRef = useRef([optionsModalRef, optionsButtonRef]);
 
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
 
   const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
-
-  useOnClickOutside(optionsModalRef, handleCloseOptionsModal);
+  useOnClickOutside(optionsNodesRef, handleCloseOptionsModal);
 
   const renderSignInButton = () => (
     <SignInButton to="/chat/auth">
@@ -122,17 +123,16 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
     </OptionsModal>
   );
 
-  const optionsButton = (
-    <OptionsButton onClick={() => setIsOptionsModalVisible((prev) => !prev)}>
-      <GearsIcon />
-    </OptionsButton>
-  );
-
   return (
     <ChatControlsRoot>
       <Controls>
         {isAuthReady && !isAuth && renderSignInButton()}
-        {optionsButton}
+        <OptionsButton
+          ref={optionsButtonRef}
+          onClick={() => setIsOptionsModalVisible((prev) => !prev)}
+        >
+          <GearsIcon />
+        </OptionsButton>
         <Button disabled={isDisabled} onClick={onSendMessage}>
           Chat
         </Button>
