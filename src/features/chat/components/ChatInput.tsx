@@ -268,7 +268,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
           <TextareaWrapper isSuggestions={suggestions.isActive}>
             <TextareaInput>
               <Textarea
-                inputRef={textareaRef as React.RefObject<HTMLTextAreaElement>}
+                inputRef={textareaRef}
                 value={text}
                 placeholder="Send a message"
                 maxLength={500}
