@@ -17,7 +17,7 @@ describe('auth utils', () => {
 
     localStorage.setItem(LS_USER, user);
 
-    const result = readUserFromLocatStorage();
+    const result = readUserFromLocatStorage() as any;
 
     expect(result.id).toBe('123456');
     expect(result.login).toBe('twitch');
@@ -29,7 +29,7 @@ describe('auth utils', () => {
       login: 'twitch',
     });
 
-    const result = JSON.parse(localStorage.getItem(LS_USER));
+    const result = JSON.parse(localStorage.getItem(LS_USER) as string);
 
     expect(result.id).toBe('123456');
     expect(result.login).toBe('twitch');

@@ -6,7 +6,7 @@ import auth, {
 
 describe('auth reducer', () => {
   it('should handle initial state', () => {
-    expect(auth(initialState, {})).toEqual(initialState);
+    expect(auth(initialState, { type: '' })).toEqual(initialState);
   });
 
   it('should handle initializeAuth', () => {

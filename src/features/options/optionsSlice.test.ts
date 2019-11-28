@@ -5,7 +5,7 @@ import options, {
 
 describe('options reducer', () => {
   it('should handle initial state', () => {
-    expect(options(initialState, {})).toEqual(initialState);
+    expect(options(initialState, { type: '' })).toEqual(initialState);
   });
 
   it('should handle changeOption', () => {

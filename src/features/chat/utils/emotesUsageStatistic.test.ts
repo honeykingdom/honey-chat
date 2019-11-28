@@ -10,13 +10,17 @@ import {
   getEmotesFromUsageStatistic,
 } from 'features/chat/utils/emotesUsageStatistic';
 
-const mapFindEmote = {
+type ItemType = 'twitch-emote' | 'bttv-emote' | 'ffz-emote';
+
+const mapFindEmote: Record<ItemType, Function> = {
   'twitch-emote': findTwitchEmote,
   'bttv-emote': findBttvEmote,
   'ffz-emote': findFfzEmote,
 };
 
-const createUsage = ([type, name, uses, lastUpdatedAt]) => {
+type UsageParams = [ItemType, string, number, number];
+
+const createUsage = ([type, name, uses, lastUpdatedAt]: UsageParams) => {
   const emote = mapFindEmote[type](name);
 
   return {
@@ -29,7 +33,7 @@ const createUsage = ([type, name, uses, lastUpdatedAt]) => {
   };
 };
 
-const createStatistic = R.pipe(
+const createStatistic = R.pipe<any, any, any>(
   R.groupBy(R.head),
   R.map(R.pipe(R.map(createUsage), R.mergeAll)),
 );
@@ -39,7 +43,7 @@ describe('emotes usage statistic', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem.mockClear();
+    jest.clearAllMocks();
   });
 
   it('should read empty statistic', () => {
@@ -76,9 +80,9 @@ describe('emotes usage statistic', () => {
 
     writeEmotesUsageStatistic(entities);
 
-    expect(JSON.parse(localStorage.getItem(LS_EMOTES_USAGE_STATISTIC))).toEqual(
-      result,
-    );
+    expect(
+      JSON.parse(localStorage.getItem(LS_EMOTES_USAGE_STATISTIC) as string),
+    ).toEqual(result);
   });
 
   it('should merge statistic', () => {
@@ -104,9 +108,9 @@ describe('emotes usage statistic', () => {
     ]);
 
     writeEmotesUsageStatistic(entities);
-    expect(JSON.parse(localStorage.getItem(LS_EMOTES_USAGE_STATISTIC))).toEqual(
-      result,
-    );
+    expect(
+      JSON.parse(localStorage.getItem(LS_EMOTES_USAGE_STATISTIC) as string),
+    ).toEqual(result);
   });
 
   it('should return statistic from entities', () => {

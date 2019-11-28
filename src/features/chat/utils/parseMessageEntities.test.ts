@@ -76,12 +76,8 @@ describe('parse message entities', () => {
       htmlEntity.createTwitchEmote({ id: 6, code: 'O_o' }),
     ];
 
-    expect(
-      parseMessageEntities(message1, emotes, null, { parseTwitch: true }),
-    ).toEqual(result1);
-    expect(
-      parseMessageEntities(message2, emotes, null, { parseTwitch: true }),
-    ).toEqual(result2);
+    expect(parseMessageEntities(message1, emotes, null, true)).toEqual(result1);
+    expect(parseMessageEntities(message2, emotes, null, true)).toEqual(result2);
   });
 
   it('should format emoji', () => {

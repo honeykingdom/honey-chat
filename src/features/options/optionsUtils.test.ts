@@ -19,7 +19,7 @@ describe('options utils', () => {
 
     localStorage.setItem(LS_OPTIONS, options);
 
-    const result = readOptionsFromLocalStorage();
+    const result = readOptionsFromLocalStorage() as any;
 
     expect(result.showTimestamps).toBe(true);
     expect(result.splitChat).toBe(false);
