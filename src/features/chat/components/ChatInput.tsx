@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import TextareaAutosize from 'react-textarea-autosize';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import ChatModal from 'components/ChatModal';
@@ -101,14 +102,18 @@ const EmotesModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-const Textarea = styled.textarea`
+const Textarea = styled(TextareaAutosize)<{ showScroll: boolean }>`
   display: block;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 32px;
   width: 100%;
   height: 38px;
   max-height: 91px;
   min-height: 40px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: ${(p) => (p.showScroll ? 'auto' : 'hidden')};
   border: 2px solid transparent;
   background-color: rgba(255, 255, 255, 0.15);
   font-family: inherit;
@@ -181,6 +186,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
 
     useOnClickOutside(suggestionNodesRef, () => onBlur());
 
+    const [isShowTextareaScroll, setIsShowTextareaScroll] = useState(false);
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
     const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
     const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
@@ -246,6 +252,9 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       </EmotesModal>
     );
 
+    const handleHeightChange = (height: number) =>
+      setIsShowTextareaScroll(height >= 96);
+
     return (
       <ChatInputRoot ref={chatInputRef}>
         <ChatInputInner>
@@ -253,14 +262,17 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
           <TextareaWrapper isSuggestions={suggestions.isActive}>
             <TextareaInput>
               <Textarea
-                ref={textareaRef}
+                inputRef={textareaRef as React.RefObject<HTMLTextAreaElement>}
                 value={text}
                 placeholder="Send a message"
                 maxLength={500}
+                maxRows={4}
                 disabled={isDisabled}
+                showScroll={isShowTextareaScroll}
                 onChange={onChange}
                 onKeyUp={onKeyUp}
                 onKeyDown={onKeyDown}
+                onHeightChange={handleHeightChange}
               />
               {isEmotesLoaded && renderEmotesButton()}
             </TextareaInput>
