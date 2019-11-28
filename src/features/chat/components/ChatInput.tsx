@@ -102,7 +102,13 @@ const EmotesModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-const Textarea = styled(TextareaAutosize)<{ showScroll: boolean }>`
+// TODO: remove this after styled-components fix this
+/* eslint-disable react/jsx-props-no-spreading, @typescript-eslint/no-unused-vars */
+const TextareaAutosizeFiltered = ({ showScroll, ...rest }: any) => (
+  <TextareaAutosize {...rest} />
+);
+/* eslint-enable react/jsx-props-no-spreading, @typescript-eslint/no-unused-vars */
+const Textarea = styled(TextareaAutosizeFiltered)<{ showScroll: boolean }>`
   display: block;
   padding-top: 10px;
   padding-bottom: 10px;
