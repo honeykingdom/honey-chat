@@ -185,7 +185,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
   ) => {
     const chatInputRef = useRef(null);
     const suggestionsRef = useRef<HTMLDivElement>(null);
-    const suggestionNodesRef = useRef<React.RefObject<HTMLElement>[]>([
+    const suggestionNodesRef = useRef([
       textareaRef,
       suggestionsRef,
     ] as React.RefObject<HTMLElement>[]);
