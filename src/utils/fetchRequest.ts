@@ -4,25 +4,28 @@ export interface FetchRequestOptions extends RequestInit {
   timeout?: number;
 }
 
-const fetchRequest = async (url: string, options: FetchRequestOptions = {}) => {
-  let fetchOptions = { timeout: API_REQUESTS_TIMEOUT, ...options };
+const fetchRequest = async (
+  url: string,
+  { timeout, ...restOptions }: FetchRequestOptions = {},
+) => {
+  let options = { ...restOptions };
+  const fetchTimeout = timeout || API_REQUESTS_TIMEOUT;
 
-  if (options.timeout) {
+  if (fetchTimeout) {
     const controller = new AbortController();
-    delete fetchOptions.timeout;
-    fetchOptions = { ...fetchOptions, signal: controller.signal };
-    setTimeout(() => controller.abort(), options.timeout);
+
+    options = { ...options, signal: controller.signal };
+
+    setTimeout(() => controller.abort(), fetchTimeout);
   }
 
-  const response = await fetch(url, fetchOptions);
-
-  const body = await response.json();
+  const response = await fetch(url, options);
 
   if (!response.ok) {
-    const error = Error(response.statusText);
-    // error.data = body;
-    throw error;
+    throw Error(response.statusText);
   }
+
+  const body = await response.json();
 
   return body;
 };
