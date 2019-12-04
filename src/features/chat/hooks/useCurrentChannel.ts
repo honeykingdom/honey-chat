@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { LS_LAST_CHANNEL } from 'utils/constants';
-import useLocationHash from 'hooks/useLocationHash';
 import { updateCurrentChannel } from 'features/chat/slice';
 
+// TODO: remove lastChannel if can't connect to the channel
+
 const useCurrentChannel = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
-  const hash = useLocationHash();
+  const { hash } = history.location;
 
   useEffect(() => {
     if (hash && hash.length > 1) {
@@ -20,8 +23,20 @@ const useCurrentChannel = () => {
       document.title = channel
         ? `#${channel} - ${process.env.REACT_APP_NAME} `
         : (process.env.REACT_APP_NAME as string);
+
+      return;
     }
-  }, [dispatch, hash]);
+
+    const lastChannel = localStorage.getItem(LS_LAST_CHANNEL);
+
+    if (lastChannel) {
+      history.push({ pathname: '/chat/', hash: lastChannel });
+
+      dispatch(updateCurrentChannel(lastChannel));
+    } else {
+      dispatch(updateCurrentChannel(''));
+    }
+  }, [dispatch, history, hash]);
 };
 
 export default useCurrentChannel;
