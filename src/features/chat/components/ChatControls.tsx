@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
 import { ReactComponent as TwitchIconSvg } from 'icons/twitch.svg';
+import Button from 'components/Button';
 import IconButton from 'components/IconButton';
 import ChatModal from 'components/ChatModal';
 import Options from 'features/options/Options';
@@ -36,7 +37,7 @@ const OptionsModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-const buttonStyles = css`
+export const buttonStyles = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,12 +70,6 @@ const buttonStyles = css`
     opacity: 0.5;
     cursor: not-allowed;
   }
-`;
-const Button = styled.button.attrs({ type: 'button' })`
-  ${buttonStyles};
-`;
-const SignInButton = styled(Link)`
-  ${buttonStyles};
 `;
 const OptionsButton = styled(IconButton)`
   margin-left: auto;
@@ -109,10 +104,10 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   useOnClickOutside(optionsNodesRef, handleCloseOptionsModal);
 
   const renderSignInButton = () => (
-    <SignInButton to="/chat/auth">
+    <Button as={Link} to="/chat/auth">
       <TwitchIcon />
       Sign in with Twitch
-    </SignInButton>
+    </Button>
   );
 
   const renderOptionsModal = () => (
