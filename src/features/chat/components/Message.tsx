@@ -35,10 +35,43 @@ const Name = styled.span`
   color: ${(p) => p.color};
   cursor: pointer;
 `;
+// https://github.com/night/BetterTTV/blob/master/src/modules/emotes/style.css
 const Emote = styled.img`
   display: inline-block;
   margin: -5px 0;
   vertical-align: middle;
+
+  /* Prevent stacking of IceCold, SoSnowy */
+  &[data-emote-id='5849c9a4f52be01a7ee5f79d']
+    + &[data-emote-id='5849c9a4f52be01a7ee5f79d'],
+  &[data-emote-id='567b5b520e984428652809b6']
+    + &[data-emote-id='567b5b520e984428652809b6'] {
+    display: none;
+  }
+
+  /* IceCold */
+  & + &[data-emote-id='5849c9a4f52be01a7ee5f79d'] {
+    margin-left: -33px;
+  }
+
+  /* SoSnowy */
+  & + &[data-emote-id='567b5b520e984428652809b6'] {
+    margin-left: -32px;
+  }
+
+  /* SantaHat */
+  & + &[data-emote-id='58487cc6f52be01a7ee5f205'] {
+    margin-left: -34px;
+    margin-top: -18px;
+  }
+
+  /* TopHat, CandyCane, ReinDeer */
+  & + &[data-emote-id='5849c9c8f52be01a7ee5f79e'],
+  & + &[data-emote-id='567b5c080e984428652809ba'],
+  & + &[data-emote-id='567b5dc00e984428652809bd'] {
+    margin-left: -31px;
+    margin-top: -18px;
+  }
 `;
 const Emoji = styled.img`
   display: inline-block;
@@ -106,7 +139,13 @@ const renderMessageArray = (login: string, userLogin: string | null) => (
     item.type === 'ffz-emote'
   ) {
     return (
-      <Emote key={key} src={item.src} srcSet={item.srcSet} alt={item.alt} />
+      <Emote
+        key={key}
+        src={item.src}
+        srcSet={item.srcSet}
+        alt={item.alt}
+        data-emote-id={item.id}
+      />
     );
   }
 
