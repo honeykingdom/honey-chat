@@ -16,6 +16,7 @@ import {
 import ChatInput from 'features/chat/components/ChatInput';
 import ChatControls from 'features/chat/components/ChatControls';
 import Messages from 'features/chat/components/Messages';
+import JoinChannel from 'features/chat/components/JoinChannel';
 
 const ChatRoot = styled.div`
   height: 100vh;
@@ -82,7 +83,11 @@ const Chat = () => {
   return (
     <ChatRoot>
       <ChatWrapper isFixedWidth={isFixedWidth}>
-        <Messages onNameRightClick={handleNameRightClick} />
+        {currentChannel ? (
+          <Messages onNameRightClick={handleNameRightClick} />
+        ) : (
+          <JoinChannel />
+        )}
         <ChatInput
           ref={chatInputRef}
           text={text}
