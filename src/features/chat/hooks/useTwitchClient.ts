@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uuid from 'uuid/v4';
-import twitchIrc from 'twitch-simple-irc';
+import * as twitchIrc from 'twitch-simple-irc';
 
 import usePrevious from 'hooks/usePrevious';
 import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';

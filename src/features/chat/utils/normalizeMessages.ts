@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import twitchIrc from 'twitch-simple-irc';
+import * as twitchIrc from 'twitch-simple-irc';
 import * as tekko from 'tekko';
 
 import * as api from 'api';
