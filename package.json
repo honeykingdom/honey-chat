@@ -107,6 +107,7 @@
       }
     },
     "rules": {
+      "import/extensions": "off",
       "import/no-unresolved": "off",
       "react/jsx-filename-extension": "off",
       "@typescript-eslint/explicit-function-return-type": "off"
