@@ -1,11 +1,11 @@
 import * as R from 'ramda';
+import { createSelector } from '@reduxjs/toolkit';
 
 import * as api from 'api';
 import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { StateEmotes } from 'features/chat/selectors';
 import getEmotesByText from 'features/chat/utils/getEmotesByText';
 import { getEmotesFromUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
-import { createSelector } from '@reduxjs/toolkit';
 
 export type EmoteCategory = {
   title?: string;
