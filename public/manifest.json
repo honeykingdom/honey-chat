@@ -14,7 +14,7 @@
     }
   ],
   "start_url": "/chat/",
-  "theme_color": "##0e0e10",
-  "background_color": "##0e0e10",
+  "theme_color": "#0e0e10",
+  "background_color": "#0e0e10",
   "display": "standalone"
 }
