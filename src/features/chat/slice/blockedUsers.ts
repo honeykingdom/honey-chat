@@ -1,39 +1,40 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { FetchFlags, initialFetchFlags } from 'utils/constants';
-import setFetchFlags from 'utils/setFetchFlags';
-import { ChatState } from 'features/chat/slice';
+import type { FetchResult } from 'utils/types';
+import type { ChatState } from 'features/chat/slice';
 import { parseBlockedUsers } from 'features/chat/utils/parseApiResponse';
 
-export type BlockedUsersState = FetchFlags & {
-  items: string[];
-};
+export type BlockedUsersState = FetchResult<string[]>;
 
-export const blockedUsersInitialState = {
-  ...initialFetchFlags,
+export const blockedUsersInitialState: BlockedUsersState = {
+  status: 'idle',
+  error: {},
   items: [],
 };
 
-export const blockedUsersReducers = {
-  fetchBlockedUsersRequest: (state: ChatState): void => {
-    setFetchFlags(state.blockedUsers, 'request');
-  },
+export const fetchBlockedUsers = createAsyncThunk(
+  'chat/fetchBlockedUsers',
+  (userId: string) => api.fetchBlockedUsers(userId),
+);
 
-  fetchBlockedUsersSuccess: (
-    state: ChatState,
-    { payload }: PayloadAction<api.TwitchBlockedUsersResponse>,
-  ): void => {
+export const blockedUsersExtraReducers = (
+  builder: ActionReducerMapBuilder<ChatState>,
+) => {
+  builder.addCase(fetchBlockedUsers.pending, (state) => {
+    state.blockedUsers.status = 'loading';
+    state.blockedUsers.error = {};
+  });
+
+  builder.addCase(fetchBlockedUsers.fulfilled, (state, { payload }): void => {
+    state.blockedUsers.status = 'success';
     state.blockedUsers.items = parseBlockedUsers(payload);
+  });
 
-    setFetchFlags(state.blockedUsers, 'success');
-  },
-
-  fetchBlockedUsersFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<string>,
-  ): void => {
-    setFetchFlags(state.blockedUsers, 'failure', payload);
-  },
+  builder.addCase(fetchBlockedUsers.rejected, (state, { error }): void => {
+    state.blockedUsers.status = 'error';
+    state.blockedUsers.error = error;
+  });
 };

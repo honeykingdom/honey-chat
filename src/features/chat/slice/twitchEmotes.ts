@@ -1,45 +1,40 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { FetchFlags, initialFetchFlags } from 'utils/constants';
-import setFetchFlags from 'utils/setFetchFlags';
-import { ChatState } from 'features/chat/slice';
-import {
-  parseTwitchGlobalEmotes,
-  parseTwitchChannelEmotes,
-} from 'features/chat/utils/parseApiResponse';
+import type { ChatState } from 'features/chat/slice';
+import { parseTwitchEmotes } from 'features/chat/utils/parseApiResponse';
+import type { FetchResult } from 'utils/types';
 
-export type TwitchEmotesState = FetchFlags & {
-  global: Record<string, api.TwitchEmote[]>;
-  user: Record<string, api.TwitchEmote[]>;
-};
+export type TwitchEmotesState = FetchResult<Record<string, api.TwitchEmote[]>>;
 
 export const twitchEmotesInitialState: TwitchEmotesState = {
-  ...initialFetchFlags,
-  global: {},
-  user: {},
+  status: 'idle',
+  error: {},
+  items: {},
 };
 
-export const twitchEmotesReducers = {
-  fetchTwitchEmotesRequest: (state: ChatState): void => {
-    setFetchFlags(state.twitchEmotes, 'request');
-  },
+export const fetchTwitchEmotes = createAsyncThunk(
+  'chat/fetchTwitchEmotes',
+  (userId: string) => api.fetchTwitchEmotes(userId),
+);
 
-  fetchTwitchEmotesSuccess: (
-    state: ChatState,
-    { payload }: PayloadAction<api.TwitchEmotesResponse>,
-  ): void => {
-    state.twitchEmotes.global = parseTwitchGlobalEmotes(payload);
-    state.twitchEmotes.user = parseTwitchChannelEmotes(payload);
+export const twitchEmotesExtraReducers = (
+  builder: ActionReducerMapBuilder<ChatState>,
+) => {
+  builder.addCase(fetchTwitchEmotes.pending, (state) => {
+    state.twitchEmotes.status = 'loading';
+    state.twitchEmotes.error = {};
+  });
 
-    setFetchFlags(state.twitchEmotes, 'success');
-  },
+  builder.addCase(fetchTwitchEmotes.fulfilled, (state, { payload }): void => {
+    state.twitchEmotes.status = 'success';
+    state.twitchEmotes.items = parseTwitchEmotes(payload);
+  });
 
-  fetchTwitchEmotesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<string>,
-  ): void => {
-    setFetchFlags(state.twitchEmotes, 'failure', payload);
-  },
+  builder.addCase(fetchTwitchEmotes.rejected, (state, { error }) => {
+    state.twitchEmotes.status = 'error';
+    state.twitchEmotes.error = error;
+  });
 };

@@ -1,24 +1,21 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
-import twitchIrc from 'twitch-simple-irc';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import type twitchIrc from 'twitch-simple-irc';
 
 import * as api from 'api';
-import {
-  FetchFlags,
-  initialFetchFlags,
-  CHANNEL_MESSAGES_LIMIT,
-  STORE_USERS_LIMIT,
-} from 'utils/constants';
+import { CHANNEL_MESSAGES_LIMIT, STORE_USERS_LIMIT } from 'utils/constants';
 import assertNever from 'utils/assertNever';
-import setFetchFlags from 'utils/setFetchFlags';
 import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import {
   normalizeMessage,
   normalizeNotice,
   normalizeUserNotice,
   normalizeHistoryMessages,
+  normalizeOwnMessage,
 } from 'features/chat/utils/normalizeMessages';
-import { ChatState } from 'features/chat/slice';
+import type { ChatState } from 'features/chat/slice';
+import type { FetchResult } from 'utils/types';
 
 export type MessageEntity =
   | htmlEntity.TwitchEmote
@@ -74,6 +71,8 @@ export type OwnMessage = {
   message: string;
   channel: string;
   tags: twitchIrc.UserStateTags;
+  userId?: string;
+  userLogin?: string;
 };
 
 type AddMessage = {
@@ -91,15 +90,14 @@ type AddUserNotice = {
 };
 type AddOwnMessage = {
   type: 'own-message';
-  message: Message;
+  message: OwnMessage;
 };
 
 type AddMessagePayload = AddMessage | AddNotice | AddUserNotice | AddOwnMessage;
 
 type MessagesStateChannel = {
-  history: FetchFlags & {
+  history: FetchResult<string[]> & {
     isAdded: boolean;
-    items: string[];
   };
   isEven: boolean;
   items: ChatMessage[];
@@ -109,17 +107,6 @@ type MessagesStateChannel = {
 export type MessagesState = Record<string, MessagesStateChannel>;
 
 export const messagesInitialState: MessagesState = {};
-
-const messagesChannelInitialState = {
-  history: {
-    ...initialFetchFlags,
-    isAdded: false,
-    items: [],
-  },
-  isEven: false,
-  items: [],
-  users: [],
-};
 
 function sliceMessages<T>(items: T[]): T[] {
   const diff = items.length - CHANNEL_MESSAGES_LIMIT;
@@ -162,7 +149,7 @@ const normalizePayload = (
   }
 
   if (data.type === 'own-message') {
-    return data.message;
+    return normalizeOwnMessage(data.message, chatState);
   }
 
   return assertNever(data);
@@ -172,7 +159,7 @@ export const messagesReducers = {
   clearChat: (
     state: ChatState,
     { payload }: PayloadAction<twitchIrc.ClearChatEvent>,
-  ): void => {
+  ) => {
     const {
       channel,
       tags: { targetUserId },
@@ -193,7 +180,7 @@ export const messagesReducers = {
   addMessage: (
     state: ChatState,
     { payload }: PayloadAction<AddMessagePayload>,
-  ): void => {
+  ) => {
     const message = normalizePayload(payload, state);
 
     if (!message) return;
@@ -223,10 +210,7 @@ export const messagesReducers = {
     state.messages[channel].users = sliceUsers(users);
   },
 
-  addChatHistory: (
-    state: ChatState,
-    { payload }: PayloadAction<string>,
-  ): void => {
+  addChatHistory: (state: ChatState, { payload }: PayloadAction<string>) => {
     const channel = payload;
 
     const rawHistory = state.messages[channel].history.items;
@@ -260,39 +244,54 @@ export const messagesReducers = {
     state.messages[channel].history.items = [];
     state.messages[channel].history.isAdded = true;
   },
+};
 
-  fetchChatHistoryRequest: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string }>,
-  ): void => {
-    const { channel } = payload;
+export const fetchChatHistory = createAsyncThunk(
+  'chat/fetchChatHistory',
+  (channel: string) => api.fetchChatHistory(channel),
+);
+
+export const messagesExtraReducers = (
+  builder: ActionReducerMapBuilder<ChatState>,
+) => {
+  builder.addCase(fetchChatHistory.pending, (state, { meta: { arg } }) => {
+    const channel = arg;
 
     if (!state.messages[channel]) {
-      state.messages[channel] = messagesChannelInitialState;
+      state.messages[channel] = {
+        history: {
+          status: 'loading',
+          error: {},
+          items: [],
+          isAdded: false,
+        },
+        isEven: false,
+        items: [],
+        users: [],
+      };
+    } else {
+      state.messages[channel].history.status = 'loading';
+      state.messages[channel].history.error = {};
     }
+  });
 
-    setFetchFlags(state.messages[channel].history, 'request');
-  },
+  builder.addCase(
+    fetchChatHistory.fulfilled,
+    (state, { payload, meta: { arg } }) => {
+      const channel = arg;
 
-  fetchChatHistorySuccess: (
-    state: ChatState,
-    {
-      payload,
-    }: PayloadAction<{ channel: string; data: api.ChatHistoryResponse }>,
-  ): void => {
-    const { channel, data } = payload;
+      state.messages[channel].history.status = 'success';
+      state.messages[channel].history.items = payload.messages;
+    },
+  );
 
-    state.messages[channel].history.items = data.messages;
+  builder.addCase(
+    fetchChatHistory.rejected,
+    (state, { error, meta: { arg } }) => {
+      const channel = arg;
 
-    setFetchFlags(state.messages[channel].history, 'success');
-  },
-
-  fetchChatHistoryFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string; error: string }>,
-  ): void => {
-    const { channel, error } = payload;
-
-    setFetchFlags(state.messages[channel].history, 'failure', error);
-  },
+      state.messages[channel].history.status = 'error';
+      state.messages[channel].history.error = error;
+    },
+  );
 };

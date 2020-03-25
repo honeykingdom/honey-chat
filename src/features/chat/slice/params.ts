@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
-import twitchIrc from 'twitch-simple-irc';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type twitchIrc from 'twitch-simple-irc';
 
-import { ChatState } from 'features/chat/slice';
+import type { ChatState } from 'features/chat/slice';
 
 type Params = {
   room: twitchIrc.RoomStateTags | null;
@@ -17,11 +17,6 @@ export type ParamsState = {
 export const paramsInitialState: ParamsState = {
   global: null,
   byChannels: {},
-};
-
-const channelParamsInitialState = {
-  room: null,
-  user: null,
 };
 
 export const paramsReducers = {
@@ -39,7 +34,10 @@ export const paramsReducers = {
     const { channel, tags } = payload;
 
     if (!state.params.byChannels[channel]) {
-      state.params.byChannels[channel] = channelParamsInitialState;
+      state.params.byChannels[channel] = {
+        room: null,
+        user: null,
+      };
     }
 
     state.params.byChannels[channel].user = tags;
@@ -52,7 +50,10 @@ export const paramsReducers = {
     const { channel, tags } = payload;
 
     if (!state.params.byChannels[channel]) {
-      state.params.byChannels[channel] = channelParamsInitialState;
+      state.params.byChannels[channel] = {
+        room: null,
+        user: null,
+      };
     }
 
     // TODO: merge tags

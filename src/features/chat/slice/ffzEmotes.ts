@@ -1,90 +1,97 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { FetchFlags, initialFetchFlags } from 'utils/constants';
-import setFetchFlags from 'utils/setFetchFlags';
-import { ChatState } from 'features/chat/slice';
+import type { ChatState } from 'features/chat/slice';
 import {
   parseFfzGlobalEmotes,
   parseFfzChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
-
-type FfzEmotes = FetchFlags & {
-  items: api.FfzEmote[];
-};
+import type { FetchResult } from 'utils/types';
 
 export type FfzEmotesState = {
-  global: FfzEmotes;
-  byChannels: Record<string, FfzEmotes>;
+  global: FetchResult<api.FfzEmote[]>;
+  byChannels: Record<string, FetchResult<api.FfzEmote[]>>;
 };
 
 export const ffzEmotesInitialState: FfzEmotesState = {
   global: {
-    ...initialFetchFlags,
+    status: 'idle',
+    error: {},
     items: [],
   },
   byChannels: {},
 };
 
-const ffzChannelEmotesInitialState = {
-  ...initialFetchFlags,
-  items: [],
+export const fetchFfzGlobalEmotes = createAsyncThunk(
+  'chat/fetchFfzGlobalEmotes',
+  () => api.fetchFfzGlobalEmotes(),
+);
+
+type FetchFfzChannelEmotesParams = {
+  channel: string;
+  channelId: string;
 };
 
-export const ffzEmotesReducers = {
-  fetchFfzGlobalEmotesRequest: (state: ChatState) => {
-    setFetchFlags(state.ffzEmotes.global, 'request');
-  },
+export const fetchFfzChannelEmotes = createAsyncThunk(
+  'chat/fetchFfzChannelEmotes',
+  ({ channelId }: FetchFfzChannelEmotesParams) =>
+    api.fetchFfzChannelEmotes(channelId),
+);
 
-  fetchFfzGlobalEmotesSuccess: (
-    state: ChatState,
-    { payload }: PayloadAction<api.FfzGlobalEmotesResponse>,
-  ): void => {
+export const ffzEmotesExtraReducers = (
+  builder: ActionReducerMapBuilder<ChatState>,
+) => {
+  builder.addCase(fetchFfzGlobalEmotes.pending, (state) => {
+    state.ffzEmotes.global.status = 'loading';
+    state.ffzEmotes.global.error = {};
+  });
+
+  builder.addCase(fetchFfzGlobalEmotes.fulfilled, (state, { payload }) => {
+    state.ffzEmotes.global.status = 'success';
     state.ffzEmotes.global.items = parseFfzGlobalEmotes(payload);
+  });
 
-    setFetchFlags(state.ffzEmotes.global, 'success');
-  },
+  builder.addCase(fetchFfzGlobalEmotes.rejected, (state, { error }) => {
+    state.ffzEmotes.global.status = 'error';
+    state.ffzEmotes.global.error = error;
+  });
 
-  fetchFfzGlobalEmotesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<string>,
-  ): void => {
-    setFetchFlags(state.ffzEmotes.global, 'failure', payload);
-  },
-
-  fetchFfzChannelEmotesRequest: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string }>,
-  ): void => {
-    const { channel } = payload;
+  builder.addCase(fetchFfzChannelEmotes.pending, (state, { meta: { arg } }) => {
+    const { channel } = arg;
 
     if (!state.ffzEmotes.byChannels[channel]) {
-      state.ffzEmotes.byChannels[channel] = ffzChannelEmotesInitialState;
+      state.ffzEmotes.byChannels[channel] = {
+        status: 'loading',
+        error: {},
+        items: [],
+      };
+    } else {
+      state.ffzEmotes.byChannels[channel].status = 'loading';
+      state.ffzEmotes.byChannels[channel].error = {};
     }
+  });
 
-    setFetchFlags(state.ffzEmotes.byChannels[channel], 'request');
-  },
+  builder.addCase(
+    fetchFfzChannelEmotes.fulfilled,
+    (state, { payload, meta: { arg } }) => {
+      const { channel } = arg;
 
-  fetchFfzChannelEmotesSuccess: (
-    state: ChatState,
-    {
-      payload,
-    }: PayloadAction<{ channel: string; data: api.FfzChannelEmotesResponse }>,
-  ): void => {
-    const { channel, data } = payload;
+      state.ffzEmotes.byChannels[channel].status = 'success';
+      state.ffzEmotes.byChannels[channel].items = parseFfzChannelEmotes(
+        payload,
+      );
+    },
+  );
 
-    state.ffzEmotes.byChannels[channel].items = parseFfzChannelEmotes(data);
+  builder.addCase(
+    fetchFfzChannelEmotes.rejected,
+    (state, { error, meta: { arg } }) => {
+      const { channel } = arg;
 
-    setFetchFlags(state.ffzEmotes.byChannels[channel], 'success');
-  },
-
-  fetchFfzChannelEmotesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string; error: string }>,
-  ): void => {
-    const { channel, error } = payload;
-
-    setFetchFlags(state.ffzEmotes.byChannels[channel], 'failure', error);
-  },
+      state.ffzEmotes.byChannels[channel].status = 'error';
+      state.ffzEmotes.byChannels[channel].error = error;
+    },
+  );
 };

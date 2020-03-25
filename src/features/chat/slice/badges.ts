@@ -1,87 +1,93 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { FetchFlags, initialFetchFlags } from 'utils/constants';
-import setFetchFlags from 'utils/setFetchFlags';
-import { ChatState } from 'features/chat/slice';
+import { FetchResult } from 'utils/types';
+import type { ChatState } from 'features/chat/slice';
 import { parseBadges } from 'features/chat/utils/parseApiResponse';
 
-type Badges = FetchFlags & {
-  items: Record<string, api.TwitchBadge>;
-};
+type Badges = Record<string, api.TwitchBadge>;
 
 export type BadgesState = {
-  global: Badges;
-  byChannels: Record<string, Badges>;
+  global: FetchResult<Badges>;
+  byChannels: Record<string, FetchResult<Badges>>;
 };
 
 export const badgesInitialState: BadgesState = {
   global: {
-    ...initialFetchFlags,
+    status: 'idle',
+    error: {},
     items: {},
   },
   byChannels: {},
 };
 
-const badgesChannelInitialState = {
-  ...initialFetchFlags,
-  items: {},
+export const fetchGlobalBadges = createAsyncThunk(
+  'chat/fetchGlobalBadges',
+  () => api.fetchGlobalBadges(),
+);
+
+type FetchChannelBadgesParams = {
+  channel: string;
+  channelId: string;
 };
 
-export const badgesReducers = {
-  fetchGlobalBadgesRequest: (state: ChatState) => {
-    setFetchFlags(state.badges.global, 'request');
-  },
+export const fetchChannelBadges = createAsyncThunk(
+  'chat/fetchChannelBadges',
+  ({ channelId }: FetchChannelBadgesParams) =>
+    api.fetchChannelBadges(channelId),
+);
 
-  fetchGlobalBadgesSuccess: (
-    state: ChatState,
-    { payload }: PayloadAction<api.TwitchBadgesResponse>,
-  ): void => {
+export const badgesExtraReducers = (
+  builder: ActionReducerMapBuilder<ChatState>,
+) => {
+  builder.addCase(fetchGlobalBadges.pending, (state) => {
+    state.badges.global.status = 'loading';
+    state.badges.global.error = {};
+  });
+
+  builder.addCase(fetchGlobalBadges.fulfilled, (state, { payload }) => {
+    state.badges.global.status = 'success';
     state.badges.global.items = parseBadges(payload);
+  });
 
-    setFetchFlags(state.badges.global, 'success');
-  },
+  builder.addCase(fetchGlobalBadges.rejected, (state, { error }) => {
+    state.badges.global.status = 'error';
+    state.badges.global.error = error;
+  });
 
-  fetchGlobalBadgesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<string>,
-  ): void => {
-    setFetchFlags(state.badges.global, 'failure', payload);
-  },
-
-  fetchChannelBadgesRequest: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string }>,
-  ): void => {
-    const { channel } = payload;
+  builder.addCase(fetchChannelBadges.pending, (state, { meta: { arg } }) => {
+    const { channel } = arg;
 
     if (!state.badges.byChannels[channel]) {
-      state.badges.byChannels[channel] = badgesChannelInitialState;
+      state.badges.byChannels[channel] = {
+        status: 'loading',
+        error: {},
+        items: {},
+      };
+    } else {
+      state.badges.byChannels[channel].status = 'loading';
+      state.badges.byChannels[channel].error = {};
     }
+  });
 
-    setFetchFlags(state.badges.byChannels[channel], 'request');
-  },
+  builder.addCase(
+    fetchChannelBadges.fulfilled,
+    (state, { payload, meta: { arg } }) => {
+      const { channel } = arg;
 
-  fetchChannelBadgesSuccess: (
-    state: ChatState,
-    {
-      payload,
-    }: PayloadAction<{ channel: string; data: api.TwitchBadgesResponse }>,
-  ): void => {
-    const { channel, data } = payload;
+      state.badges.byChannels[channel].status = 'success';
+      state.badges.byChannels[channel].items = parseBadges(payload);
+    },
+  );
 
-    state.badges.byChannels[channel].items = parseBadges(data);
+  builder.addCase(
+    fetchChannelBadges.rejected,
+    (state, { error, meta: { arg } }) => {
+      const { channel } = arg;
 
-    setFetchFlags(state.badges.byChannels[channel], 'success');
-  },
-
-  fetchChannelBadgesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string; error: string }>,
-  ): void => {
-    const { channel, error } = payload;
-
-    setFetchFlags(state.badges.byChannels[channel], 'failure', error);
-  },
+      state.badges.byChannels[channel].status = 'error';
+      state.badges.byChannels[channel].error = error;
+    },
+  );
 };

@@ -1,94 +1,100 @@
 /* eslint-disable no-param-reassign */
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { FetchFlags, initialFetchFlags } from 'utils/constants';
-import setFetchFlags from 'utils/setFetchFlags';
-import { ChatState } from 'features/chat/slice';
+import type { ChatState } from 'features/chat/slice';
 import {
   parseBttvGlobalEmotes,
   parseBttvChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
-
-type BttvGlobalEmotes = FetchFlags & {
-  items: api.BttvGlobalEmote[];
-};
-
-type BttvChannelEmotes = FetchFlags & {
-  items: api.BttvChannelEmote[];
-};
+import type { FetchResult } from 'utils/types';
 
 export type BttvEmotesState = {
-  global: BttvGlobalEmotes;
-  byChannels: Record<string, BttvChannelEmotes>;
+  global: FetchResult<api.BttvGlobalEmote[]>;
+  byChannels: Record<string, FetchResult<api.BttvChannelEmote[]>>;
 };
 
 export const bttvEmotesInitialState: BttvEmotesState = {
   global: {
-    ...initialFetchFlags,
+    status: 'idle',
+    error: {},
     items: [],
   },
   byChannels: {},
 };
 
-const bttvChannelEmotesInitialState = {
-  ...initialFetchFlags,
-  items: [],
+export const fetchBttvGlobalEmotes = createAsyncThunk(
+  'chat/fetchBttvGlobalEmotes',
+  () => api.fetchBttvGlobalEmotes(),
+);
+
+type FetchBttvChannelEmotesParams = {
+  channel: string;
+  channelId: string;
 };
 
-export const bttvEmotesReducers = {
-  fetchBttvGlobalEmotesRequest: (state: ChatState) => {
-    setFetchFlags(state.bttvEmotes.global, 'request');
-  },
+export const fetchBttvChannelEmotes = createAsyncThunk(
+  'chat/fetchBttvChannelEmotes',
+  ({ channelId }: FetchBttvChannelEmotesParams) =>
+    api.fetchBttvChannelEmotes(channelId),
+);
 
-  fetchBttvGlobalEmotesSuccess: (
-    state: ChatState,
-    { payload }: PayloadAction<api.BttvGlobalEmotesResponse>,
-  ): void => {
+export const bttvEmotesExtraReducers = (
+  builder: ActionReducerMapBuilder<ChatState>,
+) => {
+  builder.addCase(fetchBttvGlobalEmotes.pending, (state) => {
+    state.bttvEmotes.global.status = 'loading';
+    state.bttvEmotes.global.error = {};
+  });
+
+  builder.addCase(fetchBttvGlobalEmotes.fulfilled, (state, { payload }) => {
+    state.bttvEmotes.global.status = 'success';
     state.bttvEmotes.global.items = parseBttvGlobalEmotes(payload);
+  });
 
-    setFetchFlags(state.bttvEmotes.global, 'success');
-  },
+  builder.addCase(fetchBttvGlobalEmotes.rejected, (state, { error }) => {
+    state.bttvEmotes.global.status = 'error';
+    state.bttvEmotes.global.error = error;
+  });
 
-  fetchBttvGlobalEmotesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<string>,
-  ): void => {
-    setFetchFlags(state.bttvEmotes.global, 'failure', payload);
-  },
+  builder.addCase(
+    fetchBttvChannelEmotes.pending,
+    (state, { meta: { arg } }) => {
+      const { channel } = arg;
 
-  fetchBttvChannelEmotesRequest: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string }>,
-  ): void => {
-    const { channel } = payload;
+      if (!state.bttvEmotes.byChannels[channel]) {
+        state.bttvEmotes.byChannels[channel] = {
+          status: 'loading',
+          error: {},
+          items: [],
+        };
+      } else {
+        state.bttvEmotes.byChannels[channel].status = 'loading';
+        state.bttvEmotes.byChannels[channel].error = {};
+      }
+    },
+  );
 
-    if (!state.bttvEmotes.byChannels[channel]) {
-      state.bttvEmotes.byChannels[channel] = bttvChannelEmotesInitialState;
-    }
+  builder.addCase(
+    fetchBttvChannelEmotes.fulfilled,
+    (state, { payload, meta: { arg } }) => {
+      const { channel } = arg;
 
-    setFetchFlags(state.bttvEmotes.byChannels[channel], 'request');
-  },
+      state.bttvEmotes.byChannels[channel].status = 'success';
+      state.bttvEmotes.byChannels[channel].items = parseBttvChannelEmotes(
+        payload,
+      );
+    },
+  );
 
-  fetchBttvChannelEmotesSuccess: (
-    state: ChatState,
-    {
-      payload,
-    }: PayloadAction<{ channel: string; data: api.BttvChannelEmotesResponse }>,
-  ): void => {
-    const { channel, data } = payload;
+  builder.addCase(
+    fetchBttvChannelEmotes.rejected,
+    (state, { error, meta: { arg } }) => {
+      const { channel } = arg;
 
-    state.bttvEmotes.byChannels[channel].items = parseBttvChannelEmotes(data);
-
-    setFetchFlags(state.bttvEmotes.byChannels[channel], 'success');
-  },
-
-  fetchBttvChannelEmotesFailure: (
-    state: ChatState,
-    { payload }: PayloadAction<{ channel: string; error: string }>,
-  ): void => {
-    const { channel, error } = payload;
-
-    setFetchFlags(state.bttvEmotes.byChannels[channel], 'failure', error);
-  },
+      state.bttvEmotes.byChannels[channel].status = 'error';
+      state.bttvEmotes.byChannels[channel].error = error;
+    },
+  );
 };
