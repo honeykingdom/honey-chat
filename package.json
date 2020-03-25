@@ -74,6 +74,9 @@
       "browser": true,
       "jest": true
     },
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
     "extends": [
       "airbnb-typescript",
       "airbnb/hooks",
