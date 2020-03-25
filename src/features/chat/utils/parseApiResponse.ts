@@ -2,17 +2,7 @@ import * as R from 'ramda';
 
 import * as api from 'api';
 
-export const parseTwitchGlobalEmotes = R.pipe<
-  api.TwitchEmotesResponse,
-  Record<string, api.TwitchEmote[]>,
-  Record<string, api.TwitchEmote[]>
->(R.prop('emoticon_sets'), R.pick(['0']));
-
-export const parseTwitchChannelEmotes = R.pipe<
-  api.TwitchEmotesResponse,
-  Record<string, api.TwitchEmote[]>,
-  Record<string, api.TwitchEmote[]>
->(R.prop('emoticon_sets'), R.omit(['0']));
+export const parseTwitchEmotes = R.prop('emoticon_sets');
 
 export const parseBttvGlobalEmotes = (
   data: api.BttvGlobalEmotesResponse,
