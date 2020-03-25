@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import * as api from 'api';
 import twitchEmotes from 'mocks/twitchEmotes.json';
 import bttvGlobal from 'mocks/bttvGlobalEmotes.json';
@@ -5,8 +7,7 @@ import bttvChannel from 'mocks/bttvChannelEmotes.json';
 import ffzGlobal from 'mocks/ffzGlobalEmotes.json';
 import ffzChannel from 'mocks/ffzChannelEmotes.json';
 import {
-  parseTwitchGlobalEmotes,
-  parseTwitchChannelEmotes,
+  parseTwitchEmotes,
   parseBttvGlobalEmotes,
   parseBttvChannelEmotes,
   parseFfzGlobalEmotes,
@@ -15,8 +16,8 @@ import {
 import findEmote from 'features/chat/utils/findEmote';
 
 export const emotes = {
-  twitchGlobal: parseTwitchGlobalEmotes(twitchEmotes),
-  twitchUser: parseTwitchChannelEmotes(twitchEmotes),
+  twitchGlobal: R.pipe(parseTwitchEmotes, R.pick(['0']))(twitchEmotes),
+  twitchUser: R.pipe(parseTwitchEmotes, R.omit(['0']))(twitchEmotes),
   bttvGlobal: parseBttvGlobalEmotes(bttvGlobal as api.BttvGlobalEmotesResponse),
   bttvChannel: parseBttvChannelEmotes(
     bttvChannel as api.BttvChannelEmotesResponse,
