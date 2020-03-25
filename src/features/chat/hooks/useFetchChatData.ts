@@ -102,9 +102,14 @@ const useFetchChatData = () => {
 
   useEffect(() => {
     if (currentChannel && currentChannelId) {
-      dispatch(fetchBttvChannelEmotes(currentChannel, currentChannelId));
-      dispatch(fetchFfzChannelEmotes(currentChannel, currentChannelId));
-      dispatch(fetchChannelBadges(currentChannel, currentChannelId));
+      const params = {
+        channel: currentChannel,
+        channelId: currentChannelId,
+      };
+
+      dispatch(fetchBttvChannelEmotes(params));
+      dispatch(fetchFfzChannelEmotes(params));
+      dispatch(fetchChannelBadges(params));
     }
   }, [dispatch, currentChannel, currentChannelId]);
 };
