@@ -1,24 +1,23 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import * as twitchIrc from 'twitch-simple-irc';
 import * as tekko from 'tekko';
 
-import * as api from 'api';
-import { RootState } from 'app/rootReducer';
-import { userIdSelector, userLoginSelector } from 'features/auth/authSlice';
-import {
+import type * as api from 'api';
+import type { RootState } from 'app/rootReducer';
+import type {
   Message,
   Notice,
   UserNotice,
   OwnMessage,
 } from 'features/chat/slice/messages';
-import { ChatState } from 'features/chat/slice';
+import type { ChatState } from 'features/chat/slice';
 import {
   blockedUsersSelector,
   globalBadgesSelector,
   channelBadgesSelector,
   emotesSelector,
-  StateEmotes,
 } from 'features/chat/selectors';
+import type { StateEmotes } from 'features/chat/selectors';
 import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
 import * as htmlEntity from 'features/chat/utils/htmlEntity';
 import { writeEmotesUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
@@ -84,14 +83,13 @@ export const normalizeUserNotice = ({
 });
 
 export const normalizeOwnMessage = (
-  { message, channel, tags }: OwnMessage,
-  state: RootState,
+  { message, channel, tags, userId, userLogin }: OwnMessage,
+  chatState: ChatState,
 ): Message => {
-  const globalBadges = globalBadgesSelector(state);
-  const channelBadges = channelBadgesSelector(state);
-  const emotes = emotesSelector(state);
-  const userId = userIdSelector(state);
-  const userLogin = userLoginSelector(state);
+  const fakeState = { chat: chatState } as RootState;
+  const globalBadges = globalBadgesSelector(fakeState);
+  const channelBadges = channelBadgesSelector(fakeState);
+  const emotes = emotesSelector(fakeState);
 
   const isAction = message.startsWith('/me ');
   const normalizedMessage = isAction ? message.slice(4) : message;
