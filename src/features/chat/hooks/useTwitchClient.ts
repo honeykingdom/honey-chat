@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import * as twitchIrc from 'twitch-simple-irc';
 
 import usePrevious from 'hooks/usePrevious';
@@ -12,7 +12,6 @@ import {
   updateGlobalUserParams,
   updateUserParams,
   updateRoomParams,
-  addOwnMessage,
 } from 'features/chat/slice';
 import {
   currentChannelSelector,
@@ -25,6 +24,7 @@ import {
   userLoginSelector,
   invalidateAuth,
 } from 'features/auth/authSlice';
+import { readUserFromLocatStorage } from 'features/auth/authUtils';
 
 const useTwitchClient = () => {
   const dispatch = useDispatch();
@@ -151,13 +151,18 @@ const useTwitchClient = () => {
 
       function handleUserState(data: twitchIrc.UserStateEvent) {
         if (data.channel === channel) {
-          dispatch(
-            addOwnMessage({
-              message: normalizedMessage,
-              channel,
-              tags: data.tags,
-            }),
-          );
+          const user = readUserFromLocatStorage();
+
+          const ownMessage = {
+            message: normalizedMessage,
+            channel,
+            tags: data.tags,
+            userId: user?.id,
+            userLogin: user?.login,
+          };
+
+          dispatch(addMessage({ type: 'own-message', message: ownMessage }));
+
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           removeListeners();
         }
