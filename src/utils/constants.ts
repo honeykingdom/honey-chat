@@ -52,17 +52,3 @@ export const NOTICE_MESSAGE_TAGS = [
   'msg_timedout',
   'msg_verified_email',
 ];
-
-export type FetchFlags = {
-  isLoading: boolean;
-  isLoaded: boolean;
-  isError: boolean;
-  error: string | null;
-};
-
-export const initialFetchFlags: FetchFlags = {
-  isLoading: false,
-  isLoaded: false,
-  isError: false,
-  error: null,
-};
