@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { createSelector } from '@reduxjs/toolkit';
 
 import * as api from 'api';
@@ -28,8 +29,15 @@ export const messagesSelector = (state: RootState): ChatMessage[] =>
 export const usersSelector = (state: RootState): string[] =>
   state.chat.messages[currentChannelSelector(state)]?.users || [];
 
-export const isHistoryLoadedSelector = (state: RootState) =>
-  state.chat.messages[currentChannelSelector(state)]?.history.isLoaded || false;
+export const isHistoryLoadedSelector = (state: RootState) => {
+  const currentChannel = currentChannelSelector(state);
+
+  return (
+    state.chat.messages[currentChannel]?.history.status === 'success' ||
+    state.chat.messages[currentChannel]?.history.status === 'error' ||
+    false
+  );
+};
 
 export const isHistoryAddedSelector = (state: RootState) =>
   state.chat.messages[currentChannelSelector(state)]?.history.isAdded || false;
@@ -40,25 +48,40 @@ export const isEvenSelector = (state: RootState) =>
 // emotes isLoaded
 
 export const isTwitchEmotesLoadedSelector = (state: RootState) =>
-  state.chat.twitchEmotes.isLoaded;
+  state.chat.twitchEmotes.status === 'success' ||
+  state.chat.twitchEmotes.status === 'error';
 
 export const isBttvGlobalEmotesLoadedSelector = (state: RootState) =>
-  state.chat.bttvEmotes.global.isLoaded;
+  state.chat.bttvEmotes.global.status === 'success' ||
+  state.chat.bttvEmotes.global.status === 'error';
 
-export const isBttvChannelEmotesLoadedSelector = (state: RootState) =>
-  state.chat.bttvEmotes.byChannels[currentChannelSelector(state)]?.isLoaded ||
-  false;
+export const isBttvChannelEmotesLoadedSelector = (state: RootState) => {
+  const currentChannel = currentChannelSelector(state);
+
+  return (
+    state.chat.bttvEmotes.byChannels[currentChannel]?.status === 'success' ||
+    state.chat.bttvEmotes.byChannels[currentChannel]?.status === 'error' ||
+    false
+  );
+};
 
 export const isBttvEmotesLoadedSelector = (state: RootState) =>
   isBttvGlobalEmotesLoadedSelector(state) &&
   isBttvChannelEmotesLoadedSelector(state);
 
 export const isFfzGlobalEmotesLoadedSelector = (state: RootState) =>
-  state.chat.ffzEmotes.global.isLoaded;
+  state.chat.ffzEmotes.global.status === 'success' ||
+  state.chat.ffzEmotes.global.status === 'error';
 
-export const isFfzChannelEmotesLoadedSelector = (state: RootState) =>
-  state.chat.ffzEmotes.byChannels[currentChannelSelector(state)]?.isLoaded ||
-  false;
+export const isFfzChannelEmotesLoadedSelector = (state: RootState) => {
+  const currentChannel = currentChannelSelector(state);
+
+  return (
+    state.chat.ffzEmotes.byChannels[currentChannel]?.status === 'success' ||
+    state.chat.ffzEmotes.byChannels[currentChannel]?.status === 'error' ||
+    false
+  );
+};
 
 export const isFfzEmotesLoadedSelector = (state: RootState) =>
   isFfzGlobalEmotesLoadedSelector(state) &&
@@ -72,11 +95,16 @@ export const isEmotesLoadedSelector = (state: RootState) =>
   isFfzChannelEmotesLoadedSelector(state);
 
 // emotes
-
-const twitchGlobalEmotesSelector = (state: RootState) =>
-  state.chat.twitchEmotes.global;
-const twitchUserEmotesSelector = (state: RootState) =>
-  state.chat.twitchEmotes.user;
+const twitchEmotesSelector = (state: RootState) =>
+  state.chat.twitchEmotes.items;
+const twitchGlobalEmotesSelector = createSelector(
+  twitchEmotesSelector,
+  R.pick(['0']),
+);
+const twitchUserEmotesSelector = createSelector(
+  twitchEmotesSelector,
+  R.omit(['0']),
+);
 
 const bttvGlobalEmotesSelector = (state: RootState) =>
   state.chat.bttvEmotes.global.items;
@@ -131,11 +159,14 @@ export const userBadgesSelector = (state: RootState) =>
   {};
 
 export const isGlobalBadgesLoadedSelector = (state: RootState) =>
-  state.chat.badges.global.isLoaded;
+  state.chat.badges.global.status === 'success' ||
+  state.chat.badges.global.status === 'error';
 
 export const isChannelBadgesLoadedSelector = (state: RootState) =>
-  state.chat.badges.byChannels[currentChannelSelector(state)]?.isLoaded ||
-  false;
+  state.chat.badges.byChannels[currentChannelSelector(state)]?.status ===
+    'success' ||
+  state.chat.badges.byChannels[currentChannelSelector(state)]?.status ===
+    'error';
 
 export const isBadgesLoadedSelector = (state: RootState) =>
   isGlobalBadgesLoadedSelector(state) && isChannelBadgesLoadedSelector(state);
@@ -170,7 +201,8 @@ export const userDisplayNameSelector = (state: RootState) =>
 // blocked users
 
 export const isBlockedUsersLoadedSelector = (state: RootState) =>
-  state.chat.blockedUsers.isLoaded;
+  state.chat.blockedUsers.status !== 'idle' &&
+  state.chat.blockedUsers.status !== 'loading';
 
 export const blockedUsersSelector = (state: RootState) =>
   state.chat.blockedUsers.items;
