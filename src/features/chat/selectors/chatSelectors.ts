@@ -1,9 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { RootState } from 'app/rootReducer';
+import type { RootState } from 'app/rootReducer';
 import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import { ChatMessage } from 'features/chat/slice/messages';
+import type { ChatMessage } from 'features/chat/slice/messages';
 import createEmoteCategories from 'features/chat/utils/createEmoteCategories';
 
 export type StateEmotes = {

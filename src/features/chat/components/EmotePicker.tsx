@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RootState } from 'app/rootReducer';
+import type { RootState } from 'app/rootReducer';
 import Scrollbar from 'components/Scrollbar';
 import { emoteCategoriesSelector } from 'features/chat/selectors';
-import { EmoteCategory } from 'features/chat/utils/createEmoteCategories';
+import type { EmoteCategory } from 'features/chat/utils/createEmoteCategories';
 import { ReactComponent as SearchIconSvg } from 'icons/search.svg';
 
 const EmotePickerRoot = styled.div`
