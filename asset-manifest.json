@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/chat/static/js/main.4872ba98.chunk.js",
-    "main.js.map": "/chat/static/js/main.4872ba98.chunk.js.map",
+    "main.js": "/chat/static/js/main.635415f2.chunk.js",
+    "main.js.map": "/chat/static/js/main.635415f2.chunk.js.map",
     "runtime-main.js": "/chat/static/js/runtime-main.94006446.js",
     "runtime-main.js.map": "/chat/static/js/runtime-main.94006446.js.map",
     "static/js/2.fa911ace.chunk.js": "/chat/static/js/2.fa911ace.chunk.js",
     "static/js/2.fa911ace.chunk.js.map": "/chat/static/js/2.fa911ace.chunk.js.map",
     "index.html": "/chat/index.html",
-    "precache-manifest.f3527539b090099dd0d0c56098fcdef5.js": "/chat/precache-manifest.f3527539b090099dd0d0c56098fcdef5.js",
+    "precache-manifest.25923cc08b2bdceea7c2832730f77c19.js": "/chat/precache-manifest.25923cc08b2bdceea7c2832730f77c19.js",
     "service-worker.js": "/chat/service-worker.js",
     "static/js/2.fa911ace.chunk.js.LICENSE.txt": "/chat/static/js/2.fa911ace.chunk.js.LICENSE.txt",
     "static/media/close.992b249e.svg": "/chat/static/media/close.992b249e.svg",
@@ -19,6 +19,6 @@
   "entrypoints": [
     "static/js/runtime-main.94006446.js",
     "static/js/2.fa911ace.chunk.js",
-    "static/js/main.4872ba98.chunk.js"
+    "static/js/main.635415f2.chunk.js"
   ]
 }
