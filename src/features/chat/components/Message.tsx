@@ -85,6 +85,16 @@ const Emote = styled.img`
     margin-left: -31px;
     margin-top: -18px;
   }
+
+  /* cvHazmat, cvMask */
+  &        + &[data-emote-id='5e76d338d6581c3724c0f0b2'],
+  ${Emoji} + &[data-emote-id='5e76d338d6581c3724c0f0b2'],
+  &        + &[data-emote-id='5e76d399d6581c3724c0f0b8'],
+  ${Emoji} + &[data-emote-id='5e76d399d6581c3724c0f0b8'] {
+    margin-left: -34px;
+    height: 34px;
+    width: 34px;
+  }
 `;
 const Mention = styled.span<{ isActive: boolean; isOwnMessage: boolean }>`
   ${(p) =>
