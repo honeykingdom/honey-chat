@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { nanoid } from '@reduxjs/toolkit';
 import * as twitchIrc from 'twitch-simple-irc';
 import * as tekko from 'tekko';
 
@@ -20,11 +20,13 @@ import {
 import type { StateEmotes } from 'features/chat/selectors';
 import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
 import * as htmlEntity from 'features/chat/utils/htmlEntity';
+import checkIsMenction from 'features/chat/utils/checkIsMention';
 import { writeEmotesUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
 
 export const normalizeMessage = (
   { message, tags, user, channel, isAction }: twitchIrc.MessageEvent,
   chatState: ChatState,
+  isMention: boolean,
 ): Message | null => {
   const fakeState = { chat: chatState } as RootState;
   const blockedUsers = blockedUsersSelector(fakeState);
@@ -52,6 +54,7 @@ export const normalizeMessage = (
     isAction,
     isHistory: false,
     isDeleted: false,
+    isMention,
   };
 };
 
@@ -99,7 +102,7 @@ export const normalizeOwnMessage = (
 
   return {
     type: 'message',
-    id: uuid(),
+    id: nanoid(),
     message: normalizedMessage,
     channel,
     entities,
@@ -114,6 +117,7 @@ export const normalizeOwnMessage = (
     isAction,
     isHistory: false,
     isDeleted: false,
+    isMention: false,
   };
 };
 
@@ -122,6 +126,7 @@ export const normalizeHistoryMessage = (
   emotes: StateEmotes,
   globalBadges: Record<string, api.TwitchBadge>,
   channelBadges: Record<string, api.TwitchBadge>,
+  userLogin: string | null,
 ): Message => {
   const isAction = twitchIrc.getIsAction(message);
   const normalizedMessage = isAction
@@ -131,10 +136,13 @@ export const normalizeHistoryMessage = (
     tags,
   ) as unknown) as twitchIrc.MessageTags;
 
+  const messageUser = prefix ? prefix.name : '';
+  const isMention = checkIsMenction(userLogin, messageUser, normalizedMessage);
+
   return {
     type: 'message',
     id: parsedTags.id,
-    message,
+    message: normalizedMessage,
     channel: channel.slice(1),
     entities: parseMessageEntities(
       normalizedMessage,
@@ -143,7 +151,7 @@ export const normalizeHistoryMessage = (
     ),
     user: {
       id: parsedTags.userId,
-      login: prefix ? prefix.name : '',
+      login: messageUser,
       displayName: parsedTags.displayName,
       color: parsedTags.color,
       badges: htmlEntity.createBadges(
@@ -156,12 +164,14 @@ export const normalizeHistoryMessage = (
     isAction,
     isHistory: true,
     isDeleted: false,
+    isMention,
   };
 };
 
 export const normalizeHistoryMessages = (
   rawMessages: string[],
   chatState: ChatState,
+  userLogin: string | null,
 ): Message[] => {
   const fakeState = { chat: chatState } as RootState;
   const globalBadges = globalBadgesSelector(fakeState);
@@ -180,7 +190,13 @@ export const normalizeHistoryMessages = (
       !blockedUsers.includes(prefix.name)
     ) {
       acc.push(
-        normalizeHistoryMessage(message, emotes, globalBadges, channelBadges),
+        normalizeHistoryMessage(
+          message,
+          emotes,
+          globalBadges,
+          channelBadges,
+          userLogin,
+        ),
       );
     }
 

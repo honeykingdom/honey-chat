@@ -85,6 +85,7 @@ const chat = createSlice({
     updateIsConnected: (state, { payload }: PayloadAction<boolean>): void => {
       state.isConnected = payload;
     },
+
     updateCurrentChannel: (state, { payload }: PayloadAction<string>): void => {
       state.currentChannel = payload;
     },

@@ -43,6 +43,7 @@ export type Message = {
   isAction: boolean;
   isHistory: boolean;
   isDeleted: boolean;
+  isMention: boolean;
 };
 
 export type Notice = {
@@ -78,6 +79,7 @@ export type OwnMessage = {
 type AddMessage = {
   type: 'message';
   message: twitchIrc.MessageEvent;
+  isMention: boolean;
 };
 type AddNotice = {
   type: 'notice';
@@ -94,6 +96,11 @@ type AddOwnMessage = {
 };
 
 type AddMessagePayload = AddMessage | AddNotice | AddUserNotice | AddOwnMessage;
+
+type AddChatHistoryPayload = {
+  channel: string;
+  userLogin: string | null;
+};
 
 type MessagesStateChannel = {
   history: FetchResult<string[]> & {
@@ -137,7 +144,7 @@ const normalizePayload = (
   chatState: ChatState,
 ): ChatMessage | null => {
   if (data.type === 'message') {
-    return normalizeMessage(data.message, chatState);
+    return normalizeMessage(data.message, chatState, data.isMention);
   }
 
   if (data.type === 'notice') {
@@ -210,11 +217,18 @@ export const messagesReducers = {
     state.messages[channel].users = sliceUsers(users);
   },
 
-  addChatHistory: (state: ChatState, { payload }: PayloadAction<string>) => {
-    const channel = payload;
+  addChatHistory: (
+    state: ChatState,
+    { payload }: PayloadAction<AddChatHistoryPayload>,
+  ) => {
+    const { channel, userLogin } = payload;
 
     const rawHistory = state.messages[channel].history.items;
-    const history = normalizeHistoryMessages(sliceMessages(rawHistory), state);
+    const history = normalizeHistoryMessages(
+      sliceMessages(rawHistory),
+      state,
+      userLogin,
+    );
     const prevItems = state.messages[channel].items;
     const newItems = [...history, ...prevItems];
     const slicedMessages = sliceMessages(newItems);
