@@ -13,6 +13,7 @@ type OptionsState = {
   blacklistKeywords: string;
   highlightKeywords: string;
   fixedWidth: boolean;
+  highlightNotifications: boolean;
 };
 
 type ChangeOption = {
@@ -26,6 +27,7 @@ export const initialState: OptionsState = {
   blacklistKeywords: '',
   highlightKeywords: '',
   fixedWidth: false,
+  highlightNotifications: true,
   ...readOptionsFromLocalStorage(),
 };
 

@@ -42,6 +42,14 @@ export const optionsSelector = (state: RootState): OptionCategories[] => [
         description: '',
         value: state.options.fixedWidth,
       },
+      {
+        type: 'switch',
+        id: 'highlight-notifications',
+        name: 'highlightNotifications',
+        title: 'Highlight Notifications',
+        description: 'Plays a sound for messages directed at you',
+        value: state.options.highlightNotifications,
+      },
       // {
       //   type: 'input',
       //   id: 'blacklist-keywords',
@@ -70,3 +78,6 @@ export const isSplitChatSelector = (state: RootState) =>
 
 export const isFixedWidthSelector = (state: RootState) =>
   state.options.fixedWidth;
+
+export const isHighlightNotificationsSelector = (state: RootState) =>
+  state.options.highlightNotifications;
