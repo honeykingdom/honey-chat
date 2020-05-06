@@ -1,14 +1,13 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { AppThunk } from 'app/store';
 import { RootState } from 'app/rootReducer';
 import { writeUserToLocatStorage } from 'features/auth/authUtils';
+import { FetchStatus } from 'utils/types';
 
 type AuthState = {
-  isAuthReady: boolean;
-  isAuth: boolean;
+  status: FetchStatus;
   userId: string | null;
   userLogin: string | null;
 };
@@ -20,11 +19,22 @@ type InitializeAuth = {
 };
 
 export const initialState: AuthState = {
-  isAuthReady: false,
-  isAuth: false,
+  status: 'idle',
   userId: null,
   userLogin: null,
 };
+
+export const fetchUser = createAsyncThunk(
+  'auth/fetchUser',
+  async (userId: string) => {
+    const users = await api.fetchUser(userId);
+    const { id, login } = users.data[0];
+
+    writeUserToLocatStorage({ id, login });
+
+    return users;
+  },
+);
 
 const auth = createSlice({
   name: 'auth',
@@ -34,8 +44,7 @@ const auth = createSlice({
       state,
       { payload }: PayloadAction<InitializeAuth>,
     ): void => {
-      state.isAuthReady = true;
-      state.isAuth = payload.isAuth;
+      state.status = payload.isAuth ? 'success' : 'error';
 
       if (payload.userId) {
         state.userId = payload.userId;
@@ -47,58 +56,34 @@ const auth = createSlice({
     },
 
     invalidateAuth: (): AuthState => initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchUser.pending, (state) => {
+      state.status = 'loading';
+    });
 
-    fetchUserRequest: (state): void => {
-      state.isAuthReady = false;
-      state.isAuth = false;
-    },
-
-    fetchUserSuccess: (
-      state,
-      { payload }: PayloadAction<api.TwitchUsersResponse>,
-    ): void => {
-      state.isAuthReady = true;
-      state.isAuth = true;
+    builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
+      state.status = 'success';
 
       state.userId = payload.data[0].id;
       state.userLogin = payload.data[0].login;
-    },
+    });
 
-    fetchUserFailure: (state, { payload }: PayloadAction<string>): void => {
-      state.isAuthReady = true;
-      state.isAuth = false;
-    },
+    builder.addCase(fetchUser.rejected, (state) => {
+      state.status = 'error';
+    });
   },
 });
 
-export const {
-  initializeAuth,
-  invalidateAuth,
-  fetchUserRequest,
-  fetchUserSuccess,
-  fetchUserFailure,
-} = auth.actions;
+export const { initializeAuth, invalidateAuth } = auth.actions;
 
 export default auth.reducer;
 
-export const fetchUser = (userId: string): AppThunk => async (
-  dispatch,
-): Promise<void> => {
-  try {
-    dispatch(fetchUserRequest());
-    const users = await api.fetchUser(userId);
-    const { id, login } = users.data[0];
-    writeUserToLocatStorage({ id, login });
-    dispatch(fetchUserSuccess(users));
-  } catch (e) {
-    dispatch(fetchUserFailure(e));
-  }
-};
-
 export const isAuthReadySelector = (state: RootState): boolean =>
-  state.auth.isAuthReady;
+  state.auth.status !== 'idle' && state.auth.status !== 'loading';
 
-export const isAuthSelector = (state: RootState): boolean => state.auth.isAuth;
+export const isAuthSelector = (state: RootState): boolean =>
+  state.auth.status === 'success';
 
 export const userLoginSelector = (state: RootState): string | null =>
   state.auth.userLogin;
