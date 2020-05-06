@@ -47,8 +47,15 @@ const useTwitchClient = () => {
     isHighlightNotificationsSelector,
   );
 
-  const isHighlightNotificationsRef = useRef<boolean | null>();
-  isHighlightNotificationsRef.current = isHighlightNotifications;
+  const registerEventsParamsRef = useRef({
+    userLogin,
+    isHighlightNotifications,
+  });
+
+  registerEventsParamsRef.current = {
+    userLogin,
+    isHighlightNotifications,
+  };
 
   const registerEvents = useCallback(
     (client: typeof clientRef) => {
@@ -69,12 +76,15 @@ const useTwitchClient = () => {
 
       const handleMessage = (message: twitchIrc.MessageEvent) => {
         const isMention = checkIsMenction(
-          userLogin,
+          registerEventsParamsRef.current.userLogin,
           message.user,
           message.message,
         );
 
-        if (isHighlightNotificationsRef.current && isMention) {
+        if (
+          registerEventsParamsRef.current.isHighlightNotifications &&
+          isMention
+        ) {
           playTink();
         }
 
@@ -114,7 +124,7 @@ const useTwitchClient = () => {
       client.current.on('usernotice', handleUserNotice);
       client.current.on('clearchat', handleClearChat);
     },
-    [dispatch, userLogin, isHighlightNotificationsRef, playTink],
+    [dispatch, playTink],
   );
 
   useEffect(() => {
