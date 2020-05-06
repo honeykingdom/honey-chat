@@ -17,8 +17,7 @@ describe('auth reducer', () => {
 
     const state = auth(initialState, action);
 
-    expect(state.isAuthReady).toBe(true);
-    expect(state.isAuth).toBe(true);
+    expect(state.status).toBe('success');
     expect(state.userId).toBe('123456');
     expect(state.userLogin).toBe('twitch');
   });
@@ -28,16 +27,14 @@ describe('auth reducer', () => {
 
     const state = auth(
       {
-        isAuthReady: true,
-        isAuth: true,
+        status: 'success',
         userId: '123456',
         userLogin: 'twitch',
       },
       action,
     );
 
-    expect(state.isAuthReady).toBe(false);
-    expect(state.isAuth).toBe(false);
+    expect(state.status).toBe('idle');
     expect(state.userId).toBe(null);
     expect(state.userLogin).toBe(null);
   });
