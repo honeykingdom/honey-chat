@@ -17,6 +17,7 @@ import {
 import {
   currentChannelSelector,
   isConnectedSelector,
+  blockedUsersSelector,
 } from 'features/chat/selectors';
 import replaceEmojis from 'features/chat/utils/replaceEmojis';
 import checkIsMenction from 'features/chat/utils/checkIsMention';
@@ -43,6 +44,7 @@ const useTwitchClient = () => {
   const prevChannel = usePrevious(currentChannel);
   const clientRef = useRef<twitchIrc.Client | null>(null);
 
+  const blockedUsers = useSelector(blockedUsersSelector);
   const isHighlightNotifications = useSelector(
     isHighlightNotificationsSelector,
   );
@@ -51,12 +53,14 @@ const useTwitchClient = () => {
     userLogin,
     isHighlightNotifications,
     playTink,
+    blockedUsers,
   });
 
   registerEventsParamsRef.current = {
     userLogin,
     isHighlightNotifications,
     playTink,
+    blockedUsers,
   };
 
   const registerEvents = useCallback(
@@ -77,6 +81,12 @@ const useTwitchClient = () => {
         dispatch(updateRoomParams(data));
 
       const handleMessage = (message: twitchIrc.MessageEvent) => {
+        const isBlockedUser = registerEventsParamsRef.current.blockedUsers.includes(
+          message.user,
+        );
+
+        if (isBlockedUser) return;
+
         const isMention = checkIsMenction(
           registerEventsParamsRef.current.userLogin,
           message.user,

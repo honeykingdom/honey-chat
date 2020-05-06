@@ -29,9 +29,8 @@ export const normalizeMessage = (
   isMention: boolean,
 ): Message | null => {
   const fakeState = { chat: chatState } as RootState;
-  const blockedUsers = blockedUsersSelector(fakeState);
 
-  if (blockedUsers.includes(user)) return null;
+  // messages from blocked users filtered before
 
   const globalBadges = globalBadgesSelector(fakeState);
   const channelBadges = channelBadgesSelector(fakeState);
