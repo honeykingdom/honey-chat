@@ -2,7 +2,9 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import TextareaAutosize from 'react-textarea-autosize';
+import TextareaAutosize, {
+  TextareaAutosizeProps,
+} from 'react-textarea-autosize';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import ChatModal from 'components/ChatModal';
@@ -102,13 +104,7 @@ const EmotesModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-// TODO: remove this after styled-components fix this
-/* eslint-disable react/jsx-props-no-spreading, @typescript-eslint/no-unused-vars */
-const TextareaAutosizeFiltered = ({ showScroll, ...rest }: any) => (
-  <TextareaAutosize {...rest} />
-);
-/* eslint-enable react/jsx-props-no-spreading, @typescript-eslint/no-unused-vars */
-const Textarea = styled(TextareaAutosizeFiltered)<{ showScroll: boolean }>`
+const Textarea = styled(TextareaAutosize)<{ $showScroll: boolean }>`
   display: block;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -119,7 +115,7 @@ const Textarea = styled(TextareaAutosizeFiltered)<{ showScroll: boolean }>`
   max-height: 91px;
   min-height: 40px;
   overflow-x: hidden;
-  overflow-y: ${(p) => (p.showScroll ? 'auto' : 'hidden')};
+  overflow-y: ${(p) => (p.$showScroll ? 'auto' : 'hidden')};
   border: 2px solid transparent;
   background-color: rgba(255, 255, 255, 0.15);
   font-family: inherit;
@@ -268,13 +264,13 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
           <TextareaWrapper isSuggestions={suggestions.isActive}>
             <TextareaInput>
               <Textarea
-                inputRef={textareaRef}
+                inputRef={textareaRef as TextareaAutosizeProps['inputRef']}
                 value={text}
                 placeholder="Send a message"
                 maxLength={500}
                 maxRows={4}
                 disabled={isDisabled}
-                showScroll={isShowTextareaScroll}
+                $showScroll={isShowTextareaScroll}
                 onChange={onChange}
                 onKeyUp={onKeyUp}
                 onKeyDown={onKeyDown}
