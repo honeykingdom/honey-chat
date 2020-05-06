@@ -1,7 +1,8 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from '@reduxjs/toolkit';
 import * as twitchIrc from 'twitch-simple-irc';
+import useSound from 'use-sound';
 
 import usePrevious from 'hooks/usePrevious';
 import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';
@@ -18,6 +19,7 @@ import {
   isConnectedSelector,
 } from 'features/chat/selectors';
 import replaceEmojis from 'features/chat/utils/replaceEmojis';
+import checkIsMenction from 'features/chat/utils/checkIsMention';
 import {
   isAuthSelector,
   isAuthReadySelector,
@@ -25,9 +27,13 @@ import {
   invalidateAuth,
 } from 'features/auth/authSlice';
 import { readUserFromLocatStorage } from 'features/auth/authUtils';
+import { isHighlightNotificationsSelector } from 'features/options/optionsSelectors';
+
+import tinkSfx from 'features/chat/assets/ts-tink.ogg';
 
 const useTwitchClient = () => {
   const dispatch = useDispatch();
+  const [playTink] = useSound(tinkSfx);
 
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
@@ -36,6 +42,13 @@ const useTwitchClient = () => {
   const currentChannel = useSelector(currentChannelSelector);
   const prevChannel = usePrevious(currentChannel);
   const clientRef = useRef<twitchIrc.Client | null>(null);
+
+  const isHighlightNotifications = useSelector(
+    isHighlightNotificationsSelector,
+  );
+
+  const isHighlightNotificationsRef = useRef<boolean | null>();
+  isHighlightNotificationsRef.current = isHighlightNotifications;
 
   const registerEvents = useCallback(
     (client: typeof clientRef) => {
@@ -54,8 +67,19 @@ const useTwitchClient = () => {
       const handleRoomState = (data: twitchIrc.RoomStateEvent) =>
         dispatch(updateRoomParams(data));
 
-      const handleMessage = (message: twitchIrc.MessageEvent) =>
-        dispatch(addMessage({ type: 'message', message }));
+      const handleMessage = (message: twitchIrc.MessageEvent) => {
+        const isMention = checkIsMenction(
+          userLogin,
+          message.user,
+          message.message,
+        );
+
+        if (isHighlightNotificationsRef.current && isMention) {
+          playTink();
+        }
+
+        dispatch(addMessage({ type: 'message', message, isMention }));
+      };
 
       const handleNotice = (message: twitchIrc.NoticeEvent) => {
         if (
@@ -69,7 +93,7 @@ const useTwitchClient = () => {
           return;
         }
 
-        dispatch(addMessage({ type: 'notice', message, id: uuid() }));
+        dispatch(addMessage({ type: 'notice', message, id: nanoid() }));
       };
 
       const handleUserNotice = (message: twitchIrc.UserNoticeEvent) =>
@@ -90,7 +114,7 @@ const useTwitchClient = () => {
       client.current.on('usernotice', handleUserNotice);
       client.current.on('clearchat', handleClearChat);
     },
-    [dispatch],
+    [dispatch, userLogin, isHighlightNotificationsRef, playTink],
   );
 
   useEffect(() => {
