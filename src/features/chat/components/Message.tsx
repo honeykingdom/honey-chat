@@ -214,13 +214,13 @@ const MESSAGE_DELETED_LABEL = '<message deleted>';
 
 const Message = ({
   message: {
-    message,
     entities,
     user: { login, color, displayName, badges },
     timestamp,
     isHistory,
     isAction,
     isDeleted,
+    isMention,
   },
   userLogin,
   isEven,
@@ -229,8 +229,6 @@ const Message = ({
   onNameRightClick,
 }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
-  const isMention =
-    login !== userLogin && RegExp(userLogin as string, 'gi').test(message);
 
   const handleNameRightClick = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
