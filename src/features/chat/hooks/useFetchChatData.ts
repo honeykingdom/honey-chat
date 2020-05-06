@@ -5,6 +5,7 @@ import {
   isAuthReadySelector,
   isAuthSelector,
   userIdSelector,
+  userLoginSelector,
 } from 'features/auth/authSlice';
 import {
   currentChannelSelector,
@@ -39,6 +40,7 @@ const useFetchChatData = () => {
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
   const userId = useSelector(userIdSelector);
+  const userLogin = useSelector(userLoginSelector);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(currentChannelIdSelector);
 
@@ -65,6 +67,7 @@ const useFetchChatData = () => {
     !isHistoryAdded &&
     (isAuth ? isTwitchEmotesLoaded : true) &&
     (isAuth ? isBlockedUsersLoaded : true) &&
+    (isAuth ? !!userLogin : true) &&
     isBttvGlobalEmotesLoaded &&
     isBttvChannelEmotesLoaded &&
     isFfzGlobalEmotesLoaded &&
@@ -81,9 +84,9 @@ const useFetchChatData = () => {
 
   useEffect(() => {
     if (isReadyToAddHistory) {
-      dispatch(addChatHistory(currentChannel));
+      dispatch(addChatHistory({ channel: currentChannel, userLogin }));
     }
-  }, [dispatch, currentChannel, isReadyToAddHistory]);
+  }, [dispatch, currentChannel, isReadyToAddHistory, userLogin]);
 
   useEffect(() => {
     if (!isHistoryAdded && currentChannel) {
