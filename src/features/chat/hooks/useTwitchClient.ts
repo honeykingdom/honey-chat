@@ -50,11 +50,13 @@ const useTwitchClient = () => {
   const registerEventsParamsRef = useRef({
     userLogin,
     isHighlightNotifications,
+    playTink,
   });
 
   registerEventsParamsRef.current = {
     userLogin,
     isHighlightNotifications,
+    playTink,
   };
 
   const registerEvents = useCallback(
@@ -85,7 +87,7 @@ const useTwitchClient = () => {
           registerEventsParamsRef.current.isHighlightNotifications &&
           isMention
         ) {
-          playTink();
+          registerEventsParamsRef.current.playTink();
         }
 
         dispatch(addMessage({ type: 'message', message, isMention }));
@@ -124,7 +126,7 @@ const useTwitchClient = () => {
       client.current.on('usernotice', handleUserNotice);
       client.current.on('clearchat', handleClearChat);
     },
-    [dispatch, playTink],
+    [dispatch],
   );
 
   useEffect(() => {
