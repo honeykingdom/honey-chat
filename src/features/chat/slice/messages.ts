@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, CaseReducer } from '@reduxjs/toolkit';
 import type { PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import type twitchIrc from 'twitch-simple-irc';
 
@@ -162,102 +162,103 @@ const normalizePayload = (
   return assertNever(data);
 };
 
-export const messagesReducers = {
-  clearChat: (
-    state: ChatState,
-    { payload }: PayloadAction<twitchIrc.ClearChatEvent>,
-  ) => {
-    const {
-      channel,
-      tags: { targetUserId },
-    } = payload;
+const clearChat: CaseReducer<
+  ChatState,
+  PayloadAction<twitchIrc.ClearChatEvent>
+> = (state, { payload }) => {
+  const {
+    channel,
+    tags: { targetUserId },
+  } = payload;
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const message of state.messages[channel].items) {
-      if (
-        message.type === 'message' &&
-        message.user.id === targetUserId &&
-        !message.isHistory
-      ) {
-        message.isDeleted = true;
-      }
+  // eslint-disable-next-line no-restricted-syntax
+  for (const message of state.messages[channel].items) {
+    if (
+      message.type === 'message' &&
+      message.user.id === targetUserId &&
+      !message.isHistory
+    ) {
+      message.isDeleted = true;
     }
-  },
+  }
+};
 
-  addMessage: (
-    state: ChatState,
-    { payload }: PayloadAction<AddMessagePayload>,
-  ) => {
-    const message = normalizePayload(payload, state);
+const addMessage: CaseReducer<ChatState, PayloadAction<AddMessagePayload>> = (
+  state,
+  { payload },
+) => {
+  const message = normalizePayload(payload, state);
 
-    if (!message) return;
+  if (!message) return;
 
-    const { channel } = message;
+  const { channel } = message;
 
-    const prevItems = state.messages[channel].items;
-    const newItems = [...prevItems, message];
-    const slicedMessages = sliceMessages(newItems);
+  const prevItems = state.messages[channel].items;
+  const newItems = [...prevItems, message];
+  const slicedMessages = sliceMessages(newItems);
 
-    const isSliced = newItems.length > slicedMessages.length;
-    const prevIsEven = state.messages[channel].isEven;
+  const isSliced = newItems.length > slicedMessages.length;
+  const prevIsEven = state.messages[channel].isEven;
 
-    state.messages[channel].isEven = getIsEven(prevIsEven, 1, isSliced);
-    state.messages[channel].items = slicedMessages;
+  state.messages[channel].isEven = getIsEven(prevIsEven, 1, isSliced);
+  state.messages[channel].items = slicedMessages;
 
-    // add user
-    const { users } = state.messages[channel];
+  // add user
+  const { users } = state.messages[channel];
 
+  if (message.type === 'message' && !users.includes(message.user.displayName)) {
+    users.push(message.user.displayName);
+  }
+
+  state.messages[channel].users = sliceUsers(users);
+};
+
+const addChatHistory: CaseReducer<
+  ChatState,
+  PayloadAction<AddChatHistoryPayload>
+> = (state, { payload }) => {
+  const { channel, userLogin } = payload;
+
+  const rawHistory = state.messages[channel].history.items;
+  const history = normalizeHistoryMessages(
+    sliceMessages(rawHistory),
+    state,
+    userLogin,
+  );
+  const prevItems = state.messages[channel].items;
+  const newItems = [...history, ...prevItems];
+  const slicedMessages = sliceMessages(newItems);
+
+  const isSliced = newItems.length > slicedMessages.length;
+  const prevIsEven = state.messages[channel].isEven;
+
+  state.messages[channel].isEven = getIsEven(
+    prevIsEven,
+    history.length,
+    isSliced,
+  );
+  state.messages[channel].items = slicedMessages;
+
+  // add users
+  const { users } = state.messages[channel];
+
+  history.forEach((message) => {
     if (
       message.type === 'message' &&
       !users.includes(message.user.displayName)
     ) {
       users.push(message.user.displayName);
     }
+  });
 
-    state.messages[channel].users = sliceUsers(users);
-  },
+  state.messages[channel].history.items = [];
+  state.messages[channel].history.isAdded = true;
+};
 
-  addChatHistory: (
-    state: ChatState,
-    { payload }: PayloadAction<AddChatHistoryPayload>,
-  ) => {
-    const { channel, userLogin } = payload;
-
-    const rawHistory = state.messages[channel].history.items;
-    const history = normalizeHistoryMessages(
-      sliceMessages(rawHistory),
-      state,
-      userLogin,
-    );
-    const prevItems = state.messages[channel].items;
-    const newItems = [...history, ...prevItems];
-    const slicedMessages = sliceMessages(newItems);
-
-    const isSliced = newItems.length > slicedMessages.length;
-    const prevIsEven = state.messages[channel].isEven;
-
-    state.messages[channel].isEven = getIsEven(
-      prevIsEven,
-      history.length,
-      isSliced,
-    );
-    state.messages[channel].items = slicedMessages;
-
-    // add users
-    const { users } = state.messages[channel];
-
-    history.forEach((message) => {
-      if (
-        message.type === 'message' &&
-        !users.includes(message.user.displayName)
-      ) {
-        users.push(message.user.displayName);
-      }
-    });
-
-    state.messages[channel].history.items = [];
-    state.messages[channel].history.isAdded = true;
-  },
+export const messagesReducers = {
+  clearChat,
+  addMessage,
+  addChatHistory,
 };
 
 export const fetchChatHistory = createAsyncThunk(

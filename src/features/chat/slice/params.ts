@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import type { PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 import type twitchIrc from 'twitch-simple-irc';
 
 import type { ChatState } from 'features/chat/slice';
@@ -19,44 +19,48 @@ export const paramsInitialState: ParamsState = {
   byChannels: {},
 };
 
+const updateGlobalUserParams: CaseReducer<
+  ChatState,
+  PayloadAction<twitchIrc.GlobalUserStateEvent>
+> = (state, { payload }): void => {
+  state.params.global = payload.tags;
+};
+
+const updateUserParams: CaseReducer<
+  ChatState,
+  PayloadAction<twitchIrc.UserStateEvent>
+> = (state, { payload }): void => {
+  const { channel, tags } = payload;
+
+  if (!state.params.byChannels[channel]) {
+    state.params.byChannels[channel] = {
+      room: null,
+      user: null,
+    };
+  }
+
+  state.params.byChannels[channel].user = tags;
+};
+
+const updateRoomParams: CaseReducer<
+  ChatState,
+  PayloadAction<twitchIrc.RoomStateEvent>
+> = (state, { payload }): void => {
+  const { channel, tags } = payload;
+
+  if (!state.params.byChannels[channel]) {
+    state.params.byChannels[channel] = {
+      room: null,
+      user: null,
+    };
+  }
+
+  // TODO: merge tags
+  state.params.byChannels[channel].room = tags;
+};
+
 export const paramsReducers = {
-  updateGlobalUserParams: (
-    state: ChatState,
-    { payload }: PayloadAction<twitchIrc.GlobalUserStateEvent>,
-  ): void => {
-    state.params.global = payload.tags;
-  },
-
-  updateUserParams: (
-    state: ChatState,
-    { payload }: PayloadAction<twitchIrc.UserStateEvent>,
-  ): void => {
-    const { channel, tags } = payload;
-
-    if (!state.params.byChannels[channel]) {
-      state.params.byChannels[channel] = {
-        room: null,
-        user: null,
-      };
-    }
-
-    state.params.byChannels[channel].user = tags;
-  },
-
-  updateRoomParams: (
-    state: ChatState,
-    { payload }: PayloadAction<twitchIrc.RoomStateEvent>,
-  ): void => {
-    const { channel, tags } = payload;
-
-    if (!state.params.byChannels[channel]) {
-      state.params.byChannels[channel] = {
-        room: null,
-        user: null,
-      };
-    }
-
-    // TODO: merge tags
-    state.params.byChannels[channel].room = tags;
-  },
+  updateGlobalUserParams,
+  updateUserParams,
+  updateRoomParams,
 };
