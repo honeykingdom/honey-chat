@@ -14,6 +14,7 @@ import {
   normalizeHistoryMessages,
   normalizeOwnMessage,
 } from 'features/chat/utils/normalizeMessages';
+import sliceItemsByLimit from 'features/chat/utils/sliceItemsByLimit';
 import type { ChatState } from 'features/chat/slice';
 import type { FetchResult } from 'utils/types';
 
@@ -115,30 +116,6 @@ export type MessagesState = Record<string, MessagesStateChannel>;
 
 export const messagesInitialState: MessagesState = {};
 
-function sliceMessages<T>(items: T[]): T[] {
-  const diff = items.length - CHANNEL_MESSAGES_LIMIT;
-
-  return diff > 0 ? items.slice(diff) : items;
-}
-
-function sliceUsers<T>(users: T[]): T[] {
-  const diff = users.length - STORE_USERS_LIMIT;
-
-  return diff > 0 ? users.slice(diff) : users;
-}
-
-const getIsEven = (
-  prev: boolean,
-  addedItemsCount: number,
-  isSliced: boolean,
-): boolean => {
-  if (isSliced) {
-    return addedItemsCount % 2 ? !prev : prev;
-  }
-
-  return prev;
-};
-
 const normalizePayload = (
   data: AddMessagePayload,
   chatState: ChatState,
@@ -193,15 +170,14 @@ const addMessage: CaseReducer<ChatState, PayloadAction<AddMessagePayload>> = (
 
   const { channel } = message;
 
-  const prevItems = state.messages[channel].items;
-  const newItems = [...prevItems, message];
-  const slicedMessages = sliceMessages(newItems);
+  const [newItems, newIsEven] = sliceItemsByLimit({
+    items: [...state.messages[channel].items, message],
+    limit: CHANNEL_MESSAGES_LIMIT,
+    isEven: state.messages[channel].isEven,
+  });
 
-  const isSliced = newItems.length > slicedMessages.length;
-  const prevIsEven = state.messages[channel].isEven;
-
-  state.messages[channel].isEven = getIsEven(prevIsEven, 1, isSliced);
-  state.messages[channel].items = slicedMessages;
+  state.messages[channel].isEven = newIsEven;
+  state.messages[channel].items = newItems;
 
   // add user
   const { users } = state.messages[channel];
@@ -210,7 +186,12 @@ const addMessage: CaseReducer<ChatState, PayloadAction<AddMessagePayload>> = (
     users.push(message.user.displayName);
   }
 
-  state.messages[channel].users = sliceUsers(users);
+  const [newUsers] = sliceItemsByLimit({
+    items: users,
+    limit: STORE_USERS_LIMIT,
+  });
+
+  state.messages[channel].users = newUsers;
 };
 
 const addChatHistory: CaseReducer<
@@ -220,24 +201,21 @@ const addChatHistory: CaseReducer<
   const { channel, userLogin } = payload;
 
   const rawHistory = state.messages[channel].history.items;
-  const history = normalizeHistoryMessages(
-    sliceMessages(rawHistory),
-    state,
-    userLogin,
-  );
-  const prevItems = state.messages[channel].items;
-  const newItems = [...history, ...prevItems];
-  const slicedMessages = sliceMessages(newItems);
+  const [slicedRawHistory] = sliceItemsByLimit({
+    items: rawHistory,
+    limit: CHANNEL_MESSAGES_LIMIT,
+  });
+  const history = normalizeHistoryMessages(slicedRawHistory, state, userLogin);
 
-  const isSliced = newItems.length > slicedMessages.length;
-  const prevIsEven = state.messages[channel].isEven;
+  const [newItems, newIsEven] = sliceItemsByLimit({
+    items: [...history, ...state.messages[channel].items],
+    limit: CHANNEL_MESSAGES_LIMIT,
+    addedItemsCount: history.length,
+    isEven: state.messages[channel].isEven,
+  });
 
-  state.messages[channel].isEven = getIsEven(
-    prevIsEven,
-    history.length,
-    isSliced,
-  );
-  state.messages[channel].items = slicedMessages;
+  state.messages[channel].items = newItems;
+  state.messages[channel].isEven = newIsEven;
 
   // add users
   const { users } = state.messages[channel];
