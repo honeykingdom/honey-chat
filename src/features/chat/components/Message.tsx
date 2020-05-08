@@ -35,6 +35,9 @@ const Name = styled.span`
   color: ${(p) => p.color};
   cursor: pointer;
 `;
+const EmoteWrapper = styled.span`
+  display: inline-block;
+`;
 const Emoji = styled.img`
   display: inline-block;
   margin-top: -5px;
@@ -154,18 +157,24 @@ const renderMessageArray = (login: string, userLogin: string | null) => (
     item.type === 'ffz-emote'
   ) {
     return (
-      <Emote
-        key={key}
-        src={item.src}
-        srcSet={item.srcSet}
-        alt={item.alt}
-        data-emote-id={item.id}
-      />
+      <EmoteWrapper>
+        <Emote
+          key={key}
+          src={item.src}
+          srcSet={item.srcSet}
+          alt={item.alt}
+          data-emote-id={item.id}
+        />
+      </EmoteWrapper>
     );
   }
 
   if (item.type === 'emoji') {
-    return <Emoji key={key} src={item.src} alt={item.alt} />;
+    return (
+      <EmoteWrapper>
+        <Emoji key={key} src={item.src} alt={item.alt} />
+      </EmoteWrapper>
+    );
   }
 
   if (item.type === 'mention') {
