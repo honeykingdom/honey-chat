@@ -5,6 +5,7 @@ const TWITCH_API_HELIX = 'https://api.twitch.tv/helix';
 const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';
 
 const getHelixHeaders = () => ({
+  'Client-ID': process.env.REACT_APP_TWITCH_API_CLIENT_ID,
   Authorization: `Bearer ${localStorage.getItem(LS_ACCESS_TOKEN)}`,
 });
 
