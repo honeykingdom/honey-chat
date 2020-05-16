@@ -35,9 +35,6 @@ const Name = styled.span`
   color: ${(p) => p.color};
   cursor: pointer;
 `;
-const EmoteWrapper = styled.span`
-  display: inline-block;
-`;
 const Emoji = styled.img`
   display: inline-block;
   margin-top: -5px;
@@ -46,12 +43,15 @@ const Emoji = styled.img`
   height: auto;
   vertical-align: middle;
 `;
-// https://github.com/night/BetterTTV/blob/master/src/modules/emotes/style.css
-// prettier-ignore
 const Emote = styled.img`
   display: inline-block;
   margin: -5px 0;
   vertical-align: middle;
+`;
+// https://github.com/night/BetterTTV/blob/master/src/modules/emotes/style.css
+// prettier-ignore
+const EmoteWrapper = styled.span`
+  display: inline-block;
 
   /* Prevent stacking of IceCold, SoSnowy */
   &[data-emote-id='5849c9a4f52be01a7ee5f79d'] + &[data-emote-id='5849c9a4f52be01a7ee5f79d'],
@@ -95,6 +95,11 @@ const Emote = styled.img`
   &        + &[data-emote-id='5e76d399d6581c3724c0f0b8'],
   ${Emoji} + &[data-emote-id='5e76d399d6581c3724c0f0b8'] {
     margin-left: -34px;
+  }
+  &        + &[data-emote-id='5e76d338d6581c3724c0f0b2'] ${Emote},
+  ${Emoji} + &[data-emote-id='5e76d338d6581c3724c0f0b2'] ${Emote},
+  &        + &[data-emote-id='5e76d399d6581c3724c0f0b8'] ${Emote},
+  ${Emoji} + &[data-emote-id='5e76d399d6581c3724c0f0b8'] ${Emote} {
     height: 34px;
     width: 34px;
   }
@@ -157,14 +162,8 @@ const renderMessageArray = (login: string, userLogin: string | null) => (
     item.type === 'ffz-emote'
   ) {
     return (
-      <EmoteWrapper>
-        <Emote
-          key={key}
-          src={item.src}
-          srcSet={item.srcSet}
-          alt={item.alt}
-          data-emote-id={item.id}
-        />
+      <EmoteWrapper data-emote-id={item.id}>
+        <Emote key={key} src={item.src} srcSet={item.srcSet} alt={item.alt} />
       </EmoteWrapper>
     );
   }
