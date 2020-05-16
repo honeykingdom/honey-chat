@@ -10,7 +10,6 @@ type StoredUser = {
   login: string;
 };
 
-/* eslint-disable @typescript-eslint/camelcase */
 const authParams = {
   client_id: TWITCH_API_CLIENT_ID,
   redirect_uri: TWITCH_API_REDIRECT_URI,
@@ -32,7 +31,6 @@ const authParams = {
   // TODO:
   // state: uid(),
 };
-/* eslint-enable @typescript-eslint/camelcase */
 
 export const getAuthUrl = (): string => {
   const search = Object.entries(authParams)
