@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import useOnClickOutside from 'hooks/useOnClickOutside';
+import useOnClickOutside from 'react-cool-onclickoutside';
 import { ReactComponent as GearsIconSvg } from 'icons/gears.svg';
 import { ReactComponent as TwitchIconSvg } from 'icons/twitch.svg';
 import Button from 'components/Button';
@@ -61,13 +61,15 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
   const optionsModalRef = useRef(null);
   const optionsButtonRef = useRef(null);
-  const optionsNodesRef = useRef([optionsModalRef, optionsButtonRef]);
 
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
 
   const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
-  useOnClickOutside(optionsNodesRef, handleCloseOptionsModal);
+  useOnClickOutside(
+    [optionsModalRef, optionsButtonRef],
+    handleCloseOptionsModal,
+  );
 
   const renderSignInButton = () => (
     <Button as={Link} to="/chat/auth">

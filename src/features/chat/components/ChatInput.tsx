@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import TextareaAutosize, {
   TextareaAutosizeProps,
 } from 'react-textarea-autosize';
-import useOnClickOutside from 'hooks/useOnClickOutside';
+import useOnClickOutside from 'react-cool-onclickoutside';
 
 import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
@@ -181,12 +181,11 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
   ) => {
     const chatInputRef = useRef(null);
     const suggestionsRef = useRef<HTMLDivElement>(null);
-    const suggestionNodesRef = useRef([
-      textareaRef,
-      suggestionsRef,
-    ] as React.RefObject<HTMLElement>[]);
 
-    useOnClickOutside(suggestionNodesRef, () => onBlur());
+    useOnClickOutside(
+      [textareaRef as React.RefObject<HTMLElement>, suggestionsRef],
+      () => onBlur(),
+    );
 
     const [isShowTextareaScroll, setIsShowTextareaScroll] = useState(false);
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
