@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import * as twitchIrc from 'twitch-simple-irc';
 import useSound from 'use-sound';
+import { usePrevious } from 'react-use';
 
-import usePrevious from 'hooks/usePrevious';
 import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';
 import {
   addMessage,

@@ -1,7 +1,7 @@
 import { useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import { useSetState } from 'react-use';
 
-import useSetState from 'hooks/useSetState';
 import { SUGGESTION_TYPES } from 'utils/constants';
 import getUsersByBeginText from 'features/chat/utils/getUsersByBeginText';
 import getEmotesByText from 'features/chat/utils/getEmotesByText';
