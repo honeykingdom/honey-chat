@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "/chat/static/js/main.7e938d5e.chunk.js",
-    "main.js.map": "/chat/static/js/main.7e938d5e.chunk.js.map",
-    "runtime-main.js": "/chat/static/js/runtime-main.e901816c.js",
-    "runtime-main.js.map": "/chat/static/js/runtime-main.e901816c.js.map",
-    "static/js/2.ce1f1f05.chunk.js": "/chat/static/js/2.ce1f1f05.chunk.js",
-    "static/js/2.ce1f1f05.chunk.js.map": "/chat/static/js/2.ce1f1f05.chunk.js.map",
-    "static/js/3.1278b0f7.chunk.js": "/chat/static/js/3.1278b0f7.chunk.js",
-    "static/js/3.1278b0f7.chunk.js.map": "/chat/static/js/3.1278b0f7.chunk.js.map",
+    "main.js": "/chat/static/js/main.079e94b5.chunk.js",
+    "main.js.map": "/chat/static/js/main.079e94b5.chunk.js.map",
+    "runtime-main.js": "/chat/static/js/runtime-main.14cd09bd.js",
+    "runtime-main.js.map": "/chat/static/js/runtime-main.14cd09bd.js.map",
+    "static/js/2.a57a6e53.chunk.js": "/chat/static/js/2.a57a6e53.chunk.js",
+    "static/js/2.a57a6e53.chunk.js.map": "/chat/static/js/2.a57a6e53.chunk.js.map",
+    "static/js/3.b2525e3d.chunk.js": "/chat/static/js/3.b2525e3d.chunk.js",
+    "static/js/3.b2525e3d.chunk.js.map": "/chat/static/js/3.b2525e3d.chunk.js.map",
     "index.html": "/chat/index.html",
-    "precache-manifest.21fd9e501380d26c0b78d8eb53fc2db3.js": "/chat/precache-manifest.21fd9e501380d26c0b78d8eb53fc2db3.js",
+    "precache-manifest.4b5dea1f2dea9f5e769f84ed891b1644.js": "/chat/precache-manifest.4b5dea1f2dea9f5e769f84ed891b1644.js",
     "service-worker.js": "/chat/service-worker.js",
-    "static/js/2.ce1f1f05.chunk.js.LICENSE.txt": "/chat/static/js/2.ce1f1f05.chunk.js.LICENSE.txt",
-    "static/js/3.1278b0f7.chunk.js.LICENSE.txt": "/chat/static/js/3.1278b0f7.chunk.js.LICENSE.txt",
+    "static/js/2.a57a6e53.chunk.js.LICENSE.txt": "/chat/static/js/2.a57a6e53.chunk.js.LICENSE.txt",
+    "static/js/3.b2525e3d.chunk.js.LICENSE.txt": "/chat/static/js/3.b2525e3d.chunk.js.LICENSE.txt",
     "static/media/close.992b249e.svg": "/chat/static/media/close.992b249e.svg",
     "static/media/gears.5f76af43.svg": "/chat/static/media/gears.5f76af43.svg",
     "static/media/search.a2f0945f.svg": "/chat/static/media/search.a2f0945f.svg",
@@ -21,8 +21,8 @@
     "static/media/twitch.75e6e194.svg": "/chat/static/media/twitch.75e6e194.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e901816c.js",
-    "static/js/2.ce1f1f05.chunk.js",
-    "static/js/main.7e938d5e.chunk.js"
+    "static/js/runtime-main.14cd09bd.js",
+    "static/js/2.a57a6e53.chunk.js",
+    "static/js/main.079e94b5.chunk.js"
   ]
 }
