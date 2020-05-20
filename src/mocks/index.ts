@@ -13,7 +13,7 @@ import {
   parseFfzGlobalEmotes,
   parseFfzChannelEmotes,
 } from 'features/chat/utils/parseApiResponse';
-import findEmote from 'features/chat/utils/findEmote';
+import findEmote from 'features/emotes/utils/findEmote';
 
 export const emotes = {
   twitchGlobal: R.pipe(parseTwitchEmotes, R.pick(['0']))(twitchEmotes),
