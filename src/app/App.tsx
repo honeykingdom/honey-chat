@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import { isAuthRedirect } from 'features/auth/authUtils';
-import Chat from 'features/chat/components/Chat';
+import Chat from 'features/chat/Chat';
 import Auth from 'features/auth/Auth';
 import Logout from 'features/auth/Logout';
 import AuthCallback from 'features/auth/AuthCallback';
