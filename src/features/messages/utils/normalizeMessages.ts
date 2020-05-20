@@ -1,6 +1,7 @@
 import { nanoid } from '@reduxjs/toolkit';
 import * as twitchIrc from 'twitch-simple-irc';
 import * as tekko from 'tekko';
+import { Howl } from 'howler';
 
 import type * as api from 'api';
 import type { RootState } from 'app/rootReducer';
@@ -24,7 +25,9 @@ import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import checkIsMenction from 'features/messages/utils/checkIsMention';
 import { writeEmotesUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
 
-// import tinkSfx from 'assets/ts-tink.ogg';
+import tinkSfx from 'assets/ts-tink.ogg';
+
+const tink = new Howl({ src: [tinkSfx] });
 
 export const normalizeMessage = (
   { message, tags, user, channel, isAction }: twitchIrc.MessageEvent,
@@ -42,7 +45,7 @@ export const normalizeMessage = (
   const isMention = checkIsMenction(userLogin, user, message);
 
   if (isMention && isHighlightNotifications) {
-    // TODO: play sound
+    tink.play();
   }
 
   const globalBadges = globalBadgesSelector(state);
