@@ -9,32 +9,45 @@ import type {
   Notice,
   UserNotice,
   OwnMessage,
-} from 'features/chat/slice/messages';
-import type { ChatState } from 'features/chat/slice';
+} from 'features/messages/messagesSlice';
+import { emotesSelector } from 'features/emotes/emotesSelectors';
+import { blockedUsersSelector } from 'features/blockedUsers/blockedUsersSelectors';
 import {
-  blockedUsersSelector,
   globalBadgesSelector,
   channelBadgesSelector,
-  emotesSelector,
-} from 'features/chat/selectors';
-import type { StateEmotes } from 'features/chat/selectors';
-import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import checkIsMenction from 'features/chat/utils/checkIsMention';
-import { writeEmotesUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
+} from 'features/badges/badgesSelectors';
+import { isHighlightNotificationsSelector } from 'features/options/optionsSelectors';
+import { userLoginSelector, userIdSelector } from 'features/auth/authSelectors';
+import type { StateEmotes } from 'features/emotes/emotesSelectors';
+import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import checkIsMenction from 'features/messages/utils/checkIsMention';
+import { writeEmotesUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
+
+// import tinkSfx from 'assets/ts-tink.ogg';
 
 export const normalizeMessage = (
   { message, tags, user, channel, isAction }: twitchIrc.MessageEvent,
-  chatState: ChatState,
-  isMention: boolean,
+  state: RootState,
 ): Message | null => {
-  const fakeState = { chat: chatState } as RootState;
+  const blockedUsers = blockedUsersSelector(state);
+  const isBlockedUser = blockedUsers.includes(user);
 
-  // messages from blocked users filtered before
+  if (isBlockedUser) {
+    return null;
+  }
 
-  const globalBadges = globalBadgesSelector(fakeState);
-  const channelBadges = channelBadgesSelector(fakeState);
-  const emotes = emotesSelector(fakeState);
+  const isHighlightNotifications = isHighlightNotificationsSelector(state);
+  const userLogin = userLoginSelector(state);
+  const isMention = checkIsMenction(userLogin, user, message);
+
+  if (isMention && isHighlightNotifications) {
+    // TODO: play sound
+  }
+
+  const globalBadges = globalBadgesSelector(state);
+  const channelBadges = channelBadgesSelector(state);
+  const emotes = emotesSelector(state);
 
   return {
     type: 'message',
@@ -57,12 +70,13 @@ export const normalizeMessage = (
   };
 };
 
-export const normalizeNotice = (
-  { message, channel, tags: { msgId } }: twitchIrc.NoticeEvent,
-  id: string,
-): Notice => ({
+export const normalizeNotice = ({
+  message,
+  channel,
+  tags: { msgId },
+}: twitchIrc.NoticeEvent): Notice => ({
   type: 'notice',
-  id,
+  id: nanoid(),
   message,
   channel,
   noticeType: msgId,
@@ -85,18 +99,20 @@ export const normalizeUserNotice = ({
 });
 
 export const normalizeOwnMessage = (
-  { message, channel, tags, userId, userLogin }: OwnMessage,
-  chatState: ChatState,
+  { message, channel, tags }: OwnMessage,
+  state: RootState,
 ): Message => {
-  const fakeState = { chat: chatState } as RootState;
-  const globalBadges = globalBadgesSelector(fakeState);
-  const channelBadges = channelBadgesSelector(fakeState);
-  const emotes = emotesSelector(fakeState);
+  const globalBadges = globalBadgesSelector(state);
+  const channelBadges = channelBadgesSelector(state);
+  const emotes = emotesSelector(state);
+  const userLogin = userLoginSelector(state) as string;
+  const userId = userIdSelector(state) as string;
 
   const isAction = message.startsWith('/me ');
   const normalizedMessage = isAction ? message.slice(4) : message;
 
   const entities = parseMessageEntities(normalizedMessage, emotes, null, true);
+
   writeEmotesUsageStatistic(entities);
 
   return {
@@ -106,8 +122,8 @@ export const normalizeOwnMessage = (
     channel,
     entities,
     user: {
-      id: userId as string,
-      login: userLogin as string,
+      id: userId,
+      login: userLogin,
       displayName: tags.displayName,
       color: tags.color,
       badges: htmlEntity.createBadges(tags.badges, globalBadges, channelBadges),
@@ -169,14 +185,13 @@ export const normalizeHistoryMessage = (
 
 export const normalizeHistoryMessages = (
   rawMessages: string[],
-  chatState: ChatState,
-  userLogin: string | null,
+  state: RootState,
 ): Message[] => {
-  const fakeState = { chat: chatState } as RootState;
-  const globalBadges = globalBadgesSelector(fakeState);
-  const channelBadges = channelBadgesSelector(fakeState);
-  const emotes = emotesSelector(fakeState);
-  const blockedUsers = blockedUsersSelector(fakeState);
+  const globalBadges = globalBadgesSelector(state);
+  const channelBadges = channelBadgesSelector(state);
+  const emotes = emotesSelector(state);
+  const blockedUsers = blockedUsersSelector(state);
+  const userLogin = userLoginSelector(state);
 
   return rawMessages.reduce<Message[]>((acc, rawMessage) => {
     const message = tekko.parse(rawMessage) as tekko.Message;
