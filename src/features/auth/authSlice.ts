@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import { RootState } from 'app/rootReducer';
+import type { FetchStatus } from 'utils/types';
 import { writeUserToLocatStorage } from 'features/auth/authUtils';
-import { FetchStatus } from 'utils/types';
 
 type AuthState = {
   status: FetchStatus;
@@ -78,15 +78,3 @@ const auth = createSlice({
 export const { initializeAuth, invalidateAuth } = auth.actions;
 
 export default auth.reducer;
-
-export const isAuthReadySelector = (state: RootState): boolean =>
-  state.auth.status !== 'idle' && state.auth.status !== 'loading';
-
-export const isAuthSelector = (state: RootState): boolean =>
-  state.auth.status === 'success';
-
-export const userLoginSelector = (state: RootState): string | null =>
-  state.auth.userLogin;
-
-export const userIdSelector = (state: RootState): string | null =>
-  state.auth.userId;
