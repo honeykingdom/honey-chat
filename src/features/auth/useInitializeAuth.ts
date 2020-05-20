@@ -2,11 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import jwt from 'jsonwebtoken';
 
-import {
-  isAuthReadySelector,
-  initializeAuth,
-  fetchUser,
-} from 'features/auth/authSlice';
+import { initializeAuth, fetchUser } from 'features/auth/authSlice';
+import { isAuthReadySelector } from 'features/auth/authSelectors';
 import { readUserFromLocatStorage } from 'features/auth/authUtils';
 
 const useInitializeAuth = () => {
