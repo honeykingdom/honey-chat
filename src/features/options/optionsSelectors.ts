@@ -1,4 +1,4 @@
-import { RootState } from 'app/rootReducer';
+import type { RootState } from 'app/rootReducer';
 
 type OptionItem = {
   type: 'switch' | 'input';
