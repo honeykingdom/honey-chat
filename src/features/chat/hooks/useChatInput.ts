@@ -4,9 +4,10 @@ import { useSetState } from 'react-use';
 
 import { SUGGESTION_TYPES } from 'utils/constants';
 import getUsersByBeginText from 'features/chat/utils/getUsersByBeginText';
-import getEmotesByText from 'features/chat/utils/getEmotesByText';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import { usersSelector, emotesSelector } from 'features/chat/selectors';
+import getEmotesByText from 'features/emotes/utils/getEmotesByText';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import { usersSelector } from 'features/messages/messagesSelectors';
+import { emotesSelector } from 'features/emotes/emotesSelectors';
 
 interface ASuggestions {
   isActive: boolean;

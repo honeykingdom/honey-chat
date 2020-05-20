@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { LS_LAST_CHANNEL } from 'utils/constants';
-import { updateCurrentChannel } from 'features/chat/slice';
+import { updateCurrentChannel } from 'features/chat/chatSlice';
 
 // TODO: remove lastChannel if can't connect to the channel
 
