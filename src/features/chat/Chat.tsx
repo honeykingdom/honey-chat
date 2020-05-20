@@ -2,21 +2,22 @@ import React, { useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { isAuthSelector } from 'features/auth/authSlice';
+import { isAuthSelector } from 'features/auth/authSelectors';
+import {
+  currentChannelSelector,
+  isConnectedSelector,
+} from 'features/chat/chatSelectors';
 import { isFixedWidthSelector } from 'features/options/optionsSelectors';
-import useInitializeAuth from 'features/auth/hooks/useInitializeAuth';
+import useInitializeAuth from 'features/auth/useInitializeAuth';
 import useFetchChatData from 'features/chat/hooks/useFetchChatData';
 import useCurrentChannel from 'features/chat/hooks/useCurrentChannel';
 import useTwitchClient from 'features/chat/hooks/useTwitchClient';
 import useChatInput from 'features/chat/hooks/useChatInput';
-import {
-  currentChannelSelector,
-  isConnectedSelector,
-} from 'features/chat/selectors';
-import ChatInput from 'features/chat/components/ChatInput';
-import ChatControls from 'features/chat/components/ChatControls';
-import Messages from 'features/chat/components/Messages';
-import JoinChannel from 'features/chat/components/JoinChannel';
+
+import ChatInput from 'features/chat/ChatInput';
+import ChatControls from 'features/chat/ChatControls';
+import Messages from 'features/messages/Messages';
+import JoinChannel from 'features/chat/JoinChannel';
 
 const ChatRoot = styled.div`
   height: 100vh;

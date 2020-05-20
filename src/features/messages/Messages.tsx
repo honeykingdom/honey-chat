@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ScrollbarType from 'react-scrollbars-custom';
-import { ScrollState } from 'react-scrollbars-custom/dist/types/types';
+import type ScrollbarType from 'react-scrollbars-custom';
+import type { ScrollState } from 'react-scrollbars-custom/dist/types/types';
 
 import Scrollbar from 'components/Scrollbar';
-import ChatMessage from 'features/chat/components/ChatMessage';
-import { messagesSelector, isEvenSelector } from 'features/chat/selectors';
-import { userLoginSelector } from 'features/auth/authSlice';
+import ChatMessage from 'features/messages/ChatMessage';
+import {
+  messagesSelector,
+  isEvenSelector,
+} from 'features/messages/messagesSelectors';
 import {
   isShowTimestampsSelector,
   isSplitChatSelector,
 } from 'features/options/optionsSelectors';
+import { userLoginSelector } from 'features/auth/authSelectors';
 
 const MORE_MESSAGES_OFFSET = 100;
 

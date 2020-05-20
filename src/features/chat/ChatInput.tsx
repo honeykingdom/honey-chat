@@ -10,10 +10,10 @@ import useOnClickOutside from 'react-cool-onclickoutside';
 import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
 import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
-import EmotePicker from 'features/chat/components/EmotePicker';
+import EmotePicker from 'features/emotes/EmotePicker';
 import { SuggestionsState } from 'features/chat/hooks/useChatInput';
-import { isEmotesLoadedSelector } from 'features/chat/selectors';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
+import { isEmotesLoadedSelector } from 'features/emotes/emotesSelectors';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
 
 const ChatInputRoot = styled.div`
   padding-left: 10px;

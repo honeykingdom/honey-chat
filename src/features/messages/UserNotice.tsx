@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { UserNotice as UserNoticeType } from 'features/chat/slice/messages';
+import type { UserNotice as UserNoticeType } from 'features/messages/messagesSlice';
 
 const UserNoticeRoot = styled.div`
   padding: 5px 20px 5px 16px;

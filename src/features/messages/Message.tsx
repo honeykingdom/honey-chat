@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format } from 'date-fns/fp';
 
-import {
+import type {
   Message as MessageType,
   MessageEntity,
-} from 'features/chat/slice/messages';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
+} from 'features/messages/messagesSlice';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
 
 type MessageRootProps = {
   isAction: boolean;

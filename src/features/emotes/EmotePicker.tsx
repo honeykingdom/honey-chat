@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import type { RootState } from 'app/rootReducer';
 import Scrollbar from 'components/Scrollbar';
-import { emoteCategoriesSelector } from 'features/chat/selectors';
-import type { EmoteCategory } from 'features/chat/utils/createEmoteCategories';
+import { emoteCategoriesSelector } from 'features/emotes/emotesSelectors';
+import type { EmoteCategory } from 'features/emotes/utils/createEmoteCategories';
 import { ReactComponent as SearchIconSvg } from 'icons/search.svg';
 
 const EmotePickerRoot = styled.div`

@@ -10,7 +10,10 @@ import Button from 'components/Button';
 import IconButton from 'components/IconButton';
 import ChatModal from 'components/ChatModal';
 import Options from 'features/options/Options';
-import { isAuthSelector, isAuthReadySelector } from 'features/auth/authSlice';
+import {
+  isAuthSelector,
+  isAuthReadySelector,
+} from 'features/auth/authSelectors';
 
 const ChatControlsRoot = styled.div`
   position: relative;

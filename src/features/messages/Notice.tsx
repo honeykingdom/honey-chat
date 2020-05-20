@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Notice as NoticeType } from 'features/chat/slice/messages';
+import type { Notice as NoticeType } from 'features/messages/messagesSlice';
 
 const NoticeRoot = styled.div<{ isEven: boolean }>`
   padding: 5px 20px;

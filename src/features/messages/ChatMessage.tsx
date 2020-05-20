@@ -1,10 +1,10 @@
 import React from 'react';
 
 import assertNever from 'utils/assertNever';
-import { ChatMessage as ChatMessageType } from 'features/chat/slice/messages';
-import Message from 'features/chat/components/Message';
-import Notice from 'features/chat/components/Notice';
-import UserNotice from 'features/chat/components/UserNotice';
+import type { ChatMessage as ChatMessageType } from 'features/messages/messagesSlice';
+import Message from 'features/messages/Message';
+import Notice from 'features/messages/Notice';
+import UserNotice from 'features/messages/UserNotice';
 
 type Props = {
   message: ChatMessageType;
