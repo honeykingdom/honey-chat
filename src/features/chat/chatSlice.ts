@@ -8,8 +8,7 @@ type Params = {
   user: twitchIrc.UserStateTags | null;
 };
 
-// TODO: is it needed to export this?
-export type ChatState = {
+type ChatState = {
   isConnected: boolean;
   currentChannel: string;
   params: {
