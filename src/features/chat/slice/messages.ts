@@ -200,9 +200,8 @@ const addChatHistory: CaseReducer<
 > = (state, { payload }) => {
   const { channel, userLogin } = payload;
 
-  const rawHistory = state.messages[channel].history.items;
   const [slicedRawHistory] = sliceItemsByLimit({
-    items: rawHistory,
+    items: state.messages[channel].history.items,
     limit: CHANNEL_MESSAGES_LIMIT,
   });
   const history = normalizeHistoryMessages(slicedRawHistory, state, userLogin);
