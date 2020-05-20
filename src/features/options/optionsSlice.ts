@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppThunk } from 'app/store';
 import {
   writeOptionsToLocalStore,
   readOptionsFromLocalStorage,
@@ -35,9 +34,19 @@ const options = createSlice({
   name: 'options',
   initialState,
   reducers: {
-    changeOption: (state, { payload }: PayloadAction<ChangeOption>): void => {
-      const { name, value } = payload;
-      (state[name] as unknown) = value;
+    changeOption: {
+      reducer: (state, { payload }: PayloadAction<ChangeOption>) => {
+        const { name, value } = payload;
+
+        (state[name] as unknown) = value;
+      },
+      prepare: (payload: ChangeOption) => {
+        const { name, value } = payload;
+
+        writeOptionsToLocalStore({ [name]: value });
+
+        return { payload };
+      },
     },
   },
 });
@@ -45,11 +54,3 @@ const options = createSlice({
 export const { changeOption } = options.actions;
 
 export default options.reducer;
-
-export const changeChatOption = ({
-  name,
-  value,
-}: ChangeOption): AppThunk => async (dispatch): Promise<void> => {
-  writeOptionsToLocalStore({ [name]: value });
-  dispatch(changeOption({ name, value }));
-};
