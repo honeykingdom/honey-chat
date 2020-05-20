@@ -5,14 +5,14 @@ import styled from 'styled-components';
 
 import Scrollbar from 'components/Scrollbar';
 import Switch from 'components/Switch';
+import { optionsSelector } from 'features/options/optionsSelectors';
+import { isAuthSelector } from 'features/auth/authSelectors';
 import {
   userDisplayNameSelector,
   userColorSelector,
-  userBadgesImagesSelector,
-} from 'features/chat/selectors';
-import { isAuthSelector } from 'features/auth/authSlice';
+} from 'features/chat/chatSelectors';
+import { userBadgesImagesSelector } from 'features/badges/badgesSelectors';
 import { changeOption } from 'features/options/optionsSlice';
-import { optionsSelector } from 'features/options/optionsSelectors';
 
 const OptionsRoot = styled.div`
   padding: 16px;
