@@ -2,13 +2,13 @@ import * as R from 'ramda';
 
 import { emotes, findTwitchEmote, findBttvEmote, findFfzEmote } from 'mocks';
 import { LS_EMOTES_USAGE_STATISTIC } from 'utils/constants';
-import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
+import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
 import {
   readEmotesUsageStatistic,
   writeEmotesUsageStatistic,
   getUsageStatisticFromEntities,
   getEmotesFromUsageStatistic,
-} from 'features/chat/utils/emotesUsageStatistic';
+} from 'features/emotes/utils/emotesUsageStatistic';
 
 type ItemType = 'twitch-emote' | 'bttv-emote' | 'ffz-emote';
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import { StateEmotes } from 'features/chat/selectors/chatSelectors';
-import findEmote from 'features/chat/utils/findEmote';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import type { StateEmotes } from 'features/emotes/emotesSelectors';
+import findEmote from 'features/emotes/utils/findEmote';
 
 export type EmotesByText = {
   begins: htmlEntity.Emote[];

@@ -2,10 +2,10 @@ import * as R from 'ramda';
 import { createSelector } from '@reduxjs/toolkit';
 
 import * as api from 'api';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import type { StateEmotes } from 'features/chat/selectors';
-import getEmotesByText from 'features/chat/utils/getEmotesByText';
-import { getEmotesFromUsageStatistic } from 'features/chat/utils/emotesUsageStatistic';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import type { StateEmotes } from 'features/emotes/emotesSelectors';
+import getEmotesByText from 'features/emotes/utils/getEmotesByText';
+import { getEmotesFromUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
 
 export type EmoteCategory = {
   title?: string;

@@ -4,10 +4,10 @@ import { lib as emojilib } from 'emojilib';
 import urlRegex from 'url-regex';
 import twitchIrc from 'twitch-simple-irc';
 
-import { StateEmotes } from 'features/chat/selectors/chatSelectors';
-import { MessageEntity } from 'features/chat/slice/messages';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import findEmote from 'features/chat/utils/findEmote';
+import type { StateEmotes } from 'features/emotes/emotesSelectors';
+import type { MessageEntity } from 'features/messages/messagesSlice';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import findEmote from 'features/emotes/utils/findEmote';
 
 const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
 const linkRegex = urlRegex({ strict: false });

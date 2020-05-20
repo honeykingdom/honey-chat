@@ -1,10 +1,10 @@
 import * as R from 'ramda';
 
 import { LS_EMOTES_USAGE_STATISTIC } from 'utils/constants';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import findEmote from 'features/chat/utils/findEmote';
-import { StateEmotes } from 'features/chat/selectors';
-import { MessageEntity } from 'features/chat/slice/messages';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import findEmote from 'features/emotes/utils/findEmote';
+import type { StateEmotes } from 'features/emotes/emotesSelectors';
+import type { MessageEntity } from 'features/messages/messagesSlice';
 
 type Type = 'twitch-emote' | 'bttv-emote' | 'ffz-emote';
 

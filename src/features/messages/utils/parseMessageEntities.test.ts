@@ -5,8 +5,8 @@ import {
   findFfzEmote,
   getEmojiUrl,
 } from 'mocks';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import parseMessageEntities from 'features/chat/utils/parseMessageEntities';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
 
 describe('parse message entities', () => {
   it('should format emotes', () => {

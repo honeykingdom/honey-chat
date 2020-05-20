@@ -1,9 +1,9 @@
 import * as R from 'ramda';
 
 import * as api from 'api';
-import * as htmlEntity from 'features/chat/utils/htmlEntity';
-import { StateEmotes } from 'features/chat/selectors/chatSelectors';
-import { EmotesByText } from 'features/chat/utils/getEmotesByText';
+import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import type { StateEmotes } from 'features/emotes/emotesSelectors';
+import type { EmotesByText } from 'features/emotes/utils/getEmotesByText';
 
 // by id
 
