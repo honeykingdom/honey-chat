@@ -51,15 +51,15 @@ describe('emotes usage statistic', () => {
   });
 
   it('should read statistic', () => {
-    const result1 = createStatistic([
+    const result = createStatistic([
       ['twitch-emote', 'Kappa', 4],
       ['bttv-emote', 'sumSmash', 2],
       ['ffz-emote', 'KKonaW', 1],
     ]);
 
-    localStorage.setItem(LS_EMOTES_USAGE_STATISTIC, JSON.stringify(result1));
+    localStorage.setItem(LS_EMOTES_USAGE_STATISTIC, JSON.stringify(result));
 
-    expect(readEmotesUsageStatistic()).toEqual(result1);
+    expect(readEmotesUsageStatistic()).toEqual(result);
   });
 
   it('should not write empty statistic', () => {
@@ -69,55 +69,55 @@ describe('emotes usage statistic', () => {
   });
 
   it('should write statistic', () => {
-    const message = '4Head EZ 4Head KKonaW KKonaW test message KKonaW KKonaW';
-    const entities = parseMessageEntities(message, emotes, null, true);
-
-    const result = createStatistic([
-      ['twitch-emote', '4Head', 2],
-      ['bttv-emote', 'EZ', 1],
-      ['ffz-emote', 'KKonaW', 4],
-    ]);
-
-    writeEmotesUsageStatistic(entities);
+    writeEmotesUsageStatistic(
+      parseMessageEntities(
+        '4Head EZ 4Head KKonaW KKonaW test message KKonaW KKonaW',
+        emotes,
+        null,
+        true,
+      ),
+    );
 
     expect(
       JSON.parse(localStorage.getItem(LS_EMOTES_USAGE_STATISTIC) as string),
-    ).toEqual(result);
+    ).toEqual(
+      createStatistic([
+        ['twitch-emote', '4Head', 2],
+        ['bttv-emote', 'EZ', 1],
+        ['ffz-emote', 'KKonaW', 4],
+      ]),
+    );
   });
 
   it('should merge statistic', () => {
-    const initialData = createStatistic([
-      ['twitch-emote', '4Head', 2],
-      ['bttv-emote', 'EZ', 1],
-      ['ffz-emote', 'KKonaW', 4],
-    ]);
-
     localStorage.setItem(
       LS_EMOTES_USAGE_STATISTIC,
-      JSON.stringify(initialData),
+      JSON.stringify(
+        createStatistic([
+          ['twitch-emote', '4Head', 2],
+          ['bttv-emote', 'EZ', 1],
+          ['ffz-emote', 'KKonaW', 4],
+        ]),
+      ),
     );
 
-    const message = '4Head KKona EZ KKonaW @twitch';
-    const entities = parseMessageEntities(message, emotes, null, true);
+    writeEmotesUsageStatistic(
+      parseMessageEntities('4Head KKona EZ KKonaW @twitch', emotes, null, true),
+    );
 
-    const result = createStatistic([
-      ['twitch-emote', '4Head', 3],
-      ['bttv-emote', 'KKona', 1],
-      ['bttv-emote', 'EZ', 2],
-      ['ffz-emote', 'KKonaW', 5],
-    ]);
-
-    writeEmotesUsageStatistic(entities);
     expect(
       JSON.parse(localStorage.getItem(LS_EMOTES_USAGE_STATISTIC) as string),
-    ).toEqual(result);
+    ).toEqual(
+      createStatistic([
+        ['twitch-emote', '4Head', 3],
+        ['bttv-emote', 'KKona', 1],
+        ['bttv-emote', 'EZ', 2],
+        ['ffz-emote', 'KKonaW', 5],
+      ]),
+    );
   });
 
   it('should return statistic from entities', () => {
-    const message =
-      'Kappa Keepo Kappa 4Head hello @twitch :) KKona KKonaW Zappa EZ sumSmash';
-    const entities = parseMessageEntities(message, emotes, null, true);
-
     const result = createStatistic([
       ['twitch-emote', 'Kappa', 2],
       ['twitch-emote', 'Keepo', 1],
@@ -132,7 +132,16 @@ describe('emotes usage statistic', () => {
 
     localStorage.setItem(LS_EMOTES_USAGE_STATISTIC, JSON.stringify(result));
 
-    expect(getUsageStatisticFromEntities(entities)).toEqual(result);
+    expect(
+      getUsageStatisticFromEntities(
+        parseMessageEntities(
+          'Kappa Keepo Kappa 4Head hello @twitch :) KKona KKonaW Zappa EZ sumSmash',
+          emotes,
+          null,
+          true,
+        ),
+      ),
+    ).toEqual(result);
   });
 
   it('should return empty emotes list from statistic', () => {
@@ -140,54 +149,50 @@ describe('emotes usage statistic', () => {
   });
 
   it('should return emotes list from statistic', () => {
-    // prettier-ignore
-    const storageStatistic = createStatistic([
-      ['twitch-emote', 'Keepo',    1, 1500000000011],
-      ['twitch-emote', '4Head',    2, 1500000000001],
-      ['twitch-emote', 'Kappa',    5, 1500000000000],
-      ['bttv-emote',   'KKona',    1, 1500000000010],
-      ['bttv-emote',   'sumSmash', 3, 1500000000001],
-      ['ffz-emote',    'KKonaW',   2, 1500000000002],
-    ]);
-
     localStorage.setItem(
       LS_EMOTES_USAGE_STATISTIC,
-      JSON.stringify(storageStatistic),
+      JSON.stringify(
+        // prettier-ignore
+        createStatistic([
+          ['twitch-emote', 'Keepo',    1, 1500000000011],
+          ['twitch-emote', '4Head',    2, 1500000000001],
+          ['twitch-emote', 'Kappa',    5, 1500000000000],
+          ['bttv-emote',   'KKona',    1, 1500000000010],
+          ['bttv-emote',   'sumSmash', 3, 1500000000001],
+          ['ffz-emote',    'KKonaW',   2, 1500000000002],
+        ]),
+      ),
     );
 
-    const result = [
+    expect(getEmotesFromUsageStatistic(emotes)).toEqual([
       findTwitchEmote('Kappa'),
       findBttvEmote('sumSmash'),
       findFfzEmote('KKonaW'),
       findTwitchEmote('4Head'),
       findTwitchEmote('Keepo'),
       findBttvEmote('KKona'),
-    ];
-
-    expect(getEmotesFromUsageStatistic(emotes)).toEqual(result);
+    ]);
   });
 
   it('should return emotes list from statistic with limit', () => {
-    const storageStatistic = createStatistic([
-      ['twitch-emote', 'Keepo', 1],
-      ['twitch-emote', '4Head', 2],
-      ['twitch-emote', 'Kappa', 5],
-      ['bttv-emote', 'KKona', 1],
-      ['bttv-emote', 'sumSmash', 3],
-      ['ffz-emote', 'KKonaW', 1],
-    ]);
-
     localStorage.setItem(
       LS_EMOTES_USAGE_STATISTIC,
-      JSON.stringify(storageStatistic),
+      JSON.stringify(
+        createStatistic([
+          ['twitch-emote', 'Keepo', 1],
+          ['twitch-emote', '4Head', 2],
+          ['twitch-emote', 'Kappa', 5],
+          ['bttv-emote', 'KKona', 1],
+          ['bttv-emote', 'sumSmash', 3],
+          ['ffz-emote', 'KKonaW', 1],
+        ]),
+      ),
     );
 
-    const result = [
+    expect(getEmotesFromUsageStatistic(emotes, 3)).toEqual([
       findTwitchEmote('Kappa'),
       findBttvEmote('sumSmash'),
       findTwitchEmote('4Head'),
-    ];
-
-    expect(getEmotesFromUsageStatistic(emotes, 3)).toEqual(result);
+    ]);
   });
 });
