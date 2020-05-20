@@ -1,40 +1,30 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
 import * as twitchIrc from 'twitch-simple-irc';
-import useSound from 'use-sound';
 import { usePrevious } from 'react-use';
 
 import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';
 import {
-  addMessage,
-  clearChat,
   updateIsConnected,
   updateGlobalUserParams,
   updateUserParams,
   updateRoomParams,
-} from 'features/chat/slice';
+} from 'features/chat/chatSlice';
+import { recieveMessage, clearChat } from 'features/messages/messagesSlice';
+import { invalidateAuth } from 'features/auth/authSlice';
 import {
   currentChannelSelector,
   isConnectedSelector,
-  blockedUsersSelector,
-} from 'features/chat/selectors';
-import replaceEmojis from 'features/chat/utils/replaceEmojis';
-import checkIsMenction from 'features/chat/utils/checkIsMention';
+} from 'features/chat/chatSelectors';
 import {
   isAuthSelector,
   isAuthReadySelector,
   userLoginSelector,
-  invalidateAuth,
-} from 'features/auth/authSlice';
-import { readUserFromLocatStorage } from 'features/auth/authUtils';
-import { isHighlightNotificationsSelector } from 'features/options/optionsSelectors';
-
-import tinkSfx from 'features/chat/assets/ts-tink.ogg';
+} from 'features/auth/authSelectors';
+import replaceEmojis from 'features/messages/utils/replaceEmojis';
 
 const useTwitchClient = () => {
   const dispatch = useDispatch();
-  const [playTink] = useSound(tinkSfx);
 
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
@@ -43,25 +33,6 @@ const useTwitchClient = () => {
   const currentChannel = useSelector(currentChannelSelector);
   const prevChannel = usePrevious(currentChannel);
   const clientRef = useRef<twitchIrc.Client | null>(null);
-
-  const blockedUsers = useSelector(blockedUsersSelector);
-  const isHighlightNotifications = useSelector(
-    isHighlightNotificationsSelector,
-  );
-
-  const registerEventsParamsRef = useRef({
-    userLogin,
-    isHighlightNotifications,
-    playTink,
-    blockedUsers,
-  });
-
-  registerEventsParamsRef.current = {
-    userLogin,
-    isHighlightNotifications,
-    playTink,
-    blockedUsers,
-  };
 
   const registerEvents = useCallback(
     (client: typeof clientRef) => {
@@ -81,26 +52,7 @@ const useTwitchClient = () => {
         dispatch(updateRoomParams(data));
 
       const handleMessage = (message: twitchIrc.MessageEvent) => {
-        const isBlockedUser = registerEventsParamsRef.current.blockedUsers.includes(
-          message.user,
-        );
-
-        if (isBlockedUser) return;
-
-        const isMention = checkIsMenction(
-          registerEventsParamsRef.current.userLogin,
-          message.user,
-          message.message,
-        );
-
-        if (
-          registerEventsParamsRef.current.isHighlightNotifications &&
-          isMention
-        ) {
-          registerEventsParamsRef.current.playTink();
-        }
-
-        dispatch(addMessage({ type: 'message', message, isMention }));
+        dispatch(recieveMessage({ type: 'message', message }));
       };
 
       const handleNotice = (message: twitchIrc.NoticeEvent) => {
@@ -115,11 +67,11 @@ const useTwitchClient = () => {
           return;
         }
 
-        dispatch(addMessage({ type: 'notice', message, id: nanoid() }));
+        dispatch(recieveMessage({ type: 'notice', message }));
       };
 
       const handleUserNotice = (message: twitchIrc.UserNoticeEvent) =>
-        dispatch(addMessage({ type: 'user-notice', message }));
+        dispatch(recieveMessage({ type: 'user-notice', message }));
 
       const handleClearChat = (data: twitchIrc.ClearChatEvent) => {
         if (!data.tags.targetUserId) return;
@@ -197,17 +149,15 @@ const useTwitchClient = () => {
 
       function handleUserState(data: twitchIrc.UserStateEvent) {
         if (data.channel === channel) {
-          const user = readUserFromLocatStorage();
-
           const ownMessage = {
             message: normalizedMessage,
             channel,
             tags: data.tags,
-            userId: user?.id,
-            userLogin: user?.login,
           };
 
-          dispatch(addMessage({ type: 'own-message', message: ownMessage }));
+          dispatch(
+            recieveMessage({ type: 'own-message', message: ownMessage }),
+          );
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           removeListeners();
