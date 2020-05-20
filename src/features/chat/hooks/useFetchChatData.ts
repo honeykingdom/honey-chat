@@ -2,37 +2,46 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  isAuthReadySelector,
-  isAuthSelector,
-  userIdSelector,
-  userLoginSelector,
-} from 'features/auth/authSlice';
-import {
   currentChannelSelector,
   currentChannelIdSelector,
+} from 'features/chat/chatSelectors';
+import {
   isHistoryAddedSelector,
   isHistoryLoadedSelector,
+} from 'features/messages/messagesSelectors';
+import {
   isTwitchEmotesLoadedSelector,
   isBttvGlobalEmotesLoadedSelector,
   isBttvChannelEmotesLoadedSelector,
   isFfzGlobalEmotesLoadedSelector,
   isFfzChannelEmotesLoadedSelector,
+} from 'features/emotes/emotesSelectors';
+import {
   isGlobalBadgesLoadedSelector,
   isChannelBadgesLoadedSelector,
-  isBlockedUsersLoadedSelector,
-} from 'features/chat/selectors';
+} from 'features/badges/badgesSelectors';
+import { isBlockedUsersLoadedSelector } from 'features/blockedUsers/blockedUsersSelectors';
+import {
+  isAuthReadySelector,
+  isAuthSelector,
+  userIdSelector,
+} from 'features/auth/authSelectors';
 import {
   addChatHistory,
   fetchChatHistory,
+} from 'features/messages/messagesSlice';
+import {
   fetchTwitchEmotes,
   fetchBttvGlobalEmotes,
   fetchBttvChannelEmotes,
   fetchFfzGlobalEmotes,
   fetchFfzChannelEmotes,
+} from 'features/emotes/emotesSlice';
+import {
   fetchChannelBadges,
   fetchGlobalBadges,
-  fetchBlockedUsers,
-} from 'features/chat/slice';
+} from 'features/badges/badgesSlice';
+import { fetchBlockedUsers } from 'features/blockedUsers/blockedUsersSlice';
 
 const useFetchChatData = () => {
   const dispatch = useDispatch();
@@ -40,7 +49,6 @@ const useFetchChatData = () => {
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
   const userId = useSelector(userIdSelector);
-  const userLogin = useSelector(userLoginSelector);
   const currentChannel = useSelector(currentChannelSelector);
   const currentChannelId = useSelector(currentChannelIdSelector);
 
@@ -61,17 +69,19 @@ const useFetchChatData = () => {
   const isBlockedUsersLoaded = useSelector(isBlockedUsersLoadedSelector);
   const isHistoryAdded = useSelector(isHistoryAddedSelector);
 
+  const isAllEmotesLoaded =
+    (isAuth ? isTwitchEmotesLoaded : true) &&
+    isBttvGlobalEmotesLoaded &&
+    isBttvChannelEmotesLoaded &&
+    isFfzGlobalEmotesLoaded &&
+    isFfzChannelEmotesLoaded;
+
   const isReadyToAddHistory =
     isAuthReady &&
     currentChannel &&
     !isHistoryAdded &&
-    (isAuth ? isTwitchEmotesLoaded : true) &&
+    isAllEmotesLoaded &&
     (isAuth ? isBlockedUsersLoaded : true) &&
-    (isAuth ? !!userLogin : true) &&
-    isBttvGlobalEmotesLoaded &&
-    isBttvChannelEmotesLoaded &&
-    isFfzGlobalEmotesLoaded &&
-    isFfzChannelEmotesLoaded &&
     isGlobalBadgesLoaded &&
     isChannelBadgesLoaded &&
     isHistoryLoaded;
@@ -84,9 +94,9 @@ const useFetchChatData = () => {
 
   useEffect(() => {
     if (isReadyToAddHistory) {
-      dispatch(addChatHistory({ channel: currentChannel, userLogin }));
+      dispatch(addChatHistory(currentChannel));
     }
-  }, [dispatch, currentChannel, isReadyToAddHistory, userLogin]);
+  }, [dispatch, currentChannel, isReadyToAddHistory]);
 
   useEffect(() => {
     if (!isHistoryAdded && currentChannel) {
