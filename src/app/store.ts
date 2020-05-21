@@ -1,6 +1,5 @@
 import { configureStore, Action } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ThunkAction } from 'redux-thunk';
+import type { ThunkAction } from 'redux-thunk';
 
 import rootReducer, { RootState } from 'app/rootReducer';
 

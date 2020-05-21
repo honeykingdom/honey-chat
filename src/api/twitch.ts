@@ -1,5 +1,6 @@
 import { LS_ACCESS_TOKEN } from 'utils/constants';
-import fetchRequest, { FetchRequestOptions } from 'utils/fetchRequest';
+import fetchRequest from 'utils/fetchRequest';
+import type { FetchRequestOptions } from 'utils/fetchRequest';
 
 const TWITCH_API_HELIX = 'https://api.twitch.tv/helix';
 const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';

@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import { parse as twemojiParser } from 'twemoji-parser';
 import { lib as emojilib } from 'emojilib';
 import urlRegex from 'url-regex';
-import twitchIrc from 'twitch-simple-irc';
+import type twitchIrc from 'twitch-simple-irc';
 
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import type { MessageEntity } from 'features/messages/messagesSlice';

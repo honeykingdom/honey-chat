@@ -11,7 +11,7 @@ import ChatModal from 'components/ChatModal';
 import IconButton from 'components/IconButton';
 import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
 import EmotePicker from 'features/emotes/EmotePicker';
-import { SuggestionsState } from 'features/chat/hooks/useChatInput';
+import type { SuggestionsState } from 'features/chat/hooks/useChatInput';
 import { isEmotesLoadedSelector } from 'features/emotes/emotesSelectors';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 
