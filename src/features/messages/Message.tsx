@@ -7,6 +7,7 @@ import type {
   MessageEntity,
 } from 'features/messages/messagesSlice';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import { calculateColor } from 'utils/colors';
 
 type MessageRootProps = {
   isAction: boolean;
@@ -32,7 +33,7 @@ const MessageRoot = styled.div<MessageRootProps>`
 `;
 const Name = styled.span`
   font-weight: bold;
-  color: ${(p) => p.color};
+  color: ${(p) => (p.color ? calculateColor(p.color) : null)};
   cursor: pointer;
 `;
 const Emoji = styled.img`
