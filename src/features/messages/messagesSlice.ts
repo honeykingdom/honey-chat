@@ -45,7 +45,7 @@ export type Message = {
   isAction: boolean;
   isHistory: boolean;
   isDeleted: boolean;
-  isMention: boolean;
+  isHighlighted: boolean;
 };
 
 export type Notice = {

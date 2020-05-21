@@ -13,12 +13,12 @@ type MessageRootProps = {
   isAction: boolean;
   isHistory: boolean;
   isDeleted: boolean;
-  isMention: boolean;
+  isHighlighted: boolean;
   isEven: boolean;
 };
 
 const getChatMessageBg = (p: MessageRootProps) => {
-  if (p.isMention) return 'rgba(255, 0, 0, 0.3)';
+  if (p.isHighlighted) return 'rgba(255, 0, 0, 0.3)';
   if (p.isEven) return '#1f1925';
   return 'transparent';
 };
@@ -229,7 +229,7 @@ const Message = ({
     isHistory,
     isAction,
     isDeleted,
-    isMention,
+    isHighlighted,
   },
   userLogin,
   isEven,
@@ -251,7 +251,7 @@ const Message = ({
       isHistory={isHistory}
       isAction={isAction}
       isEven={isEven}
-      isMention={isMention}
+      isHighlighted={isHighlighted}
       isDeleted={isDeleted}
       color={color}
     >

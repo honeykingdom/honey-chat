@@ -22,7 +22,7 @@ import { userLoginSelector, userIdSelector } from 'features/auth/authSelectors';
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
-import checkIsMenction from 'features/messages/utils/checkIsMention';
+import checkIsHighlighted from 'features/messages/utils/checkIsHighlighted';
 import { writeEmotesUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
 
 import tinkSfx from 'assets/ts-tink.ogg';
@@ -42,9 +42,9 @@ export const normalizeMessage = (
 
   const isHighlightNotifications = isHighlightNotificationsSelector(state);
   const userLogin = userLoginSelector(state);
-  const isMention = checkIsMenction(userLogin, user, message);
+  const isHighlighted = checkIsHighlighted(userLogin, user, message);
 
-  if (isMention && isHighlightNotifications) {
+  if (isHighlighted && isHighlightNotifications) {
     tink.play();
   }
 
@@ -69,7 +69,7 @@ export const normalizeMessage = (
     isAction,
     isHistory: false,
     isDeleted: false,
-    isMention,
+    isHighlighted,
   };
 };
 
@@ -135,7 +135,7 @@ export const normalizeOwnMessage = (
     isAction,
     isHistory: false,
     isDeleted: false,
-    isMention: false,
+    isHighlighted: false,
   };
 };
 
@@ -155,7 +155,11 @@ export const normalizeHistoryMessage = (
   ) as unknown) as twitchIrc.MessageTags;
 
   const messageUser = prefix ? prefix.name : '';
-  const isMention = checkIsMenction(userLogin, messageUser, normalizedMessage);
+  const isHighlighted = checkIsHighlighted(
+    userLogin,
+    messageUser,
+    normalizedMessage,
+  );
 
   return {
     type: 'message',
@@ -182,7 +186,7 @@ export const normalizeHistoryMessage = (
     isAction,
     isHistory: true,
     isDeleted: false,
-    isMention,
+    isHighlighted,
   };
 };
 

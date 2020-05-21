@@ -1,4 +1,4 @@
-const checkIsMenction = (
+const checkIsHighlighted = (
   userLogin: string | null,
   messageUser: string,
   messageText: string,
@@ -7,4 +7,4 @@ const checkIsMenction = (
   userLogin !== messageUser &&
   RegExp(userLogin, 'gi').test(messageText);
 
-export default checkIsMenction;
+export default checkIsHighlighted;
