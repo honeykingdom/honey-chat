@@ -46,7 +46,7 @@ export const optionsSelector = (state: RootState): OptionCategories[] => [
         type: 'switch',
         id: 'highlight-notifications',
         name: 'highlightNotifications',
-        title: 'Highlight Notifications',
+        title: 'Play a sound on highlights',
         description: 'Plays a sound for messages directed at you',
         value: state.options.highlightNotifications,
       },
