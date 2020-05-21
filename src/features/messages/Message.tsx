@@ -162,16 +162,16 @@ const renderMessageArray = (login: string, userLogin: string | null) => (
     item.type === 'ffz-emote'
   ) {
     return (
-      <EmoteWrapper data-emote-id={item.id}>
-        <Emote key={key} src={item.src} srcSet={item.srcSet} alt={item.alt} />
+      <EmoteWrapper key={key} data-emote-id={item.id}>
+        <Emote src={item.src} srcSet={item.srcSet} alt={item.alt} />
       </EmoteWrapper>
     );
   }
 
   if (item.type === 'emoji') {
     return (
-      <EmoteWrapper>
-        <Emoji key={key} src={item.src} alt={item.alt} />
+      <EmoteWrapper key={key}>
+        <Emoji src={item.src} alt={item.alt} />
       </EmoteWrapper>
     );
   }
