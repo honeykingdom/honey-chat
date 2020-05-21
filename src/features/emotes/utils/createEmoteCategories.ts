@@ -62,7 +62,7 @@ const createMainEmoteCategories = (emotes: StateEmotes) => {
 };
 
 const getMainEmoteCategories = createSelector(
-  (emotes: any) => emotes,
+  (emotes: StateEmotes) => emotes,
   createMainEmoteCategories,
 );
 
