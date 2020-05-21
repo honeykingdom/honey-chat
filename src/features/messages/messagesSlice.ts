@@ -173,6 +173,8 @@ const messagesSlice = createSlice({
       state[channel].isEven = newIsEven;
       state[channel].items = newItems;
 
+      // TODO: add colors for users if it's not set
+
       // add users
       const { users } = state[channel];
 
