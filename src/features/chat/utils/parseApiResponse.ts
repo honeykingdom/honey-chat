@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { format } from 'date-fns/fp';
 
 import * as api from 'api';
 
@@ -39,3 +40,106 @@ export const parseBlockedUsers = R.pipe<
 >(R.prop('blocks'), R.map<any, any>(R.path(['user', 'name'])));
 
 export const parseBadges = R.prop('badge_sets');
+
+// https://regex101.com/r/4hu5CW/1
+const clipThumbnailRegex = /(.+-)(86x45|260x147|480x272)(.+)/;
+
+export const parseTwitchClip = ({ data }: api.TwitchClipResponse) => {
+  if (data.length === 0) return null;
+
+  const {
+    id,
+    url,
+    thumbnail_url: thumbnailUrl,
+    title,
+    creator_name: creatorName,
+  } = data[0];
+
+  const m = clipThumbnailRegex.exec(thumbnailUrl);
+
+  let src = '';
+  let srcSet = '';
+
+  if (m) {
+    const x1 = `${m[1]}86x45${m[3]}`;
+    const x2 = `${m[1]}260x147${m[3]}`;
+
+    src = x1;
+    srcSet = `${x1} 1x, ${x2} 2x`;
+  }
+
+  return {
+    id,
+    url,
+    src,
+    srcSet,
+    title,
+    description: `Clipped by ${creatorName}`,
+  };
+};
+
+// https://regex101.com/r/KimbdV/1
+const videoThumbnailRegex = /(.+)(%{width})x(%{height})(.+)/;
+
+export const parseTwitchVideo = ({ data }: api.TwitchVideoResponse) => {
+  if (data.length === 0) return null;
+
+  const {
+    id,
+    thumbnail_url: thumbnailUrl,
+    title,
+    user_name: userName,
+    published_at: publishedAt,
+  } = data[0];
+
+  const date = format('PP', new Date(publishedAt));
+  const m = videoThumbnailRegex.exec(thumbnailUrl);
+
+  let src = '';
+  let srcSet = '';
+
+  if (m) {
+    const x1 = `${m[1]}80x45${m[4]}`;
+    const x2 = `${m[1]}160x90${m[4]}`;
+    const x4 = `${m[1]}320x180${m[4]}`;
+
+    src = x1;
+    srcSet = `${x1} 1x, ${x2} 2x, ${x4} 4x`;
+  }
+
+  return {
+    id,
+    src,
+    srcSet,
+    title,
+    description: `${date} · ${userName}`,
+  };
+};
+
+export const parseYoutubeVideo = ({ items }: api.YoutubeVideoResponse) => {
+  if (items.length === 0) return null;
+
+  const {
+    id,
+    snippet: {
+      title,
+      publishedAt,
+      channelTitle,
+      thumbnails: {
+        default: { url: x1 },
+        medium: { url: x2 },
+        high: { url: x4 },
+      },
+    },
+  } = items[0];
+
+  const date = format('PP', new Date(publishedAt));
+
+  return {
+    id,
+    src: x1,
+    srcSet: `${x1} 1x, ${x2} 2x, ${x4} 4x`,
+    title,
+    description: `${date} · ${channelTitle}`,
+  };
+};
