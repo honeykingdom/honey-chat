@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "id": "616962035",
+      "user_id": "23161357",
+      "user_name": "LIRIK",
+      "title": "SUB SUNDAY INSANE POTPOURRI VARIETY EDITION",
+      "description": "",
+      "created_at": "2020-05-10T16:03:35Z",
+      "published_at": "2020-05-10T16:03:35Z",
+      "url": "https://www.twitch.tv/videos/616962035",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/3e38b7d3242cd68a5a25_lirik_37976803504_1442408713//thumb/thumb0-%{width}x%{height}.jpg",
+      "viewable": "public",
+      "view_count": 17326,
+      "language": "en",
+      "type": "archive",
+      "duration": "7h54m38s"
+    }
+  ],
+  "pagination": {}
+}
