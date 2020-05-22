@@ -53,21 +53,21 @@ const findFfzEmoteById = (
 // by name
 
 // prettier-ignore
-const regexMap: Record<number, RegExp> = {
-  1:  /:-?\)/,        // "\\:-?\\)"
-  2:  /:-?\(/,        // "\\:-?\\("
-  3:  /:-?D/,         // "\\:-?D"
-  4:  />\(/,          // "\\&gt\\;\\("
-  5:  /:-?[zZ|]/,     // "\\:-?[z|Z|\\|]"
-  6:  /[oO][_.][oO]/, // "[oO](_|\\.)[oO]"
-  7:  /B-?\)/,        // "B-?\\)"
-  8:  /:-?[oO]/,      // "\\:-?(o|O)"
-  9:  /<3/,           // "\\&lt\\;3"
-  10: /:-?[\\/]/,     // "\\:-?[\\\\/]"
-  11: /;-?\)/,        // "\\;-?\\)"
-  12: /:-?[pP]/,      // "\\:-?(p|P)"
-  13: /;-?[pP]/,      // "\\;-?(p|P)"
-  14: /R-?\)/,        // "R-?\\)"
+const regexMap: Record<number, string> = {
+  1:  ':-?\\)',       // "\\:-?\\)"
+  2:  ':-?\\(',       // "\\:-?\\("
+  3:  ':-?D',         // "\\:-?D"
+  4:  '>\\(',         // "\\&gt\\;\\("
+  5:  ':-?[zZ|]',     // "\\:-?[z|Z|\\|]"
+  6:  '[oO][_.][oO]', // "[oO](_|\\.)[oO]"
+  7:  'B-?\\)',       // "B-?\\)"
+  8:  ':-?[oO]',      // "\\:-?(o|O)"
+  9:  '<3',           // "\\&lt\\;3"
+  10: ':-?[\\/]',     // "\\:-?[\\\\/]"
+  11: ';-?\\)',       // "\\;-?\\)"
+  12: ':-?[pP]',      // "\\:-?(p|P)"
+  13: ';-?[pP]',      // "\\;-?(p|P)"
+  14: 'R-?\\)',       // "R-?\\)"
 };
 
 const findTwitchEmoteByNameInSets = (
@@ -78,7 +78,8 @@ const findTwitchEmoteByNameInSets = (
   for (const set of Object.values(sets)) {
       // 1-14 - match by regex
     const result = R.find(
-      ({ id, code }) => (id <= 14 ? regexMap[id].test(name) : name === code),
+      ({ id, code }) =>
+        id <= 14 ? RegExp(`^${regexMap[id]}$`).test(name) : name === code,
       set,
     );
 
