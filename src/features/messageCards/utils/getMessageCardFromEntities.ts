@@ -46,7 +46,7 @@ const getMessageCardFromEntities = (
       if (m) {
         return {
           type: 'youtube-video',
-          id: m[5],
+          id: m[4],
           url: entity.href,
         };
       }
