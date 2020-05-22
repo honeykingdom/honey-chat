@@ -90,6 +90,50 @@ export interface TwitchBlockedUsersResponse {
   }[];
 }
 
+interface TwitchClipData {
+  id: string;
+  url: string;
+  embed_url: string;
+  broadcaster_id: string;
+  broadcaster_name: string;
+  creator_id: string;
+  creator_name: string;
+  video_id: string;
+  game_id: string;
+  language: string;
+  title: string;
+  view_count: number;
+  created_at: string;
+  thumbnail_url: string;
+}
+
+export interface TwitchClipResponse {
+  data: TwitchClipData[];
+  pagination: {};
+}
+
+interface TwitchVideoData {
+  id: string;
+  user_id: string;
+  user_name: string;
+  title: string;
+  description: string;
+  created_at: string;
+  published_at: string;
+  url: string;
+  thumbnail_url: string;
+  viewable: 'public' | 'private';
+  view_count: number;
+  language: string;
+  type: 'upload' | 'archive' | 'highlight';
+  duration: string;
+}
+
+export interface TwitchVideoResponse {
+  data: TwitchVideoData[];
+  pagination: {};
+}
+
 export const fetchUser = (userId: string): Promise<TwitchUsersResponse> =>
   apiRequestHelix(`/users?id=${userId}`);
 
@@ -116,3 +160,9 @@ export const fetchBlockedUsers = (
   userId: string,
 ): Promise<TwitchBlockedUsersResponse> =>
   apiRequestKraken(`/users/${userId}/blocks`);
+
+export const fetchTwitchClip = (id: string): Promise<TwitchClipResponse> =>
+  apiRequestHelix(`/clips?id=${id}`);
+
+export const fetchTwitchVideo = (id: string): Promise<TwitchVideoResponse> =>
+  apiRequestHelix(`/videos?id=${id}`);
