@@ -9,7 +9,7 @@ export const readOptionsFromLocalStorage = (): object => {
   }
 };
 
-export const writeOptionsToLocalStore = (options: object): void => {
+export const writeOptionsToLocalStore = (options: object) => {
   localStorage.setItem(
     LS_OPTIONS,
     JSON.stringify({

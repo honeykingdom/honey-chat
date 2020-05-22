@@ -28,12 +28,12 @@ const blockedUsers = createSlice({
       state.error = {};
     });
 
-    builder.addCase(fetchBlockedUsers.fulfilled, (state, { payload }): void => {
+    builder.addCase(fetchBlockedUsers.fulfilled, (state, { payload }) => {
       state.status = 'success';
       state.items = parseBlockedUsers(payload);
     });
 
-    builder.addCase(fetchBlockedUsers.rejected, (state, { error }): void => {
+    builder.addCase(fetchBlockedUsers.rejected, (state, { error }) => {
       state.status = 'error';
       state.error = error;
     });

@@ -32,7 +32,7 @@ const authParams = {
   // state: uid(),
 };
 
-export const getAuthUrl = (): string => {
+export const getAuthUrl = () => {
   const search = Object.entries(authParams)
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
@@ -40,10 +40,10 @@ export const getAuthUrl = (): string => {
   return `${TWITCH_API_AUTH_BASE}?${search}`;
 };
 
-export const isAuthRedirect = (hash: string): boolean =>
+export const isAuthRedirect = (hash: string) =>
   hash.startsWith('#access_token=');
 
-export const writeUserToLocatStorage = (user: StoredUser): void => {
+export const writeUserToLocatStorage = (user: StoredUser) => {
   localStorage.setItem(LS_USER, JSON.stringify(user));
 };
 

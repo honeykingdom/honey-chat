@@ -1,6 +1,6 @@
 import { lib as emojilib } from 'emojilib';
 
-const replaceEmojis = (text: string): string =>
+const replaceEmojis = (text: string) =>
   text
     .split(' ')
     .map((word: string) => {

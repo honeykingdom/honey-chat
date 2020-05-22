@@ -76,7 +76,7 @@ const findTwitchEmoteByNameInSets = (
 ) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
-      // 1-14 - match by regex
+    // 1-14 - match by regex
     const result = R.find(
       ({ id, code }) =>
         id <= 14 ? RegExp(`^${regexMap[id]}$`).test(name) : name === code,
@@ -126,7 +126,7 @@ const findTwitchEmotesByText = (
   sets: Record<string, api.TwitchEmote[]>,
   text: string,
   limit: number,
-): boolean => {
+) => {
   for (const items of Object.values(sets)) {
     for (const emote of items) {
       if (result.begins.length + result.contains.length === limit) return true;
@@ -149,7 +149,7 @@ const findBttvEmotesByText = (
   bttv: api.BttvGlobalEmote[] | api.BttvChannelEmote[],
   text: string,
   limit: number,
-): boolean => {
+) => {
   for (const emote of bttv) {
     if (result.begins.length + result.contains.length === limit) return true;
 
@@ -170,7 +170,7 @@ const findFfzEmotesByText = (
   ffz: api.FfzEmote[],
   text: string,
   limit: number,
-): boolean => {
+) => {
   for (const emote of ffz) {
     if (result.begins.length + result.contains.length === limit) return true;
 

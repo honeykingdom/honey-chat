@@ -40,10 +40,7 @@ const auth = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    initializeAuth: (
-      state,
-      { payload }: PayloadAction<InitializeAuth>,
-    ): void => {
+    initializeAuth: (state, { payload }: PayloadAction<InitializeAuth>) => {
       state.status = payload.isAuth ? 'success' : 'error';
 
       if (payload.userId) {

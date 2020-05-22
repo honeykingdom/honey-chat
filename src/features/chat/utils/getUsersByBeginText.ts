@@ -1,8 +1,4 @@
-const getUsersByBeginText = (
-  beginText: string,
-  users: string[],
-  limit = 5,
-): string[] => {
+const getUsersByBeginText = (beginText: string, users: string[], limit = 5) => {
   const result = [];
   const beginTextLower = beginText.toLowerCase();
 

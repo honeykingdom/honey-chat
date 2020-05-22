@@ -30,11 +30,11 @@ const chat = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    updateIsConnected: (state, { payload }: PayloadAction<boolean>): void => {
+    updateIsConnected: (state, { payload }: PayloadAction<boolean>) => {
       state.isConnected = payload;
     },
 
-    updateCurrentChannel: (state, { payload }: PayloadAction<string>): void => {
+    updateCurrentChannel: (state, { payload }: PayloadAction<string>) => {
       state.currentChannel = payload;
     },
 
