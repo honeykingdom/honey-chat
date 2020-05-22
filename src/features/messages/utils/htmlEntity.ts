@@ -5,48 +5,48 @@ import * as api from 'api';
 import normalizeHref from 'utils/normalizeHref';
 import { TWITCH_EMOTES_CDN, BTTV_EMOTES_CDN } from 'utils/constants';
 
-export interface TwitchEmote {
+export type TwitchEmote = {
   type: 'twitch-emote';
   id: number;
   alt: string;
   src: string;
   srcSet: string;
-}
-export interface BttvEmote {
+};
+export type BttvEmote = {
   type: 'bttv-emote';
   id: string;
   alt: string;
   src: string;
   srcSet: string;
-}
-export interface FfzEmote {
+};
+export type FfzEmote = {
   type: 'ffz-emote';
   id: number;
   alt: string;
   src: string;
   srcSet: string;
-}
-export interface Emoji {
+};
+export type Emoji = {
   type: 'emoji';
   alt: string;
   src: string;
-}
-export interface Mention {
+};
+export type Mention = {
   type: 'mention';
   text: string;
   target: string;
-}
-export interface Link {
+};
+export type Link = {
   type: 'link';
   text: string;
   href: string;
-}
-export interface Badge {
+};
+export type Badge = {
   alt: string;
   label: string;
   src: string;
   srcSet: string;
-}
+};
 
 export type Emote = TwitchEmote | BttvEmote | FfzEmote;
 
