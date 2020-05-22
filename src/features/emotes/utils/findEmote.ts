@@ -52,9 +52,22 @@ const findFfzEmoteById = (
 
 // by name
 
-const regexMap: Record<number, string> = {
-  4: '>\\(', // '\\&gt\\;\\('
-  9: '<3', // '\\&lt\\;3'
+// prettier-ignore
+const regexMap: Record<number, RegExp> = {
+  1:  /:-?\)/,        // "\\:-?\\)"
+  2:  /:-?\(/,        // "\\:-?\\("
+  3:  /:-?D/,         // "\\:-?D"
+  4:  />\(/,          // "\\&gt\\;\\("
+  5:  /:-?[zZ|]/,     // "\\:-?[z|Z|\\|]"
+  6:  /[oO][_.][oO]/, // "[oO](_|\\.)[oO]"
+  7:  /B-?\)/,        // "B-?\\)"
+  8:  /:-?[oO]/,      // "\\:-?(o|O)"
+  9:  /<3/,           // "\\&lt\\;3"
+  10: /:-?[\\/]/,     // "\\:-?[\\\\/]"
+  11: /;-?\)/,        // "\\;-?\\)"
+  12: /:-?[pP]/,      // "\\:-?(p|P)"
+  13: /;-?[pP]/,      // "\\;-?(p|P)"
+  14: /R-?\)/,        // "R-?\\)"
 };
 
 const findTwitchEmoteByNameInSets = (
@@ -63,15 +76,11 @@ const findTwitchEmoteByNameInSets = (
 ) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
-    const result = R.find(({ id, code }) => {
       // 1-14 - match by regex
-      if (id >= 1 && id <= 14) {
-        const regexString = regexMap[id] || code;
-        return RegExp(`^${regexString}$`).test(name);
-      }
-
-      return name === code;
-    }, set);
+    const result = R.find(
+      ({ id, code }) => (id <= 14 ? regexMap[id].test(name) : name === code),
+      set,
+    );
 
     if (result) return htmlEntity.createTwitchEmote(result);
   }
