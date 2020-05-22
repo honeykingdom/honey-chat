@@ -3,13 +3,11 @@ import type {
   MessageCardInfo,
 } from 'features/messages/messagesSlice';
 
-// TODO: add mobile twitch links
+// https://regex101.com/r/jGbDV1/3
+const twitchClipRegex = /^(?:https?:)?(?:\/\/)?(?:clips\.twitch\.tv\/|(?:www\.|m\.)?twitch\.tv\/(?:[\d\w]+)\/clip\/)([\d\w]+)/;
 
-// https://regex101.com/r/jGbDV1/2
-const twitchClipRegex = /^(?:https?:)?(?:\/\/)?(?:clips\.twitch\.tv\/|(?:www\.)?twitch\.tv\/(?:[\d\w]+)\/clip\/)([\d\w]+)/;
-
-// https://regex101.com/r/xsgeA4/2
-const twitchVideoRegex = /^(?:https?:)?(?:\/\/)?(?:www\.)?twitch.tv\/videos\/(\d+)/;
+// https://regex101.com/r/xsgeA4/3
+const twitchVideoRegex = /^(?:https?:)?(?:\/\/)?(?:www\.|m\.)?twitch.tv\/videos\/(\d+)/;
 
 // https://regexr.com/3dj5t
 const youtubeVideoRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/;
