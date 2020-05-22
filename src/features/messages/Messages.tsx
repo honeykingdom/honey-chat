@@ -27,11 +27,11 @@ const StyledScrollbar = styled(Scrollbar)`
     padding-bottom: 10px !important;
   }
 `;
-const MoreMessagesButton = styled.button<{ isVisible: boolean }>`
+const MoreMessagesButton = styled.button<{ $isVisible: boolean }>`
   position: absolute;
   left: 50%;
   bottom: 10px;
-  display: ${(p) => (p.isVisible ? 'block' : 'none')};
+  display: ${(p) => (p.$isVisible ? 'block' : 'none')};
   padding: 5px 20px;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -106,7 +106,7 @@ const Messages = ({ onNameRightClick }: Props) => {
       </StyledScrollbar>
       <MoreMessagesButton
         onClick={handleScrollToBottom}
-        isVisible={isMoreMessagesButtonVisible}
+        $isVisible={isMoreMessagesButtonVisible}
       >
         More messages below
       </MoreMessagesButton>

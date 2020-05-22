@@ -24,10 +24,10 @@ const ChatRoot = styled.div`
   font-size: 12px;
   background-color: #0e0e10;
 `;
-const ChatWrapper = styled.div<{ isFixedWidth: boolean }>`
+const ChatWrapper = styled.div<{ $isFixedWidth: boolean }>`
   display: flex;
   flex-direction: column;
-  width: ${(p) => (p.isFixedWidth ? '340px' : 'auto')};
+  width: ${(p) => (p.$isFixedWidth ? '340px' : 'auto')};
   height: 100%;
   background-color: #18181b;
 `;
@@ -83,7 +83,7 @@ const Chat = () => {
 
   return (
     <ChatRoot>
-      <ChatWrapper isFixedWidth={isFixedWidth}>
+      <ChatWrapper $isFixedWidth={isFixedWidth}>
         {currentChannel ? (
           <Messages onNameRightClick={handleNameRightClick} />
         ) : (

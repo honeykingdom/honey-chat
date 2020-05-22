@@ -11,30 +11,31 @@ import type {
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 
 type MessageRootProps = {
-  isAction: boolean;
-  isHistory: boolean;
-  isDeleted: boolean;
-  isHighlighted: boolean;
-  isEven: boolean;
+  $isAction: boolean;
+  $isHistory: boolean;
+  $isDeleted: boolean;
+  $isHighlighted: boolean;
+  $isEven: boolean;
+  $color: string;
 };
 
 const getChatMessageBg = (p: MessageRootProps) => {
-  if (p.isHighlighted) return 'rgba(255, 0, 0, 0.3)';
-  if (p.isEven) return '#1f1925';
+  if (p.$isHighlighted) return 'rgba(255, 0, 0, 0.3)';
+  if (p.$isEven) return '#1f1925';
   return 'transparent';
 };
 
 const MessageRoot = styled.div<MessageRootProps>`
   padding: 5px 20px;
-  color: ${(p) => (p.isAction ? p.color : '#fff')};
-  opacity: ${(p) => (p.isHistory || p.isDeleted ? '0.5' : '1')};
+  color: ${(p) => (p.$isAction ? p.$color : '#fff')};
+  opacity: ${(p) => (p.$isHistory || p.$isDeleted ? '0.5' : '1')};
   line-height: 20px;
   word-wrap: break-word;
   background-color: ${getChatMessageBg};
 `;
-const Name = styled.span`
+const Name = styled.span<{ $color: string }>`
   font-weight: bold;
-  color: ${(p) => p.color};
+  color: ${(p) => p.$color};
   cursor: pointer;
 `;
 const Emoji = styled.img`
@@ -106,20 +107,20 @@ const EmoteWrapper = styled.span`
     width: 34px;
   }
 `;
-const Mention = styled.span<{ isActive: boolean; isOwnMessage: boolean }>`
+const Mention = styled.span<{ $isActive: boolean; $isOwnMessage: boolean }>`
   ${(p) =>
-    (p.isActive || p.isOwnMessage) &&
+    (p.$isActive || p.$isOwnMessage) &&
     css`
       padding: 2px 4px;
     `};
   ${(p) =>
-    p.isOwnMessage &&
+    p.$isOwnMessage &&
     css`
       background-color: #40404a;
       color: #fff;
     `};
   ${(p) =>
-    p.isActive &&
+    p.$isActive &&
     css`
       background-color: #fafafa;
       color: #18181b;
@@ -182,8 +183,8 @@ const renderMessageArray = (messageLogin: string, userLogin: string | null) => (
     return (
       <Mention
         key={key}
-        isActive={item.target === userLogin}
-        isOwnMessage={messageLogin === userLogin}
+        $isActive={item.target === userLogin}
+        $isOwnMessage={messageLogin === userLogin}
       >
         {item.text}
       </Mention>
@@ -252,18 +253,18 @@ const Message = ({
 
   return (
     <MessageRoot
-      isHistory={isHistory}
-      isAction={isAction}
-      isEven={isEven}
-      isHighlighted={isHighlighted}
-      isDeleted={isDeleted}
-      color={newColor}
+      $isHistory={isHistory}
+      $isAction={isAction}
+      $isEven={isEven}
+      $isHighlighted={isHighlighted}
+      $isDeleted={isDeleted}
+      $color={newColor}
     >
       {isShowTimestamps && (
         <Timestamp>{format('h:mm', new Date(timestamp))}</Timestamp>
       )}
       {badges.length > 0 && renderBadges(badges)}
-      <Name color={newColor} onContextMenu={handleNameRightClick}>
+      <Name $color={newColor} onContextMenu={handleNameRightClick}>
         {displayName}
       </Name>
       {isAction ? ' ' : ': '}

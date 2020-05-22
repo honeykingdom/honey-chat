@@ -13,7 +13,7 @@ const ChatModalRoot = styled.div`
   color: #fff;
   border-radius: 4px;
 `;
-const CloseButton = styled(IconButton).attrs({ size: 'small' })`
+const CloseButton = styled(IconButton).attrs({ $size: 'small' })`
   position: absolute;
   top: 5px;
   right: 5px;

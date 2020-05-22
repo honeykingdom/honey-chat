@@ -49,7 +49,7 @@ const Suggestions = styled.div`
   border-top-right-radius: 6px;
   /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0px 2px rgba(0, 0, 0, 0.1); */
 `;
-const SuggestionItem = styled.div<{ isActive: boolean }>`
+const SuggestionItem = styled.div<{ $isActive: boolean }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -59,7 +59,7 @@ const SuggestionItem = styled.div<{ isActive: boolean }>`
   padding-right: 10px;
   border-radius: 2px;
   background-color: ${(p) =>
-    p.isActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'};
+    p.$isActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'};
   cursor: pointer;
 `;
 const SuggestionImage = styled.img`
@@ -71,9 +71,9 @@ const SuggestionImage = styled.img`
 const TextareaInput = styled.div`
   position: relative;
 `;
-const TextareaWrapper = styled.div<{ isSuggestions: boolean }>`
+const TextareaWrapper = styled.div<{ $isSuggestions: boolean }>`
   ${(p) =>
-    p.isSuggestions &&
+    p.$isSuggestions &&
     css`
       margin-left: -5px;
       margin-bottom: -5px;
@@ -202,7 +202,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       const renderUser = (name: string, index: number) => (
         <SuggestionItem
           key={name}
-          isActive={index === activeIndex}
+          $isActive={index === activeIndex}
           onMouseEnter={() => onSuggestionMouseEnter(index)}
           onClick={() => onSuggestionClick(index)}
         >
@@ -216,7 +216,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       ) => (
         <SuggestionItem
           key={alt}
-          isActive={index === activeIndex}
+          $isActive={index === activeIndex}
           onMouseEnter={() => onSuggestionMouseEnter(index)}
           onClick={() => onSuggestionClick(index)}
         >
@@ -260,7 +260,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       <ChatInputRoot ref={chatInputRef}>
         <ChatInputInner>
           {suggestions.isActive && renderSuggestions(suggestions)}
-          <TextareaWrapper isSuggestions={suggestions.isActive}>
+          <TextareaWrapper $isSuggestions={suggestions.isActive}>
             <TextareaInput>
               <Textarea
                 inputRef={textareaRef as TextareaAutosizeProps['inputRef']}

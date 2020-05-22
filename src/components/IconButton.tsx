@@ -14,7 +14,7 @@ const sizes = {
 
 const IconButton = styled.button.attrs({
   type: 'button',
-})<{ size?: 'small' | 'medium' }>`
+})<{ $size?: 'small' | 'medium' }>`
   margin: 0;
   padding: 0;
   display: flex;
@@ -27,7 +27,7 @@ const IconButton = styled.button.attrs({
   border-radius: 4px;
   cursor: pointer;
 
-  ${(p) => sizes[p.size || 'medium']};
+  ${(p) => sizes[p.$size || 'medium']};
 
   &:hover,
   &:focus {
