@@ -18,6 +18,12 @@ import {
   normalizeOwnMessage,
 } from 'features/messages/utils/normalizeMessages';
 import sliceItemsByLimit from 'features/messages/utils/sliceItemsByLimit';
+import {
+  fetchTwitchClip,
+  fetchTwitchVideo,
+  fetchYoutubeVideo,
+} from 'features/messageCards/messageCardsSlice';
+import { messageCardSelector } from 'features/messageCards/messageCardsSelectors';
 
 export type MessageEntity =
   | htmlEntity.TwitchEmote
@@ -288,6 +294,28 @@ export const recieveMessage = (payload: RecieveMessagePayload): AppThunk => (
   const message = normalizePayload(payload, state);
 
   if (!message) return;
+
+  // fetch a message card if any
+  if (message.type === 'message' && message.card) {
+    const card = messageCardSelector(message.card)(state);
+
+    if (!card || card.status === 'error') {
+      const { id, url } = message.card;
+      const params = { id, url };
+
+      if (message.card.type === 'twitch-clip') {
+        dispatch(fetchTwitchClip(params));
+      }
+
+      if (message.card.type === 'twitch-video') {
+        dispatch(fetchTwitchVideo(params));
+      }
+
+      if (message.card.type === 'youtube-video') {
+        dispatch(fetchYoutubeVideo(params));
+      }
+    }
+  }
 
   const params = { messages: [message], channel: message.channel };
 
