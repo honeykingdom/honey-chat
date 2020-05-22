@@ -9,6 +9,9 @@ export const STORE_USERS_LIMIT = 500;
 
 export const API_REQUESTS_TIMEOUT = 10000;
 
+export const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
+export const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
+
 // local storage keys
 export const LS_ACCESS_TOKEN = 'accessToken';
 export const LS_ID_TOKEN = 'idToken';
