@@ -28,6 +28,12 @@ export type MessageEntity =
   | htmlEntity.Link
   | string;
 
+export type MessageCardInfo = {
+  type: 'twitch-clip' | 'twitch-video' | 'youtube-video';
+  id: string;
+  url: string;
+};
+
 export type Message = {
   type: 'message';
   id: string;
@@ -42,6 +48,7 @@ export type Message = {
     badges: htmlEntity.Badge[];
   };
   timestamp: number;
+  card: MessageCardInfo | null;
   isAction: boolean;
   isHistory: boolean;
   isDeleted: boolean;
