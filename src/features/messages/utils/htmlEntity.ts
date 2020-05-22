@@ -3,6 +3,7 @@ import type twitchIrc from 'twitch-simple-irc';
 
 import * as api from 'api';
 import normalizeHref from 'utils/normalizeHref';
+import { TWITCH_EMOTES_CDN, BTTV_EMOTES_CDN } from 'utils/constants';
 
 export interface TwitchEmote {
   type: 'twitch-emote';
@@ -48,9 +49,6 @@ export interface Badge {
 }
 
 export type Emote = TwitchEmote | BttvEmote | FfzEmote;
-
-const TWITCH_EMOTES_CDN = '//static-cdn.jtvnw.net/emoticons/v1';
-const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 
 // prettier-ignore
 export const regexEmotesMap: Record<string, string> = {
