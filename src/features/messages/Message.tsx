@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format } from 'date-fns/fp';
 
+import { calculateColor } from 'utils/colors';
 import MessageCard from 'features/messageCards/MessageCard';
 import type {
   Message as MessageType,
   MessageEntity,
 } from 'features/messages/messagesSlice';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
-import { calculateColor } from 'utils/colors';
 
 type MessageRootProps = {
   isAction: boolean;
@@ -34,7 +34,7 @@ const MessageRoot = styled.div<MessageRootProps>`
 `;
 const Name = styled.span`
   font-weight: bold;
-  color: ${(p) => (p.color ? calculateColor(p.color) : null)};
+  color: ${(p) => p.color};
   cursor: pointer;
 `;
 const Emoji = styled.img`
@@ -248,6 +248,8 @@ const Message = ({
     e.preventDefault();
   };
 
+  const newColor = color ? calculateColor(color) : '';
+
   return (
     <MessageRoot
       isHistory={isHistory}
@@ -255,13 +257,13 @@ const Message = ({
       isEven={isEven}
       isHighlighted={isHighlighted}
       isDeleted={isDeleted}
-      color={color}
+      color={newColor}
     >
       {isShowTimestamps && (
         <Timestamp>{format('h:mm', new Date(timestamp))}</Timestamp>
       )}
       {badges.length > 0 && renderBadges(badges)}
-      <Name color={color} onContextMenu={handleNameRightClick}>
+      <Name color={newColor} onContextMenu={handleNameRightClick}>
         {displayName}
       </Name>
       {isAction ? ' ' : ': '}
