@@ -152,7 +152,7 @@ const Badge = styled.img`
   border-radius: 3px;
 `;
 
-const renderMessageArray = (login: string, userLogin: string | null) => (
+const renderMessageArray = (messageLogin: string, userLogin: string | null) => (
   item: MessageEntity,
   key: number,
 ) => {
@@ -183,7 +183,7 @@ const renderMessageArray = (login: string, userLogin: string | null) => (
       <Mention
         key={key}
         isActive={item.target === userLogin}
-        isOwnMessage={login === userLogin}
+        isOwnMessage={messageLogin === userLogin}
       >
         {item.text}
       </Mention>
