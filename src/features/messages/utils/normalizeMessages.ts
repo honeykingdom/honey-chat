@@ -23,6 +23,7 @@ import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import checkIsHighlighted from 'features/messages/utils/checkIsHighlighted';
+import getMessageCardFromEntities from 'features/messageCards/utils/getMessageCardFromEntities';
 import { writeEmotesUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
 
 import tinkSfx from 'assets/ts-tink.ogg';
@@ -52,20 +53,29 @@ export const normalizeMessage = (
   const channelBadges = channelBadgesSelector(state);
   const emotes = emotesSelector(state);
 
+  const entities = parseMessageEntities(message, emotes, tags.emotes);
+  const badges = htmlEntity.createBadges(
+    tags.badges,
+    globalBadges,
+    channelBadges,
+  );
+  const card = getMessageCardFromEntities(entities);
+
   return {
     type: 'message',
     id: tags.id,
     message,
     channel,
-    entities: parseMessageEntities(message, emotes, tags.emotes),
+    entities,
     user: {
       id: tags.userId,
       login: user,
       displayName: tags.displayName,
       color: tags.color,
-      badges: htmlEntity.createBadges(tags.badges, globalBadges, channelBadges),
+      badges,
     },
     timestamp: tags.tmiSentTs,
+    card,
     isAction,
     isHistory: false,
     isDeleted: false,
@@ -115,6 +125,12 @@ export const normalizeOwnMessage = (
   const normalizedMessage = isAction ? message.slice(4) : message;
 
   const entities = parseMessageEntities(normalizedMessage, emotes, null, true);
+  const badges = htmlEntity.createBadges(
+    tags.badges,
+    globalBadges,
+    channelBadges,
+  );
+  const card = getMessageCardFromEntities(entities);
 
   writeEmotesUsageStatistic(entities);
 
@@ -129,9 +145,10 @@ export const normalizeOwnMessage = (
       login: userLogin,
       displayName: tags.displayName,
       color: tags.color,
-      badges: htmlEntity.createBadges(tags.badges, globalBadges, channelBadges),
+      badges,
     },
     timestamp: Date.now(),
+    card,
     isAction,
     isHistory: false,
     isDeleted: false,
@@ -161,28 +178,35 @@ export const normalizeHistoryMessage = (
     normalizedMessage,
   );
 
+  const entities = parseMessageEntities(
+    normalizedMessage,
+    emotes,
+    parsedTags.emotes,
+  );
+  const badges = htmlEntity.createBadges(
+    parsedTags.badges,
+    globalBadges,
+    channelBadges,
+  );
+
+  // TODO: add cards for history?
+  // const card = getMessageCardFromEntities(entities);
+
   return {
     type: 'message',
     id: parsedTags.id,
     message: normalizedMessage,
     channel: channel.slice(1),
-    entities: parseMessageEntities(
-      normalizedMessage,
-      emotes,
-      parsedTags.emotes,
-    ),
+    entities,
     user: {
       id: parsedTags.userId,
       login: messageUser,
       displayName: parsedTags.displayName,
       color: parsedTags.color,
-      badges: htmlEntity.createBadges(
-        parsedTags.badges,
-        globalBadges,
-        channelBadges,
-      ),
+      badges,
     },
     timestamp: parsedTags.tmiSentTs,
+    card: null,
     isAction,
     isHistory: true,
     isDeleted: false,
