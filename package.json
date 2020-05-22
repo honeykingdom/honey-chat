@@ -24,7 +24,6 @@
     "react-textarea-autosize": "^7.1.2",
     "react-use": "^15.1.0",
     "redux": "^4.0.5",
-    "redux-actions": "^2.6.5",
     "styled-components": "^5.1.0",
     "tekko": "^2.4.0",
     "twemoji-parser": "^13.0.0",
@@ -33,7 +32,6 @@
     "use-latest": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@types/howler": "^2.1.2",
     "@types/jest": "^25.2.3",
     "@types/jsonwebtoken": "^8.5.0",
