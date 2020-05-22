@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format } from 'date-fns/fp';
 
+import MessageCard from 'features/messageCards/MessageCard';
 import type {
   Message as MessageType,
   MessageEntity,
@@ -226,6 +227,7 @@ const Message = ({
     entities,
     user: { login, color, displayName, badges },
     timestamp,
+    card,
     isHistory,
     isAction,
     isDeleted,
@@ -269,6 +271,7 @@ const Message = ({
       ) : (
         entities.map(renderMessageArray(login, userLogin))
       )}
+      {card && <MessageCard type={card.type} id={card.id} />}
     </MessageRoot>
   );
 };
