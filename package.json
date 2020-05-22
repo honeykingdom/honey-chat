@@ -45,6 +45,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-textarea-autosize": "^4.3.5",
     "@types/styled-components": "^5.1.0",
+    "@types/twemoji-parser": "^12.1.0",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "eslint-config-airbnb-typescript": "^7.2.1",
