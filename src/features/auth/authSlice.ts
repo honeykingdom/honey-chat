@@ -29,10 +29,11 @@ export const fetchUser = createAsyncThunk(
   async (userId: string) => {
     const users = await api.fetchUser(userId);
     const { id, login } = users.data[0];
+    const user = { id, login };
 
-    writeUserToLocatStorage({ id, login });
+    writeUserToLocatStorage(user);
 
-    return users;
+    return user;
   },
 );
 
@@ -61,9 +62,8 @@ const auth = createSlice({
 
     builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
       state.status = 'success';
-
-      state.userId = payload.data[0].id;
-      state.userLogin = payload.data[0].login;
+      state.userId = payload.id;
+      state.userLogin = payload.login;
     });
 
     builder.addCase(fetchUser.rejected, (state) => {
