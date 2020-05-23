@@ -75,6 +75,24 @@ const regexMap = R.map<typeof regexStringsMap, Record<string, RegExp>>(
   regexStringsMap,
 );
 
+// prettier-ignore
+// const emotesMap: Record<string, string[]> = {
+//   1:  [':-)', ':)'],
+//   2:  [':-(', ':('],
+//   3:  [':-D', ':D'],
+//   4:  ['>('],
+//   5:  [':-z', ':-Z', ':-|', ':z', ':Z', ':|',],
+//   6:  ['o_o', 'O_o', 'O_O', 'o_O', 'o.o', 'O.o', 'O.O', 'o.O',],
+//   7:  ['B-)', 'B)'],
+//   8:  [':-o', ':-O', ':o', ':O'],
+//   9:  ['<3'],
+//   10: [':-\\', ':-/', ':\\', ':/'],
+//   11: [';-\\', ';\\'],
+//   12: [':-p', ':-P', ':p', ':P'],
+//   13: [';-p', ';-P', ';p', ';P'],
+//   14: ['R-)', 'R)'],
+// };
+
 const findTwitchEmoteByNameInSets = (
   name: string,
   sets: Record<string, api.TwitchEmote[]>,
