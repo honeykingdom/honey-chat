@@ -41,9 +41,6 @@ export const parseBlockedUsers = R.pipe<
 
 export const parseBadges = R.prop('badge_sets');
 
-// https://regex101.com/r/4hu5CW/1
-const clipThumbnailRegex = /(.+-)(86x45|260x147|480x272)(.+)/;
-
 export const parseTwitchClip = ({ data }: api.TwitchClipResponse) => {
   if (data.length === 0) return null;
 
@@ -55,31 +52,18 @@ export const parseTwitchClip = ({ data }: api.TwitchClipResponse) => {
     creator_name: creatorName,
   } = data[0];
 
-  const m = clipThumbnailRegex.exec(thumbnailUrl);
-
-  let src = '';
-  let srcSet = '';
-
-  if (m) {
-    const x1 = `${m[1]}86x45${m[3]}`;
-    const x2 = `${m[1]}260x147${m[3]}`;
-
-    src = x1;
-    srcSet = `${x1} 1x, ${x2} 2x`;
-  }
+  const x1 = thumbnailUrl.replace('480x272', '86x45');
+  const x2 = thumbnailUrl.replace('480x272', '260x147');
 
   return {
     id,
     url,
-    src,
-    srcSet,
+    src: x1,
+    srcSet: `${x1} 1x, ${x2} 2x`,
     title,
     description: `Clipped by ${creatorName}`,
   };
 };
-
-// https://regex101.com/r/KimbdV/1
-const videoThumbnailRegex = /(.+)(%{width})x(%{height})(.+)/;
 
 export const parseTwitchVideo = ({ data }: api.TwitchVideoResponse) => {
   if (data.length === 0) return null;
@@ -93,24 +77,17 @@ export const parseTwitchVideo = ({ data }: api.TwitchVideoResponse) => {
   } = data[0];
 
   const date = format('PP', new Date(publishedAt));
-  const m = videoThumbnailRegex.exec(thumbnailUrl);
 
-  let src = '';
-  let srcSet = '';
+  const thumbnailReplace = '%{width}x%{height}';
 
-  if (m) {
-    const x1 = `${m[1]}80x45${m[4]}`;
-    const x2 = `${m[1]}160x90${m[4]}`;
-    const x4 = `${m[1]}320x180${m[4]}`;
-
-    src = x1;
-    srcSet = `${x1} 1x, ${x2} 2x, ${x4} 4x`;
-  }
+  const x1 = thumbnailUrl.replace(thumbnailReplace, '80x45');
+  const x2 = thumbnailUrl.replace(thumbnailReplace, '160x90');
+  const x4 = thumbnailUrl.replace(thumbnailReplace, '320x180');
 
   return {
     id,
-    src,
-    srcSet,
+    src: x1,
+    srcSet: `${x1} 1x, ${x2} 2x, ${x4} 4x`,
     title,
     description: `${date} · ${userName}`,
   };
