@@ -53,7 +53,7 @@ const findFfzEmoteById = (
 // by name
 
 // prettier-ignore
-const regexMap: Record<number, string> = {
+const regexStringsMap: Record<string, string> = {
   1:  ':-?\\)',       // "\\:-?\\)"
   2:  ':-?\\(',       // "\\:-?\\("
   3:  ':-?D',         // "\\:-?D"
@@ -70,6 +70,11 @@ const regexMap: Record<number, string> = {
   14: 'R-?\\)',       // "R-?\\)"
 };
 
+const regexMap = R.map<typeof regexStringsMap, Record<string, RegExp>>(
+  (s) => RegExp(`^${s}$`),
+  regexStringsMap,
+);
+
 const findTwitchEmoteByNameInSets = (
   name: string,
   sets: Record<string, api.TwitchEmote[]>,
@@ -78,8 +83,7 @@ const findTwitchEmoteByNameInSets = (
   for (const set of Object.values(sets)) {
     // 1-14 - match by regex
     const result = R.find(
-      ({ id, code }) =>
-        id <= 14 ? RegExp(`^${regexMap[id]}$`).test(name) : name === code,
+      ({ id, code }) => (id <= 14 ? regexMap[id].test(name) : name === code),
       set,
     );
 
