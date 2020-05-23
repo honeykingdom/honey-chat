@@ -17,7 +17,11 @@ import {
   globalBadgesSelector,
   channelBadgesSelector,
 } from 'features/badges/badgesSelectors';
-import { isHighlightNotificationsSelector } from 'features/options/optionsSelectors';
+import {
+  isHighlightNotificationsSelector,
+  isShowTwitchCardsSelector,
+  isShowYoutubeCardsSelector,
+} from 'features/options/optionsSelectors';
 import { userLoginSelector, userIdSelector } from 'features/auth/authSelectors';
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
@@ -42,6 +46,8 @@ export const normalizeMessage = (
   }
 
   const isHighlightNotifications = isHighlightNotificationsSelector(state);
+  const isShowTwitchCards = isShowTwitchCardsSelector(state);
+  const isShowYoutubeCards = isShowYoutubeCardsSelector(state);
   const userLogin = userLoginSelector(state);
   const isHighlighted = checkIsHighlighted(userLogin, user, message);
 
@@ -59,7 +65,10 @@ export const normalizeMessage = (
     globalBadges,
     channelBadges,
   );
-  const card = getMessageCardFromEntities(entities);
+  const card = getMessageCardFromEntities(entities, [
+    isShowTwitchCards,
+    isShowYoutubeCards,
+  ]);
 
   return {
     type: 'message',
@@ -120,6 +129,8 @@ export const normalizeOwnMessage = (
   const emotes = emotesSelector(state);
   const userLogin = userLoginSelector(state) as string;
   const userId = userIdSelector(state) as string;
+  const isShowTwitchCards = isShowTwitchCardsSelector(state);
+  const isShowYoutubeCards = isShowYoutubeCardsSelector(state);
 
   const isAction = message.startsWith('/me ');
   const normalizedMessage = isAction ? message.slice(4) : message;
@@ -130,7 +141,10 @@ export const normalizeOwnMessage = (
     globalBadges,
     channelBadges,
   );
-  const card = getMessageCardFromEntities(entities);
+  const card = getMessageCardFromEntities(entities, [
+    isShowTwitchCards,
+    isShowYoutubeCards,
+  ]);
 
   writeEmotesUsageStatistic(entities);
 

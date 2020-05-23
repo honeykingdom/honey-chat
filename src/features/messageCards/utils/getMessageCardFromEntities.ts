@@ -14,41 +14,48 @@ const youtubeVideoRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|you
 
 const getMessageCardFromEntities = (
   entities: MessageEntity[],
+  [parseTwitch, parseYoutube]: [boolean, boolean] = [true, true],
 ): MessageCardInfo | null => {
+  if (!parseTwitch && !parseYoutube) return null;
+
   // eslint-disable-next-line no-restricted-syntax
   for (const entity of entities) {
     if (typeof entity === 'object' && entity.type === 'link') {
-      // twitch clip
-      let m = twitchClipRegex.exec(entity.text);
+      if (parseTwitch) {
+        // twitch clip
+        let m = twitchClipRegex.exec(entity.text);
 
-      if (m) {
-        return {
-          type: 'twitch-clip',
-          id: m[1],
-          url: entity.href,
-        };
+        if (m) {
+          return {
+            type: 'twitch-clip',
+            id: m[1],
+            url: entity.href,
+          };
+        }
+
+        // twitch video
+        m = twitchVideoRegex.exec(entity.text);
+
+        if (m) {
+          return {
+            type: 'twitch-video',
+            id: m[1],
+            url: entity.href,
+          };
+        }
       }
 
-      // twitch video
-      m = twitchVideoRegex.exec(entity.text);
+      if (parseYoutube) {
+        // youtube video
+        const m = youtubeVideoRegex.exec(entity.text);
 
-      if (m) {
-        return {
-          type: 'twitch-video',
-          id: m[1],
-          url: entity.href,
-        };
-      }
-
-      // youtube video
-      m = youtubeVideoRegex.exec(entity.text);
-
-      if (m) {
-        return {
-          type: 'youtube-video',
-          id: m[4],
-          url: entity.href,
-        };
+        if (m) {
+          return {
+            type: 'youtube-video',
+            id: m[4],
+            url: entity.href,
+          };
+        }
       }
     }
   }

@@ -50,6 +50,22 @@ export const optionsSelector = (state: RootState): OptionCategories[] => [
         description: 'Plays a sound for messages directed at you',
         value: state.options.highlightNotifications,
       },
+      {
+        type: 'switch',
+        id: 'show-twitch-cards',
+        name: 'showTwitchCards',
+        title: 'Show Twitch clips and vods in the chat',
+        description: 'Show previews for Twitch clips and vods in the chat',
+        value: state.options.showTwitchCards,
+      },
+      {
+        type: 'switch',
+        id: 'show-youtube-cards',
+        name: 'showYoutubeCards',
+        title: 'Show Youtube videos in the chat',
+        description: 'Show previews for Youtube videos in the chat',
+        value: state.options.showYoutubeCards,
+      },
       // {
       //   type: 'input',
       //   id: 'blacklist-keywords',
@@ -81,3 +97,9 @@ export const isFixedWidthSelector = (state: RootState) =>
 
 export const isHighlightNotificationsSelector = (state: RootState) =>
   state.options.highlightNotifications;
+
+export const isShowTwitchCardsSelector = (state: RootState) =>
+  state.options.showTwitchCards;
+
+export const isShowYoutubeCardsSelector = (state: RootState) =>
+  state.options.showYoutubeCards;

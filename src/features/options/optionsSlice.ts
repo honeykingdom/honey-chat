@@ -14,6 +14,8 @@ type OptionsState = {
   highlightKeywords: string;
   fixedWidth: boolean;
   highlightNotifications: boolean;
+  showTwitchCards: boolean;
+  showYoutubeCards: boolean;
 };
 
 type ChangeOption = {
@@ -28,6 +30,8 @@ export const initialState: OptionsState = {
   highlightKeywords: '',
   fixedWidth: false,
   highlightNotifications: true,
+  showTwitchCards: true,
+  showYoutubeCards: true,
   ...readOptionsFromLocalStorage(),
 };
 
