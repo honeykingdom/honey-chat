@@ -274,7 +274,7 @@ const Message = ({
       ) : (
         entities.map(renderMessageArray(login, userLogin))
       )}
-      {card && <MessageCard type={card.type} id={card.id} />}
+      {card && <MessageCard type={card.type} id={card.id} url={card.url} />}
     </MessageRoot>
   );
 };

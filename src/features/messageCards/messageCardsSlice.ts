@@ -14,7 +14,6 @@ type MessageCardLoading = {
 type MessageCardSuccess = {
   status: 'success';
   id: string;
-  url: string;
   src: string;
   srcSet: string;
   title: string;
@@ -109,7 +108,7 @@ const messageCards = createSlice({
     builder.addCase(
       fetchTwitchVideo.fulfilled,
       (state, { payload, meta: { arg } }) => {
-        const { id, url } = arg;
+        const { id } = arg;
         const card = parseTwitchVideo(payload);
 
         if (!card) {
@@ -120,7 +119,6 @@ const messageCards = createSlice({
 
         state.twitchVideos[id] = {
           status: 'success',
-          url,
           ...card,
         };
       },
@@ -142,7 +140,7 @@ const messageCards = createSlice({
     builder.addCase(
       fetchYoutubeVideo.fulfilled,
       (state, { payload, meta: { arg } }) => {
-        const { id, url } = arg;
+        const { id } = arg;
         const card = parseYoutubeVideo(payload);
 
         if (!card) {
@@ -153,7 +151,6 @@ const messageCards = createSlice({
 
         state.youtubeVideos[id] = {
           status: 'success',
-          url,
           ...card,
         };
       },

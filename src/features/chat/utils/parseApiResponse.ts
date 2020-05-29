@@ -41,12 +41,13 @@ export const parseBlockedUsers = R.pipe<
 
 export const parseBadges = R.prop('badge_sets');
 
+// TODO: if message card was loaded, the second message with different timing doesn't work
+
 export const parseTwitchClip = ({ data }: api.TwitchClipResponse) => {
   if (data.length === 0) return null;
 
   const {
     id,
-    url,
     thumbnail_url: thumbnailUrl,
     title,
     creator_name: creatorName,
@@ -57,7 +58,6 @@ export const parseTwitchClip = ({ data }: api.TwitchClipResponse) => {
 
   return {
     id,
-    url,
     src: x1,
     srcSet: `${x1} 1x, ${x2} 2x`,
     title,

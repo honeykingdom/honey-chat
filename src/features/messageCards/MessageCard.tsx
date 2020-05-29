@@ -88,9 +88,9 @@ const DescriptionLoading = styled.div`
   width: 120px;
 `;
 
-const id = '58765';
-const errorImageSrc = `${TWITCH_EMOTES_CDN}/${id}/1.0`;
-const errorImageSrcSet = `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`;
+const emoteId = '58765';
+const errorImageSrc = `${TWITCH_EMOTES_CDN}/${emoteId}/1.0`;
+const errorImageSrcSet = `${TWITCH_EMOTES_CDN}/${emoteId}/1.0 1x, ${TWITCH_EMOTES_CDN}/${emoteId}/2.0 2x, ${TWITCH_EMOTES_CDN}/${emoteId}/3.0 4x`;
 
 const errorTitle = 'Something went wrong';
 const errorDescription = {
@@ -121,7 +121,7 @@ const renderError = (type: MessageCardInfo['type']) => (
   </MessageCardRoot>
 );
 
-type Props = Omit<MessageCardInfo, 'url'>;
+type Props = MessageCardInfo;
 
 const MessageCard = (cardInfo: Props) => {
   const card = useSelector(messageCardSelector(cardInfo));
@@ -134,7 +134,12 @@ const MessageCard = (cardInfo: Props) => {
     return renderError(cardInfo.type);
   }
 
-  const { url, src, srcSet, title, description } = card;
+  const { id, src, srcSet, title, description } = card;
+
+  const url =
+    cardInfo.type === 'twitch-clip'
+      ? `https://clips.twitch.tv/${id}`
+      : cardInfo.url;
 
   return (
     <MessageCardRoot href={url} $clickable>
