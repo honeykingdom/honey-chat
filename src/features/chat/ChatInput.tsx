@@ -2,9 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import TextareaAutosize, {
-  TextareaAutosizeProps,
-} from 'react-textarea-autosize';
+import TextareaAutosize from 'react-textarea-autosize';
 import useOnClickOutside from 'react-cool-onclickoutside';
 
 import ChatModal from 'components/ChatModal';
@@ -263,7 +261,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
           <TextareaWrapper $isSuggestions={suggestions.isActive}>
             <TextareaInput>
               <Textarea
-                inputRef={textareaRef as TextareaAutosizeProps['inputRef']}
+                ref={textareaRef}
                 value={text}
                 placeholder="Send a message"
                 maxLength={500}
