@@ -28,8 +28,7 @@
     "tekko": "^2.4.0",
     "twemoji-parser": "^13.0.0",
     "twitch-simple-irc": "github:honeykingdom/twitch-simple-irc",
-    "url-regex": "^5.0.0",
-    "use-latest": "^1.0.0"
+    "url-regex": "^5.0.0"
   },
   "devDependencies": {
     "@types/howler": "^2.1.2",
