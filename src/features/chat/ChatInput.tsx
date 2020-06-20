@@ -177,20 +177,18 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
     },
     textareaRef,
   ) => {
-    const chatInputRef = useRef(null);
     const suggestionsRef = useRef<HTMLDivElement>(null);
 
-    useOnClickOutside(
-      [textareaRef as React.RefObject<HTMLElement>, suggestionsRef],
-      () => onBlur(),
-    );
+    useOnClickOutside(() => onBlur(), {
+      refs: [textareaRef as React.RefObject<HTMLElement>, suggestionsRef],
+    });
 
     const [isShowTextareaScroll, setIsShowTextareaScroll] = useState(false);
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
     const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
     const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
 
-    useOnClickOutside(chatInputRef, handleCloseEmotesModal);
+    const chatInputRef = useOnClickOutside(handleCloseEmotesModal);
 
     const renderSuggestions = ({
       type,

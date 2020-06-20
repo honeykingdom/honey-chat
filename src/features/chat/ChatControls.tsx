@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -62,17 +62,12 @@ type Props = {
 
 const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
-  const optionsModalRef = useRef(null);
-  const optionsButtonRef = useRef(null);
 
   const isAuthReady = useSelector(isAuthReadySelector);
   const isAuth = useSelector(isAuthSelector);
 
   const handleCloseOptionsModal = () => setIsOptionsModalVisible(false);
-  useOnClickOutside(
-    [optionsModalRef, optionsButtonRef],
-    handleCloseOptionsModal,
-  );
+  const optionsRef = useOnClickOutside(handleCloseOptionsModal);
 
   const renderSignInButton = () => (
     <Button as={Link} to="/chat/auth">
@@ -82,7 +77,7 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
   );
 
   const renderOptionsModal = () => (
-    <OptionsModal ref={optionsModalRef}>
+    <OptionsModal ref={optionsRef}>
       <ChatModal onClose={handleCloseOptionsModal}>
         <Options />
       </ChatModal>
@@ -94,7 +89,7 @@ const ChatControls = ({ isDisabled, onSendMessage }: Props) => {
       <Controls>
         {isAuthReady && !isAuth && renderSignInButton()}
         <OptionsButton
-          ref={optionsButtonRef}
+          ref={optionsRef}
           onClick={() => setIsOptionsModalVisible((prev) => !prev)}
         >
           <GearsIcon />
