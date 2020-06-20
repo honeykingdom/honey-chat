@@ -5,12 +5,12 @@ type SliceItemsParams<T> = {
   isEven?: boolean;
 };
 
-function sliceItemsByLimit<T>({
+const sliceItemsByLimit = <T>({
   items,
   limit,
   addedItemsCount = 1,
   isEven = false,
-}: SliceItemsParams<T>): [T[], boolean] {
+}: SliceItemsParams<T>): [T[], boolean] => {
   const diff = items.length - limit;
   const isSliced = diff > 0;
 
@@ -18,6 +18,6 @@ function sliceItemsByLimit<T>({
   const newIsEven = isSliced && addedItemsCount % 2 ? !isEven : isEven;
 
   return [newItems, newIsEven];
-}
+};
 
 export default sliceItemsByLimit;
