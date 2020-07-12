@@ -34,6 +34,3 @@ export const findBttvEmote = (name: string) =>
 
 export const findFfzEmote = (name: string) =>
   findEmote.ffz.byName(name, emotes);
-
-export const getEmojiUrl = (code: string) =>
-  `https://twemoji.maxcdn.com/v/latest/72x72/${code}.png`;
