@@ -30,6 +30,7 @@ export type Emoji = {
   type: 'emoji';
   alt: string;
   src: string;
+  srcSet?: string;
 };
 export type Mention = {
   type: 'mention';
@@ -48,7 +49,7 @@ export type Badge = {
   srcSet: string;
 };
 
-export type Emote = TwitchEmote | BttvEmote | FfzEmote;
+export type Emote = TwitchEmote | BttvEmote | FfzEmote | Emoji;
 
 // prettier-ignore
 export const regexEmotesMap: Record<string, string> = {
