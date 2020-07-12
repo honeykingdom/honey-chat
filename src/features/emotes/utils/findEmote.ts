@@ -4,6 +4,7 @@ import * as api from 'api';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import type { EmotesByText } from 'features/emotes/utils/getEmotesByText';
+import emojisMap from 'features/emotes/emojisMap.json';
 
 // by id
 
@@ -48,6 +49,12 @@ const findFfzEmoteById = (
   const result = findById(ffzGlobal) || findById(ffzChannel);
 
   return result ? htmlEntity.createFfzEmote(result) : null;
+};
+
+const findEmojiByChar = (char: string) => {
+  const result = R.find(R.propEq('char', char), Object.values(emojisMap));
+
+  return result ? htmlEntity.createEmoji(result) : null;
 };
 
 // by name
@@ -183,6 +190,44 @@ const findFfzEmotesByText = (
 
   return false;
 };
+
+const findEmojisByText = (
+  result: EmotesByText,
+  text: string,
+  limit: number,
+) => {
+  for (const emoji of Object.values(emojisMap)) {
+    if (result.begins.length + result.contains.length === limit) return true;
+
+    const { short, keywords } = emoji;
+
+    let index = short.toLowerCase().indexOf(text);
+
+    if (index !== -1) {
+      const type = index === 0 ? 'begins' : 'contains';
+      const emojiEntity = htmlEntity.createEmoji(emoji);
+
+      result[type].push(emojiEntity);
+
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    for (const keyword of keywords) {
+      index = keyword.toLowerCase().indexOf(text);
+
+      if (index !== -1) {
+        const emojiEntity = htmlEntity.createEmoji(emoji);
+
+        result.contains.push(emojiEntity);
+
+        break;
+      }
+    }
+  }
+
+  return false;
+};
 /* eslint-enable no-restricted-syntax */
 
 const findEmote = {
@@ -200,6 +245,10 @@ const findEmote = {
     byId: findFfzEmoteById,
     byName: findFfzEmoteByName,
     byText: findFfzEmotesByText,
+  },
+  emoji: {
+    byChar: findEmojiByChar,
+    byText: findEmojisByText,
   },
 };
 
