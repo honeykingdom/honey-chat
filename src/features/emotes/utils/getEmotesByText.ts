@@ -28,7 +28,8 @@ const getEmotesByText = (
     findEmote.twitch.byText(result, emotes.twitchUser, textLower, limit) ||
     findEmote.twitch.byText(result, emotes.twitchGlobal, textLower, limit) ||
     findEmote.bttv.byText(result, emotes.bttvGlobal, textLower, limit) ||
-    findEmote.ffz.byText(result, emotes.ffzGlobal, textLower, limit);
+    findEmote.ffz.byText(result, emotes.ffzGlobal, textLower, limit) ||
+    findEmote.emoji.byText(result, textLower, limit);
 
   return [...result.begins, ...result.contains];
 };
