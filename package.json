@@ -26,7 +26,6 @@
     "redux": "^4.0.5",
     "styled-components": "^5.1.1",
     "tekko": "^2.4.0",
-    "twemoji-parser": "^13.0.0",
     "twitch-simple-irc": "github:honeykingdom/twitch-simple-irc",
     "url-regex": "^5.0.0"
   },
@@ -41,9 +40,9 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.1",
-    "@types/twemoji-parser": "^12.1.0",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "emoji-unicode": "^2.0.0",
     "eslint-config-airbnb-typescript": "^8.0.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",

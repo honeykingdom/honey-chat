@@ -1680,11 +1680,6 @@
     "@types/react-native" "*"
     csstype "^2.2.0"
 
-"@types/twemoji-parser@^12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@types/twemoji-parser/-/twemoji-parser-12.1.0.tgz#7aba95c6b4c92556737c2f4ef162ecdc73e8c40d"
-  integrity sha512-fVVmMQDzHu8wpspRzgU07v6zFCnM1KnBIyWXnocnaafoYLr62Zn4nXtW3C1fNbwzbRp+s/4vvx9E8r205JoYzA==
-
 "@types/webpack-env@^1.15.2":
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.15.2.tgz#927997342bb9f4a5185a86e6579a0a18afc33b0a"
@@ -4185,6 +4180,11 @@ emoji-regex@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.0.0.tgz#48a2309cc8a1d2e9d23bc6a67c39b63032e76ea4"
   integrity sha512-6p1NII1Vm62wni/VR/cUMauVQoxmLVb9csqQlvLz+hO2gk8U2UYDfXHQSUYIBKmZwAKz867IDqG7B+u0mj+M6w==
+
+emoji-unicode@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/emoji-unicode/-/emoji-unicode-2.0.0.tgz#9c89ec2d4406d90180d2780ebd4fd10071f1ea6c"
+  integrity sha512-7I+MD9WDwRlG7qRTCEiG32Bkw59OnJRcCLPDkBpokXGYTBG8wTE8nrcmwRX0B4IF+ihBGBk9/LVCQsord52JkA==
 
 emojilib@^2.4.0:
   version "2.4.0"
@@ -11154,11 +11154,6 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
-
-twemoji-parser@^13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-13.0.0.tgz#bd9d1b98474f1651dc174696b45cabefdfa405af"
-  integrity sha512-zMaGdskpH8yKjT2RSE/HwE340R4Fm+fbie4AaqjDa4H/l07YUmAvxkSfNl6awVWNRRQ0zdzLQ8SAJZuY5MgstQ==
 
 "twitch-simple-irc@github:honeykingdom/twitch-simple-irc":
   version "0.1.0"
