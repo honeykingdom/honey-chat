@@ -105,10 +105,16 @@ export const createFfzEmote = ({ id, name, urls }: api.FfzEmote): FfzEmote => ({
   srcSet: getFfzSrcSet(urls),
 });
 
-export const createEmoji = (alt: string, src: string): Emoji => ({
+export const createEmoji = ({
+  short,
+  unified,
+}: {
+  short: string;
+  unified: string;
+}): Emoji => ({
   type: 'emoji',
-  alt: `:${alt}:`,
-  src,
+  alt: `:${short}:`,
+  src: `https://twemoji.maxcdn.com/v/latest/72x72/${unified}.png`,
 });
 
 export const createMention = (text: string, target: string): Mention => ({
