@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-import { parse as twemojiParser } from 'twemoji-parser';
-import { lib as emojilib } from 'emojilib';
 import urlRegex from 'url-regex';
 import type twitchIrc from 'twitch-simple-irc';
 
@@ -21,13 +18,6 @@ const normalizeEmbeddedEmotes = (embeddedEmotes: twitchIrc.Emotes) =>
       ...items.reduce((acc, { start }) => ({ ...acc, [start]: id }), {}),
     };
   }, {} as Record<string, number>);
-
-const findEmojiByName = (char: string) =>
-  R.pipe<any, any, any, string | undefined>(
-    R.filter(R.propEq('char', char)),
-    R.keys,
-    R.head,
-  )(emojilib);
 
 const findEntity = (
   word: string,
@@ -50,27 +40,11 @@ const findEntity = (
   }
 
   const emote =
-    findEmote.bttv.byName(word, emotes) || findEmote.ffz.byName(word, emotes);
+    findEmote.bttv.byName(word, emotes) ||
+    findEmote.ffz.byName(word, emotes) ||
+    findEmote.emoji.byChar(word);
 
   if (emote) return emote;
-
-  // Don't parse two or more emotes without spaces between
-  // Don't parse emote if it's not in the emojilib package
-  const emojiMatch = twemojiParser(word, { assetType: 'png' });
-
-  if (
-    emojiMatch &&
-    emojiMatch.length === 1 &&
-    emojiMatch[0].text.length === word.length
-  ) {
-    const emoji = findEmojiByName(word);
-
-    if (emoji) {
-      const [{ url }] = emojiMatch;
-
-      return htmlEntity.createEmoji(emoji, url);
-    }
-  }
 
   const mentionMatch = word.match(mentionRegex);
 

@@ -1,4 +1,4 @@
-import { lib as emojilib } from 'emojilib';
+import emojisMap from 'features/emotes/emojisMap.json';
 
 const replaceEmojis = (text: string) =>
   text
@@ -9,7 +9,7 @@ const replaceEmojis = (text: string) =>
       }
 
       const name = word.slice(1, -1);
-      const emoji = emojilib[name];
+      const emoji = emojisMap[name];
 
       return emoji && emoji.char ? emoji.char : word;
     })
