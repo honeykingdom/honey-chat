@@ -52,46 +52,22 @@ const findFfzEmoteById = (
 
 // by name
 
-// prettier-ignore
-const regexStringsMap: Record<string, string> = {
-  1:  ':-?\\)',       // "\\:-?\\)"
-  2:  ':-?\\(',       // "\\:-?\\("
-  3:  ':-?D',         // "\\:-?D"
-  4:  '>\\(',         // "\\&gt\\;\\("
-  5:  ':-?[zZ|]',     // "\\:-?[z|Z|\\|]"
-  6:  '[oO][_.][oO]', // "[oO](_|\\.)[oO]"
-  7:  'B-?\\)',       // "B-?\\)"
-  8:  ':-?[oO]',      // "\\:-?(o|O)"
-  9:  '<3',           // "\\&lt\\;3"
-  10: ':-?[\\/]',     // "\\:-?[\\\\/]"
-  11: ';-?\\)',       // "\\;-?\\)"
-  12: ':-?[pP]',      // "\\:-?(p|P)"
-  13: ';-?[pP]',      // "\\;-?(p|P)"
-  14: 'R-?\\)',       // "R-?\\)"
+const emotesMap: Record<string, string[]> = {
+  555555557: [':-)', ':)'],
+  555555559: [':-(', ':('],
+  555555561: [':-D', ':D'],
+  555555562: ['>('],
+  555555568: [':-z', ':-Z', ':-|', ':z', ':Z', ':|'],
+  555555576: ['o_o', 'O_o', 'O_O', 'o_O', 'o.o', 'O.o', 'O.O', 'o.O'],
+  555555579: ['B-)', 'B)'],
+  555555583: [':-o', ':-O', ':o', ':O'],
+  555555584: ['<3'],
+  555555588: [':-\\', ':-/', ':\\', ':/'],
+  555555590: [';-\\', ';\\'],
+  555555594: [':-p', ':-P', ':p', ':P'],
+  555555598: [';-p', ';-P', ';p', ';P'],
+  555555600: ['R-)', 'R)'],
 };
-
-const regexMap = R.map<typeof regexStringsMap, Record<string, RegExp>>(
-  (s) => RegExp(`^${s}$`),
-  regexStringsMap,
-);
-
-// prettier-ignore
-// const emotesMap: Record<string, string[]> = {
-//   1:  [':-)', ':)'],
-//   2:  [':-(', ':('],
-//   3:  [':-D', ':D'],
-//   4:  ['>('],
-//   5:  [':-z', ':-Z', ':-|', ':z', ':Z', ':|',],
-//   6:  ['o_o', 'O_o', 'O_O', 'o_O', 'o.o', 'O.o', 'O.O', 'o.O',],
-//   7:  ['B-)', 'B)'],
-//   8:  [':-o', ':-O', ':o', ':O'],
-//   9:  ['<3'],
-//   10: [':-\\', ':-/', ':\\', ':/'],
-//   11: [';-\\', ';\\'],
-//   12: [':-p', ':-P', ':p', ':P'],
-//   13: [';-p', ';-P', ';p', ';P'],
-//   14: ['R-)', 'R)'],
-// };
 
 const findTwitchEmoteByNameInSets = (
   name: string,
@@ -99,9 +75,9 @@ const findTwitchEmoteByNameInSets = (
 ) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
-    // 1-14 - match by regex
     const result = R.find(
-      ({ id, code }) => (id <= 14 ? regexMap[id].test(name) : name === code),
+      ({ id, code }) =>
+        emotesMap[id] ? emotesMap[id].includes(name) : name === code,
       set,
     );
 
