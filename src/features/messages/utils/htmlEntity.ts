@@ -68,7 +68,7 @@ export const regexEmotesMap: Record<string, string> = {
   'B-?\\)':          'B)',
 };
 
-export const getFfzSrcSet = R.pipe<{}, [string, string][], string[], string>(
+export const getFfzSrcSet = R.pipe<any, [string, string][], string[], string>(
   R.toPairs,
   R.map(([dpi, url]) => `${url} ${dpi}x`),
   R.join(', '),
@@ -148,7 +148,7 @@ export const createBadges = (
     return badge ? createBadge(badge) : false;
   };
 
-  return R.pipe<{}, [string, string][], any[], any[]>(
+  return R.pipe<any, [string, string][], any[], any[]>(
     R.toPairs,
     R.map(mapBadges),
     R.filter(Boolean),
