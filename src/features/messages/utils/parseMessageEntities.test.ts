@@ -1,10 +1,4 @@
-import {
-  emotes,
-  findTwitchEmote,
-  findBttvEmote,
-  findFfzEmote,
-  getEmojiUrl,
-} from 'mocks';
+import { emotes, findTwitchEmote, findBttvEmote, findFfzEmote } from 'mocks';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
 
@@ -15,7 +9,7 @@ describe('parse message entities', () => {
         'Kappa Keepo hey Kappa 4Head hello world :) KKona KKonaW Zappa EZ hey sumSmash',
         emotes,
         {
-          '1': [{ start: 40, end: 41 }],
+          '555555557': [{ start: 40, end: 41 }],
           '25': [
             { start: 0, end: 4 },
             { start: 16, end: 20 },
@@ -68,36 +62,36 @@ describe('parse message entities', () => {
     expect(
       parseMessageEntities('R-) R) <3 >( o_O O.o', emotes, null, true),
     ).toEqual([
-      htmlEntity.createTwitchEmote({ id: 14, code: 'R)' }),
+      htmlEntity.createTwitchEmote({ id: 555555600, code: 'R)' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 14, code: 'R)' }),
+      htmlEntity.createTwitchEmote({ id: 555555600, code: 'R)' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 9, code: '<3' }),
+      htmlEntity.createTwitchEmote({ id: 555555584, code: '<3' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 4, code: '>(' }),
+      htmlEntity.createTwitchEmote({ id: 555555562, code: '>(' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 6, code: 'O_o' }),
+      htmlEntity.createTwitchEmote({ id: 555555576, code: 'O_o' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 6, code: 'O_o' }),
+      htmlEntity.createTwitchEmote({ id: 555555576, code: 'O_o' }),
     ]);
   });
 
   it('should format emoji', () => {
     expect(parseMessageEntities('🤔 test', emotes, {})).toEqual([
-      htmlEntity.createEmoji('thinking', getEmojiUrl('1f914')),
+      htmlEntity.createEmoji({ short: 'thinking', unified: '1f914' }),
       ' test',
     ]);
 
     expect(parseMessageEntities('test 😂 👌', emotes, {})).toEqual([
       'test ',
-      htmlEntity.createEmoji('joy', getEmojiUrl('1f602')),
+      htmlEntity.createEmoji({ short: 'joy', unified: '1f602' }),
       ' ',
-      htmlEntity.createEmoji('ok_hand', getEmojiUrl('1f44c')),
+      htmlEntity.createEmoji({ short: 'ok_hand', unified: '1f44c' }),
     ]);
 
     expect(parseMessageEntities('this is a 😡 test', emotes, {})).toEqual([
       'this is a ',
-      htmlEntity.createEmoji('rage', getEmojiUrl('1f621')),
+      htmlEntity.createEmoji({ short: 'rage', unified: '1f621' }),
       ' test',
     ]);
 
@@ -191,7 +185,7 @@ describe('parse message entities', () => {
       ' hello world ',
       htmlEntity.createLink('google.com'),
       ' ',
-      htmlEntity.createEmoji('thinking', getEmojiUrl('1f914')),
+      htmlEntity.createEmoji({ short: 'thinking', unified: '1f914' }),
       ' ',
       htmlEntity.createMention('@test', 'test'),
       ', message',
