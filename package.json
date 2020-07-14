@@ -42,6 +42,7 @@
     "@types/styled-components": "^5.1.1",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "cross-env": "^7.0.2",
     "emoji-unicode": "^2.0.0",
     "eslint-config-airbnb-typescript": "^8.0.2",
     "eslint-config-prettier": "^6.11.0",
@@ -54,6 +55,7 @@
     "prettier": "^2.0.5",
     "source-map-explorer": "^2.4.2",
     "ts-jest": "^26.1.1",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
   },
   "scripts": {
@@ -62,7 +64,8 @@
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "generate-emojis-map": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' ts-node ./src/features/emotes/generateEmojisMap"
   },
   "eslintConfig": {
     "env": {
