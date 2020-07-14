@@ -1,7 +1,7 @@
-const fs = require('fs');
-
-const emojiUnicode = require('emoji-unicode');
-const { lib: emojilib } = require('emojilib');
+/* eslint-disable import/no-extraneous-dependencies */
+import fs from 'fs';
+import emojiUnicode from 'emoji-unicode';
+import { lib as emojilib } from 'emojilib';
 
 const TWITTER_EXCLUDE_FE0F = [
   'relaxed',
@@ -90,12 +90,7 @@ const TWITTER_EXCLUDE_FE0F = [
 
       return {
         ...acc,
-        [name]: {
-          short: name,
-          keywords,
-          char,
-          unified,
-        },
+        [name]: { short: name, keywords, char, unified },
       };
     },
     {},
