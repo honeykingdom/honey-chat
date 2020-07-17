@@ -114,7 +114,7 @@ export const createEmoji = ({
 }): Emoji => ({
   type: 'emoji',
   alt: `:${short}:`,
-  src: `https://twemoji.maxcdn.com/v/latest/72x72/${unified}.png`,
+  src: `//twemoji.maxcdn.com/v/latest/72x72/${unified}.png`,
 });
 
 export const createMention = (text: string, target: string): Mention => ({
