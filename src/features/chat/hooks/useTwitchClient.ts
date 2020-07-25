@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as twitchIrc from 'twitch-simple-irc';
 import { usePrevious } from 'react-use';
@@ -139,8 +139,8 @@ const useTwitchClient = () => {
     prevChannel,
   ]);
 
-  const client = () => ({
-    say(channel: string, message: string) {
+  const sendMessage = useCallback(
+    (channel: string, message: string) => {
       if (!clientRef.current || !message.trim()) return;
 
       const normalizedMessage = replaceEmojis(message.trim());
@@ -186,9 +186,10 @@ const useTwitchClient = () => {
 
       setTimeout(() => removeListeners(), 10000);
     },
-  });
+    [clientRef, dispatch],
+  );
 
-  return useMemo(client, [clientRef, dispatch]);
+  return { sendMessage };
 };
 
 export default useTwitchClient;
