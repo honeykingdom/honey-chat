@@ -21,6 +21,7 @@ import {
   normalizeHistoryMessages,
   normalizeOwnMessage,
 } from 'features/messages/utils/normalizeMessages';
+import sliceMessagesByLimit from 'features/messages/utils/sliceMessagesByLimit';
 import sliceItemsByLimit from 'features/messages/utils/sliceItemsByLimit';
 import {
   fetchTwitchClip,
@@ -182,7 +183,7 @@ const messagesSlice = createSlice({
           ? [...state[channel].items, ...messages]
           : [...messages, ...state[channel].items];
 
-      const [newItems, newIsEven] = sliceItemsByLimit({
+      const [newItems, newIsEven] = sliceMessagesByLimit({
         items,
         limit: CHANNEL_MESSAGES_LIMIT,
         addedItemsCount: messages.length,
@@ -206,10 +207,7 @@ const messagesSlice = createSlice({
         }
       });
 
-      const [newUsers] = sliceItemsByLimit({
-        items: users,
-        limit: STORE_USERS_LIMIT,
-      });
+      const newUsers = sliceItemsByLimit(users, STORE_USERS_LIMIT);
 
       state[channel].users = newUsers;
 
@@ -233,10 +231,10 @@ const messagesSlice = createSlice({
 
           state[channel].recentUserMessages.unshift(normalizedMessage);
 
-          const [newRecentUserMessages] = sliceItemsByLimit({
-            items: state[channel].recentUserMessages,
-            limit: RECENT_USER_MESSAGES_LIMIT,
-          });
+          const newRecentUserMessages = sliceItemsByLimit(
+            state[channel].recentUserMessages,
+            RECENT_USER_MESSAGES_LIMIT,
+          );
 
           state[channel].recentUserMessages = newRecentUserMessages;
         });
@@ -359,10 +357,10 @@ export const addChatHistory = (channel: string): AppThunk => (
 ) => {
   const state = getState();
 
-  const [slicedRawHistory] = sliceItemsByLimit({
-    items: state.messages[channel].history.items,
-    limit: CHANNEL_MESSAGES_LIMIT,
-  });
+  const slicedRawHistory = sliceItemsByLimit(
+    state.messages[channel].history.items,
+    CHANNEL_MESSAGES_LIMIT,
+  );
 
   const messages = normalizeHistoryMessages(slicedRawHistory, state);
 
