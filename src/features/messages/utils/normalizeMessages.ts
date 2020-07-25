@@ -89,6 +89,7 @@ export const normalizeMessage = (
     isHistory: false,
     isDeleted: false,
     isHighlighted,
+    isOwnMessage: false,
   };
 };
 
@@ -167,6 +168,7 @@ export const normalizeOwnMessage = (
     isHistory: false,
     isDeleted: false,
     isHighlighted: false,
+    isOwnMessage: true,
   };
 };
 
@@ -225,6 +227,7 @@ export const normalizeHistoryMessage = (
     isHistory: true,
     isDeleted: false,
     isHighlighted,
+    isOwnMessage: false,
   };
 };
 

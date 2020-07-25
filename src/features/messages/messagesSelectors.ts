@@ -7,6 +7,9 @@ export const messagesSelector = (state: RootState) =>
 export const usersSelector = (state: RootState) =>
   state.messages[currentChannelSelector(state)]?.users || [];
 
+export const recentUserMessagesSelector = (state: RootState) =>
+  state.messages[currentChannelSelector(state)]?.recentUserMessages || [];
+
 export const isHistoryLoadedSelector = (state: RootState) => {
   const currentChannel = currentChannelSelector(state);
 

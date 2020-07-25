@@ -7,7 +7,11 @@ import * as api from 'api';
 import type { AppThunk } from 'app/store';
 import type { RootState } from 'app/rootReducer';
 import type { FetchResult } from 'utils/types';
-import { CHANNEL_MESSAGES_LIMIT, STORE_USERS_LIMIT } from 'utils/constants';
+import {
+  CHANNEL_MESSAGES_LIMIT,
+  STORE_USERS_LIMIT,
+  RECENT_USER_MESSAGES_LIMIT,
+} from 'utils/constants';
 import assertNever from 'utils/assertNever';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import {
@@ -59,6 +63,7 @@ export type Message = {
   isHistory: boolean;
   isDeleted: boolean;
   isHighlighted: boolean;
+  isOwnMessage: boolean;
 };
 
 export type Notice = {
@@ -125,6 +130,7 @@ type MessagesStateChannel = {
   isEven: boolean;
   items: ChatMessage[];
   users: string[];
+  recentUserMessages: string[];
 };
 
 type MessagesState = Record<string, MessagesStateChannel>;
@@ -211,6 +217,30 @@ const messagesSlice = createSlice({
         state[channel].history.items = [];
         state[channel].history.isAdded = true;
       }
+
+      if (type === 'message') {
+        messages.forEach((message) => {
+          if (message.type !== 'message' || !message.isOwnMessage) return;
+
+          const normalizedMessage = message.message.trim();
+          const index = state[channel].recentUserMessages.indexOf(
+            normalizedMessage,
+          );
+
+          if (index > -1) {
+            state[channel].recentUserMessages.splice(1, 1);
+          }
+
+          state[channel].recentUserMessages.unshift(normalizedMessage);
+
+          const [newRecentUserMessages] = sliceItemsByLimit({
+            items: state[channel].recentUserMessages,
+            limit: RECENT_USER_MESSAGES_LIMIT,
+          });
+
+          state[channel].recentUserMessages = newRecentUserMessages;
+        });
+      }
     },
   },
   extraReducers: (builder) => {
@@ -228,6 +258,7 @@ const messagesSlice = createSlice({
           isEven: false,
           items: [],
           users: [],
+          recentUserMessages: [],
         };
       } else {
         state[channel].history.status = 'loading';
