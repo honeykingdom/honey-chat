@@ -34,6 +34,7 @@ const ChatWrapper = styled.div<{ $isFixedWidth: boolean }>`
 
 const Chat = () => {
   const [text, setText] = useState('');
+  const [recentUserMessageIndex, setRecentUserMessageIndex] = useState(-1);
 
   const client = useTwitchClient();
 
@@ -52,6 +53,16 @@ const Chat = () => {
   const textRef = useRef(text);
   textRef.current = text;
 
+  // TODO: refact this
+  const getRecentUserMessageIndexRef = () => ({
+    recentUserMessageIndex,
+    setRecentUserMessageIndex,
+  });
+  const recentUserMessageIndexRef = useRef(
+    {} as ReturnType<typeof getRecentUserMessageIndexRef>,
+  );
+  recentUserMessageIndexRef.current = getRecentUserMessageIndexRef();
+
   const isDisabled = !isAuth || !isConnected;
 
   const handleSendMessage = useCallback(() => {
@@ -60,9 +71,16 @@ const Chat = () => {
     client.say(currentChannel, textRef.current);
 
     setText('');
+
+    setRecentUserMessageIndex(-1);
   }, [client, currentChannel, textRef, setText]);
 
-  const chatInput = useChatInput(setText, handleSendMessage, chatInputRef);
+  const chatInput = useChatInput(
+    setText,
+    handleSendMessage,
+    chatInputRef,
+    recentUserMessageIndexRef,
+  );
 
   const handleNameRightClick = useCallback(
     (name: string) => {
