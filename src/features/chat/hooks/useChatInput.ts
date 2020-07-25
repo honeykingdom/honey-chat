@@ -37,27 +37,19 @@ const suggestionsInitialState: SuggestionsState = {
   end: 0,
 };
 
-const setSuggestionsIndexUp = ({
-  activeIndex,
-  items,
-  ...rest
-}: SuggestionsState) =>
-  ({
-    activeIndex: activeIndex === 0 ? items.length - 1 : activeIndex - 1,
-    items,
-    ...rest,
-  } as SuggestionsState);
+const setSuggestionsIndexUp = (state: SuggestionsState): SuggestionsState => ({
+  ...state,
+  activeIndex:
+    state.activeIndex === 0 ? state.items.length - 1 : state.activeIndex - 1,
+});
 
-const setSuggestionsIndexDown = ({
-  activeIndex,
-  items,
-  ...rest
-}: SuggestionsState) =>
-  ({
-    activeIndex: activeIndex === items.length - 1 ? 0 : activeIndex + 1,
-    items,
-    ...rest,
-  } as SuggestionsState);
+const setSuggestionsIndexDown = (
+  state: SuggestionsState,
+): SuggestionsState => ({
+  ...state,
+  activeIndex:
+    state.activeIndex === state.items.length - 1 ? 0 : state.activeIndex + 1,
+});
 
 const replaceSuggestionText = (
   text: string,
