@@ -12,20 +12,20 @@ import {
 } from 'features/messages/messagesSelectors';
 import { emotesSelector } from 'features/emotes/emotesSelectors';
 
-interface ASuggestions {
+type ASuggestions = {
   isActive: boolean;
   activeIndex: number;
   start: number;
   end: number;
-}
-interface UserSuggestions extends ASuggestions {
+};
+type UserSuggestions = ASuggestions & {
   type: 'users';
   items: string[];
-}
-interface EmoteSuggestions extends ASuggestions {
+};
+type EmoteSuggestions = ASuggestions & {
   type: 'emotes';
   items: htmlEntity.Emote[];
-}
+};
 export type SuggestionsState = UserSuggestions | EmoteSuggestions;
 
 const suggestionsInitialState: SuggestionsState = {
