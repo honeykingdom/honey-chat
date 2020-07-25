@@ -12,63 +12,6 @@ import {
 } from 'features/messages/messagesSelectors';
 import { emotesSelector } from 'features/emotes/emotesSelectors';
 
-type ASuggestions = {
-  isActive: boolean;
-  activeIndex: number;
-  start: number;
-  end: number;
-};
-type UserSuggestions = ASuggestions & {
-  type: 'users';
-  items: string[];
-};
-type EmoteSuggestions = ASuggestions & {
-  type: 'emotes';
-  items: htmlEntity.Emote[];
-};
-export type SuggestionsState = UserSuggestions | EmoteSuggestions;
-
-const suggestionsInitialState: SuggestionsState = {
-  type: 'users',
-  isActive: false,
-  items: [],
-  activeIndex: 0,
-  start: 0,
-  end: 0,
-};
-
-const setSuggestionsIndexUp = (state: SuggestionsState): SuggestionsState => ({
-  ...state,
-  activeIndex:
-    state.activeIndex === 0 ? state.items.length - 1 : state.activeIndex - 1,
-});
-
-const setSuggestionsIndexDown = (
-  state: SuggestionsState,
-): SuggestionsState => ({
-  ...state,
-  activeIndex:
-    state.activeIndex === state.items.length - 1 ? 0 : state.activeIndex + 1,
-});
-
-const replaceSuggestionText = (
-  text: string,
-  { type, items, activeIndex, start, end }: SuggestionsState,
-) => {
-  if (items.length === 0) return text;
-
-  const currentItem = items[activeIndex];
-  const insertedText =
-    type === 'users'
-      ? `@${currentItem}`
-      : (currentItem as htmlEntity.Emote).alt;
-
-  const textBefore = text.substring(0, start);
-  const testAfter = text.substring(end) || ' ';
-
-  return `${textBefore}${insertedText}${testAfter}`;
-};
-
 const useChatInput = (
   setText: (value: React.SetStateAction<string>) => void,
   onSendMessage: () => void,
