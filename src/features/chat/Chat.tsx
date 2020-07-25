@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -33,86 +33,35 @@ const ChatWrapper = styled.div<{ $isFixedWidth: boolean }>`
 `;
 
 const Chat = () => {
-  const [text, setText] = useState('');
-  const [recentUserMessageIndex, setRecentUserMessageIndex] = useState(-1);
-
-  const client = useTwitchClient();
+  const { sendMessage } = useTwitchClient();
 
   useInitializeAuth();
   useCurrentChannel();
   useFetchChatData();
 
   const currentChannel = useSelector(currentChannelSelector);
-
   const isAuth = useSelector(isAuthSelector);
   const isConnected = useSelector(isConnectedSelector);
-
   const isFixedWidth = useSelector(isFixedWidthSelector);
   const chatInputRef = useRef<HTMLTextAreaElement>(null);
-
-  const textRef = useRef(text);
-  textRef.current = text;
-
-  // TODO: refact this
-  const getRecentUserMessageIndexRef = () => ({
-    recentUserMessageIndex,
-    setRecentUserMessageIndex,
-  });
-  const recentUserMessageIndexRef = useRef(
-    {} as ReturnType<typeof getRecentUserMessageIndexRef>,
-  );
-  recentUserMessageIndexRef.current = getRecentUserMessageIndexRef();
+  const chatInput = useChatInput(sendMessage, chatInputRef);
 
   const isDisabled = !isAuth || !isConnected;
-
-  const handleSendMessage = useCallback(() => {
-    if (!client || !textRef.current) return;
-
-    client.say(currentChannel, textRef.current);
-
-    setText('');
-
-    setRecentUserMessageIndex(-1);
-  }, [client, currentChannel, textRef, setText]);
-
-  const chatInput = useChatInput(
-    setText,
-    handleSendMessage,
-    chatInputRef,
-    recentUserMessageIndexRef,
-  );
-
-  const handleNameRightClick = useCallback(
-    (name: string) => {
-      setText((t) => `${t.trim()} @${name} `.trimLeft());
-      if (chatInputRef.current) {
-        chatInputRef.current.focus();
-      }
-    },
-    [setText, chatInputRef],
-  );
-
-  const handleEmoteClick = useCallback(
-    (name: string) => {
-      setText((t) => `${t.trim()} ${name} `.trimLeft());
-    },
-    [setText],
-  );
 
   return (
     <ChatRoot>
       <ChatWrapper $isFixedWidth={isFixedWidth}>
         {currentChannel ? (
-          <Messages onNameRightClick={handleNameRightClick} />
+          <Messages onNameRightClick={chatInput.handleNameRightClick} />
         ) : (
           <JoinChannel />
         )}
         <ChatInput
           ref={chatInputRef}
-          text={text}
+          text={chatInput.inputText}
           suggestions={chatInput.suggestions}
           isDisabled={isDisabled}
-          onEmoteClick={handleEmoteClick}
+          onEmoteClick={chatInput.handleEmoteClick}
           onChange={chatInput.handleChange}
           onKeyUp={chatInput.handleKeyUp}
           onKeyDown={chatInput.handleKeyDown}
@@ -122,7 +71,7 @@ const Chat = () => {
         />
         <ChatControls
           isDisabled={isDisabled}
-          onSendMessage={handleSendMessage}
+          onSendMessage={chatInput.handleSendMessage}
         />
       </ChatWrapper>
     </ChatRoot>

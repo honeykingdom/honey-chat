@@ -1,49 +1,55 @@
-import { useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useSetState } from 'react-use';
 
 import { SUGGESTION_TYPES } from 'utils/constants';
 import getUsersByBeginText from 'features/chat/utils/getUsersByBeginText';
+import {
+  suggestionsInitialState,
+  setSuggestionsIndexUp,
+  setSuggestionsIndexDown,
+  replaceSuggestionText,
+} from 'features/chat/utils/suggestions';
 import getEmotesByText from 'features/emotes/utils/getEmotesByText';
-import * as htmlEntity from 'features/messages/utils/htmlEntity';
+
 import {
   usersSelector,
   recentUserMessagesSelector,
 } from 'features/messages/messagesSelectors';
+import { currentChannelSelector } from 'features/chat/chatSelectors';
 import { emotesSelector } from 'features/emotes/emotesSelectors';
 
 const useChatInput = (
-  setText: (value: React.SetStateAction<string>) => void,
-  onSendMessage: () => void,
-  chatInputRef: React.RefObject<HTMLElement>,
-  recentUserMessageIndexRef: React.RefObject<{
-    recentUserMessageIndex: number;
-    setRecentUserMessageIndex: React.Dispatch<React.SetStateAction<number>>;
-  }>,
+  sendMessage: (channel: string, message: string) => void,
+  chatInputRef: React.RefObject<HTMLTextAreaElement>,
 ) => {
-  const [suggestions, setSuggestions] = useSetState<SuggestionsState>(
-    suggestionsInitialState,
-  );
+  const [inputText, setInputText] = useState('');
+  const [suggestions, setSuggestions] = useSetState(suggestionsInitialState);
+  const [recentUserMessagesIndex, setRecentUserMessagesIndex] = useState(-1);
 
   const emotes = useSelector(emotesSelector);
   const users = useSelector(usersSelector);
+  const currentChannel = useSelector(currentChannelSelector);
   const recentUserMessages = useSelector(recentUserMessagesSelector);
 
+  const handleSendMessage = useCallback(() => {
+    sendMessage(currentChannel, inputText);
+    setInputText('');
+    setRecentUserMessagesIndex(-1);
+  }, [currentChannel, sendMessage, inputText]);
+
   const getDeps = () => ({
-    setText,
-    onSendMessage,
     chatInputRef,
+    inputText,
+    setInputText,
     suggestions,
     setSuggestions,
+    recentUserMessagesIndex,
+    setRecentUserMessagesIndex,
     emotes,
     users,
     recentUserMessages: [...recentUserMessages, ''],
-    recentUserMessageIndex: recentUserMessageIndexRef.current
-      ?.recentUserMessageIndex as number,
-    setRecentUserMessageIndex: recentUserMessageIndexRef.current
-      ?.setRecentUserMessageIndex as React.Dispatch<
-      React.SetStateAction<number>
-    >,
+    handleSendMessage,
   });
 
   const deps = useRef({} as ReturnType<typeof getDeps>);
@@ -55,7 +61,7 @@ const useChatInput = (
       const d = deps.current;
       const { value, selectionStart } = e.target;
 
-      d.setText(value);
+      d.setInputText(value);
 
       const spaceIndexBefore = value.lastIndexOf(' ', selectionStart - 1);
       const spaceIndexAfter = value.indexOf(' ', selectionStart);
@@ -128,7 +134,7 @@ const useChatInput = (
       if (d.suggestions.isActive) {
         if (e.key === 'Enter' || e.key === 'Tab') {
           e.preventDefault();
-          d.setText((t) => replaceSuggestionText(t, d.suggestions));
+          d.setInputText((t) => replaceSuggestionText(t, d.suggestions));
           d.setSuggestions(suggestionsInitialState);
 
           return;
@@ -155,7 +161,7 @@ const useChatInput = (
       if (!d.suggestions.isActive) {
         if (e.key === 'Enter') {
           e.preventDefault();
-          d.onSendMessage();
+          d.handleSendMessage();
           return;
         }
 
@@ -164,13 +170,13 @@ const useChatInput = (
             (e.target as HTMLTextAreaElement).selectionStart === 0;
 
           if (!isCaretAtBegin) return;
-          if (d.recentUserMessageIndex >= d.recentUserMessages.length - 1)
+          if (d.recentUserMessagesIndex >= d.recentUserMessages.length - 1)
             return;
 
-          const newIndex = d.recentUserMessageIndex + 1;
+          const newIndex = d.recentUserMessagesIndex + 1;
 
-          d.setText(d.recentUserMessages[newIndex]);
-          d.setRecentUserMessageIndex(newIndex);
+          d.setInputText(d.recentUserMessages[newIndex]);
+          d.setRecentUserMessagesIndex(newIndex);
 
           return;
         }
@@ -181,12 +187,12 @@ const useChatInput = (
             (e.target as HTMLTextAreaElement).defaultValue.length;
 
           if (!isCaretAtEnd) return;
-          if (d.recentUserMessageIndex <= 0) return;
+          if (d.recentUserMessagesIndex <= 0) return;
 
-          const newIndex = d.recentUserMessageIndex - 1;
+          const newIndex = d.recentUserMessagesIndex - 1;
 
-          d.setText(d.recentUserMessages[newIndex]);
-          d.setRecentUserMessageIndex(newIndex);
+          d.setInputText(d.recentUserMessages[newIndex]);
+          d.setRecentUserMessagesIndex(newIndex);
 
           // eslint-disable-next-line no-useless-return
           return;
@@ -205,7 +211,7 @@ const useChatInput = (
     (activeIndex: number) => {
       const d = deps.current;
 
-      d.setText((t) =>
+      d.setInputText((t) =>
         replaceSuggestionText(t, { ...d.suggestions, activeIndex }),
       );
 
@@ -222,14 +228,39 @@ const useChatInput = (
     setSuggestions({ isActive: false });
   }, [setSuggestions]);
 
+  const handleNameRightClick = useCallback(
+    (name: string) => {
+      const d = deps.current;
+      d.setInputText((t) => `${t.trim()} @${name} `.trimLeft());
+
+      if (d.chatInputRef.current) {
+        d.chatInputRef.current.focus();
+      }
+    },
+    [deps],
+  );
+
+  const handleEmoteClick = useCallback(
+    (name: string) => {
+      const d = deps.current;
+
+      d.setInputText((t) => `${t.trim()} ${name} `.trimLeft());
+    },
+    [deps],
+  );
+
   return {
+    inputText,
     suggestions,
+    handleSendMessage,
     handleChange,
     handleKeyUp,
     handleKeyDown,
     handleBlur,
     handleSuggestionMouseEnter,
     handleSuggestionClick,
+    handleNameRightClick,
+    handleEmoteClick,
   };
 };
 
