@@ -65,7 +65,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "generate-emojis-map": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' ts-node ./src/features/emotes/generateEmojisMap"
+    "generate-emojis-map": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' ts-node ./scripts/generateEmojisMap"
   },
   "eslintConfig": {
     "env": {
