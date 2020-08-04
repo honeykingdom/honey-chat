@@ -2209,11 +2209,11 @@ __metadata:
   linkType: hard
 
 "@types/react-native@npm:*":
-  version: 0.63.2
-  resolution: "@types/react-native@npm:0.63.2"
+  version: 0.63.4
+  resolution: "@types/react-native@npm:0.63.4"
   dependencies:
     "@types/react": "*"
-  checksum: 8c2a28851e8ef19521a089a452343b13f734b359b29c5823b26b1c5641232d67932aa1499c4f40ee83d172ba580264a231e3fe39c4850b2e68131af7f89d1042
+  checksum: 9d8da1eeb151c9b0ad07ddcfa899b99b7edbf313cbe6b84f148bdd5131a871ae63b18cbc0ae4baf2dfc79a19b16f16e38db02a43601e842d04bbc4d8ef579eb1
   languageName: node
   linkType: hard
 
@@ -2250,13 +2250,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^16.9.43":
-  version: 16.9.43
-  resolution: "@types/react@npm:16.9.43"
+"@types/react@npm:*, @types/react@npm:^16.9.44":
+  version: 16.9.44
+  resolution: "@types/react@npm:16.9.44"
   dependencies:
     "@types/prop-types": "*"
-    csstype: ^2.2.0
-  checksum: b9d4491463ab013e0752bf6f99bd578f91504f74dfd1ebd7fbceebbdffe89762b040494a78403e249bb72d1645d2784f844890e7b1acdb3634432533ff9732fb
+    csstype: ^3.0.2
+  checksum: a0c0ff7710e148434d926584b4b83632d503cd680a939e92d7e13a4b49c847daa54fdb189ffdae406cf189ee3a59cf12750d3ed90630de359fe0e7bde538ae36
   languageName: node
   linkType: hard
 
@@ -2267,15 +2267,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/styled-components@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "@types/styled-components@npm:5.1.1"
+"@types/styled-components@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "@types/styled-components@npm:5.1.2"
   dependencies:
     "@types/hoist-non-react-statics": "*"
     "@types/react": "*"
     "@types/react-native": "*"
-    csstype: ^2.2.0
-  checksum: 0195ea769e32c0acbd69e3b05aee129127797ea0fd67690aac4b055ecc26760b978428570b9d07c4934f0dbeab280f29bccd285e2956511bb371f079be73df9d
+    csstype: ^3.0.2
+  checksum: 78c5361f353d947cd1bbd22450784ea724cd33b6d685b7ee49de06706ab2972660954255ebe5be7ce5edf0553bb1cc7a49fa876a2c13eef7f2f616142064f315
   languageName: node
   linkType: hard
 
@@ -2678,9 +2678,9 @@ __metadata:
   linkType: hard
 
 "abab@npm:^2.0.0":
-  version: 2.0.3
-  resolution: "abab@npm:2.0.3"
-  checksum: 07bd561e87dba729824956cdcd02b19f31e2ed91385e3b808ae9d9abae9b3a4394530d87453103da4bd36053dd456f9630e15c0b77b95a0f19449183d44a8ee9
+  version: 2.0.4
+  resolution: "abab@npm:2.0.4"
+  checksum: 764470a74d3cdf4abd76cae594106cdeb557911f133c3b5e558e2b2c8a2a081aa60b614e04491df01c38920f99c89f85bfe406115a749e7552f1b08bf3ed6a6b
   languageName: node
   linkType: hard
 
@@ -2746,11 +2746,11 @@ __metadata:
   linkType: hard
 
 "acorn@npm:^7.1.1":
-  version: 7.3.1
-  resolution: "acorn@npm:7.3.1"
+  version: 7.4.0
+  resolution: "acorn@npm:7.4.0"
   bin:
     acorn: bin/acorn
-  checksum: 3fa70393843c3fd4af691f449563e983e064c5c3f655fd943f5f77fb767257623f8afc0a2454b0037aa0c4dd95374c75a9e0e6c54a5f497fc63e63449ad6327c
+  checksum: a25b12d9e803df49593e983f05abd8084be883df23f78a3ceb49bfb9c453fdc43d51b3ce268b6acd7694c34d9cde1707acb1cdcbc5303bde47bee43ffc131491
   languageName: node
   linkType: hard
 
@@ -5088,10 +5088,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:^2.2.0, csstype@npm:^2.5.5":
+"csstype@npm:^2.5.5":
   version: 2.6.13
   resolution: "csstype@npm:2.6.13"
   checksum: 0a84ef4b068e464039ee4cc79e621a38b4b8b5c683fd12d42dbb810e6457ac454c3c7e578e4d327f958fc563fc03aec0e74b57180abd5804d6e2590ae3cf7086
+  languageName: node
+  linkType: hard
+
+"csstype@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "csstype@npm:3.0.2"
+  checksum: acf2852a3c5f5e1ed84e36526e41584e09353ee57b9bd93bf17f91bd2be60545adaf86c4439b84952d1f596149e06f9da6bb28c1d1ab883c9b2ad68e143e79f4
   languageName: node
   linkType: hard
 
@@ -5604,9 +5611,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.378, electron-to-chromium@npm:^1.3.488":
-  version: 1.3.515
-  resolution: "electron-to-chromium@npm:1.3.515"
-  checksum: d5294cfe87e53ea1914e8b6713aabf7e9bf9f7b23ff98c04d620151bcb25c8691adaca34ca71020bd7f0278c73b57d6d164771c57d557b3d6ddb21220f80eaa0
+  version: 1.3.516
+  resolution: "electron-to-chromium@npm:1.3.516"
+  checksum: 881245a76e1ecb52ee476288bafa2537782e8d7a84351628ca7d155a0c20e52c9f29252307b5b215dbf221bd89b27bf5e09011d2ff4618fc716a72d0c10b60ba
   languageName: node
   linkType: hard
 
@@ -7439,11 +7446,11 @@ fsevents@^1.2.7:
     "@types/jsonwebtoken": ^8.5.0
     "@types/node": ^14.0.27
     "@types/ramda": ^0.27.14
-    "@types/react": ^16.9.43
+    "@types/react": ^16.9.44
     "@types/react-dom": ^16.9.8
     "@types/react-redux": ^7.1.9
     "@types/react-router-dom": ^5.1.5
-    "@types/styled-components": ^5.1.1
+    "@types/styled-components": ^5.1.2
     "@types/webpack-env": ^1.15.2
     "@typescript-eslint/eslint-plugin": ^3.7.1
     cross-env: ^7.0.2
@@ -8178,9 +8185,11 @@ fsevents@^1.2.7:
   linkType: hard
 
 "is-docker@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "is-docker@npm:2.0.0"
-  checksum: 9972935f7d02de00658a0cd604e1dea41c337ec1d207afd7e1fac482fc8490cd84eee0f626f21f4b4d91f299f24a6074b367822a41ff2379412b3cc890481063
+  version: 2.1.0
+  resolution: "is-docker@npm:2.1.0"
+  bin:
+    is-docker: cli.js
+  checksum: 32d56a6f342399372fc916211e3c810bfdfaa1c0916ee679d70c44d75cb68f6e9a28d5e9d756d02c9c134469bea3c1b510254f2080797f57d0b9bfc4530721bb
   languageName: node
   linkType: hard
 
@@ -10641,11 +10650,11 @@ fsevents@^1.2.7:
   linkType: hard
 
 "onetime@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "onetime@npm:5.1.0"
+  version: 5.1.1
+  resolution: "onetime@npm:5.1.1"
   dependencies:
     mimic-fn: ^2.1.0
-  checksum: 1781c3cf88afbdea849f00fc42dbb560fecf27169135326d615aa2781ae9bdd5a59af82b21d9c3ed348424ec097d2b764b15b43b807d099230d7b8803335a482
+  checksum: 0be941a5796c11ed676b468fb54a9f345eda79cbfc8f3abd8cbbe5de7ed05f9e33a198039892898be06b0e2d9616eafd3948b5217b1e33ecb0d1471e232a14a0
   languageName: node
   linkType: hard
 
@@ -14868,9 +14877,9 @@ resolve@1.15.0:
   linkType: hard
 
 "ts-toolbelt@npm:^6.3.3":
-  version: 6.13.36
-  resolution: "ts-toolbelt@npm:6.13.36"
-  checksum: 986ff8da9e088ece9b119cc30fb779c141883a9826b6630152cc1888da38ed3d37b36ec324bac803192d836678f26f8781de462849b0dd7e99bebe064b8e9d01
+  version: 6.13.39
+  resolution: "ts-toolbelt@npm:6.13.39"
+  checksum: 67351ca3af9353e63e4ba1174a40dcaac0a0c0583de6a9211a9851caf251f3b2c616de2f61aeb3cc1c76b2a1e24ddfac0aa5c3e9777de8a4b9e12b6bd82e0fc0
   languageName: node
   linkType: hard
 
