@@ -138,9 +138,9 @@ type MessagesState = Record<string, MessagesStateChannel>;
 
 const initialState: MessagesState = {};
 
-export const fetchChatHistory = createAsyncThunk(
-  'chat/fetchChatHistory',
-  (channel: string) => api.fetchChatHistory(channel),
+export const fetchRecentMessages = createAsyncThunk(
+  'chat/fetchRecentMessages',
+  (channel: string) => api.fetchRecentMessages(channel),
 );
 
 // TODO: write function than adds a user to the users array
@@ -242,7 +242,7 @@ const messagesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchChatHistory.pending, (state, { meta: { arg } }) => {
+    builder.addCase(fetchRecentMessages.pending, (state, { meta: { arg } }) => {
       const channel = arg;
 
       if (!state[channel]) {
@@ -265,7 +265,7 @@ const messagesSlice = createSlice({
     });
 
     builder.addCase(
-      fetchChatHistory.fulfilled,
+      fetchRecentMessages.fulfilled,
       (state, { payload, meta: { arg } }) => {
         const channel = arg;
 
@@ -275,7 +275,7 @@ const messagesSlice = createSlice({
     );
 
     builder.addCase(
-      fetchChatHistory.rejected,
+      fetchRecentMessages.rejected,
       (state, { error, meta: { arg } }) => {
         const channel = arg;
 
@@ -351,7 +351,7 @@ export const recieveMessage = (payload: RecieveMessagePayload): AppThunk => (
   dispatch(recieveMessagesAction(params));
 };
 
-export const addChatHistory = (channel: string): AppThunk => (
+export const addRecentMessages = (channel: string): AppThunk => (
   dispatch,
   getState,
 ) => {

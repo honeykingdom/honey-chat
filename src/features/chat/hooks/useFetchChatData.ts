@@ -27,8 +27,8 @@ import {
   userIdSelector,
 } from 'features/auth/authSelectors';
 import {
-  addChatHistory,
-  fetchChatHistory,
+  addRecentMessages,
+  fetchRecentMessages,
 } from 'features/messages/messagesSlice';
 import {
   fetchTwitchEmotes,
@@ -94,13 +94,13 @@ const useFetchChatData = () => {
 
   useEffect(() => {
     if (isReadyToAddHistory) {
-      dispatch(addChatHistory(currentChannel));
+      dispatch(addRecentMessages(currentChannel));
     }
   }, [dispatch, currentChannel, isReadyToAddHistory]);
 
   useEffect(() => {
     if (!isHistoryAdded && currentChannel) {
-      dispatch(fetchChatHistory(currentChannel));
+      dispatch(fetchRecentMessages(currentChannel));
     }
   }, [dispatch, currentChannel, isHistoryAdded]);
 

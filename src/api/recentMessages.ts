@@ -1,14 +1,14 @@
 import fetchRequest from 'utils/fetchRequest';
 
-export interface ChatHistoryResponse {
+export interface RecentMessagesResponse {
   messages: string[];
   error: null;
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export const fetchChatHistory = (
+export const fetchRecentMessages = (
   channel: string,
-): Promise<ChatHistoryResponse> =>
+): Promise<RecentMessagesResponse> =>
   fetchRequest(
     `https://recent-messages.robotty.de/api/v2/recent-messages/${channel}?clearchatToNotice=true`,
   );
