@@ -95,30 +95,30 @@ export type OwnMessage = {
   tags: twitchIrc.UserStateTags;
 };
 
-type RecieveMessage = {
+type ReceiveMessage = {
   type: 'message';
   message: twitchIrc.MessageEvent;
 };
-type RecieveNotice = {
+type ReceiveNotice = {
   type: 'notice';
   message: twitchIrc.NoticeEvent;
 };
-type RecieveUserNotice = {
+type ReceiveUserNotice = {
   type: 'user-notice';
   message: twitchIrc.UserNoticeEvent;
 };
-type RecieveOwnMessage = {
+type ReceiveOwnMessage = {
   type: 'own-message';
   message: OwnMessage;
 };
 
-type RecieveMessagePayload =
-  | RecieveMessage
-  | RecieveNotice
-  | RecieveUserNotice
-  | RecieveOwnMessage;
+type ReceiveMessagePayload =
+  | ReceiveMessage
+  | ReceiveNotice
+  | ReceiveUserNotice
+  | ReceiveOwnMessage;
 
-type RecieveMessagesActionPayload = {
+type ReceiveMessagesActionPayload = {
   messages: ChatMessage[];
   channel: string;
   type?: 'message' | 'history';
@@ -170,9 +170,9 @@ const messagesSlice = createSlice({
       }
     },
 
-    recieveMessagesAction: (
+    receiveMessagesAction: (
       state,
-      { payload }: PayloadAction<RecieveMessagesActionPayload>,
+      { payload }: PayloadAction<ReceiveMessagesActionPayload>,
     ) => {
       const { messages, channel, type = 'message' } = payload;
 
@@ -290,10 +290,10 @@ export const { clearChat } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
 
-const { recieveMessagesAction } = messagesSlice.actions;
+const { receiveMessagesAction } = messagesSlice.actions;
 
 const normalizePayload = (
-  payload: RecieveMessagePayload,
+  payload: ReceiveMessagePayload,
   state: RootState,
 ): ChatMessage | null => {
   if (payload.type === 'message') {
@@ -315,7 +315,7 @@ const normalizePayload = (
   return assertNever(payload);
 };
 
-export const recieveMessage = (payload: RecieveMessagePayload): AppThunk => (
+export const receiveMessage = (payload: ReceiveMessagePayload): AppThunk => (
   dispatch,
   getState,
 ) => {
@@ -348,7 +348,7 @@ export const recieveMessage = (payload: RecieveMessagePayload): AppThunk => (
 
   const params = { messages: [message], channel: message.channel };
 
-  dispatch(recieveMessagesAction(params));
+  dispatch(receiveMessagesAction(params));
 };
 
 export const addRecentMessages = (channel: string): AppThunk => (
@@ -364,5 +364,5 @@ export const addRecentMessages = (channel: string): AppThunk => (
 
   const messages = normalizeHistoryMessages(slicedRawHistory, state);
 
-  dispatch(recieveMessagesAction({ messages, channel, type: 'history' }));
+  dispatch(receiveMessagesAction({ messages, channel, type: 'history' }));
 };

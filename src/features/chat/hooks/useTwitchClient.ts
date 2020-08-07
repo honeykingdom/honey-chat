@@ -10,7 +10,7 @@ import {
   updateUserParams,
   updateRoomParams,
 } from 'features/chat/chatSlice';
-import { recieveMessage, clearChat } from 'features/messages/messagesSlice';
+import { receiveMessage, clearChat } from 'features/messages/messagesSlice';
 import { invalidateAuth } from 'features/auth/authSlice';
 import {
   currentChannelSelector,
@@ -52,7 +52,7 @@ const useTwitchClient = () => {
         dispatch(updateRoomParams(data));
 
       const handleMessage = (message: twitchIrc.MessageEvent) => {
-        dispatch(recieveMessage({ type: 'message', message }));
+        dispatch(receiveMessage({ type: 'message', message }));
       };
 
       const handleNotice = (message: twitchIrc.NoticeEvent) => {
@@ -67,11 +67,11 @@ const useTwitchClient = () => {
           return;
         }
 
-        dispatch(recieveMessage({ type: 'notice', message }));
+        dispatch(receiveMessage({ type: 'notice', message }));
       };
 
       const handleUserNotice = (message: twitchIrc.UserNoticeEvent) =>
-        dispatch(recieveMessage({ type: 'user-notice', message }));
+        dispatch(receiveMessage({ type: 'user-notice', message }));
 
       const handleClearChat = (data: twitchIrc.ClearChatEvent) => {
         if (!data.tags.targetUserId) return;
@@ -156,7 +156,7 @@ const useTwitchClient = () => {
           };
 
           dispatch(
-            recieveMessage({ type: 'own-message', message: ownMessage }),
+            receiveMessage({ type: 'own-message', message: ownMessage }),
           );
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
