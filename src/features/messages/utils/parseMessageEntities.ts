@@ -10,14 +10,13 @@ const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
 const linkRegex = urlRegex({ strict: false });
 
 const normalizeEmbeddedEmotes = (embeddedEmotes: twitchIrc.Emotes) =>
-  Object.entries(embeddedEmotes).reduce((result, [key, items]) => {
-    const id = Number.parseInt(key, 10);
-
-    return {
+  Object.entries(embeddedEmotes).reduce<Record<string, string>>(
+    (result, [key, items]) => ({
       ...result,
-      ...items.reduce((acc, { start }) => ({ ...acc, [start]: id }), {}),
-    };
-  }, {} as Record<string, number>);
+      ...items.reduce((acc, { start }) => ({ ...acc, [start]: key }), {}),
+    }),
+    {},
+  );
 
 const findEntity = (
   word: string,
