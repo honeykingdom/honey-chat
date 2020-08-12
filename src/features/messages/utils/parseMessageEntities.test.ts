@@ -39,6 +39,14 @@ describe('parse message entities', () => {
       ' hey ',
       findBttvEmote('sumSmash'),
     ]);
+
+    expect(
+      parseMessageEntities('cakeMugi1_SG', emotes, {
+        '153301_SG': [{ start: 0, end: 11 }],
+      }),
+    ).toEqual([
+      htmlEntity.createTwitchEmote({ id: '153301_SG', code: 'cakeMugi1_SG' }),
+    ]);
   });
 
   it('should format emotes inside onw messages', () => {
