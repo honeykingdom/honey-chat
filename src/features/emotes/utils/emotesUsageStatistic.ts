@@ -13,9 +13,9 @@ type AUsageItem = {
   uses: number;
 };
 
-type UsageItemTwitchFfz = AUsageItem & {
-  type: 'twitch-emote' | 'ffz-emote';
-  id: number;
+type UsageItemTwitch = AUsageItem & {
+  type: 'twitch-emote';
+  id: string;
 };
 
 type UsageItemBttv = AUsageItem & {
@@ -23,7 +23,12 @@ type UsageItemBttv = AUsageItem & {
   id: string;
 };
 
-type UsageItem = UsageItemTwitchFfz | UsageItemBttv;
+type UsageItemFfz = AUsageItem & {
+  type: 'ffz-emote';
+  id: number;
+};
+
+type UsageItem = UsageItemTwitch | UsageItemBttv | UsageItemFfz;
 
 type EmotesUsageStatistic = Record<Type, Record<string, UsageItem>>;
 
