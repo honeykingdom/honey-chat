@@ -16,8 +16,14 @@ import {
 import findEmote from 'features/emotes/utils/findEmote';
 
 export const emotes = {
-  twitchGlobal: R.pipe(parseTwitchEmotes, R.pick(['0']))(twitchEmotes),
-  twitchUser: R.pipe(parseTwitchEmotes, R.omit(['0']))(twitchEmotes),
+  twitchGlobal: R.pipe(
+    parseTwitchEmotes,
+    R.pick(['0']),
+  )((twitchEmotes as unknown) as api.TwitchEmotesResponse),
+  twitchUser: R.pipe(
+    parseTwitchEmotes,
+    R.omit(['0']),
+  )((twitchEmotes as unknown) as api.TwitchEmotesResponse),
   bttvGlobal: parseBttvGlobalEmotes(bttvGlobal as api.BttvGlobalEmotesResponse),
   bttvChannel: parseBttvChannelEmotes(
     bttvChannel as api.BttvChannelEmotesResponse,
