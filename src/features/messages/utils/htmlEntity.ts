@@ -7,7 +7,7 @@ import { TWITCH_EMOTES_CDN, BTTV_EMOTES_CDN } from 'utils/constants';
 
 export type TwitchEmote = {
   type: 'twitch-emote';
-  id: number;
+  id: string;
   alt: string;
   src: string;
   srcSet: string;
@@ -80,7 +80,7 @@ export const createTwitchEmote = ({
   code,
 }: api.TwitchEmote): TwitchEmote => ({
   type: 'twitch-emote',
-  id,
+  id: String(id),
   alt: regexEmotesMap[code] || code,
   src: `${TWITCH_EMOTES_CDN}/${id}/1.0`,
   srcSet: `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`,

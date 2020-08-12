@@ -9,12 +9,13 @@ import emojisMap from 'features/emotes/emojisMap.json';
 // by id
 
 const findTwitchEmoteByIdInSets = (
-  id: number,
+  id: number | string,
   sets: Record<string, api.TwitchEmote[]>,
 ) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
-    const result = R.find(R.propEq('id', id), set);
+    // eslint-disable-next-line eqeqeq
+    const result = R.find((emote) => emote.id == id, set);
 
     if (result) return htmlEntity.createTwitchEmote(result);
   }
@@ -23,7 +24,7 @@ const findTwitchEmoteByIdInSets = (
 };
 
 const findTwitchEmoteById = (
-  id: number,
+  id: number | string,
   { twitchGlobal, twitchUser }: NonNullable<StateEmotes>,
 ) =>
   findTwitchEmoteByIdInSets(id, twitchGlobal) ||
