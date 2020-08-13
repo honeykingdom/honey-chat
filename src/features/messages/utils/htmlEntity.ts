@@ -75,10 +75,12 @@ export const getFfzSrcSet = R.pipe<any, [string, string][], string[], string>(
   R.join(', '),
 );
 
+type CreateTwitchEmoteParams = api.TwitchEmote | { id: string; code: string };
+
 export const createTwitchEmote = ({
   id,
   code,
-}: api.TwitchEmote): TwitchEmote => ({
+}: CreateTwitchEmoteParams): TwitchEmote => ({
   type: 'twitch-emote',
   id: String(id),
   alt: regexEmotesMap[code] || code,
