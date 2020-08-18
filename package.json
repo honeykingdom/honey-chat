@@ -31,9 +31,9 @@
   },
   "devDependencies": {
     "@types/howler": "^2.2.1",
-    "@types/jest": "^26.0.9",
+    "@types/jest": "^26.0.10",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/node": "^14.0.27",
+    "@types/node": "^14.6.0",
     "@types/ramda": "^0.27.14",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
@@ -41,7 +41,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
     "@types/webpack-env": "^1.15.2",
-    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/eslint-plugin": "^3.9.1",
     "cross-env": "^7.0.2",
     "emoji-unicode": "^2.0.1",
     "eslint-config-airbnb-typescript": "^9.0.0",
@@ -60,8 +60,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build",
+    "deploy": "cross-env yarn build && gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -107,5 +106,11 @@
       "last 1 Firefox version",
       "last 1 Safari version"
     ]
+  },
+  "resolutions": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/jest": "latest",
+    "redux": "latest"
   }
 }
