@@ -12,6 +12,7 @@ import {
 } from 'features/chat/utils/suggestions';
 import getEmotesByText from 'features/emotes/utils/getEmotesByText';
 
+import { userLoginSelector } from 'features/auth/authSelectors';
 import {
   usersSelector,
   recentUserMessagesSelector,
@@ -27,6 +28,7 @@ const useChatInput = (
   const [suggestions, setSuggestions] = useSetState(suggestionsInitialState);
   const [recentUserMessagesIndex, setRecentUserMessagesIndex] = useState(-1);
 
+  const userLogin = useSelector(userLoginSelector);
   const emotes = useSelector(emotesSelector);
   const users = useSelector(usersSelector);
   const currentChannel = useSelector(currentChannelSelector);
@@ -78,6 +80,7 @@ const useChatInput = (
         const items = getUsersByBeginText(
           beginText,
           d.users,
+          userLogin,
           SUGGESTION_TYPES.users.limit,
         );
 
@@ -119,7 +122,7 @@ const useChatInput = (
         d.setSuggestions(suggestionsInitialState);
       }
     },
-    [deps],
+    [userLogin],
   );
 
   const handleKeyUp = useCallback(
