@@ -15,9 +15,8 @@ const getUsersByBeginText = (
     const nameLower = name.toLowerCase();
 
     if (
-      beginTextLower === '' ||
-      (nameLower.startsWith(beginTextLower) &&
-        nameLower !== currentUserLoginLower)
+      (beginTextLower === '' || nameLower.startsWith(beginTextLower)) &&
+      nameLower !== currentUserLoginLower
     ) {
       result.push(name);
     }
