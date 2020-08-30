@@ -11,7 +11,10 @@ import type {
 } from 'features/messages/messagesSlice';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import { userLoginSelector } from 'features/auth/authSelectors';
-import { isShowTimestampsSelector } from 'features/options/optionsSelectors';
+import {
+  isShowTimestampsSelector,
+  isTimeFormat24HoursSelector,
+} from 'features/options/optionsSelectors';
 
 type MessageRootProps = {
   $isAction: boolean;
@@ -243,6 +246,7 @@ const Message = ({
 
   const userLogin = useSelector(userLoginSelector);
   const isShowTimestamps = useSelector(isShowTimestampsSelector);
+  const isTimeFormat24Hours = useSelector(isTimeFormat24HoursSelector);
 
   const handleNameRightClick = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
@@ -251,6 +255,7 @@ const Message = ({
     e.preventDefault();
   };
 
+  const timeFormat = isTimeFormat24Hours ? 'H:mm' : 'h:mm';
   const newColor = color ? calculateColor(color) : '';
 
   return (
@@ -263,7 +268,7 @@ const Message = ({
       $color={newColor}
     >
       {isShowTimestamps && (
-        <Timestamp>{format('h:mm', new Date(timestamp))}</Timestamp>
+        <Timestamp>{format(timeFormat, new Date(timestamp))}</Timestamp>
       )}
       {badges.length > 0 && renderBadges(badges)}
       <Name $color={newColor} onContextMenu={handleNameRightClick}>
