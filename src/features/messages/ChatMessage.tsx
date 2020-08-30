@@ -8,18 +8,14 @@ import UserNotice from 'features/messages/UserNotice';
 
 type Props = {
   message: ChatMessageType;
-  userLogin: string | null;
   isEven: boolean;
-  isShowTimestamps: boolean;
   // onNameClick: (name: string) => void;
   onNameRightClick: (name: string) => void;
 };
 
 const ChatMessage = ({
   message,
-  userLogin,
   isEven,
-  isShowTimestamps,
   // onNameClick,
   onNameRightClick,
 }: Props) => {
@@ -27,9 +23,7 @@ const ChatMessage = ({
     return (
       <Message
         message={message}
-        userLogin={userLogin}
         isEven={isEven}
-        isShowTimestamps={isShowTimestamps}
         // onNameClick={onNameClick}
         onNameRightClick={onNameRightClick}
       />

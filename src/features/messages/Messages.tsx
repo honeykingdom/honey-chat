@@ -10,11 +10,7 @@ import {
   messagesSelector,
   isEvenSelector,
 } from 'features/messages/messagesSelectors';
-import {
-  isShowTimestampsSelector,
-  isSplitChatSelector,
-} from 'features/options/optionsSelectors';
-import { userLoginSelector } from 'features/auth/authSelectors';
+import { isSplitChatSelector } from 'features/options/optionsSelectors';
 
 const MORE_MESSAGES_OFFSET = 100;
 
@@ -53,10 +49,8 @@ const Messages = ({ onNameRightClick }: Props) => {
   ] = useState(false);
 
   const messages = useSelector(messagesSelector);
-  const userLogin = useSelector(userLoginSelector);
 
   const isEven = useSelector(isEvenSelector);
-  const isShowTimestamps = useSelector(isShowTimestampsSelector);
   const isSplitChat = useSelector(isSplitChatSelector);
 
   const handleScrollUpdate = ({
@@ -97,9 +91,7 @@ const Messages = ({ onNameRightClick }: Props) => {
           <ChatMessage
             key={message.id}
             message={message}
-            userLogin={userLogin}
             isEven={getIsEven(key)}
-            isShowTimestamps={isShowTimestamps}
             onNameRightClick={onNameRightClick}
           />
         ))}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format } from 'date-fns/fp';
+import { useSelector } from 'react-redux';
 
 import { calculateColor } from 'utils/colors';
 import MessageCard from 'features/messageCards/MessageCard';
@@ -9,6 +10,8 @@ import type {
   MessageEntity,
 } from 'features/messages/messagesSlice';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import { userLoginSelector } from 'features/auth/authSelectors';
+import { isShowTimestampsSelector } from 'features/options/optionsSelectors';
 
 type MessageRootProps = {
   $isAction: boolean;
@@ -215,9 +218,7 @@ const renderBadges = (badges: htmlEntity.Badge[]) =>
 
 type Props = {
   message: MessageType;
-  userLogin: string | null;
   isEven: boolean;
-  isShowTimestamps: boolean;
   onNameRightClick: (name: string) => void;
 };
 
@@ -234,13 +235,14 @@ const Message = ({
     isDeleted,
     isHighlighted,
   },
-  userLogin,
   isEven,
-  isShowTimestamps,
   // onNameClick,
   onNameRightClick,
 }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
+
+  const userLogin = useSelector(userLoginSelector);
+  const isShowTimestamps = useSelector(isShowTimestampsSelector);
 
   const handleNameRightClick = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
