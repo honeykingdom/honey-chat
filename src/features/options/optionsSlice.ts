@@ -9,6 +9,7 @@ import {
 
 type OptionsState = {
   showTimestamps: boolean;
+  timeFormat24Hours: boolean;
   splitChat: boolean;
   blacklistKeywords: string;
   highlightKeywords: string;
@@ -25,6 +26,7 @@ type ChangeOption = {
 
 export const initialState: OptionsState = {
   showTimestamps: false,
+  timeFormat24Hours: false,
   splitChat: true,
   blacklistKeywords: '',
   highlightKeywords: '',

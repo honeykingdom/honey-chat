@@ -28,6 +28,14 @@ export const optionsSelector = (state: RootState): OptionCategories[] => [
       },
       {
         type: 'switch',
+        id: 'time-format-24-hours',
+        name: 'timeFormat24Hours',
+        title: 'Time Format: 24 Hours',
+        description: '',
+        value: state.options.timeFormat24Hours,
+      },
+      {
+        type: 'switch',
         id: 'split-chat',
         name: 'splitChat',
         title: 'Split Chat',
@@ -103,3 +111,6 @@ export const isShowTwitchCardsSelector = (state: RootState) =>
 
 export const isShowYoutubeCardsSelector = (state: RootState) =>
   state.options.showYoutubeCards;
+
+export const isTimeFormat24HoursSelector = (state: RootState) =>
+  state.options.timeFormat24Hours;
