@@ -3,7 +3,7 @@
 
 __metadata:
   version: 4
-  cacheKey: 5
+  cacheKey: 6
 
 "@babel/code-frame@npm:7.8.3":
   version: 7.8.3
@@ -2339,11 +2339,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^3.10.0":
-  version: 3.10.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:3.10.0"
+"@typescript-eslint/eslint-plugin@npm:^3.10.1":
+  version: 3.10.1
+  resolution: "@typescript-eslint/eslint-plugin@npm:3.10.1"
   dependencies:
-    "@typescript-eslint/experimental-utils": 3.10.0
+    "@typescript-eslint/experimental-utils": 3.10.1
     debug: ^4.1.1
     functional-red-black-tree: ^1.0.1
     regexpp: ^3.0.0
@@ -2352,11 +2352,10 @@ __metadata:
   peerDependencies:
     "@typescript-eslint/parser": ^3.0.0
     eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
-    typescript: "*"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 1389708d279d3f3ec4455570f5f5b01e012eb0195f3c8b9e9e797654c6269f9bbe7b2587fce25b8e3e1d24a946022fded3eadb3a933ec9947c096819a128b38f
+  checksum: c50fefc3dfdc5ed6a6bbeb589a9e30d8df2329aac1a6b4a54b7f405c98a3262db34a7d7e6108a3eb67b90b3fdcd87724143be3a5ecf95c6f3e5c432795fdac87
   languageName: node
   linkType: hard
 
@@ -2374,18 +2373,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:3.10.0":
-  version: 3.10.0
-  resolution: "@typescript-eslint/experimental-utils@npm:3.10.0"
+"@typescript-eslint/experimental-utils@npm:3.10.1":
+  version: 3.10.1
+  resolution: "@typescript-eslint/experimental-utils@npm:3.10.1"
   dependencies:
     "@types/json-schema": ^7.0.3
-    "@typescript-eslint/types": 3.10.0
-    "@typescript-eslint/typescript-estree": 3.10.0
+    "@typescript-eslint/types": 3.10.1
+    "@typescript-eslint/typescript-estree": 3.10.1
     eslint-scope: ^5.0.0
     eslint-utils: ^2.0.0
   peerDependencies:
     eslint: "*"
-  checksum: 7c302616de25a05d20872bbc8a144e5e39fff0999b5edfeea61b6723e7832905755a3115936e08507b73ea7d6ed637b45abe2a0d3aaa30d885454a5048c30827
+  checksum: b1be2620f017cc325a36903c946b0828c9857e17410083e6d3396c48121ca6e4b8c30475426b39895ac253b8ffd0b08cb10e9c6786c2237ac014a37aac4b6c7f
   languageName: node
   linkType: hard
 
@@ -2441,10 +2440,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:3.10.0":
-  version: 3.10.0
-  resolution: "@typescript-eslint/types@npm:3.10.0"
-  checksum: 81b5f4df8a7bd3981c28284b5c5ebf31dfa2861c06e1a47d988614adfadd47ee0addccb4a38a3569b132a96ff661afa9d294e194162ca0a245da36e1f3a0f589
+"@typescript-eslint/types@npm:3.10.1":
+  version: 3.10.1
+  resolution: "@typescript-eslint/types@npm:3.10.1"
+  checksum: cc075f8da439ae50a09da950532a8a369855e937e4502cd859829f6dab549e197a2ff2765a193b925e8caa3e16fc3f52bc3d53af0c8cf667c17b0424227055c4
   languageName: node
   linkType: hard
 
@@ -2475,24 +2474,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/typescript-estree@npm:3.10.0":
-  version: 3.10.0
-  resolution: "@typescript-eslint/typescript-estree@npm:3.10.0"
+"@typescript-eslint/typescript-estree@npm:3.10.1":
+  version: 3.10.1
+  resolution: "@typescript-eslint/typescript-estree@npm:3.10.1"
   dependencies:
-    "@typescript-eslint/types": 3.10.0
-    "@typescript-eslint/visitor-keys": 3.10.0
+    "@typescript-eslint/types": 3.10.1
+    "@typescript-eslint/visitor-keys": 3.10.1
     debug: ^4.1.1
     glob: ^7.1.6
     is-glob: ^4.0.1
     lodash: ^4.17.15
     semver: ^7.3.2
     tsutils: ^3.17.1
-  peerDependencies:
-    typescript: "*"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 6ec96d72f9d8818c09edad68515a049584122ffa39b5cd911249ae312e93424dde4403f2a88b05b1b6057e109b53a4cad20b13a1054dc1bc832d226a4283b78a
+  checksum: c048aa8b80129e0672ba57775072f1d4d9ea1216dee8fd23d224b9064dfebe48b12c1eb8efd823420c35598c423bddd2ec92b49d8c3f04860b91822f104e079f
   languageName: node
   linkType: hard
 
@@ -2517,12 +2514,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/visitor-keys@npm:3.10.0":
-  version: 3.10.0
-  resolution: "@typescript-eslint/visitor-keys@npm:3.10.0"
+"@typescript-eslint/visitor-keys@npm:3.10.1":
+  version: 3.10.1
+  resolution: "@typescript-eslint/visitor-keys@npm:3.10.1"
   dependencies:
     eslint-visitor-keys: ^1.1.0
-  checksum: dfd1c859d33bef9c8107f01a62f79708cacd25effda7645969faeea78f863237e1a7b30b04ac9d62b264dc7db7271c413af011abb64c0df9046838d01645a3fb
+  checksum: 58890dc003211e47caf05a1ab19cf6d3945d0ee7267ef09bdcf0ff53514a8b93ed778ccf52ae14538fc4e9a03897374efd6e359f6483e8e2f76bb495bb874379
   languageName: node
   linkType: hard
 
@@ -5197,10 +5194,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.15.0":
-  version: 2.15.0
-  resolution: "date-fns@npm:2.15.0"
-  checksum: 045c172823f361aa466338a2d2670629b2639ad33da22d5f4012d97e2726e92d8fc617a0d6c815a11086a0e6d2226192c2191c4d5c0d898c5a978794f21007cb
+"date-fns@npm:^2.16.0":
+  version: 2.16.0
+  resolution: "date-fns@npm:2.16.0"
+  checksum: af66825d50b5d459366edf215fa521a899d421164342490a5f1fbe6b956c022ffc7b4eab42227dbf0f150f450b7f58db2f42010e554703be2edca72fe84be165
   languageName: node
   linkType: hard
 
@@ -7047,20 +7044,20 @@ fsevents@^1.2.7:
 
 "fsevents@patch:fsevents@2.1.2#builtin<compat/fsevents>, fsevents@patch:fsevents@~2.1.2#builtin<compat/fsevents>":
   version: 2.1.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.1.2#builtin<compat/fsevents>::version=2.1.2&hash=495457"
+  resolution: "fsevents@patch:fsevents@npm%3A2.1.2#builtin<compat/fsevents>::version=2.1.2&hash=87eb42"
   dependencies:
     node-gyp: latest
-  checksum: 1d1501fde92a2c1ff0a134fe2db97a10916ed83321c8604998441a2cab4f5343040cd60ba64a6a06e3e321778139178c4b4a565eaa05b9cf7e16b511cdf9dcab
+  checksum: 28fbb58d43f2949e9f7097b460bf594efc6cba5b4d4326158de82a116b01a1c059efee445b1c60b85acba408087e22d1e23a0595358d5d538ceb6a35bf5ae16a
   languageName: node
   linkType: hard
 
 "fsevents@patch:fsevents@^1.2.7#builtin<compat/fsevents>":
   version: 1.2.13
-  resolution: "fsevents@patch:fsevents@npm%3A1.2.13#builtin<compat/fsevents>::version=1.2.13&hash=495457"
+  resolution: "fsevents@patch:fsevents@npm%3A1.2.13#builtin<compat/fsevents>::version=1.2.13&hash=87eb42"
   dependencies:
     bindings: ^1.5.0
     nan: ^2.12.1
-  checksum: 508a7e7e1e365236a7a0478392827145ba05c0181b1928b73b20c1a5212d15f6529735db897d617d7b0b051248c5720160f74c113bd727fc02de4f6cf885e1ff
+  checksum: 31c62373556f061f4b4c52ff61c91bc9080243ea074a38a81cf12c1f2c9098da731ea3d39705c805b738427e4284af6b8151efe65ce9ca6b11378d43f36db2c4
   languageName: node
   linkType: hard
 
@@ -7488,17 +7485,17 @@ fsevents@^1.2.7:
     "@types/howler": ^2.2.1
     "@types/jest": ^26.0.10
     "@types/jsonwebtoken": ^8.5.0
-    "@types/node": ^14.6.0
+    "@types/node": ^14.6.2
     "@types/ramda": ^0.27.14
-    "@types/react": ^16.9.46
+    "@types/react": ^16.9.48
     "@types/react-dom": ^16.9.8
     "@types/react-redux": ^7.1.9
     "@types/react-router-dom": ^5.1.5
     "@types/styled-components": ^5.1.2
     "@types/webpack-env": ^1.15.2
-    "@typescript-eslint/eslint-plugin": ^3.10.0
+    "@typescript-eslint/eslint-plugin": ^3.10.1
     cross-env: ^7.0.2
-    date-fns: ^2.15.0
+    date-fns: ^2.16.0
     emoji-unicode: ^2.0.1
     emojilib: ^2.4.0
     eslint-config-airbnb-typescript: ^9.0.0
@@ -7511,7 +7508,7 @@ fsevents@^1.2.7:
     howler: ^2.2.0
     jest-localstorage-mock: ^2.4.3
     jsonwebtoken: ^8.5.1
-    prettier: ^2.1.0
+    prettier: ^2.1.1
     ramda: ^0.27.1
     react: ^16.13.1
     react-cool-onclickoutside: ^1.5.5
@@ -7527,7 +7524,7 @@ fsevents@^1.2.7:
     source-map-explorer: ^2.5.0
     styled-components: ^5.1.1
     tekko: ^2.4.0
-    ts-jest: ^26.2.0
+    ts-jest: ^26.3.0
     ts-node: ^9.0.0
     twitch-simple-irc: "github:honeykingdom/twitch-simple-irc"
     typescript: ^4.0.2
@@ -12081,12 +12078,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "prettier@npm:2.1.0"
+"prettier@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "prettier@npm:2.1.1"
   bin:
     prettier: bin-prettier.js
-  checksum: f955d380d2892284c28bbfe32b1601cfcd7a24d8b310832937773b9e733f624e38ff70cbafee80e9553bdb3c55783d019163667bf9a69df4e6f7c2acdcf54c06
+  checksum: 420a807cda2d482388daa42379a7aaa1be629cb71f5792362a971a5ed1c6ff377d2e311818d24e9390a4a8a6eac3fda9ebe6975f2168efec893790c0497d8a93
   languageName: node
   linkType: hard
 
@@ -12499,8 +12496,6 @@ fsevents@^1.2.7:
     react-is: ^16.9.0
   peerDependencies:
     react: ^16.8.3
-    react-dom: "*"
-    react-native: "*"
     redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
   peerDependenciesMeta:
     react-dom:
@@ -14784,9 +14779,9 @@ resolve@1.15.0:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^26.2.0":
-  version: 26.2.0
-  resolution: "ts-jest@npm:26.2.0"
+"ts-jest@npm:^26.3.0":
+  version: 26.3.0
+  resolution: "ts-jest@npm:26.3.0"
   dependencies:
     "@types/jest": 26.x
     bs-logger: 0.x
@@ -14801,10 +14796,10 @@ resolve@1.15.0:
     yargs-parser: 18.x
   peerDependencies:
     jest: ">=26 <27"
-    typescript: ">=3.8 <4.0"
+    typescript: ">=3.8 <5.0"
   bin:
     ts-jest: cli.js
-  checksum: 79dcfa74af1fde6debde030aaf29d27cd46b4a5dbbd556185930a26b370ab5581a580e829c1d9879f51b4679561f966d2a1ada44c977498d4cfbe7f13f570c9e
+  checksum: aa20f07590814fe6c587733cc0278da12e0f6ed08828ed2904671cf29d31b6d1fbb67320221ad2ac7396c369df1ee777bcec7c3dfda0e383968423e78b41bfe5
   languageName: node
   linkType: hard
 
@@ -14909,10 +14904,10 @@ resolve@1.15.0:
 
 "twitch-simple-irc@github:honeykingdom/twitch-simple-irc":
   version: 0.1.0
-  resolution: "twitch-simple-irc@https://github.com/honeykingdom/twitch-simple-irc.git#commit=774e390edc9b5c3fbf73baf749cade68f5a6e612"
+  resolution: "twitch-simple-irc@https://github.com/honeykingdom/twitch-simple-irc.git#commit=7c378b389c7b63a4df32be86401ead700bb103ca"
   dependencies:
     tekko: ^2.4.0
-  checksum: d979c9b8dbafd417c3ec15c47d402041e340714762cbc8d1824aa7f8bb58649f5b70b56e8910fd369571baacc376d2cab6753619698afcbf4316a35a520aa53b
+  checksum: d6ff4d1e141cc03d496e74f3c8b67ccc89f3793a6875b8b494b56b01f1fdfc74ee1ec84e3af5167c803b7928eeaae3b29afd22f441cbb6ba97042f713ea48833
   languageName: node
   linkType: hard
 
