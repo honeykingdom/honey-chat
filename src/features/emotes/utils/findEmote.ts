@@ -6,6 +6,8 @@ import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import type { EmotesByText } from 'features/emotes/utils/getEmotesByText';
 import emojisMap from 'features/emotes/emojisMap.json';
 
+const emojisList = Object.values(emojisMap);
+
 // by id
 
 const findTwitchEmoteByIdInSets = (
@@ -53,7 +55,7 @@ const findFfzEmoteById = (
 };
 
 const findEmojiByChar = (char: string) => {
-  const result = R.find(R.propEq('char', char), Object.values(emojisMap));
+  const result = R.find(R.propEq('char', char), emojisList);
 
   return result ? htmlEntity.createEmoji(result) : null;
 };
@@ -197,7 +199,7 @@ const findEmojisByText = (
   text: string,
   limit: number,
 ) => {
-  for (const emoji of Object.values(emojisMap)) {
+  for (const emoji of emojisList) {
     if (result.begins.length + result.contains.length === limit) return true;
 
     const { short, keywords } = emoji;
