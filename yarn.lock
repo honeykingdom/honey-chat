@@ -2226,12 +2226,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ramda@npm:^0.27.16":
-  version: 0.27.16
-  resolution: "@types/ramda@npm:0.27.16"
+"@types/ramda@npm:^0.27.17":
+  version: 0.27.17
+  resolution: "@types/ramda@npm:0.27.17"
   dependencies:
     ts-toolbelt: ^6.3.3
-  checksum: 371353ecabbc6c714551b8945439f0633f1882129746b972f544c2687de6b3c5b55306b314ad927e06e507a8f545aec1ce0bd65f71de7f30bedd5764bc675499
+  checksum: 15c3edafb4dc2e1faa849ee1430e75bd6bbc292ebafc1bda76027d9d7557ab075883bb47b106dd5b672c230b5fce3b95312eae86f3313887bdd8b0befc9307d4
   languageName: node
   linkType: hard
 
@@ -7531,8 +7531,8 @@ fsevents@^1.2.7:
     "@types/howler": ^2.2.1
     "@types/jest": ^26.0.13
     "@types/jsonwebtoken": ^8.5.0
-    "@types/node": ^14.6.4
-    "@types/ramda": ^0.27.16
+    "@types/node": ^14.10.1
+    "@types/ramda": ^0.27.17
     "@types/react": ^16.9.49
     "@types/react-dom": ^16.9.8
     "@types/react-redux": ^7.1.9
