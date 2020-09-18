@@ -15,7 +15,7 @@ const initialState: BlockedUsersState = {
 
 export const fetchBlockedUsers = createAsyncThunk(
   'chat/fetchBlockedUsers',
-  (userId: string) => api.fetchBlockedUsers(userId),
+  api.fetchBlockedUsers,
 );
 
 const blockedUsers = createSlice({
