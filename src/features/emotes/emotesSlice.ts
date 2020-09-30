@@ -49,12 +49,12 @@ const initialState: EmotesState = {
 
 export const fetchTwitchEmotes = createAsyncThunk(
   'chat/fetchTwitchEmotes',
-  (userId: string) => api.fetchTwitchEmotes(userId),
+  api.fetchTwitchEmotes,
 );
 
 export const fetchBttvGlobalEmotes = createAsyncThunk(
   'chat/fetchBttvGlobalEmotes',
-  () => api.fetchBttvGlobalEmotes(),
+  api.fetchBttvGlobalEmotes,
 );
 
 type FetchBttvChannelEmotesParams = {
@@ -70,7 +70,7 @@ export const fetchBttvChannelEmotes = createAsyncThunk(
 
 export const fetchFfzGlobalEmotes = createAsyncThunk(
   'chat/fetchFfzGlobalEmotes',
-  () => api.fetchFfzGlobalEmotes(),
+  api.fetchFfzGlobalEmotes,
 );
 
 type FetchFfzChannelEmotesParams = {

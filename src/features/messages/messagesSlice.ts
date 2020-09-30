@@ -140,7 +140,7 @@ const initialState: MessagesState = {};
 
 export const fetchRecentMessages = createAsyncThunk(
   'chat/fetchRecentMessages',
-  (channel: string) => api.fetchRecentMessages(channel),
+  api.fetchRecentMessages,
 );
 
 // TODO: write function than adds a user to the users array
