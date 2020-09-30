@@ -176,15 +176,50 @@ describe('parse message entities', () => {
     ]);
   });
 
+  it('should parse emoji length correctly', () => {
+    expect(
+      parseMessageEntities('🧑🦲text Kappa', emotes, {
+        25: [{ start: 7, end: 11 }],
+      }),
+    ).toEqual(['🧑🦲text ', findTwitchEmote('Kappa')]);
+
+    expect(
+      parseMessageEntities('🧑🦱 Kappa', emotes, {
+        25: [{ start: 3, end: 7 }],
+      }),
+    ).toEqual(['🧑🦱 ', findTwitchEmote('Kappa')]);
+
+    expect(
+      parseMessageEntities('🤔 Kappa', emotes, { 25: [{ start: 2, end: 6 }] }),
+    ).toEqual([
+      htmlEntity.createEmoji({ short: 'thinking', unified: '1f914' }),
+      ' ',
+      findTwitchEmote('Kappa'),
+    ]);
+
+    expect(
+      parseMessageEntities('👵🏻 Kappa', emotes, { 25: [{ start: 3, end: 7 }] }),
+    ).toEqual(['👵🏻 ', findTwitchEmote('Kappa')]);
+
+    // TODO: message "👩‍❤️‍💋‍👩 Kappa" doesn't parse correctly
+    // expect(
+    //   parseMessageEntities('👩❤️💋👩 Kappa', emotes, {
+    //     25: [{ start: 6, end: 10 }],
+    //   }),
+    // ).toEqual(['👩❤️💋👩 ', findTwitchEmote('Kappa')]);
+  });
+
   it('should format emotes (twitch, bttv, ffz), emoji, mention and link', () => {
     expect(
       parseMessageEntities(
-        'Hey Kappa KKona KKonaW hello world google.com 🤔 @test, message',
+        'Hey 🤔 Kappa KKona KKonaW hello world google.com @test, message',
         emotes,
-        { '25': [{ start: 4, end: 8 }] },
+        { '25': [{ start: 6, end: 10 }] },
       ),
     ).toEqual([
       'Hey ',
+      htmlEntity.createEmoji({ short: 'thinking', unified: '1f914' }),
+      ' ',
       findTwitchEmote('Kappa'),
       ' ',
       findBttvEmote('KKona'),
@@ -192,8 +227,6 @@ describe('parse message entities', () => {
       findFfzEmote('KKonaW'),
       ' hello world ',
       htmlEntity.createLink('google.com'),
-      ' ',
-      htmlEntity.createEmoji({ short: 'thinking', unified: '1f914' }),
       ' ',
       htmlEntity.createMention('@test', 'test'),
       ', message',
