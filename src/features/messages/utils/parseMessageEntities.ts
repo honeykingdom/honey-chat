@@ -1,13 +1,14 @@
 import urlRegex from 'url-regex';
 import type twitchIrc from 'twitch-simple-irc';
 
+import fancyCount from 'utils/fancyCount';
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import type { MessageEntity } from 'features/messages/messagesSlice';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import findEmote from 'features/emotes/utils/findEmote';
 
-const mentionRegex = /^@([\p{Letter}\p{Number}_]+)/u;
-const linkRegex = urlRegex({ strict: false });
+const MENTION_REGEX = /^(@([\p{Letter}\p{Number}_]+))(.*)/u;
+const LINK_REGEX = urlRegex({ strict: false });
 
 const normalizeEmbeddedEmotes = (embeddedEmotes: twitchIrc.Emotes) =>
   Object.entries(embeddedEmotes).reduce<Record<string, string>>(
@@ -27,7 +28,7 @@ const findEntity = (
   | htmlEntity.BttvEmote
   | htmlEntity.FfzEmote
   | htmlEntity.Emoji
-  | [htmlEntity.Mention, number]
+  | [htmlEntity.Mention, string]
   | htmlEntity.Link
   | null => {
   if (!emotes) return null;
@@ -45,18 +46,15 @@ const findEntity = (
 
   if (emote) return emote;
 
-  const mentionMatch = word.match(mentionRegex);
+  const mentionMatch = word.match(MENTION_REGEX);
 
   if (mentionMatch) {
-    const [text, target] = mentionMatch;
+    const [, text, target, tail] = mentionMatch;
 
-    return [
-      htmlEntity.createMention(text, target.toLowerCase()),
-      word.length - text.length,
-    ] as [htmlEntity.Mention, number];
+    return [htmlEntity.createMention(text, target.toLowerCase()), tail];
   }
 
-  const linkMatch = word.match(linkRegex);
+  const linkMatch = word.match(LINK_REGEX);
 
   if (linkMatch && linkMatch[0].length === word.length) {
     return htmlEntity.createLink(word);
@@ -71,76 +69,60 @@ const parseMessageEntities = (
   embeddedEmotes: twitchIrc.Emotes | null,
   isOwnMessage = false,
 ): MessageEntity[] => {
-  // If the message was sent by the current user, there is no embedded emotes
-  // So we need to parse twitch emotes manually
+  const words = message.split(' ');
 
-  const result = [];
+  const normalizedEmbeddedEmotes = embeddedEmotes
+    ? normalizeEmbeddedEmotes(embeddedEmotes)
+    : {};
+
+  const result: MessageEntity[] = [];
   let offset = 0;
-  // Before that offset all content was added to the result array
-  let arrayOffset = 0;
 
-  // Check every word. From offset to the next space index
-  do {
-    const spaceIndex = message.indexOf(' ', offset + 1);
+  words.forEach((word, i, arr) => {
+    const isLast = arr.length - 1 === i;
+    let entity = null;
 
-    const isStart = offset === 0;
-    const isEnd = spaceIndex === -1;
+    if (
+      !isOwnMessage &&
+      embeddedEmotes &&
+      Object.keys(embeddedEmotes).length > 0
+    ) {
+      const id = normalizedEmbeddedEmotes[offset];
 
-    const startIndex = isStart ? offset : offset + 1;
-    const endIndex = isEnd ? message.length : spaceIndex;
-
-    const word = message.substring(startIndex, endIndex);
-
-    if (word) {
-      let entity = null;
-
-      // Check embedded twitch emotes
-      if (
-        !isOwnMessage &&
-        embeddedEmotes &&
-        Object.keys(embeddedEmotes).length > 0
-      ) {
-        const normalizedEmotes = normalizeEmbeddedEmotes(embeddedEmotes);
-        const id = normalizedEmotes[startIndex];
-
-        if (id) {
-          entity = htmlEntity.createTwitchEmote({ id, code: word });
-        }
-      }
-
-      // Check other entities
-      if (!entity) {
-        entity = findEntity(word, emotes, isOwnMessage);
-      }
-
-      if (entity) {
-        // Push all text before this entity
-        if (arrayOffset !== startIndex) {
-          const textBefore = message.substring(arrayOffset, startIndex);
-          result.push(textBefore);
-        }
-
-        // If entity it's an array it means entity may be not full word
-        // The second element is the difference between word length and entity length
-        if (Array.isArray(entity)) {
-          const [entityObject, difference] = entity;
-          result.push(entityObject);
-          arrayOffset = endIndex - difference;
-        } else {
-          result.push(entity);
-          arrayOffset = endIndex;
-        }
+      if (id) {
+        entity = htmlEntity.createTwitchEmote({ id, code: word });
       }
     }
 
-    // If it's the last word and it wasn't added to the result add it now
-    if (spaceIndex === -1 && arrayOffset !== endIndex) {
-      const textAfter = message.substring(arrayOffset, endIndex);
-      result.push(textAfter);
+    if (!entity) {
+      entity = findEntity(word, emotes, isOwnMessage);
     }
 
-    offset = spaceIndex;
-  } while (offset !== -1);
+    if (entity) {
+      if (Array.isArray(entity)) {
+        const [entityItem, tail] = entity;
+
+        result.push(entityItem);
+        result.push(isLast ? tail : `${tail} `);
+      } else {
+        result.push(entity);
+
+        if (!isLast) {
+          result.push(' ');
+        }
+      }
+    } else {
+      const isLastItemString = typeof result[result.length - 1] === 'string';
+
+      if (isLastItemString) {
+        result[result.length - 1] += isLast ? word : `${word} `;
+      } else {
+        result.push(isLast ? word : `${word} `);
+      }
+    }
+
+    offset += fancyCount(word) + 1;
+  });
 
   return result;
 };
