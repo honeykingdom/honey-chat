@@ -71,8 +71,11 @@ const parseMessageEntities = (
 ): MessageEntity[] => {
   const words = message.split(' ');
 
-  const normalizedEmbeddedEmotes = embeddedEmotes
-    ? normalizeEmbeddedEmotes(embeddedEmotes)
+  const checkEmbeddedEmotes =
+    !isOwnMessage && !!embeddedEmotes && Object.keys(embeddedEmotes).length > 0;
+
+  const normalizedEmbeddedEmotes = checkEmbeddedEmotes
+    ? normalizeEmbeddedEmotes(embeddedEmotes!)
     : {};
 
   const result: MessageEntity[] = [];
@@ -82,11 +85,7 @@ const parseMessageEntities = (
     const isLast = arr.length - 1 === i;
     let entity = null;
 
-    if (
-      !isOwnMessage &&
-      embeddedEmotes &&
-      Object.keys(embeddedEmotes).length > 0
-    ) {
+    if (checkEmbeddedEmotes) {
       const id = normalizedEmbeddedEmotes[offset];
 
       if (id) {
