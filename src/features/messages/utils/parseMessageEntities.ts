@@ -1,7 +1,6 @@
 import urlRegex from 'url-regex';
 import type twitchIrc from 'twitch-simple-irc';
 
-import fancyCount from 'utils/fancyCount';
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import type { MessageEntity } from 'features/messages/messagesSlice';
 import * as htmlEntity from 'features/messages/utils/htmlEntity';
@@ -9,6 +8,18 @@ import findEmote from 'features/emotes/utils/findEmote';
 
 const MENTION_REGEX = /^(@([\p{Letter}\p{Number}_]+))(.*)/u;
 const LINK_REGEX = urlRegex({ strict: false });
+
+// https://discuss.dev.twitch.tv/t/28414/2
+const getCodePointsCount = (string: string) => {
+  let count = 0;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const char of string) {
+    count += 1;
+  }
+
+  return count;
+};
 
 const normalizeEmbeddedEmotes = (embeddedEmotes: twitchIrc.Emotes) =>
   Object.entries(embeddedEmotes).reduce<Record<string, string>>(
@@ -120,7 +131,7 @@ const parseMessageEntities = (
       }
     }
 
-    offset += fancyCount(word) + 1;
+    offset += getCodePointsCount(word) + 1;
   });
 
   return result;
