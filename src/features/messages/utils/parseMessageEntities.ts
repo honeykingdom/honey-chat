@@ -13,7 +13,7 @@ const LINK_REGEX = urlRegex({ strict: false });
 const getCodePointsCount = (string: string) => {
   let count = 0;
 
-  // eslint-disable-next-line no-restricted-syntax
+  // eslint-disable-next-line no-restricted-syntax, @typescript-eslint/no-unused-vars
   for (const char of string) {
     count += 1;
   }
