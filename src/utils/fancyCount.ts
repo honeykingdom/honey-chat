@@ -1,4 +1,4 @@
-// https:// stackoverflow.com/a/54369738/4687416
+// https://stackoverflow.com/a/54369738/4687416
 
 const fancyCount = (text: string) => {
   const joiner = '\u{200D}';
