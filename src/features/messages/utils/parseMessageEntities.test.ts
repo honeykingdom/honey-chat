@@ -201,12 +201,11 @@ describe('parse message entities', () => {
       parseMessageEntities('👵🏻 Kappa', emotes, { 25: [{ start: 3, end: 7 }] }),
     ).toEqual(['👵🏻 ', findTwitchEmote('Kappa')]);
 
-    // TODO: message "👩‍❤️‍💋‍👩 Kappa" doesn't parse correctly
-    // expect(
-    //   parseMessageEntities('👩❤️💋👩 Kappa', emotes, {
-    //     25: [{ start: 6, end: 10 }],
-    //   }),
-    // ).toEqual(['👩❤️💋👩 ', findTwitchEmote('Kappa')]);
+    expect(
+      parseMessageEntities('👩❤️💋👩 Kappa', emotes, {
+        25: [{ start: 6, end: 10 }],
+      }),
+    ).toEqual(['👩❤️💋👩 ', findTwitchEmote('Kappa')]);
   });
 
   it('should format emotes (twitch, bttv, ffz), emoji, mention and link', () => {
