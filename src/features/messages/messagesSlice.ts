@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type twitchIrc from 'twitch-simple-irc';
+import type twitchIrc from '@honeykingdom/twitch-simple-irc';
 
 import * as api from 'api';
 import type { AppThunk } from 'app/store';

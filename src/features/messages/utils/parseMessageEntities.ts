@@ -1,5 +1,5 @@
 import urlRegex from 'url-regex';
-import type twitchIrc from 'twitch-simple-irc';
+import type twitchIrc from '@honeykingdom/twitch-simple-irc';
 
 import type { StateEmotes } from 'features/emotes/emotesSelectors';
 import type { MessageEntity } from 'features/messages/messagesSlice';

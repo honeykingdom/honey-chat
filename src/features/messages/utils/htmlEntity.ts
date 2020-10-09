@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import type twitchIrc from 'twitch-simple-irc';
+import type twitchIrc from '@honeykingdom/twitch-simple-irc';
 
 import * as api from 'api';
 import normalizeHref from 'utils/normalizeHref';

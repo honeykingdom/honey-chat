@@ -1,5 +1,5 @@
 import { nanoid } from '@reduxjs/toolkit';
-import * as twitchIrc from 'twitch-simple-irc';
+import * as twitchIrc from '@honeykingdom/twitch-simple-irc';
 import * as tekko from 'tekko';
 import { Howl } from 'howler';
 

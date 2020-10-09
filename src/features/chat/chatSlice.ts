@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type twitchIrc from 'twitch-simple-irc';
+import type twitchIrc from '@honeykingdom/twitch-simple-irc';
 
 type Params = {
   room: twitchIrc.RoomStateTags | null;

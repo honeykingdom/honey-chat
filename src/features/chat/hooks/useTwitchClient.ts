@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as twitchIrc from 'twitch-simple-irc';
+import * as twitchIrc from '@honeykingdom/twitch-simple-irc';
 import { usePrevious } from 'react-use';
 
 import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';
@@ -61,7 +61,6 @@ const useTwitchClient = () => {
           message.message === 'Login authentication failed'
         ) {
           dispatch(invalidateAuth());
-          client.current.disconnect();
           // eslint-disable-next-line no-param-reassign
           client.current = null;
           return;
@@ -94,7 +93,6 @@ const useTwitchClient = () => {
   useEffect(() => {
     return () => {
       if (clientRef.current) {
-        clientRef.current.disconnect();
         clientRef.current = null;
       }
     };
@@ -112,7 +110,7 @@ const useTwitchClient = () => {
         : null;
 
       (async () => {
-        clientRef.current = new twitchIrc.Client(options);
+        clientRef.current = twitchIrc.Client.create(options);
 
         registerEvents(clientRef);
 
