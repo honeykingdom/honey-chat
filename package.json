@@ -7,6 +7,7 @@
   "private": true,
   "homepage": "https://honeykingdom.github.io/chat",
   "dependencies": {
+    "@honeykingdom/twitch-simple-irc": "^0.1.0",
     "@reduxjs/toolkit": "^1.4.0",
     "date-fns": "^2.16.1",
     "emojilib": "^2.4.0",
@@ -26,7 +27,6 @@
     "redux": "^4.0.5",
     "styled-components": "^5.2.0",
     "tekko": "^2.4.0",
-    "twitch-simple-irc": "github:honeykingdom/twitch-simple-irc",
     "url-regex": "^5.0.0"
   },
   "devDependencies": {
