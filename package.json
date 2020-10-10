@@ -107,11 +107,5 @@
       "last 1 Firefox version",
       "last 1 Safari version"
     ]
-  },
-  "resolutions": {
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/jest": "latest",
-    "redux": "latest"
   }
 }
