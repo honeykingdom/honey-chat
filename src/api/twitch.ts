@@ -109,7 +109,7 @@ interface TwitchClipData {
 
 export interface TwitchClipResponse {
   data: TwitchClipData[];
-  pagination: {};
+  pagination: Record<string, unknown>;
 }
 
 interface TwitchVideoData {
@@ -131,7 +131,7 @@ interface TwitchVideoData {
 
 export interface TwitchVideoResponse {
   data: TwitchVideoData[];
-  pagination: {};
+  pagination: Record<string, unknown>;
 }
 
 export const fetchUser = (userId: string): Promise<TwitchUsersResponse> =>

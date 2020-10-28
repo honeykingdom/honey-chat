@@ -35,7 +35,7 @@ export const parseFfzChannelEmotes: (
 
 export const parseBlockedUsers = R.pipe<
   api.TwitchBlockedUsersResponse,
-  {}[],
+  Record<string, unknown>[],
   string[]
 >(R.prop('blocks'), R.map<any, any>(R.path(['user', 'name'])));
 

@@ -50,7 +50,7 @@ export interface FfzChannelEmotesResponse {
     moderator_badge: null;
     set: number;
     twitch_id: number;
-    user_badges: {};
+    user_badges: Record<string, unknown>;
   };
   sets: Record<string, FfzEmoteSet>;
 }

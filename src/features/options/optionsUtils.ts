@@ -1,6 +1,6 @@
 import { LS_OPTIONS } from 'utils/constants';
 
-export const readOptionsFromLocalStorage = (): object => {
+export const readOptionsFromLocalStorage = (): Record<string, unknown> => {
   try {
     const options = localStorage.getItem(LS_OPTIONS);
     return JSON.parse(options as string) || {};
@@ -9,7 +9,7 @@ export const readOptionsFromLocalStorage = (): object => {
   }
 };
 
-export const writeOptionsToLocalStore = (options: object) => {
+export const writeOptionsToLocalStore = (options: Record<string, unknown>) => {
   localStorage.setItem(
     LS_OPTIONS,
     JSON.stringify({
