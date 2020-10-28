@@ -83,6 +83,15 @@
       "prettier/react",
       "prettier/@typescript-eslint"
     ],
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "paths": [
+            "src"
+          ]
+        }
+      }
+    },
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off"
