@@ -9,10 +9,18 @@ import {
   getUsageStatisticFromEntities,
   getEmotesFromUsageStatistic,
 } from 'features/emotes/utils/emotesUsageStatistic';
+import {
+  BttvEmote,
+  FfzEmote,
+  TwitchEmote,
+} from 'features/messages/utils/htmlEntity';
 
 type ItemType = 'twitch-emote' | 'bttv-emote' | 'ffz-emote';
 
-const mapFindEmote: Record<ItemType, Function> = {
+const mapFindEmote: Record<
+  ItemType,
+  (name: string) => TwitchEmote | BttvEmote | FfzEmote | null
+> = {
   'twitch-emote': findTwitchEmote,
   'bttv-emote': findBttvEmote,
   'ffz-emote': findFfzEmote,
@@ -21,7 +29,7 @@ const mapFindEmote: Record<ItemType, Function> = {
 type UsageParams = [ItemType, string, number, number];
 
 const createUsage = ([type, name, uses, lastUpdatedAt]: UsageParams) => {
-  const emote = mapFindEmote[type](name);
+  const emote = mapFindEmote[type](name)!;
 
   return {
     [emote.id]: {
