@@ -107,29 +107,27 @@ const Options = () => {
     [dispatch],
   );
 
-  const renderProfileCategory = () => {
-    return (
-      <Category>
-        <CategoryHeader>Profile</CategoryHeader>
-        <CategoryItems>
-          <Profile>
-            {userBadgesImages.map(({ alt, label, src, srcSet }, key) => (
-              <Badge
-                // eslint-disable-next-line react/no-array-index-key
-                key={key}
-                alt={alt}
-                aria-label={label}
-                src={src}
-                srcSet={srcSet}
-              />
-            ))}
-            <UserName color={userColor}>{userDisplayName}</UserName>
-            <LogOutButton to="/chat/logout">Log Out</LogOutButton>
-          </Profile>
-        </CategoryItems>
-      </Category>
-    );
-  };
+  const renderProfileCategory = () => (
+    <Category>
+      <CategoryHeader>Profile</CategoryHeader>
+      <CategoryItems>
+        <Profile>
+          {userBadgesImages.map(({ alt, label, src, srcSet }, key) => (
+            <Badge
+              // eslint-disable-next-line react/no-array-index-key
+              key={key}
+              alt={alt}
+              aria-label={label}
+              src={src}
+              srcSet={srcSet}
+            />
+          ))}
+          <UserName color={userColor}>{userDisplayName}</UserName>
+          <LogOutButton to="/chat/logout">Log Out</LogOutButton>
+        </Profile>
+      </CategoryItems>
+    </Category>
+  );
 
   const renderOptionsCategory = useCallback(
     ({ title, items }, key) => (

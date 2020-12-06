@@ -90,13 +90,14 @@ const useTwitchClient = () => {
     [dispatch],
   );
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (clientRef.current) {
         clientRef.current = null;
       }
-    };
-  }, [clientRef]);
+    },
+    [clientRef],
+  );
 
   useEffect(() => {
     if (!currentChannel || !isAuthReady) return;
