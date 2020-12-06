@@ -126,6 +126,7 @@ const useChatInput = (
   );
 
   const handleKeyUp = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {},
     [],
   );
