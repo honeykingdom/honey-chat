@@ -70,12 +70,6 @@ describe('emotes usage statistic', () => {
     expect(readEmotesUsageStatistic()).toEqual(result);
   });
 
-  it('should not write empty statistic', () => {
-    writeEmotesUsageStatistic(['hello world']);
-
-    expect(localStorage.setItem).not.toHaveBeenCalled();
-  });
-
   it('should write statistic', () => {
     writeEmotesUsageStatistic(
       parseMessageEntities(
