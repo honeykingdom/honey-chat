@@ -86,7 +86,7 @@ const parseMessageEntities = (
     !isOwnMessage && !!embeddedEmotes && Object.keys(embeddedEmotes).length > 0;
 
   const normalizedEmbeddedEmotes = checkEmbeddedEmotes
-    ? normalizeEmbeddedEmotes(embeddedEmotes!)
+    ? normalizeEmbeddedEmotes(embeddedEmotes as twitchIrc.Emotes)
     : {};
 
   const result: MessageEntity[] = [];
