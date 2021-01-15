@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/chat/static/js/main.ee8e0e2e.chunk.js",
-    "main.js.map": "/chat/static/js/main.ee8e0e2e.chunk.js.map",
+    "main.js": "/chat/static/js/main.4dbcd114.chunk.js",
+    "main.js.map": "/chat/static/js/main.4dbcd114.chunk.js.map",
     "runtime-main.js": "/chat/static/js/runtime-main.8dd932af.js",
     "runtime-main.js.map": "/chat/static/js/runtime-main.8dd932af.js.map",
-    "static/js/2.2e71eb74.chunk.js": "/chat/static/js/2.2e71eb74.chunk.js",
-    "static/js/2.2e71eb74.chunk.js.map": "/chat/static/js/2.2e71eb74.chunk.js.map",
+    "static/js/2.d307b126.chunk.js": "/chat/static/js/2.d307b126.chunk.js",
+    "static/js/2.d307b126.chunk.js.map": "/chat/static/js/2.d307b126.chunk.js.map",
     "index.html": "/chat/index.html",
-    "static/js/2.2e71eb74.chunk.js.LICENSE.txt": "/chat/static/js/2.2e71eb74.chunk.js.LICENSE.txt",
+    "static/js/2.d307b126.chunk.js.LICENSE.txt": "/chat/static/js/2.d307b126.chunk.js.LICENSE.txt",
     "static/media/close.e62b63c9.svg": "/chat/static/media/close.e62b63c9.svg",
     "static/media/gears.f43541a0.svg": "/chat/static/media/gears.f43541a0.svg",
     "static/media/search.46b92e63.svg": "/chat/static/media/search.46b92e63.svg",
@@ -17,7 +17,7 @@
   },
   "entrypoints": [
     "static/js/runtime-main.8dd932af.js",
-    "static/js/2.2e71eb74.chunk.js",
-    "static/js/main.ee8e0e2e.chunk.js"
+    "static/js/2.d307b126.chunk.js",
+    "static/js/main.4dbcd114.chunk.js"
   ]
 }
