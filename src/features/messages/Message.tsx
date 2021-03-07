@@ -172,7 +172,12 @@ const renderMessageArray = (messageLogin: string, userLogin: string | null) => (
   ) {
     return (
       <EmoteWrapper key={key} data-emote-id={item.id}>
-        <Emote src={item.src} srcSet={item.srcSet} alt={item.alt} />
+        <Emote
+          src={item.src}
+          srcSet={item.srcSet}
+          alt={item.alt}
+          title={item.alt}
+        />
       </EmoteWrapper>
     );
   }
@@ -180,7 +185,7 @@ const renderMessageArray = (messageLogin: string, userLogin: string | null) => (
   if (item.type === 'emoji') {
     return (
       <EmoteWrapper key={key}>
-        <Emoji src={item.src} alt={item.alt} />
+        <Emoji src={item.src} alt={item.alt} title={item.alt} />
       </EmoteWrapper>
     );
   }
