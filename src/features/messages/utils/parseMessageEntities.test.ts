@@ -9,7 +9,7 @@ describe('parse message entities', () => {
         'Kappa Keepo hey Kappa 4Head hello world :) KKona KKonaW Zappa EZ hey sumSmash',
         emotes,
         {
-          '555555557': [{ start: 40, end: 41 }],
+          '1': [{ start: 40, end: 41 }],
           '25': [
             { start: 0, end: 4 },
             { start: 16, end: 20 },
@@ -68,19 +68,19 @@ describe('parse message entities', () => {
     ]);
 
     expect(
-      parseMessageEntities('R-) R) <3 >( o_O O.o', emotes, null, true),
+      parseMessageEntities(':) :-) :( :-( B) B-)', emotes, null, true),
     ).toEqual([
-      htmlEntity.createTwitchEmote({ id: 555555600, code: 'R)' }),
+      htmlEntity.createTwitchEmote({ id: 1, code: ':)' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 555555600, code: 'R)' }),
+      htmlEntity.createTwitchEmote({ id: 1, code: ':)' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 555555584, code: '<3' }),
+      htmlEntity.createTwitchEmote({ id: 2, code: ':(' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 555555562, code: '>(' }),
+      htmlEntity.createTwitchEmote({ id: 2, code: ':(' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 555555576, code: 'O_o' }),
+      htmlEntity.createTwitchEmote({ id: 7, code: 'B)' }),
       ' ',
-      htmlEntity.createTwitchEmote({ id: 555555576, code: 'O_o' }),
+      htmlEntity.createTwitchEmote({ id: 7, code: 'B)' }),
     ]);
   });
 
