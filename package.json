@@ -78,9 +78,7 @@
       "airbnb-typescript",
       "airbnb/hooks",
       "plugin:@typescript-eslint/recommended",
-      "prettier",
-      "prettier/react",
-      "prettier/@typescript-eslint"
+      "prettier"
     ],
     "settings": {
       "import/resolver": {
