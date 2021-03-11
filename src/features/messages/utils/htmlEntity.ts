@@ -51,22 +51,10 @@ export type Badge = {
 
 export type Emote = TwitchEmote | BttvEmote | FfzEmote | Emoji;
 
-// prettier-ignore
 export const regexEmotesMap: Record<string, string> = {
-  '[oO](_|\\.)[oO]': 'O_o',
-  '\\&gt\\;\\(':     '>(',
-  '\\&lt\\;3':       '<3',
-  '\\:-?(o|O)':      ':O',
-  '\\:-?(p|P)':      ':P',
-  '\\:-?[\\\\/]':    ':/',
-  '\\:-?[z|Z|\\|]':  ':Z',
-  '\\:-?\\(':        ':(',
-  '\\:-?\\)':        ':)',
-  '\\:-?D':          ':D',
-  '\\;-?(p|P)':      ';P',
-  '\\;-?\\)':        ';)',
-  'R-?\\)':          'R)',
-  'B-?\\)':          'B)',
+  '\\:-?\\)': ':)',
+  '\\:-?\\(': ':(',
+  'B-?\\)': 'B)',
 };
 
 export const getFfzSrcSet = R.pipe<any, [string, string][], string[], string>(
