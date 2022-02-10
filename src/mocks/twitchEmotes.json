@@ -1,241 +1,2038 @@
-{
-  "emoticon_sets": {
-    "0": [
-      { "id": 304489309, "code": "GlitchNRG" },
-      { "id": 304489128, "code": "GlitchLit" },
-      { "id": 304486324, "code": "StinkyGlitch" },
-      { "id": 304486301, "code": "GlitchCat" },
-      { "id": 303564554, "code": "ShowOfHands" },
-      { "id": 302628617, "code": "FootGoal" },
-      { "id": 302628613, "code": "FootYellow" },
-      { "id": 302628600, "code": "FootBall" },
-      { "id": 302537250, "code": "BlackLivesMatter" },
-      { "id": 302426269, "code": "ExtraLife" },
-      { "id": 301696583, "code": "VirtualHug" },
-      { "id": 301428702, "code": "BOP" },
-      { "id": 300745158, "code": "PorscheWIN" },
-      { "id": 300116350, "code": "SingsNote" },
-      { "id": 300116349, "code": "SingsMic" },
-      { "id": 300116344, "code": "TwitchSings" },
-      { "id": 2113050, "code": "SoonerLater" },
-      { "id": 1713825, "code": "HolidayTree" },
-      { "id": 1713822, "code": "HolidaySanta" },
-      { "id": 1713819, "code": "HolidayPresent" },
-      { "id": 1713818, "code": "HolidayOrnament" },
-      { "id": 1713816, "code": "HolidayLog" },
-      { "id": 1713813, "code": "HolidayCookie" },
-      { "id": 1584743, "code": "GunRun" },
-      { "id": 1547903, "code": "PixelBob" },
-      { "id": 1441289, "code": "FBPenalty" },
-      { "id": 1441285, "code": "FBChallenge" },
-      { "id": 1441281, "code": "FBCatch" },
-      { "id": 1441276, "code": "FBBlock" },
-      { "id": 1441273, "code": "FBSpiral" },
-      { "id": 1441271, "code": "FBPass" },
-      { "id": 1441261, "code": "FBRun" },
-      { "id": 1297281, "code": "GenderFluidPride" },
-      { "id": 1297279, "code": "NonBinaryPride" },
-      { "id": 1290325, "code": "MaxLOL" },
-      { "id": 1221184, "code": "IntersexPride" },
-      { "id": 1220086, "code": "TwitchRPG" },
-      { "id": 1130349, "code": "PansexualPride" },
-      { "id": 1130348, "code": "AsexualPride" },
-      { "id": 1064995, "code": "TransgenderPride" },
-      { "id": 1064991, "code": "GayPride" },
-      { "id": 1064988, "code": "LesbianPride" },
-      { "id": 1064987, "code": "BisexualPride" },
-      { "id": 1003190, "code": "PinkMercy" },
-      { "id": 1003189, "code": "MercyWing2" },
-      { "id": 1003187, "code": "MercyWing1" },
-      { "id": 965738, "code": "PartyHat" },
-      { "id": 959018, "code": "EarthDay" },
-      { "id": 864205, "code": "TombRaid" },
-      { "id": 724216, "code": "PopCorn" },
-      { "id": 626795, "code": "FBtouchdown" },
-      { "id": 624501, "code": "PurpleStar" },
-      { "id": 530890, "code": "GreenTeam" },
-      { "id": 530888, "code": "RedTeam" },
-      { "id": 508650, "code": "TPFufun" },
-      { "id": 479745, "code": "TwitchVotes" },
-      { "id": 461298, "code": "DarkMode" },
-      { "id": 446979, "code": "HSWP" },
-      { "id": 444572, "code": "HSCheers" },
-      { "id": 425688, "code": "PowerUpL" },
-      { "id": 425671, "code": "PowerUpR" },
-      { "id": 425618, "code": "LUL" },
-      { "id": 376765, "code": "EntropyWins" },
-      { "id": 323914, "code": "TPcrunchyroll" },
-      { "id": 196892, "code": "TwitchUnity" },
-      { "id": 191767, "code": "Squid4" },
-      { "id": 191764, "code": "Squid3" },
-      { "id": 191763, "code": "Squid2" },
-      { "id": 191762, "code": "Squid1" },
-      { "id": 191313, "code": "CrreamAwk" },
-      { "id": 166266, "code": "CarlSmile" },
-      { "id": 166263, "code": "TwitchLit" },
-      { "id": 160404, "code": "TehePelo" },
-      { "id": 160403, "code": "TearGlove" },
-      { "id": 160402, "code": "SabaPing" },
-      { "id": 160401, "code": "PunOko" },
-      { "id": 160400, "code": "KonCha" },
-      { "id": 160397, "code": "Kappu" },
-      { "id": 160396, "code": "InuyoFace" },
-      { "id": 160395, "code": "BigPhish" },
-      { "id": 160394, "code": "BegWan" },
-      { "id": 160392, "code": "ThankEgg" },
-      { "id": 156787, "code": "MorphinTime" },
-      { "id": 145315, "code": "TheIlluminati" },
-      { "id": 143490, "code": "TBAngel" },
-      { "id": 142140, "code": "MVGame" },
-      { "id": 138325, "code": "NinjaGrumpy" },
-      { "id": 135393, "code": "PartyTime" },
-      { "id": 134256, "code": "RlyTho" },
-      { "id": 134255, "code": "UWot" },
-      { "id": 134254, "code": "YouDontSay" },
-      { "id": 133537, "code": "KAPOW" },
-      { "id": 133468, "code": "ItsBoshyTime" },
-      { "id": 123171, "code": "CoolStoryBob" },
-      { "id": 120232, "code": "TriHard" },
-      { "id": 118772, "code": "SuperVinlin" },
-      { "id": 117701, "code": "FreakinStinkin" },
-      { "id": 117484, "code": "Poooound" },
-      { "id": 116625, "code": "CurseLit" },
-      { "id": 115234, "code": "BatChest" },
-      { "id": 115233, "code": "BrainSlug" },
-      { "id": 115075, "code": "PrimeMe" },
-      { "id": 114876, "code": "StrawBeary" },
-      { "id": 114870, "code": "RaccAttack" },
-      { "id": 114856, "code": "UncleNox" },
-      { "id": 114847, "code": "WTRuck" },
-      { "id": 114846, "code": "TooSpicy" },
-      { "id": 114836, "code": "Jebaited" },
-      { "id": 114835, "code": "DogFace" },
-      { "id": 114738, "code": "BlargNaut" },
-      { "id": 112292, "code": "TakeNRG" },
-      { "id": 112291, "code": "GivePLZ" },
-      { "id": 112290, "code": "imGlitch" },
-      { "id": 112289, "code": "pastaThat" },
-      { "id": 112288, "code": "copyThis" },
-      { "id": 111792, "code": "UnSane" },
-      { "id": 111700, "code": "DatSheffy" },
-      { "id": 111351, "code": "TheTarFu" },
-      { "id": 111300, "code": "PicoMause" },
-      { "id": 111119, "code": "TinyFace" },
-      { "id": 110785, "code": "DrinkPurple" },
-      { "id": 110734, "code": "DxCat" },
-      { "id": 107030, "code": "RuleFive" },
-      { "id": 106294, "code": "VoteNay" },
-      { "id": 106293, "code": "VoteYea" },
-      { "id": 102556, "code": "PJSugar" },
-      { "id": 102242, "code": "DoritosChip" },
-      { "id": 100590, "code": "OpieOP" },
-      { "id": 98562, "code": "FutureMan" },
-      { "id": 90129, "code": "ChefFrank" },
-      { "id": 90076, "code": "StinkyCheese" },
-      { "id": 90075, "code": "NomNom" },
-      { "id": 89945, "code": "SmoocherZ" },
-      { "id": 84608, "code": "cmonBruh" },
-      { "id": 81997, "code": "KappaWealth" },
-      { "id": 81636, "code": "MikeHogu" },
-      { "id": 81274, "code": "VoHiYo" },
-      { "id": 81273, "code": "KomodoHype" },
-      { "id": 81249, "code": "SeriousSloth" },
-      { "id": 81248, "code": "OSFrog" },
-      { "id": 81103, "code": "OhMyDog" },
-      { "id": 74510, "code": "KappaClaus" },
-      { "id": 70433, "code": "KappaRoss" },
-      { "id": 68856, "code": "MingLee" },
-      { "id": 64138, "code": "SeemsGood" },
-      { "id": 62836, "code": "twitchRaid" },
-      { "id": 62835, "code": "bleedPurple" },
-      { "id": 62834, "code": "duDudu" },
-      { "id": 62833, "code": "riPepperonis" },
-      { "id": 58765, "code": "NotLikeThis" },
-      { "id": 58135, "code": "DendiFace" },
-      { "id": 58127, "code": "CoolCat" },
-      { "id": 55338, "code": "KappaPride" },
-      { "id": 52492, "code": "ShadyLulu" },
-      { "id": 51838, "code": "ArgieB8" },
-      { "id": 49106, "code": "CorgiDerp" },
-      { "id": 38586, "code": "PraiseIt" },
-      { "id": 38436, "code": "TTours" },
-      { "id": 35063, "code": "mcaT" },
-      { "id": 34875, "code": "NotATK" },
-      { "id": 30259, "code": "HeyGuys" },
-      { "id": 30134, "code": "Mau5" },
-      { "id": 28328, "code": "PRChase" },
-      { "id": 28087, "code": "WutFace" },
-      { "id": 27602, "code": "BuddhaBar" },
-      { "id": 27509, "code": "PermaSmug" },
-      { "id": 22998, "code": "panicBasket" },
-      { "id": 22639, "code": "BabyRage" },
-      { "id": 20225, "code": "HassaanChop" },
-      { "id": 7427, "code": "TheThing" },
-      { "id": 4339, "code": "EleGiggle" },
-      { "id": 4338, "code": "RitzMitz" },
-      { "id": 4337, "code": "YouWHY" },
-      { "id": 4240, "code": "PipeHype" },
-      { "id": 4057, "code": "BrokeBack" },
-      { "id": 3792, "code": "ANELE" },
-      { "id": 3668, "code": "PanicVis" },
-      { "id": 3632, "code": "GrammarKing" },
-      { "id": 3412, "code": "PeoplesChamp" },
-      { "id": 1906, "code": "SoBayed" },
-      { "id": 1904, "code": "BigBrother" },
-      { "id": 1902, "code": "Keepo" },
-      { "id": 1901, "code": "Kippa" },
-      { "id": 1900, "code": "RalpherZ" },
-      { "id": 1899, "code": "TF2John" },
-      { "id": 1898, "code": "ThunBeast" },
-      { "id": 1896, "code": "WholeWheat" },
-      { "id": 973, "code": "DAESuppy" },
-      { "id": 360, "code": "FailFish" },
-      { "id": 357, "code": "HotPokket" },
-      { "id": 354, "code": "4Head" },
-      { "id": 245, "code": "ResidentSleeper" },
-      { "id": 244, "code": "FUNgineer" },
-      { "id": 92, "code": "PMSTwin" },
-      { "id": 87, "code": "ShazBotstix" },
-      { "id": 86, "code": "BibleThump" },
-      { "id": 74, "code": "AsianGlow" },
-      { "id": 73, "code": "DBstyle" },
-      { "id": 69, "code": "BloodTrail" },
-      { "id": 66, "code": "OneHand" },
-      { "id": 65, "code": "FrankerZ" },
-      { "id": 52, "code": "SMOrc" },
-      { "id": 50, "code": "ArsonNoSexy" },
-      { "id": 47, "code": "PunchTrees" },
-      { "id": 46, "code": "SSSsss" },
-      { "id": 41, "code": "Kreygasm" },
-      { "id": 40, "code": "KevinTurtle" },
-      { "id": 36, "code": "PJSalt" },
-      { "id": 34, "code": "SwiftRage" },
-      { "id": 33, "code": "DansGame" },
-      { "id": 32, "code": "GingerPower" },
-      { "id": 30, "code": "BCWarrior" },
-      { "id": 28, "code": "MrDestructoid" },
-      { "id": 26, "code": "JonCarnage" },
-      { "id": 25, "code": "Kappa" },
-      { "id": 22, "code": "RedCoat" },
-      { "id": 18, "code": "TheRinger" },
-      { "id": 17, "code": "StoneLightning" },
-      { "id": 16, "code": "OptimizePrime" },
-      { "id": 15, "code": "JKanStyle" },
-      { "id": 14, "code": "R)" },
-      { "id": 13, "code": ";p" },
-      { "id": 12, "code": ":p" },
-      { "id": 11, "code": ";)" },
-      { "id": 10, "code": ":\\" },
-      { "id": 9, "code": "\u003c3" },
-      { "id": 8, "code": ":O" },
-      { "id": 7, "code": "B-?\\)" },
-      { "id": 6, "code": "O_o" },
-      { "id": 5, "code": ":|" },
-      { "id": 4, "code": "\u003e(" },
-      { "id": 3, "code": ":D" },
-      { "id": 2, "code": "\\:-?\\(" },
-      { "id": 1, "code": "\\:-?\\)" },
-      { "id": 305954156, "code": "PogChamp" }
-    ]
+[
+  {
+    "data": {
+      "channel": {
+        "self": {
+          "availableEmoteSets": [
+            {
+              "emotes": [
+                {
+                  "id": "192363",
+                  "token": "ClappyHype",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "192362",
+                  "token": "ClappyDerp",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "192361",
+                  "token": "Clappy",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "33563",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304432163",
+                  "token": "TwitchGlitch",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302696038",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "emotesv2_031bf329c21040a897d55ef471da3dd3",
+                  "token": "Jebasted",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_30050f4353aa4322b25b6b044703e5d1",
+                  "token": "PogBones",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_4c39207000564711868f3196cc0a8748",
+                  "token": "PoroSad",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_7c5d25facc384c47963d25a5057a0b40",
+                  "token": "KEKHeim",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_4acac638cffb4db49f376059f7077dae",
+                  "token": "CaitlynS",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_8b0ac3eee4274a75868e3d0686d7b6f7",
+                  "token": "HarleyWink",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_1fda4a1b40094c93af334f8b60868a7c",
+                  "token": "WhySoSerious",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_d9567e500d78441793bee538dcabc1da",
+                  "token": "DarkKnight",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_89f3f0761c7b4f708061e9e4be3b7d17",
+                  "token": "FamilyMan",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_0ebc590ba68447269831af61d8bc9e0d",
+                  "token": "RyuChamp",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "emotesv2_535e40afa0b34a9481997627b1b47d96",
+                  "token": "HungryPaimon",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827377",
+                  "token": "TransgenderPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827370",
+                  "token": "PansexualPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827356",
+                  "token": "NonbinaryPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827340",
+                  "token": "LesbianPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827332",
+                  "token": "IntersexPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827326",
+                  "token": "GenderFluidPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827321",
+                  "token": "GayPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827313",
+                  "token": "BisexualPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307827267",
+                  "token": "AsexualPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "307763444",
+                  "token": "NewRecord",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "305954156",
+                  "token": "PogChamp",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "304489309",
+                  "token": "GlitchNRG",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "304489128",
+                  "token": "GlitchLit",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "304486324",
+                  "token": "StinkyGlitch",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "304486301",
+                  "token": "GlitchCat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "302628617",
+                  "token": "FootGoal",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "302628613",
+                  "token": "FootYellow",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "302628600",
+                  "token": "FootBall",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "302537250",
+                  "token": "BlackLivesMatter",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "302426269",
+                  "token": "ExtraLife",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "301696583",
+                  "token": "VirtualHug",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "301428702",
+                  "token": "BOP",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "300116350",
+                  "token": "SingsNote",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "300116349",
+                  "token": "SingsMic",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "300116344",
+                  "token": "TwitchSings",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "2113050",
+                  "token": "SoonerLater",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1713825",
+                  "token": "HolidayTree",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1713822",
+                  "token": "HolidaySanta",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1713819",
+                  "token": "HolidayPresent",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1713816",
+                  "token": "HolidayLog",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1713813",
+                  "token": "HolidayCookie",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1584743",
+                  "token": "GunRun",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1547903",
+                  "token": "PixelBob",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441289",
+                  "token": "FBPenalty",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441285",
+                  "token": "FBChallenge",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441281",
+                  "token": "FBCatch",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441276",
+                  "token": "FBBlock",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441273",
+                  "token": "FBSpiral",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441271",
+                  "token": "FBPass",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1441261",
+                  "token": "FBRun",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1290325",
+                  "token": "MaxLOL",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1220086",
+                  "token": "TwitchRPG",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1003190",
+                  "token": "PinkMercy",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1003189",
+                  "token": "MercyWing2",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1003187",
+                  "token": "MercyWing1",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "965738",
+                  "token": "PartyHat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "959018",
+                  "token": "EarthDay",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "864205",
+                  "token": "TombRaid",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "724216",
+                  "token": "PopCorn",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "626795",
+                  "token": "FBtouchdown",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "508650",
+                  "token": "TPFufun",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "479745",
+                  "token": "TwitchVotes",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "461298",
+                  "token": "DarkMode",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "446979",
+                  "token": "HSWP",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "444572",
+                  "token": "HSCheers",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "425688",
+                  "token": "PowerUpL",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "425671",
+                  "token": "PowerUpR",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "425618",
+                  "token": "LUL",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "376765",
+                  "token": "EntropyWins",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "323914",
+                  "token": "TPcrunchyroll",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "196892",
+                  "token": "TwitchUnity",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "191767",
+                  "token": "Squid4",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "191764",
+                  "token": "Squid3",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "191763",
+                  "token": "Squid2",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "191762",
+                  "token": "Squid1",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "191313",
+                  "token": "CrreamAwk",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "166266",
+                  "token": "CarlSmile",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "166263",
+                  "token": "TwitchLit",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160404",
+                  "token": "TehePelo",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160403",
+                  "token": "TearGlove",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160402",
+                  "token": "SabaPing",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160401",
+                  "token": "PunOko",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160400",
+                  "token": "KonCha",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160397",
+                  "token": "Kappu",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160396",
+                  "token": "InuyoFace",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160395",
+                  "token": "BigPhish",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160394",
+                  "token": "BegWan",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "160392",
+                  "token": "ThankEgg",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "156787",
+                  "token": "MorphinTime",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "145315",
+                  "token": "TheIlluminati",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "143490",
+                  "token": "TBAngel",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "142140",
+                  "token": "MVGame",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "138325",
+                  "token": "NinjaGrumpy",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "135393",
+                  "token": "PartyTime",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "134256",
+                  "token": "RlyTho",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "134255",
+                  "token": "UWot",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "134254",
+                  "token": "YouDontSay",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "133537",
+                  "token": "KAPOW",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "133468",
+                  "token": "ItsBoshyTime",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "123171",
+                  "token": "CoolStoryBob",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "120232",
+                  "token": "TriHard",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "118772",
+                  "token": "SuperVinlin",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "117701",
+                  "token": "FreakinStinkin",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "117484",
+                  "token": "Poooound",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "116625",
+                  "token": "CurseLit",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "115234",
+                  "token": "BatChest",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "115233",
+                  "token": "BrainSlug",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "115075",
+                  "token": "PrimeMe",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114876",
+                  "token": "StrawBeary",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114870",
+                  "token": "RaccAttack",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114856",
+                  "token": "UncleNox",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114847",
+                  "token": "WTRuck",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114846",
+                  "token": "TooSpicy",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114836",
+                  "token": "Jebaited",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114835",
+                  "token": "DogFace",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "114738",
+                  "token": "BlargNaut",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "112292",
+                  "token": "TakeNRG",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "112291",
+                  "token": "GivePLZ",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "112290",
+                  "token": "imGlitch",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "112289",
+                  "token": "pastaThat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "112288",
+                  "token": "copyThis",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "111792",
+                  "token": "UnSane",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "111700",
+                  "token": "DatSheffy",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "111351",
+                  "token": "TheTarFu",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "111300",
+                  "token": "PicoMause",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "111119",
+                  "token": "TinyFace",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "110734",
+                  "token": "DxCat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "107030",
+                  "token": "RuleFive",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "106294",
+                  "token": "VoteNay",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "106293",
+                  "token": "VoteYea",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "102556",
+                  "token": "PJSugar",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "102242",
+                  "token": "DoritosChip",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "100590",
+                  "token": "OpieOP",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "98562",
+                  "token": "FutureMan",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "90129",
+                  "token": "ChefFrank",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "90076",
+                  "token": "StinkyCheese",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "90075",
+                  "token": "NomNom",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "89945",
+                  "token": "SmoocherZ",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "84608",
+                  "token": "cmonBruh",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81997",
+                  "token": "KappaWealth",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81636",
+                  "token": "MikeHogu",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81274",
+                  "token": "VoHiYo",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81273",
+                  "token": "KomodoHype",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81249",
+                  "token": "SeriousSloth",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81248",
+                  "token": "OSFrog",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "81103",
+                  "token": "OhMyDog",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "74510",
+                  "token": "KappaClaus",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "70433",
+                  "token": "KappaRoss",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "68856",
+                  "token": "MingLee",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "64138",
+                  "token": "SeemsGood",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "62836",
+                  "token": "twitchRaid",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "62835",
+                  "token": "bleedPurple",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "62834",
+                  "token": "duDudu",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "62833",
+                  "token": "riPepperonis",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "58765",
+                  "token": "NotLikeThis",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "58135",
+                  "token": "DendiFace",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "58127",
+                  "token": "CoolCat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "55338",
+                  "token": "KappaPride",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "52492",
+                  "token": "ShadyLulu",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "51838",
+                  "token": "ArgieB8",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "49106",
+                  "token": "CorgiDerp",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "38586",
+                  "token": "PraiseIt",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "38436",
+                  "token": "TTours",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "35063",
+                  "token": "mcaT",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "34875",
+                  "token": "NotATK",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "30259",
+                  "token": "HeyGuys",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "30134",
+                  "token": "Mau5",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "28328",
+                  "token": "PRChase",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "28087",
+                  "token": "WutFace",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "27602",
+                  "token": "BuddhaBar",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "27509",
+                  "token": "PermaSmug",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "22998",
+                  "token": "panicBasket",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "22639",
+                  "token": "BabyRage",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "20225",
+                  "token": "HassaanChop",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "7427",
+                  "token": "TheThing",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "4339",
+                  "token": "EleGiggle",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "4338",
+                  "token": "RitzMitz",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "4337",
+                  "token": "YouWHY",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "4240",
+                  "token": "PipeHype",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "4057",
+                  "token": "BrokeBack",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "3792",
+                  "token": "ANELE",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "3668",
+                  "token": "PanicVis",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "3632",
+                  "token": "GrammarKing",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "3412",
+                  "token": "PeoplesChamp",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1906",
+                  "token": "SoBayed",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1904",
+                  "token": "BigBrother",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1902",
+                  "token": "Keepo",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1901",
+                  "token": "Kippa",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1900",
+                  "token": "RalpherZ",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1899",
+                  "token": "TF2John",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1898",
+                  "token": "ThunBeast",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "1896",
+                  "token": "WholeWheat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "973",
+                  "token": "DAESuppy",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "360",
+                  "token": "FailFish",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "357",
+                  "token": "HotPokket",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "354",
+                  "token": "4Head",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "245",
+                  "token": "ResidentSleeper",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "244",
+                  "token": "FUNgineer",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "92",
+                  "token": "PMSTwin",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "87",
+                  "token": "ShazBotstix",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "86",
+                  "token": "BibleThump",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "74",
+                  "token": "AsianGlow",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "73",
+                  "token": "DBstyle",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "69",
+                  "token": "BloodTrail",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "66",
+                  "token": "OneHand",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "65",
+                  "token": "FrankerZ",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "52",
+                  "token": "SMOrc",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "50",
+                  "token": "ArsonNoSexy",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "47",
+                  "token": "PunchTrees",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "46",
+                  "token": "SSSsss",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "41",
+                  "token": "Kreygasm",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "40",
+                  "token": "KevinTurtle",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "36",
+                  "token": "PJSalt",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "34",
+                  "token": "SwiftRage",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "33",
+                  "token": "DansGame",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "32",
+                  "token": "GingerPower",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "30",
+                  "token": "BCWarrior",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "28",
+                  "token": "MrDestructoid",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "26",
+                  "token": "JonCarnage",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "25",
+                  "token": "Kappa",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "22",
+                  "token": "RedCoat",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "18",
+                  "token": "TheRinger",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "17",
+                  "token": "StoneLightning",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "16",
+                  "token": "OptimizePrime",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "15",
+                  "token": "JKanStyle",
+                  "type": "GLOBALS"
+                },
+                {
+                  "id": "14",
+                  "token": "R)",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "13",
+                  "token": ";p",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "12",
+                  "token": ":p",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "11",
+                  "token": ";)",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "10",
+                  "token": ":\\",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "9",
+                  "token": "<3",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "8",
+                  "token": ":O",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "7",
+                  "token": "B-?\\)",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "6",
+                  "token": "O_o",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "5",
+                  "token": ":|",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "4",
+                  "token": ">(",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "3",
+                  "token": ":D",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "2",
+                  "token": "\\:-?\\(",
+                  "type": "SMILIES"
+                },
+                {
+                  "id": "1",
+                  "token": "\\:-?\\)",
+                  "type": "SMILIES"
+                }
+              ],
+              "id": "0",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304432147",
+                  "token": "KaWutGuys",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302696037",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "301112670",
+                  "token": "Haha2020",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301112669",
+                  "token": "HahaBall",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301112663",
+                  "token": "HahaDreidel",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108083",
+                  "token": "HahaCat",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108082",
+                  "token": "HahaDoge",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108081",
+                  "token": "HahaElf",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108075",
+                  "token": "HahaGoose",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108072",
+                  "token": "HahaHide",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108068",
+                  "token": "HahaLean",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108057",
+                  "token": "HahaPoint",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108052",
+                  "token": "HahaPresent",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108048",
+                  "token": "HahaReindeer",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108047",
+                  "token": "HahaShrugLeft",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108045",
+                  "token": "HahaShrugRight",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108041",
+                  "token": "HahaSleep",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108037",
+                  "token": "HahaSweat",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108032",
+                  "token": "HahaThink",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108013",
+                  "token": "HahaThisisfine",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301108011",
+                  "token": "HahaTurtledove",
+                  "type": "MEGA_COMMERCE"
+                }
+              ],
+              "id": "472873131",
+              "owner": {
+                "id": "472873131",
+                "displayName": "HAHAHAlidays",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/dca44f4f-3dac-4335-a69e-5fad73371b02-profile_image-300x300.png"
+              }
+            },
+            {
+              "emotes": [
+                {
+                  "id": "301396475",
+                  "token": "LuvBlondeR",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396467",
+                  "token": "LuvBrownL",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396453",
+                  "token": "LuvSign",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396432",
+                  "token": "LuvGift",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396428",
+                  "token": "LuvHearts",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396406",
+                  "token": "LuvBlush",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396403",
+                  "token": "LuvBlondeL",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396400",
+                  "token": "LuvBrownR",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396388",
+                  "token": "LuvUok",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396382",
+                  "token": "LuvCool",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396378",
+                  "token": "LuvSnooze",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396373",
+                  "token": "LuvPeekR",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396363",
+                  "token": "LuvPeekL",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "301396357",
+                  "token": "LuvOops",
+                  "type": "MEGA_COMMERCE"
+                }
+              ],
+              "id": "488737509",
+              "owner": {
+                "id": "488737509",
+                "displayName": "streamerluv",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/c681e702-ba82-4b81-841d-68e5ceb44872-profile_image-300x300.png"
+              }
+            },
+            {
+              "emotes": [
+                {
+                  "id": "emotesv2_11b62bc1fef84adf89da6d282c9df80e",
+                  "token": "dirube10",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_8cdc1023ed00483f9ba0eb0566a1672d",
+                  "token": "dirube100",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_35f8d00c84364237b223409ccade5b46",
+                  "token": "dirube19",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_09c4dcc847654252a26f5b2a1caf3eee",
+                  "token": "dirube199",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_6f9560644db747ed8ca7b9db088214d3",
+                  "token": "dirube18",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_57a0053c8e7744f2884a08f111608ae0",
+                  "token": "dirube111",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_6490deec7c0a46acb8c0351763f3195c",
+                  "token": "dirube12",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_aff9b0a8c6274e179d29b606d06649db",
+                  "token": "dirube112",
+                  "type": "SUBSCRIPTIONS"
+                },
+                {
+                  "id": "emotesv2_320f1cb2b4a347b580aea735f83f92c2",
+                  "token": "dirube122",
+                  "type": "SUBSCRIPTIONS"
+                }
+              ],
+              "id": "304661283",
+              "owner": {
+                "id": "493844061",
+                "displayName": "di_rubens",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/1a1314ac-8997-4707-87c7-b3254d74091a-profile_image-300x300.png"
+              }
+            },
+            {
+              "emotes": [
+                {
+                  "id": "302972056",
+                  "token": "ItsHappening",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "301850800",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304542501",
+                  "token": "Johnny2077",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302760317",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "301544927",
+                  "token": "SirUwU",
+                  "type": "TWO_FACTOR"
+                },
+                {
+                  "id": "301544926",
+                  "token": "SirPrise",
+                  "type": "TWO_FACTOR"
+                },
+                {
+                  "id": "301544924",
+                  "token": "SirSad",
+                  "type": "TWO_FACTOR"
+                },
+                {
+                  "id": "301544923",
+                  "token": "SirMad",
+                  "type": "TWO_FACTOR"
+                },
+                {
+                  "id": "301544922",
+                  "token": "SirSword",
+                  "type": "TWO_FACTOR"
+                },
+                {
+                  "id": "301544919",
+                  "token": "SirShield",
+                  "type": "TWO_FACTOR"
+                }
+              ],
+              "id": "300374282",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304432181",
+                  "token": "AppaK",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302696039",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304432120",
+                  "token": "EnlightenD",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302696036",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304432199",
+                  "token": "FrankerCool",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302696040",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "302525499",
+                  "token": "Silverhand",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "301592777",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "302303601",
+                  "token": "PrideShrug",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303599",
+                  "token": "PrideFloat",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303596",
+                  "token": "PridePog",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303594",
+                  "token": "PrideCute",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303593",
+                  "token": "PrideLaugh",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303590",
+                  "token": "PrideUwu",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303587",
+                  "token": "PrideRhino",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303585",
+                  "token": "PrideLGBTea",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303582",
+                  "token": "PrideToucan",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303581",
+                  "token": "PrideDragon",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303580",
+                  "token": "PrideUnicorn",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303579",
+                  "token": "PrideWave",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303578",
+                  "token": "PridePenguin",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303577",
+                  "token": "PrideFlower",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303576",
+                  "token": "PrideLion",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303574",
+                  "token": "PrideHeartR",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303573",
+                  "token": "PrideHeartL",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303570",
+                  "token": "PrideRise",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303569",
+                  "token": "PrideStrong",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303568",
+                  "token": "PrideLove",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303567",
+                  "token": "PrideHeyyy",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303566",
+                  "token": "PrideKoala",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303565",
+                  "token": "PrideCrown",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303564",
+                  "token": "PrideWorld",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "302303563",
+                  "token": "PridePaint",
+                  "type": "MEGA_COMMERCE"
+                }
+              ],
+              "id": "537206155",
+              "owner": {
+                "id": "537206155",
+                "displayName": "StreamWithPride",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/8b5d436e-bd76-4d5a-8108-3dcbebf6ad6f-profile_image-300x300.png"
+              }
+            },
+            {
+              "emotes": [
+                {
+                  "id": "303179137",
+                  "token": "HyperTiger",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179136",
+                  "token": "HyperSlam",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179133",
+                  "token": "HyperReveal",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179131",
+                  "token": "HyperParkour",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179127",
+                  "token": "HyperMine",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179126",
+                  "token": "HyperMayhem",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179122",
+                  "token": "HyperLost",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179121",
+                  "token": "HyperJump",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179119",
+                  "token": "HyperHex",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179118",
+                  "token": "HyperHaste",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179116",
+                  "token": "HyperGravity",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179115",
+                  "token": "HyperCrown",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179114",
+                  "token": "HyperCrate",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179112",
+                  "token": "HyperCooldown",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303179111",
+                  "token": "HyperCheese",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "564265402",
+              "owner": {
+                "id": "564265402",
+                "displayName": "HyperScapeEmotes",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/29e5808d-fd17-4411-9412-a106b1a42f8d-profile_image-300x300.png"
+              }
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304432094",
+                  "token": "Samurai2077",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "302696035",
+              "owner": null
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304857015",
+                  "token": "2020Celebrate",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304836436",
+                  "token": "2020Shhh",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304836425",
+                  "token": "2020Victory",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304822061",
+                  "token": "2020MaskUp",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304822055",
+                  "token": "2020Wish",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304822046",
+                  "token": "2020Takeout",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304822038",
+                  "token": "2020ByeGuys",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304822026",
+                  "token": "2020Unity",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304822010",
+                  "token": "2020Shred",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304821979",
+                  "token": "2020Forward",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304821908",
+                  "token": "2020Snacking",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304821885",
+                  "token": "2020Partnered",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304821871",
+                  "token": "2020Glitchy",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304821857",
+                  "token": "2020Drop",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573286",
+                  "token": "2020Unroll",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573280",
+                  "token": "2020Suspicious",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573275",
+                  "token": "2020Surprise",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573272",
+                  "token": "2020SpeakUp",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573270",
+                  "token": "2020Selfie",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573264",
+                  "token": "2020Rivalry",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573256",
+                  "token": "2020Party",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573252",
+                  "token": "2020Pajamas",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573244",
+                  "token": "2020HomeWork",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573236",
+                  "token": "2020Gift",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304573229",
+                  "token": "2020Delivery",
+                  "type": "MEGA_COMMERCE"
+                },
+                {
+                  "id": "304572368",
+                  "token": "2020Capture",
+                  "type": "MEGA_COMMERCE"
+                }
+              ],
+              "id": "610186276",
+              "owner": {
+                "id": "610186276",
+                "displayName": "Hindsight2020Emotes",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/d7b05222-d512-4468-a493-fcfec23894d2-profile_image-300x300.png"
+              }
+            },
+            {
+              "emotes": [
+                {
+                  "id": "304047404",
+                  "token": "KPOPselfie",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "304047397",
+                  "token": "KPOPmerch",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "304047383",
+                  "token": "KPOPheart",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "304047364",
+                  "token": "KPOPfan",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "304047335",
+                  "token": "KPOPdance",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "304047297",
+                  "token": "KPOPcheer",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "304047269",
+                  "token": "KPOPTT",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303975459",
+                  "token": "KPOPvictory",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303975434",
+                  "token": "KPOPlove",
+                  "type": "LIMITED_TIME"
+                },
+                {
+                  "id": "303975379",
+                  "token": "KPOPglow",
+                  "type": "LIMITED_TIME"
+                }
+              ],
+              "id": "592920959",
+              "owner": {
+                "id": "592920959",
+                "displayName": "CelebrateKpop",
+                "profileImageURL": "https://static-cdn.jtvnw.net/jtv_user_pictures/5c300917-bdc8-47d3-a2f2-adf3fae1f7fc-profile_image-300x300.png"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "extensions": {
+      "durationMilliseconds": 53,
+      "requestID": "01FVHNWP14FREQ0NZKK918YSNV"
+    }
   }
-}
+]

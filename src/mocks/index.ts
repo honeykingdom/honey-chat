@@ -19,11 +19,11 @@ export const emotes = {
   twitchGlobal: R.pipe(
     parseTwitchEmotes,
     R.pick(['0']),
-  )((twitchEmotes as unknown) as api.TwitchEmotesResponse),
+  )((twitchEmotes as unknown) as api.TwitchEmotesResponse[]),
   twitchUser: R.pipe(
     parseTwitchEmotes,
     R.omit(['0']),
-  )((twitchEmotes as unknown) as api.TwitchEmotesResponse),
+  )((twitchEmotes as unknown) as api.TwitchEmotesResponse[]),
   bttvGlobal: parseBttvGlobalEmotes(bttvGlobal as api.BttvGlobalEmotesResponse),
   bttvChannel: parseBttvChannelEmotes(
     bttvChannel as api.BttvChannelEmotesResponse,
