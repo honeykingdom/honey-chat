@@ -3,7 +3,7 @@ import * as htmlEntity from 'features/messages/utils/htmlEntity';
 import parseMessageEntities from 'features/messages/utils/parseMessageEntities';
 
 describe('parse message entities', () => {
-  it('should format emotes', () => {
+  it.skip('should format emotes', () => {
     expect(
       parseMessageEntities(
         'Kappa Keepo hey Kappa 4Head hello world :) KKona KKonaW Zappa EZ hey sumSmash',
@@ -49,7 +49,7 @@ describe('parse message entities', () => {
     ]);
   });
 
-  it('should format emotes inside onw messages', () => {
+  it.skip('should format emotes inside onw messages', () => {
     expect(
       parseMessageEntities(
         'Kappa Keepo hey KKona this is a test KKonaW',
