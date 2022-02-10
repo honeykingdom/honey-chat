@@ -2,30 +2,32 @@ import { LS_ACCESS_TOKEN } from 'utils/constants';
 import fetchRequest from 'utils/fetchRequest';
 import type { FetchRequestOptions } from 'utils/fetchRequest';
 
-const TWITCH_API_HELIX = 'https://api.twitch.tv/helix';
-const TWITCH_API_KRAKEN = 'https://api.twitch.tv/kraken';
+const API_BASE = 'https://api.twitch.tv/helix';
+const API_GQL_BASE = 'https://gql.twitch.tv/gql';
 
-const getHelixHeaders = () => ({
+const getHeaders = () => ({
   'Client-ID': process.env.REACT_APP_TWITCH_API_CLIENT_ID,
   Authorization: `Bearer ${localStorage.getItem(LS_ACCESS_TOKEN)}`,
 });
 
-const getKrakenHeaders = () => ({
-  Accept: 'application/vnd.twitchtv.v5+json',
-  'Client-ID': process.env.REACT_APP_TWITCH_API_CLIENT_ID,
-  Authorization: `OAuth ${localStorage.getItem(LS_ACCESS_TOKEN)}`,
-});
-
-const apiRequestHelix = (url: string, options?: FetchRequestOptions) =>
-  fetchRequest(`${TWITCH_API_HELIX}${url}`, {
+const apiRequest = (url: string, options?: FetchRequestOptions) =>
+  fetchRequest(`${API_BASE}${url}`, {
     ...options,
-    headers: getHelixHeaders(),
+    headers: getHeaders(),
   } as FetchRequestOptions);
 
-const apiRequestKraken = (url: string, options?: FetchRequestOptions) =>
-  fetchRequest(`${TWITCH_API_KRAKEN}${url}`, {
-    ...options,
-    headers: getKrakenHeaders(),
+const getGqlHeaders = () => ({
+  'Client-ID': process.env.REACT_APP_TWITCH_API_CLIENT_ID,
+  Authorization: `OAuth ${localStorage.getItem(LS_ACCESS_TOKEN)}`,
+  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  Accept: 'application/json, text/javascript, */*; q=0.01',
+});
+
+const apiGqlRequest = (query: string, variables?: Record<string, any>) =>
+  fetchRequest(API_GQL_BASE, {
+    method: 'POST',
+    body: JSON.stringify({ query, variables }),
+    headers: getGqlHeaders(),
   } as FetchRequestOptions);
 
 export interface TwitchUser {
@@ -45,11 +47,37 @@ export interface TwitchUsersResponse {
 }
 
 export interface TwitchEmote {
-  id: number;
-  code: string;
+  id: string;
+  token: string;
+  type:
+    | 'GLOBALS'
+    | 'SMILIES'
+    | 'LIMITED_TIME'
+    | 'MEGA_COMMERCE'
+    | 'TWO_FACTOR'
+    | 'SUBSCRIPTIONS';
 }
 
 export interface TwitchEmotesResponse {
+  data: {
+    channel: {
+      self: {
+        availableEmoteSets: {
+          emotes: TwitchEmote[];
+          id: string;
+          owner: {
+            id: string;
+            displayName: string;
+            profileImageURL: string;
+          } | null;
+        }[];
+      };
+    };
+  };
+  extensions: {
+    durationMilliseconds: number;
+    requestID: string;
+  };
   emoticon_sets: Record<string, TwitchEmote[]>;
 }
 
@@ -84,9 +112,10 @@ export interface TwitchBlockedUser {
 }
 
 export interface TwitchBlockedUsersResponse {
-  _total: number;
-  blocks: {
-    user: TwitchBlockedUser;
+  data: {
+    user_id: string;
+    user_login: string;
+    display_name: string;
   }[];
 }
 
@@ -135,11 +164,34 @@ export interface TwitchVideoResponse {
 }
 
 export const fetchUser = (userId: string): Promise<TwitchUsersResponse> =>
-  apiRequestHelix(`/users?id=${userId}`);
+  apiRequest(`/users?id=${userId}`);
+
+const AVAILABLE_EMOTES_FOR_CHANNEL_QUERY = `
+  query AvailableEmotesForChannel($channelID: ID!) {
+    channel(id: $channelID) {
+      self {
+        availableEmoteSets {
+          emotes {
+            id,
+            token,
+            type
+          },
+          id,
+          owner {
+            id,
+            displayName,
+            profileImageURL(width: 300)
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const fetchTwitchEmotes = (
   userId: string,
-): Promise<TwitchEmotesResponse> => apiRequestKraken(`/users/${userId}/emotes`);
+): Promise<TwitchEmotesResponse[]> =>
+  apiGqlRequest(AVAILABLE_EMOTES_FOR_CHANNEL_QUERY, { channelID: userId });
 
 export const fetchGlobalBadges = (
   language = 'en',
@@ -159,10 +211,10 @@ export const fetchChannelBadges = (
 export const fetchBlockedUsers = (
   userId: string,
 ): Promise<TwitchBlockedUsersResponse> =>
-  apiRequestKraken(`/users/${userId}/blocks`);
+  apiRequest(`/users/blocks?broadcaster_id=${userId}`);
 
 export const fetchTwitchClip = (id: string): Promise<TwitchClipResponse> =>
-  apiRequestHelix(`/clips?id=${id}`);
+  apiRequest(`/clips?id=${id}`);
 
 export const fetchTwitchVideo = (id: string): Promise<TwitchVideoResponse> =>
-  apiRequestHelix(`/videos?id=${id}`);
+  apiRequest(`/videos?id=${id}`);

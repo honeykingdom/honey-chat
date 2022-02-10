@@ -63,15 +63,15 @@ export const getFfzSrcSet = R.pipe<any, [string, string][], string[], string>(
   R.join(', '),
 );
 
-type CreateTwitchEmoteParams = api.TwitchEmote | { id: string; code: string };
+type CreateTwitchEmoteParams = api.TwitchEmote | { id: string; token: string };
 
 export const createTwitchEmote = ({
   id,
-  code,
+  token,
 }: CreateTwitchEmoteParams): TwitchEmote => ({
   type: 'twitch-emote',
   id: String(id),
-  alt: regexEmotesMap[code] || code,
+  alt: regexEmotesMap[token] || token,
   src: `${TWITCH_EMOTES_CDN}/${id}/1.0`,
   srcSet: `${TWITCH_EMOTES_CDN}/${id}/1.0 1x, ${TWITCH_EMOTES_CDN}/${id}/2.0 2x, ${TWITCH_EMOTES_CDN}/${id}/3.0 4x`,
 });

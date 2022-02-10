@@ -75,8 +75,8 @@ const findTwitchEmoteByNameInSets = (
   // eslint-disable-next-line no-restricted-syntax
   for (const set of Object.values(sets)) {
     const result = R.find(
-      ({ id, code }) =>
-        emotesMap[id] ? emotesMap[id].includes(name) : name === code,
+      ({ id, token }) =>
+        emotesMap[id] ? emotesMap[id].includes(name) : name === token,
       set,
     );
 
@@ -128,7 +128,7 @@ const findTwitchEmotesByText = (
     for (const emote of items) {
       if (result.begins.length + result.contains.length === limit) return true;
 
-      const index = emote.code.toLowerCase().indexOf(text);
+      const index = emote.token.toLowerCase().indexOf(text);
 
       if (index !== -1) {
         const type = index === 0 ? 'begins' : 'contains';

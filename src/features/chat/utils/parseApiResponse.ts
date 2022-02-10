@@ -3,7 +3,11 @@ import { format } from 'date-fns/fp';
 
 import * as api from 'api';
 
-export const parseTwitchEmotes = R.prop('emoticon_sets');
+export const parseTwitchEmotes = (response: api.TwitchEmotesResponse[]) =>
+  response[0].data.channel.self.availableEmoteSets.reduce(
+    (acc, { emotes, id }) => ({ ...acc, [id]: emotes }),
+    {} as Record<string, api.TwitchEmote[]>,
+  );
 
 export const parseBttvGlobalEmotes = (
   data: api.BttvGlobalEmotesResponse,
@@ -33,11 +37,9 @@ export const parseFfzChannelEmotes: (
   R.flatten,
 );
 
-export const parseBlockedUsers = R.pipe<
-  api.TwitchBlockedUsersResponse,
-  Record<string, unknown>[],
-  string[]
->(R.prop('blocks'), R.map<any, any>(R.path(['user', 'name'])));
+export const parseBlockedUsers = (
+  response: api.TwitchBlockedUsersResponse,
+): string[] => response.data.map((user) => user.user_login);
 
 export const parseBadges = R.prop('badge_sets');
 

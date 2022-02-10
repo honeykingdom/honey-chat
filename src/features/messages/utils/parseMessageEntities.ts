@@ -100,7 +100,7 @@ const parseMessageEntities = (
       const id = normalizedEmbeddedEmotes[offset];
 
       if (id) {
-        entity = htmlEntity.createTwitchEmote({ id, code: word });
+        entity = htmlEntity.createTwitchEmote({ id, token: word });
       }
     }
 
