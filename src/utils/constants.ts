@@ -1,8 +1,8 @@
 export const TWITCH_API_AUTH_BASE = 'https://id.twitch.tv/oauth2/authorize';
 
-export const TWITCH_API_CLIENT_ID = process.env.REACT_APP_TWITCH_API_CLIENT_ID;
+export const TWITCH_API_CLIENT_ID = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
 export const TWITCH_API_REDIRECT_URI =
-  process.env.REACT_APP_TWITCH_API_REDIRECT_URI;
+  process.env.NEXT_PUBLIC_TWITCH_REDIRECT_URI;
 
 export const CHANNEL_MESSAGES_LIMIT = 500;
 export const STORE_USERS_LIMIT = 500;
@@ -16,8 +16,8 @@ export const BTTV_EMOTES_CDN = '//cdn.betterttv.net/emote';
 // local storage keys
 export const LS_ACCESS_TOKEN = 'accessToken';
 export const LS_ID_TOKEN = 'idToken';
-export const LS_LAST_CHANNEL = 'lastChannel';
 export const LS_USER = 'user';
+export const LS_LAST_CHANNEL = 'lastChannel';
 export const LS_EMOTES_USAGE_STATISTIC = 'emotesUsageStatistic';
 export const LS_OPTIONS = 'options';
 
