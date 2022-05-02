@@ -1,5 +1,5 @@
 import CustomScrollbar from 'react-scrollbars-custom';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const Scrollbar = styled(CustomScrollbar).attrs({
   disableTracksWidthCompensation: true,

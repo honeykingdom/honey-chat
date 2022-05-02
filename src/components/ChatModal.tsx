@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-import { ReactComponent as CloseIconSvg } from 'icons/close.svg';
+// import { ReactComponent as CloseIconSvg } from 'icons/close.svg';
 import IconButton from 'components/IconButton';
 
 const ChatModalRoot = styled.div`
@@ -18,11 +18,11 @@ const CloseButton = styled(IconButton).attrs({ $size: 'small' })`
   top: 5px;
   right: 5px;
 `;
-const CloseIcon = styled(CloseIconSvg)`
-  display: block;
-  width: 20px;
-  height: 20px;
-`;
+// const CloseIcon = styled(CloseIconSvg)`
+//   display: block;
+//   width: 20px;
+//   height: 20px;
+// `;
 
 type Props = {
   children: React.ReactNode;
@@ -31,9 +31,7 @@ type Props = {
 
 const ChatModal = ({ children, onClose }: Props) => (
   <ChatModalRoot>
-    <CloseButton onClick={onClose}>
-      <CloseIcon />
-    </CloseButton>
+    <CloseButton onClick={onClose}>❌{/* <CloseIcon /> */}</CloseButton>
     {children}
   </ChatModalRoot>
 );
