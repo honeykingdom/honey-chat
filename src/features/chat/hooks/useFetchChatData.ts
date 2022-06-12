@@ -1,130 +1,123 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useAppSelector } from 'app/hooks';
+import { isAuthSelector, meIdSelector } from 'features/auth';
+import { optionsSelector } from 'features/options';
 import {
-  currentChannelSelector,
+  useLazyBlockedUsersQuery,
+  useLazyBttvChannelEmotesQuery,
+  useLazyBttvGlobalBadgesQuery,
+  useLazyBttvGlobalEmotesQuery,
+  useLazyChatterinoBadgesQuery,
+  useLazyFfzApGlobalBadgesQuery,
+  useLazyFfzChannelEmotesQuery,
+  useLazyFfzGlobalBadgesQuery,
+  useLazyFfzGlobalEmotesQuery,
+  useLazyRecentMessagesQuery,
+  useLazyStvChannelEmotesQuery,
+  useLazyStvCosmeticsQuery,
+  useLazyStvGlobalEmotesQuery,
+  useLazyTwitchChannelBadgesQuery,
+  useLazyTwitchEmotesQuery,
+  useLazyTwitchGlobalBadgesQuery,
+} from 'features/api';
+import {
   currentChannelIdSelector,
-} from 'features/chat/chatSelectors';
-import {
-  isHistoryAddedSelector,
-  isHistoryLoadedSelector,
-} from 'features/messages/messagesSelectors';
-import {
-  isTwitchEmotesLoadedSelector,
-  isBttvGlobalEmotesLoadedSelector,
-  isBttvChannelEmotesLoadedSelector,
-  isFfzGlobalEmotesLoadedSelector,
-  isFfzChannelEmotesLoadedSelector,
-} from 'features/emotes/emotesSelectors';
-import {
-  isGlobalBadgesLoadedSelector,
-  isChannelBadgesLoadedSelector,
-} from 'features/badges/badgesSelectors';
-import { isBlockedUsersLoadedSelector } from 'features/blockedUsers/blockedUsersSelectors';
-import {
-  isAuthReadySelector,
-  isAuthSelector,
-  userIdSelector,
-} from 'features/auth/authSelectors';
-import {
-  addRecentMessages,
-  fetchRecentMessages,
-} from 'features/messages/messagesSlice';
-import {
-  fetchTwitchEmotes,
-  fetchBttvGlobalEmotes,
-  fetchBttvChannelEmotes,
-  fetchFfzGlobalEmotes,
-  fetchFfzChannelEmotes,
-} from 'features/emotes/emotesSlice';
-import {
-  fetchChannelBadges,
-  fetchGlobalBadges,
-} from 'features/badges/badgesSlice';
-import { fetchBlockedUsers } from 'features/blockedUsers/blockedUsersSlice';
+  currentChannelNameSelector,
+} from '../chatSelectors';
 
 const useFetchChatData = () => {
-  const dispatch = useDispatch();
+  const isAuth = useAppSelector(isAuthSelector);
+  const meId = useAppSelector(meIdSelector);
+  const currentChannelName = useAppSelector(currentChannelNameSelector);
+  const currentChannelId = useAppSelector(currentChannelIdSelector);
+  const options = useAppSelector(optionsSelector);
 
-  const isAuthReady = useSelector(isAuthReadySelector);
-  const isAuth = useSelector(isAuthSelector);
-  const userId = useSelector(userIdSelector);
-  const currentChannel = useSelector(currentChannelSelector);
-  const currentChannelId = useSelector(currentChannelIdSelector);
+  const [fetchTwitchEmotes] = useLazyTwitchEmotesQuery();
+  const [fetchTwitchGlobalBadges] = useLazyTwitchGlobalBadgesQuery();
+  const [fetchTwitchChannelBadges] = useLazyTwitchChannelBadgesQuery();
+  const [fetchBlockedUsers] = useLazyBlockedUsersQuery();
 
-  const isTwitchEmotesLoaded = useSelector(isTwitchEmotesLoadedSelector);
-  const isBttvGlobalEmotesLoaded = useSelector(
-    isBttvGlobalEmotesLoadedSelector,
-  );
-  const isBttvChannelEmotesLoaded = useSelector(
-    isBttvChannelEmotesLoadedSelector,
-  );
-  const isFfzGlobalEmotesLoaded = useSelector(isFfzGlobalEmotesLoadedSelector);
-  const isFfzChannelEmotesLoaded = useSelector(
-    isFfzChannelEmotesLoadedSelector,
-  );
-  const isGlobalBadgesLoaded = useSelector(isGlobalBadgesLoadedSelector);
-  const isChannelBadgesLoaded = useSelector(isChannelBadgesLoadedSelector);
-  const isHistoryLoaded = useSelector(isHistoryLoadedSelector);
-  const isBlockedUsersLoaded = useSelector(isBlockedUsersLoadedSelector);
-  const isHistoryAdded = useSelector(isHistoryAddedSelector);
+  const [fetchBttvGlobalEmotes] = useLazyBttvGlobalEmotesQuery();
+  const [fetchBttvChannelEmotes] = useLazyBttvChannelEmotesQuery();
+  const [fetchBttvGlobalBadges] = useLazyBttvGlobalBadgesQuery();
 
-  const isAllEmotesLoaded =
-    (isAuth ? isTwitchEmotesLoaded : true) &&
-    isBttvGlobalEmotesLoaded &&
-    isBttvChannelEmotesLoaded &&
-    isFfzGlobalEmotesLoaded &&
-    isFfzChannelEmotesLoaded;
+  const [fetchFfzGlobalEmotes] = useLazyFfzGlobalEmotesQuery();
+  const [fetchFfzChannelEmotes] = useLazyFfzChannelEmotesQuery();
+  const [fetchFfzGlobalBadges] = useLazyFfzGlobalBadgesQuery();
+  const [fetchFfzApGlobalBadges] = useLazyFfzApGlobalBadgesQuery();
 
-  const isReadyToAddHistory =
-    isAuthReady &&
-    currentChannel &&
-    !isHistoryAdded &&
-    isAllEmotesLoaded &&
-    (isAuth ? isBlockedUsersLoaded : true) &&
-    isGlobalBadgesLoaded &&
-    isChannelBadgesLoaded &&
-    isHistoryLoaded;
+  const [fetchStvGlobalEmotes] = useLazyStvGlobalEmotesQuery();
+  const [fetchStvChannelEmotes] = useLazyStvChannelEmotesQuery();
+  const [fetchStvCosmetics] = useLazyStvCosmeticsQuery();
+
+  const [fetchChatterinoBadges] = useLazyChatterinoBadgesQuery();
+
+  const [fetchRecentMessages] = useLazyRecentMessagesQuery();
 
   useEffect(() => {
-    dispatch(fetchBttvGlobalEmotes());
-    dispatch(fetchFfzGlobalEmotes());
-    dispatch(fetchGlobalBadges());
-  }, [dispatch]);
+    if (!isAuth || !meId) return;
+
+    fetchBlockedUsers(meId, true);
+  }, [isAuth, meId]);
+
+  // refetch twitch emote sets when channel changes
+  useEffect(() => {
+    if (!isAuth || !currentChannelName) return;
+
+    fetchTwitchEmotes(undefined, true);
+  }, [isAuth, currentChannelName]);
 
   useEffect(() => {
-    if (isReadyToAddHistory) {
-      dispatch(addRecentMessages(currentChannel));
+    fetchTwitchGlobalBadges(undefined, true);
+
+    if (options.bttv.emotes) fetchBttvGlobalEmotes(undefined, true);
+    if (options.bttv.badges) fetchBttvGlobalBadges(undefined, true);
+
+    if (options.ffz.emotes) fetchFfzGlobalEmotes(undefined, true);
+    if (options.ffz.badges) {
+      fetchFfzGlobalBadges(undefined, true);
+      fetchFfzApGlobalBadges(undefined, true);
     }
-  }, [dispatch, currentChannel, isReadyToAddHistory]);
+
+    if (options.stv.emotes) fetchStvGlobalEmotes(undefined, true);
+    if (options.stv.badges || options.stv.paints) {
+      fetchStvCosmetics(undefined, true);
+    }
+
+    if (options.chatterino.badges) fetchChatterinoBadges(undefined, true);
+  }, [
+    options.bttv.emotes,
+    options.bttv.badges,
+    options.ffz.emotes,
+    options.ffz.badges,
+    options.stv.emotes,
+    options.stv.badges,
+    options.stv.paints,
+    options.chatterino.badges,
+  ]);
 
   useEffect(() => {
-    if (!isHistoryAdded && currentChannel) {
-      dispatch(fetchRecentMessages(currentChannel));
-    }
-  }, [dispatch, currentChannel, isHistoryAdded]);
+    if (!currentChannelId) return;
+
+    fetchTwitchChannelBadges(currentChannelId, true);
+
+    if (options.bttv.emotes) fetchBttvChannelEmotes(currentChannelId, true);
+    if (options.ffz.emotes) fetchFfzChannelEmotes(currentChannelId, true);
+    if (options.stv.emotes) fetchStvChannelEmotes(currentChannelId, true);
+  }, [
+    currentChannelId,
+    options.bttv.emotes,
+    options.ffz.emotes,
+    options.stv.emotes,
+  ]);
 
   useEffect(() => {
-    if (isAuthReady && isAuth && userId) {
-      dispatch(fetchTwitchEmotes(userId));
-      dispatch(fetchBlockedUsers(userId));
+    if (!currentChannelName) return;
+
+    if (options.recentMessages.load) {
+      fetchRecentMessages(currentChannelName, true);
     }
-  }, [dispatch, isAuthReady, isAuth, userId]);
-
-  // TODO: check if emotes and badges is already in the store
-
-  useEffect(() => {
-    if (currentChannel && currentChannelId) {
-      const params = {
-        channel: currentChannel,
-        channelId: currentChannelId,
-      };
-
-      dispatch(fetchBttvChannelEmotes(params));
-      dispatch(fetchFfzChannelEmotes(params));
-      dispatch(fetchChannelBadges(params));
-    }
-  }, [dispatch, currentChannel, currentChannelId]);
+  }, [currentChannelName, options.recentMessages.load]);
 };
 
 export default useFetchChatData;
