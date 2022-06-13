@@ -47,5 +47,9 @@ export const bttvChannelEmotesSelector = (state: RootState) =>
   bttvApi.endpoints.bttvChannelEmotes.select(currentChannelIdSelector(state)!)(
     state,
   );
+export const bttvEmoteSelector = (id: string) => (state: RootState) =>
+  bttvGlobalEmotesSelector(state).data?.entries[id] ||
+  bttvChannelEmotesSelector(state).data?.entries[id] ||
+  null;
 export const bttvGlobalBadgesSelector =
   bttvApi.endpoints.bttvGlobalBadges.select();
