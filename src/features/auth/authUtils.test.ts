@@ -1,14 +1,14 @@
 import { LS_USER } from 'utils/constants';
 import {
-  readUserFromLocatStorage,
-  writeUserToLocatStorage,
+  readUserFromLocalStorage,
+  writeUserToLocalStorage,
 } from 'features/auth/authUtils';
 
 describe('auth utils', () => {
   beforeEach(() => localStorage.clear());
 
   it('should read user from local storage', () => {
-    expect(readUserFromLocatStorage()).toBe(null);
+    expect(readUserFromLocalStorage()).toBe(null);
 
     const user = JSON.stringify({
       id: '123456',
@@ -17,14 +17,14 @@ describe('auth utils', () => {
 
     localStorage.setItem(LS_USER, user);
 
-    const result = readUserFromLocatStorage() as any;
+    const result = readUserFromLocalStorage() as any;
 
     expect(result.id).toBe('123456');
     expect(result.login).toBe('twitch');
   });
 
   it('should write user to local storage', () => {
-    writeUserToLocatStorage({
+    writeUserToLocalStorage({
       id: '123456',
       login: 'twitch',
     });

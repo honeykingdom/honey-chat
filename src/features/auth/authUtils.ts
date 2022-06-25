@@ -3,6 +3,8 @@ import {
   TWITCH_API_CLIENT_ID,
   TWITCH_API_REDIRECT_URI,
   LS_USER,
+  LS_ACCESS_TOKEN,
+  LS_ID_TOKEN,
 } from 'utils/constants';
 
 type StoredUser = {
@@ -43,11 +45,17 @@ export const getAuthUrl = () => {
 export const isAuthRedirect = (hash: string) =>
   hash.startsWith('#access_token=');
 
-export const writeUserToLocatStorage = (user: StoredUser) => {
+export const clearAuthData = () => {
+  localStorage.removeItem(LS_USER);
+  localStorage.removeItem(LS_ACCESS_TOKEN);
+  localStorage.removeItem(LS_ID_TOKEN);
+};
+
+export const writeUserToLocalStorage = (user: StoredUser) => {
   localStorage.setItem(LS_USER, JSON.stringify(user));
 };
 
-export const readUserFromLocatStorage = (): StoredUser | null => {
+export const readUserFromLocalStorage = (): StoredUser | null => {
   let user;
 
   try {
