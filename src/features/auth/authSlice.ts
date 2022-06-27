@@ -1,74 +1,61 @@
-/* eslint-disable no-param-reassign */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-import * as api from 'api';
-import type { FetchStatus } from 'utils/types';
-import { writeUserToLocatStorage } from 'features/auth/authUtils';
+import { twitchApi } from 'features/api/twitch/twitchApiSlice';
 
 type AuthState = {
-  status: FetchStatus;
-  userId: string | null;
-  userLogin: string | null;
+  status: 'idle' | 'pending' | 'success' | 'error';
+  accessToken: string | null;
+  user: {
+    id: string;
+    login: string;
+  } | null;
 };
 
-type InitializeAuth = {
-  isAuth: boolean;
-  userId?: string;
-  userLogin?: string;
+const initialAuth = {
+  accessToken: null,
+  user: null,
 };
 
 export const initialState: AuthState = {
   status: 'idle',
-  userId: null,
-  userLogin: null,
+  ...initialAuth,
 };
 
-export const fetchUser = createAsyncThunk(
-  'auth/fetchUser',
-  async (userId: string) => {
-    const users = await api.fetchUser(userId);
-    const { id, login } = users.data[0];
-    const user = { id, login };
+const errorState: AuthState = { status: 'error', ...initialAuth };
 
-    writeUserToLocatStorage(user);
-
-    return user;
-  },
-);
+type InitializeAuthPayload = Pick<AuthState, 'status'> &
+  Partial<Omit<AuthState, 'status'>>;
 
 const auth = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    initializeAuth: (state, { payload }: PayloadAction<InitializeAuth>) => {
-      state.status = payload.isAuth ? 'success' : 'error';
+    initializeAuth: (
+      state,
+      { payload }: PayloadAction<InitializeAuthPayload>,
+    ) => {
+      state.status = 'success';
 
-      if (payload.userId) {
-        state.userId = payload.userId;
-      }
-
-      if (payload.userLogin) {
-        state.userLogin = payload.userLogin;
-      }
+      if (payload.accessToken) state.accessToken = payload.accessToken;
+      if (payload.user) state.user = payload.user;
     },
 
-    invalidateAuth: (): AuthState => initialState,
+    invalidateAuth: (): AuthState => errorState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUser.pending, (state) => {
-      state.status = 'loading';
-    });
-
-    builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
-      state.status = 'success';
-      state.userId = payload.id;
-      state.userLogin = payload.login;
-    });
-
-    builder.addCase(fetchUser.rejected, (state) => {
-      state.status = 'error';
-    });
+    builder.addMatcher(
+      isAnyOf(
+        twitchApi.endpoints.user.matchRejected,
+        twitchApi.endpoints.blockedUsers.matchRejected,
+        twitchApi.endpoints.twitchEmotes.matchRejected,
+        twitchApi.endpoints.twitchClip.matchRejected,
+        twitchApi.endpoints.twitchVideo.matchRejected,
+      ),
+      (state, { payload }) => {
+        // Invalid OAuth token
+        if (payload?.status === 401) return errorState;
+      },
+    );
   },
 });
 
