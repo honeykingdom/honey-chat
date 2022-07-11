@@ -1,0 +1,50 @@
+import type { StvEmote } from 'features/api';
+import { MessagePartType } from 'features/messages';
+import {
+  BTTV_EMOTES_MODIFIERS,
+  FFZ_EMOTES_MODIFIERS,
+} from '../emotesConstants';
+
+const isBttvEmoteModifier = (name: string): false | string =>
+  BTTV_EMOTES_MODIFIERS[name] || false;
+
+// ignore ffzEmote.margins, extra_width and shrink_to_fit for now
+const isFfzEmoteModifier = (id: string): false | string =>
+  FFZ_EMOTES_MODIFIERS[id] || false;
+
+// https://github.com/FrankerFaceZ/Add-Ons/blob/master/src/7tv-emotes/modules/emotes.js#L195
+const isStvEmoteModifier = (emote: StvEmote) =>
+  emote.visibility_simple.includes('ZERO_WIDTH') ? '0' : false;
+
+function isEmoteModifier(
+  name: string,
+  type: MessagePartType.BTTV_EMOTE,
+): false | string;
+function isEmoteModifier(
+  id: string,
+  type: MessagePartType.FFZ_EMOTE,
+): false | string;
+function isEmoteModifier(
+  emote: StvEmote,
+  type: MessagePartType.STV_EMOTE,
+): false | string;
+function isEmoteModifier(
+  content: string | StvEmote,
+  type: MessagePartType,
+): false | string {
+  if (type === MessagePartType.BTTV_EMOTE) {
+    return isBttvEmoteModifier(content as string);
+  }
+
+  if (type === MessagePartType.FFZ_EMOTE) {
+    return isFfzEmoteModifier(content as string);
+  }
+
+  if (type === MessagePartType.STV_EMOTE) {
+    return isStvEmoteModifier(content as StvEmote);
+  }
+
+  return false;
+}
+
+export default isEmoteModifier;
