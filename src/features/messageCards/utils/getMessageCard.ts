@@ -4,15 +4,18 @@ import type {
 } from 'features/messages/messagesSlice';
 
 // https://regex101.com/r/jGbDV1/5
-const twitchClipRegex = /^(?:https?:\/\/)?(?:clips\.twitch\.tv\/|(?:www\.|m\.)?twitch\.tv\/(?:[\d\w]+)\/clip\/)([\d\w-]+)(?:\?.+)?$/;
+const TWITCH_CLIP_REGEX =
+  /^(?:https?:\/\/)?(?:clips\.twitch\.tv\/|(?:www\.|m\.)?twitch\.tv\/(?:[\d\w]+)\/clip\/)([\d\w-]+)(?:\?.+)?$/;
 
 // https://regex101.com/r/xsgeA4/4
-const twitchVideoRegex = /^(?:https?:\/\/)?(?:www\.|m\.)?twitch\.tv\/videos\/(\d+)(?:\?.+)?$/;
+const TWITCH_VIDEO_REGEX =
+  /^(?:https?:\/\/)?(?:www\.|m\.)?twitch\.tv\/videos\/(\d+)(?:\?.+)?$/;
 
 // https://regexr.com/3dj5t
-const youtubeVideoRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/;
+const YOUTUBE_VIDEO_REGEX =
+  /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/;
 
-const getMessageCardFromEntities = (
+const getMessageCard = (
   entities: MessageEntity[],
   [parseTwitch, parseYoutube]: [boolean, boolean] = [true, true],
 ): MessageCardInfo | null => {
@@ -23,7 +26,7 @@ const getMessageCardFromEntities = (
     if (typeof entity === 'object' && entity.type === 'link') {
       if (parseTwitch) {
         // twitch clip
-        let m = twitchClipRegex.exec(entity.text);
+        let m = TWITCH_CLIP_REGEX.exec(entity.text);
 
         if (m) {
           return {
@@ -34,7 +37,7 @@ const getMessageCardFromEntities = (
         }
 
         // twitch video
-        m = twitchVideoRegex.exec(entity.text);
+        m = TWITCH_VIDEO_REGEX.exec(entity.text);
 
         if (m) {
           return {
@@ -47,7 +50,7 @@ const getMessageCardFromEntities = (
 
       if (parseYoutube) {
         // youtube video
-        const m = youtubeVideoRegex.exec(entity.text);
+        const m = YOUTUBE_VIDEO_REGEX.exec(entity.text);
 
         if (m) {
           return {
@@ -63,4 +66,4 @@ const getMessageCardFromEntities = (
   return null;
 };
 
-export default getMessageCardFromEntities;
+export default getMessageCard;
