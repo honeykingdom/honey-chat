@@ -1,194 +1,127 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as twitchIrc from '@honeykingdom/twitch-simple-irc';
-import { usePrevious } from 'react-use';
-
-import { NOTICE_MESSAGE_TAGS, LS_ACCESS_TOKEN } from 'utils/constants';
 import {
-  updateIsConnected,
-  updateGlobalUserParams,
-  updateUserParams,
-  updateRoomParams,
-} from 'features/chat/chatSlice';
-import { receiveMessage, clearChat } from 'features/messages/messagesSlice';
-import { invalidateAuth } from 'features/auth/authSlice';
+  Chat,
+  ChatEvents,
+  Commands,
+  Events,
+  GlobalUserStateMessage,
+} from 'twitch-js';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 import {
-  currentChannelSelector,
-  isConnectedSelector,
-} from 'features/chat/chatSelectors';
-import {
+  accessTokenSelector,
+  invalidateAuth,
   isAuthSelector,
-  isAuthReadySelector,
-  userLoginSelector,
-} from 'features/auth/authSelectors';
-import replaceEmojis from 'features/messages/utils/replaceEmojis';
+  meLoginSelector,
+} from 'features/auth';
+import {
+  channelsAdded,
+  channelRemoved,
+  clearChatReceived,
+  connected,
+  currentChannelChanged,
+  disconnected,
+  globalUserStateReceived,
+  messageSended,
+  noticeReceived,
+  privateMessageReceived,
+  reconnecting,
+  roomStateReceived,
+  userNoticeReceived,
+  userStateReceived,
+} from '../chatSlice';
 
 const useTwitchClient = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isAuthReady = useSelector(isAuthReadySelector);
-  const isAuth = useSelector(isAuthSelector);
-  const userLogin = useSelector(userLoginSelector);
-  const isConnected = useSelector(isConnectedSelector);
-  const currentChannel = useSelector(currentChannelSelector);
-  const prevChannel = usePrevious(currentChannel);
-  const clientRef = useRef<twitchIrc.Client | null>(null);
+  const isAuth = useAppSelector(isAuthSelector);
+  const token = useAppSelector(accessTokenSelector);
+  const username = useAppSelector(meLoginSelector);
 
-  const registerEvents = useCallback(
-    (client: typeof clientRef) => {
-      if (!client.current) return;
-
-      const handleRegister = () => dispatch(updateIsConnected(true));
-
-      const handleDisconnect = () => dispatch(updateIsConnected(false));
-
-      const handleGlobalUserState = (data: twitchIrc.GlobalUserStateEvent) =>
-        dispatch(updateGlobalUserParams(data));
-
-      const handleUserState = (data: twitchIrc.UserStateEvent) =>
-        dispatch(updateUserParams(data));
-
-      const handleRoomState = (data: twitchIrc.RoomStateEvent) =>
-        dispatch(updateRoomParams(data));
-
-      const handleMessage = (message: twitchIrc.MessageEvent) => {
-        dispatch(receiveMessage({ type: 'message', message }));
-      };
-
-      const handleNotice = (message: twitchIrc.NoticeEvent) => {
-        if (
-          client.current &&
-          message.message === 'Login authentication failed'
-        ) {
-          dispatch(invalidateAuth());
-          // eslint-disable-next-line no-param-reassign
-          client.current = null;
-          return;
-        }
-
-        dispatch(receiveMessage({ type: 'notice', message }));
-      };
-
-      const handleUserNotice = (message: twitchIrc.UserNoticeEvent) =>
-        dispatch(receiveMessage({ type: 'user-notice', message }));
-
-      const handleClearChat = (data: twitchIrc.ClearChatEvent) => {
-        if (!data.tags.targetUserId) return;
-        dispatch(clearChat(data));
-      };
-
-      client.current.on('register', handleRegister);
-      client.current.on('disconnect', handleDisconnect);
-      client.current.on('globaluserstate', handleGlobalUserState);
-      client.current.on('userstate', handleUserState);
-      client.current.on('roomstate', handleRoomState);
-      client.current.on('message', handleMessage);
-      client.current.on('notice', handleNotice);
-      client.current.on('usernotice', handleUserNotice);
-      client.current.on('clearchat', handleClearChat);
-    },
-    [dispatch],
-  );
-
-  useEffect(
-    () => () => {
-      if (clientRef.current) {
-        clientRef.current = null;
-      }
-    },
-    [clientRef],
-  );
+  const chatRef = useRef<Chat | null>(null);
 
   useEffect(() => {
-    if (!currentChannel || !isAuthReady) return;
+    if (!isAuth) return;
 
-    if (!clientRef.current) {
-      const options = isAuth
-        ? {
-            name: userLogin as string,
-            auth: localStorage.getItem(LS_ACCESS_TOKEN) as string,
-          }
-        : null;
+    const options = token && username ? { token, username } : {};
+    const chat = new Chat({
+      ...options,
+      log: { level: 'silent' },
+    });
 
-      (async () => {
-        clientRef.current = twitchIrc.Client.create(options);
+    chat.on(Commands.WELCOME, () => dispatch(connected()));
+    chat.on(Commands.GLOBALUSERSTATE, (m) =>
+      dispatch(globalUserStateReceived((m as GlobalUserStateMessage).tags)),
+    );
+    chat.on(Commands.USER_STATE, (m) =>
+      dispatch(userStateReceived({ channel: m.channel, tags: m.tags })),
+    );
+    chat.on(Commands.ROOM_STATE, (m) =>
+      dispatch(roomStateReceived({ channel: m.channel, tags: m.tags })),
+    );
 
-        registerEvents(clientRef);
+    // socket closed
+    chat.on(ChatEvents.DISCONNECTED, () => dispatch(disconnected()));
+    // ping failed
+    chat.on(ChatEvents.RECONNECT, () => dispatch(reconnecting()));
 
-        await clientRef.current.connect();
+    chat.on(Events.AUTHENTICATION_FAILED, () => dispatch(invalidateAuth()));
 
-        clientRef.current.join(currentChannel);
-      })();
+    chat.on(Events.PRIVATE_MESSAGE, (m) => dispatch(privateMessageReceived(m)));
+    chat.on(Events.NOTICE, (m) => dispatch(noticeReceived(m)));
+    chat.on(Events.USER_NOTICE, (m) => dispatch(userNoticeReceived(m)));
+    chat.on(Events.CLEAR_CHAT, (m) => dispatch(clearChatReceived(m)));
 
-      return;
-    }
+    chatRef.current = chat;
 
-    if (prevChannel && prevChannel !== currentChannel) {
-      clientRef.current.part(prevChannel);
-      clientRef.current.join(currentChannel);
-    }
-  }, [
-    dispatch,
-    registerEvents,
-    isAuth,
-    isAuthReady,
-    isConnected,
-    userLogin,
-    currentChannel,
-    prevChannel,
-  ]);
+    chat.connect().then(async () => {
+      const lsChannelsRaw = localStorage.getItem('channels');
+      const lsChannels = lsChannelsRaw?.split(',') || [];
 
-  const sendMessage = useCallback(
-    (channel: string, message: string) => {
-      if (!clientRef.current || !message.trim()) return;
+      dispatch(channelsAdded(lsChannels));
+      dispatch(currentChannelChanged(lsChannels[0]));
 
-      const normalizedMessage = replaceEmojis(message.trim());
+      // const channel = 'cohhcarnage';
+      // const channel = 'dmitryscaletta';
+      // const channel = 'melharucos';
+    });
+  }, [isAuth, token, username]);
 
-      clientRef.current.say(channel, normalizedMessage);
+  const joinChannel = useCallback((channel: string) => {
+    const chat = chatRef.current;
 
-      function handleUserState(data: twitchIrc.UserStateEvent) {
-        if (data.channel === channel) {
-          const ownMessage = {
-            message: normalizedMessage,
-            channel,
-            tags: data.tags,
-          };
+    if (!chat) return;
 
-          dispatch(
-            receiveMessage({ type: 'own-message', message: ownMessage }),
-          );
+    dispatch(channelsAdded([channel]));
 
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          removeListeners();
-        }
-      }
+    chat.join(channel);
+  }, []);
 
-      function handleNotice(data: twitchIrc.NoticeEvent) {
-        if (
-          data.channel === channel &&
-          NOTICE_MESSAGE_TAGS.includes(data.tags.msgId)
-        ) {
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          removeListeners();
-        }
-      }
+  const partChannel = useCallback((channel: string) => {
+    const chat = chatRef.current;
 
-      function removeListeners() {
-        if (!clientRef.current) return;
+    if (!chat) return;
 
-        clientRef.current.off('notice', handleNotice);
-        clientRef.current.off('userstate', handleUserState);
-      }
+    chat.part(channel);
 
-      clientRef.current.on('notice', handleNotice);
-      clientRef.current.on('userstate', handleUserState);
+    dispatch(channelRemoved(channel));
+  }, []);
 
-      setTimeout(() => removeListeners(), 10000);
-    },
-    [clientRef, dispatch],
-  );
+  const sendMessage = useCallback(async (channel: string, message: string) => {
+    const chat = chatRef.current;
 
-  return { sendMessage };
+    if (!chat) return;
+
+    // TODO: replace emojis like :haha:
+    await chat.say(channel, message);
+
+    dispatch(messageSended({ channel, message }));
+  }, []);
+
+  return {
+    joinChannel,
+    partChannel,
+    sendMessage,
+  };
 };
 
 export default useTwitchClient;
