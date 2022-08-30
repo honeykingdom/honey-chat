@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 const sizes = {
   small: css`
@@ -12,9 +13,7 @@ const sizes = {
   // large: css``,
 };
 
-const IconButton = styled.button.attrs({
-  type: 'button',
-})<{ $size?: 'small' | 'medium' }>`
+const IconButton = styled.button<{ $size?: 'small' | 'medium' }>`
   margin: 0;
   padding: 0;
   display: flex;
