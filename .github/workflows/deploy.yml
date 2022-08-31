@@ -1,38 +1,38 @@
-name: Deploy
-on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:
+# name: Deploy
+# on:
+#   push:
+#     branches:
+#       - master
+#   workflow_dispatch:
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
 
-      - name: Use Node 14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-          registry-url: https://npm.pkg.github.com
-          scope: '@honeykingdom'
+#       - name: Use Node 14
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: 14.x
+#           registry-url: https://npm.pkg.github.com
+#           scope: '@honeykingdom'
 
-      - name: Install dependencies (with cache)
-        uses: bahmutov/npm-install@v1
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+#       - name: Install dependencies (with cache)
+#         uses: bahmutov/npm-install@v1
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
-      - name: Test
-        run: yarn test --ci --coverage --maxWorkers=2
+#       - name: Test
+#         run: yarn test --ci --coverage --maxWorkers=2
 
-      - name: Build
-        run: yarn build
+#       - name: Build
+#         run: yarn build
 
-      - name: Publish
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+#       - name: Publish
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./build
