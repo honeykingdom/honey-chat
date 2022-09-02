@@ -1,0 +1,2032 @@
+[
+  {
+    "id": "603cb588c20d020014423c61",
+    "name": "FeelsDankMan",
+    "owner": {
+      "id": "603cb1c696832ffa78cc3bc2",
+      "twitch_id": "",
+      "login": "clyvere",
+      "display_name": "clyverE",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      27,
+      41,
+      65,
+      110
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603cb588c20d020014423c61/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603cb588c20d020014423c61/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603cb588c20d020014423c61/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603cb588c20d020014423c61/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603cb424c20d020014423c4e",
+    "name": "RebeccaBlack",
+    "owner": {
+      "id": "603caa3396832ffa78c1aa0d",
+      "twitch_id": "",
+      "login": "no_title24",
+      "display_name": "no_title24",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      23,
+      34,
+      54,
+      92
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603cb424c20d020014423c4e/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603cb424c20d020014423c4e/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603cb424c20d020014423c4e/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603cb424c20d020014423c4e/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603ccbc82c7b4500143b46d6",
+    "name": "peepoHappy",
+    "owner": {
+      "id": "603ccb8b96832ffa78f209b7",
+      "twitch_id": "",
+      "login": "widepeepoflo",
+      "display_name": "widepeepoFlo",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603ccbc82c7b4500143b46d6/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603ccbc82c7b4500143b46d6/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603ccbc82c7b4500143b46d6/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603ccbc82c7b4500143b46d6/4x"
+      ]
+    ]
+  },
+  {
+    "id": "604e825e688b360014d83d7e",
+    "name": "7tvM",
+    "owner": {
+      "id": "603e992496832ffa78b1d2cc",
+      "twitch_id": "",
+      "login": "sirinoks",
+      "display_name": "Sirinoks",
+      "role": {
+        "id": "6102002eab1aa12bf648cfcd",
+        "name": "Admin",
+        "position": 76,
+        "color": 14105645,
+        "allowed": 64,
+        "denied": 0
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/604e825e688b360014d83d7e/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/604e825e688b360014d83d7e/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/604e825e688b360014d83d7e/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/604e825e688b360014d83d7e/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603caf21c20d020014423c16",
+    "name": "BillyApprove",
+    "owner": {
+      "id": "603cac0896832ffa78c463e1",
+      "twitch_id": "",
+      "login": "rupusen",
+      "display_name": "rupusen",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603caf21c20d020014423c16/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603caf21c20d020014423c16/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603caf21c20d020014423c16/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603caf21c20d020014423c16/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6043aa351d4963000d9dae57",
+    "name": "forsenPls",
+    "owner": {
+      "id": "603bb6a596832ffa78e7b27b",
+      "twitch_id": "",
+      "login": "megakill3",
+      "display_name": "MegaKill3",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "add3acfec2fb4256816e944d79b94a0c"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6043aa351d4963000d9dae57/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6043aa351d4963000d9dae57/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6043aa351d4963000d9dae57/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6043aa351d4963000d9dae57/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60421fe677137b000de9e683",
+    "name": "reckH",
+    "owner": {
+      "id": "603ca86596832ffa78bf4e2b",
+      "twitch_id": "",
+      "login": "virtualzombie",
+      "display_name": "virtualzombie",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60421fe677137b000de9e683/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60421fe677137b000de9e683/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60421fe677137b000de9e683/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60421fe677137b000de9e683/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603cb55fc20d020014423c5e",
+    "name": "WAYTOODANK",
+    "owner": {
+      "id": "603cb1c696832ffa78cc3bc2",
+      "twitch_id": "",
+      "login": "clyvere",
+      "display_name": "clyverE",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603cb55fc20d020014423c5e/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603cb55fc20d020014423c5e/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603cb55fc20d020014423c5e/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603cb55fc20d020014423c5e/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603ca884faf3a00014dff0ab",
+    "name": "gachiBASS",
+    "owner": {
+      "id": "603ca86596832ffa78bf4e2b",
+      "twitch_id": "",
+      "login": "virtualzombie",
+      "display_name": "virtualzombie",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603ca884faf3a00014dff0ab/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603ca884faf3a00014dff0ab/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603ca884faf3a00014dff0ab/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603ca884faf3a00014dff0ab/4x"
+      ]
+    ]
+  },
+  {
+    "id": "604408893c0628001468af37",
+    "name": "FeelsWeirdMan",
+    "owner": {
+      "id": "603d1f9196832ffa78980e92",
+      "twitch_id": "",
+      "login": "mtcuppers",
+      "display_name": "mtcuppers",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/604408893c0628001468af37/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/604408893c0628001468af37/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/604408893c0628001468af37/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/604408893c0628001468af37/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6044445d3c0628001468af41",
+    "name": "CrayonTime",
+    "owner": {
+      "id": "603cb87696832ffa78d57767",
+      "twitch_id": "",
+      "login": "obscurelambda",
+      "display_name": "obscurelambda",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6044445d3c0628001468af41/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6044445d3c0628001468af41/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6044445d3c0628001468af41/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6044445d3c0628001468af41/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603cb41bc20d020014423c4c",
+    "name": "BasedGod",
+    "owner": {
+      "id": "603ca86596832ffa78bf4e2b",
+      "twitch_id": "",
+      "login": "virtualzombie",
+      "display_name": "virtualzombie",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603cb41bc20d020014423c4c/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603cb41bc20d020014423c4c/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603cb41bc20d020014423c4c/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603cb41bc20d020014423c4c/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60439add1d4963000d9dae45",
+    "name": "WineTime",
+    "owner": {
+      "id": "603bb6a596832ffa78e7b27b",
+      "twitch_id": "",
+      "login": "megakill3",
+      "display_name": "MegaKill3",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "add3acfec2fb4256816e944d79b94a0c"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60439add1d4963000d9dae45/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60439add1d4963000d9dae45/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60439add1d4963000d9dae45/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60439add1d4963000d9dae45/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6040aacfcf6746000db1034f",
+    "name": "TeaTime",
+    "owner": {
+      "id": "603ca8f696832ffa78c01eb4",
+      "twitch_id": "",
+      "login": "mauriplss",
+      "display_name": "Mauriplss",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6040aacfcf6746000db1034f/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6040aacfcf6746000db1034f/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6040aacfcf6746000db1034f/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6040aacfcf6746000db1034f/4x"
+      ]
+    ]
+  },
+  {
+    "id": "603cb71c73d7a5001441f995",
+    "name": "Clap",
+    "owner": {
+      "id": "603cad0896832ffa78c5dfe8",
+      "twitch_id": "",
+      "login": "cheese_of_agony",
+      "display_name": "Cheese_Of_Agony",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/603cb71c73d7a5001441f995/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/603cb71c73d7a5001441f995/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/603cb71c73d7a5001441f995/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/603cb71c73d7a5001441f995/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6042998c1d4963000d9dae34",
+    "name": "FeelsOkayMan",
+    "owner": {
+      "id": "603bb6a596832ffa78e7b27b",
+      "twitch_id": "",
+      "login": "megakill3",
+      "display_name": "MegaKill3",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "add3acfec2fb4256816e944d79b94a0c"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/png",
+    "status": 3,
+    "tags": [],
+    "width": [
+      33,
+      49,
+      78,
+      132
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6042998c1d4963000d9dae34/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6042998c1d4963000d9dae34/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6042998c1d4963000d9dae34/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6042998c1d4963000d9dae34/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6043ac691d4963000d9dae58",
+    "name": "GuitarTime",
+    "owner": {
+      "id": "603bb6a596832ffa78e7b27b",
+      "twitch_id": "",
+      "login": "megakill3",
+      "display_name": "MegaKill3",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "add3acfec2fb4256816e944d79b94a0c"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/gif",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6043ac691d4963000d9dae58/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6043ac691d4963000d9dae58/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6043ac691d4963000d9dae58/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6043ac691d4963000d9dae58/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60a3ea8db0dc46d7b43896d7",
+    "name": "FeelsStrongMan",
+    "owner": {
+      "id": "6053853cb4d31e459fdaa2dc",
+      "twitch_id": "",
+      "login": "laden",
+      "display_name": "Laden",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80985dddf0334853b854fe3dff7e4af1"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60a3ea8db0dc46d7b43896d7/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60a3ea8db0dc46d7b43896d7/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60a3ea8db0dc46d7b43896d7/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60a3ea8db0dc46d7b43896d7/4x"
+      ]
+    ]
+  },
+  {
+    "id": "609bdf56f91bc8702d0575e1",
+    "name": "gachiGASM",
+    "owner": {
+      "id": "6053853cb4d31e459fdaa2dc",
+      "twitch_id": "",
+      "login": "laden",
+      "display_name": "Laden",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80985dddf0334853b854fe3dff7e4af1"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      27,
+      41,
+      65,
+      111
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/609bdf56f91bc8702d0575e1/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/609bdf56f91bc8702d0575e1/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/609bdf56f91bc8702d0575e1/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/609bdf56f91bc8702d0575e1/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6084b792fcf1f9923f6cf442",
+    "name": "Clap2",
+    "owner": {
+      "id": "6053853cb4d31e459fdaa2dc",
+      "twitch_id": "",
+      "login": "laden",
+      "display_name": "Laden",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80985dddf0334853b854fe3dff7e4af1"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6084b792fcf1f9923f6cf442/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6084b792fcf1f9923f6cf442/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6084b792fcf1f9923f6cf442/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6084b792fcf1f9923f6cf442/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60a3ebefa71d9fd110221f51",
+    "name": "AYAYA",
+    "owner": {
+      "id": "609ad9f859e7ffa35ea5391b",
+      "twitch_id": "",
+      "login": "admiralbulldog",
+      "display_name": "AdmiralBulldog",
+      "role": {
+        "id": "6076a99409a4c63a38ebe802",
+        "name": "Verified",
+        "position": 1,
+        "color": 9520895,
+        "allowed": 523,
+        "denied": 0
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      49,
+      77,
+      131
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60a3ebefa71d9fd110221f51/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60a3ebefa71d9fd110221f51/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60a3ebefa71d9fd110221f51/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60a3ebefa71d9fd110221f51/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60a3e9ed89b7aa16a5839f46",
+    "name": "nymnCorn",
+    "owner": {
+      "id": "6053853cb4d31e459fdaa2dc",
+      "twitch_id": "",
+      "login": "laden",
+      "display_name": "Laden",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80985dddf0334853b854fe3dff7e4af1"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60a3e9ed89b7aa16a5839f46/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60a3e9ed89b7aa16a5839f46/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60a3e9ed89b7aa16a5839f46/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60a3e9ed89b7aa16a5839f46/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60a3fcafa71d9fd1102342d1",
+    "name": "RareParrot",
+    "owner": {
+      "id": "6053853cb4d31e459fdaa2dc",
+      "twitch_id": "",
+      "login": "laden",
+      "display_name": "Laden",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80985dddf0334853b854fe3dff7e4af1"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60a3fcafa71d9fd1102342d1/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60a3fcafa71d9fd1102342d1/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60a3fcafa71d9fd1102342d1/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60a3fcafa71d9fd1102342d1/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60ae4c385d3fdae583e6b619",
+    "name": "PianoTime",
+    "owner": {
+      "id": "60ae4b445d3fdae583d20e9a",
+      "twitch_id": "",
+      "login": "ethantp",
+      "display_name": "ethantp",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60ae4c385d3fdae583e6b619/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60ae4c385d3fdae583e6b619/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60ae4c385d3fdae583e6b619/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60ae4c385d3fdae583e6b619/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60a8597c928d15c10b5b6b0b",
+    "name": "knaDyppaHopeep",
+    "owner": {
+      "id": "603b7c7496832ffa78522da5",
+      "twitch_id": "",
+      "login": "anatoleam",
+      "display_name": "AnatoleAM",
+      "role": {
+        "id": "6102002eab1aa12bf648cfcd",
+        "name": "Admin",
+        "position": 76,
+        "color": 14105645,
+        "allowed": 64,
+        "denied": 0
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60a8597c928d15c10b5b6b0b/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60a8597c928d15c10b5b6b0b/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60a8597c928d15c10b5b6b0b/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60a8597c928d15c10b5b6b0b/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60aecf6b53c7fffa7c656779",
+    "name": "peepoSad",
+    "owner": {
+      "id": "6053853cb4d31e459fdaa2dc",
+      "twitch_id": "",
+      "login": "laden",
+      "display_name": "Laden",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80985dddf0334853b854fe3dff7e4af1"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60aecf6b53c7fffa7c656779/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60aecf6b53c7fffa7c656779/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60aecf6b53c7fffa7c656779/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60aecf6b53c7fffa7c656779/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60afca54a3648f409ab155b7",
+    "name": "PepePls",
+    "owner": {
+      "id": "603c7fca96832ffa788a5f14",
+      "twitch_id": "",
+      "login": "hyruverse",
+      "display_name": "hyruverse",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "a718445b670940d2ae7f945f056c36db"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60afca54a3648f409ab155b7/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60afca54a3648f409ab155b7/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60afca54a3648f409ab155b7/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60afca54a3648f409ab155b7/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60afbfbaa3648f409a6e5211",
+    "name": "YEAHBUT7TV",
+    "owner": {
+      "id": "603c7fca96832ffa788a5f14",
+      "twitch_id": "",
+      "login": "hyruverse",
+      "display_name": "hyruverse",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "a718445b670940d2ae7f945f056c36db"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      47,
+      71,
+      113,
+      191
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60afbfbaa3648f409a6e5211/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60afbfbaa3648f409a6e5211/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60afbfbaa3648f409a6e5211/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60afbfbaa3648f409a6e5211/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60b0dd2d726e10b6642ad03f",
+    "name": "AlienDance",
+    "owner": {
+      "id": "60ae434b5d3fdae58382926a",
+      "twitch_id": "",
+      "login": "ayyybubu",
+      "display_name": "ayyybubu",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "b03fcb7f0d9b47e5a9a37111258f04b8"
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60b0dd2d726e10b6642ad03f/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60b0dd2d726e10b6642ad03f/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60b0dd2d726e10b6642ad03f/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60b0dd2d726e10b6642ad03f/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60dd13426ef5a66f4134f804",
+    "name": "EZ",
+    "owner": {
+      "id": "60dd015111b123dd5019bb4f",
+      "twitch_id": "",
+      "login": "kh4n_02",
+      "display_name": "Kh4N_02",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60dd13426ef5a66f4134f804/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60dd13426ef5a66f4134f804/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60dd13426ef5a66f4134f804/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60dd13426ef5a66f4134f804/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60e5cded840f3a570108cd8d",
+    "name": "ppL",
+    "owner": {
+      "id": "60ae7643b351b8d1c09294b9",
+      "twitch_id": "",
+      "login": "sneeeze_",
+      "display_name": "Sneeeze_",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      16,
+      24,
+      39,
+      66
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60e5cded840f3a570108cd8d/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60e5cded840f3a570108cd8d/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60e5cded840f3a570108cd8d/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60e5cded840f3a570108cd8d/4x"
+      ]
+    ]
+  },
+  {
+    "id": "60e5d610a69fc8d27f2737b7",
+    "name": "Stare",
+    "owner": {
+      "id": "60635234452cea4685f1e42c",
+      "twitch_id": "",
+      "login": "psevdxnym",
+      "display_name": "PSEVDXNYM",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      37,
+      55,
+      87,
+      148
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/60e5d610a69fc8d27f2737b7/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/60e5d610a69fc8d27f2737b7/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/60e5d610a69fc8d27f2737b7/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/60e5d610a69fc8d27f2737b7/4x"
+      ]
+    ]
+  },
+  {
+    "id": "61159e9903dae26bc706eaa6",
+    "name": "RainTime",
+    "owner": {
+      "id": "60f06993e48dc1dc2fc7e4a3",
+      "twitch_id": "",
+      "login": "eternal_pestilence",
+      "display_name": "eternal_pestilence",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "80feeab5d56d41e38b030857beaacd43"
+    },
+    "visibility": 130,
+    "visibility_simple": [
+      "ZERO_WIDTH",
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/61159e9903dae26bc706eaa6/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/61159e9903dae26bc706eaa6/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/61159e9903dae26bc706eaa6/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/61159e9903dae26bc706eaa6/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6128ed55a50c52b1429e09dc",
+    "name": "PETPET",
+    "owner": {
+      "id": "60af6678a564afa26e61f9b5",
+      "twitch_id": "",
+      "login": "yamadaaoi",
+      "display_name": "YamadaAoi",
+      "role": {
+        "id": "60724f65e93d828bf8858789",
+        "name": "Moderator",
+        "position": 50,
+        "color": 3319890,
+        "allowed": 25535,
+        "denied": 0,
+        "default": true
+      }
+    },
+    "visibility": 130,
+    "visibility_simple": [
+      "GLOBAL",
+      "ZERO_WIDTH"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6128ed55a50c52b1429e09dc/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6128ed55a50c52b1429e09dc/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6128ed55a50c52b1429e09dc/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6128ed55a50c52b1429e09dc/4x"
+      ]
+    ]
+  },
+  {
+    "id": "612fc78b9a14cebbb339b113",
+    "name": "SteerR",
+    "owner": {
+      "id": "60ae81ff0bf2ee96aea05247",
+      "twitch_id": "",
+      "login": "snortexx",
+      "display_name": "snortexx",
+      "role": {
+        "id": "000000000000000000000000",
+        "name": "",
+        "position": 0,
+        "color": 0,
+        "allowed": 523,
+        "denied": 0,
+        "default": true
+      },
+      "profile_picture_id": "183b9b6ab7624a53966fb782ec0963e0"
+    },
+    "visibility": 130,
+    "visibility_simple": [
+      "ZERO_WIDTH",
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/612fc78b9a14cebbb339b113/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/612fc78b9a14cebbb339b113/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/612fc78b9a14cebbb339b113/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/612fc78b9a14cebbb339b113/4x"
+      ]
+    ]
+  },
+  {
+    "id": "6185d97a8d50b5f26ee802fb",
+    "name": "PartyParrot",
+    "owner": {
+      "id": "603b7c7496832ffa78522da5",
+      "twitch_id": "",
+      "login": "anatoleam",
+      "display_name": "AnatoleAM",
+      "role": {
+        "id": "6102002eab1aa12bf648cfcd",
+        "name": "Admin",
+        "position": 76,
+        "color": 14105645,
+        "allowed": 64,
+        "denied": 0
+      }
+    },
+    "visibility": 2,
+    "visibility_simple": [
+      "GLOBAL"
+    ],
+    "mime": "image/webp",
+    "status": 3,
+    "tags": [],
+    "width": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "height": [
+      32,
+      48,
+      76,
+      128
+    ],
+    "urls": [
+      [
+        "1",
+        "https://cdn.7tv.app/emote/6185d97a8d50b5f26ee802fb/1x"
+      ],
+      [
+        "2",
+        "https://cdn.7tv.app/emote/6185d97a8d50b5f26ee802fb/2x"
+      ],
+      [
+        "3",
+        "https://cdn.7tv.app/emote/6185d97a8d50b5f26ee802fb/3x"
+      ],
+      [
+        "4",
+        "https://cdn.7tv.app/emote/6185d97a8d50b5f26ee802fb/4x"
+      ]
+    ]
+  }
+]

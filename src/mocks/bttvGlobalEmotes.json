@@ -1,17 +1,5 @@
 [
   {
-    "id": "54fa928f01e468494b85b54f",
-    "code": "PedoBear",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fa92ee01e468494b85b553",
-    "code": "RebeccaBlack",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
     "id": "54fa8f1401e468494b85b537",
     "code": ":tf:",
     "imageType": "png",
@@ -48,32 +36,8 @@
     "userId": "5561169bd6b9d206222a8c19"
   },
   {
-    "id": "54fa913701e468494b85b546",
-    "code": "HerbPerve",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fa919901e468494b85b548",
-    "code": "iDog",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fa930801e468494b85b554",
-    "code": "rStrike",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
     "id": "54fa932201e468494b85b555",
     "code": "ShoopDaWhoop",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fa9cc901e468494b85b565",
-    "code": "SwedSwag",
     "imageType": "png",
     "userId": "5561169bd6b9d206222a8c19"
   },
@@ -90,12 +54,6 @@
     "userId": "5561169bd6b9d206222a8c19"
   },
   {
-    "id": "54fa934001e468494b85b556",
-    "code": "TopHam",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
     "id": "54fa935601e468494b85b557",
     "code": "TwaT",
     "imageType": "png",
@@ -108,18 +66,6 @@
     "userId": "5561169bd6b9d206222a8c19"
   },
   {
-    "id": "54fb603201abde735115ddb5",
-    "code": "SavageJerky",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "5622aaef3286c42e57d8e4ab",
-    "code": "Zappa",
-    "imageType": "png",
-    "userId": "54f93e618edd5fcd455f213f"
-  },
-  {
     "id": "566ca11a65dbbdab32ec0558",
     "code": "tehPoleCat",
     "imageType": "png",
@@ -128,12 +74,6 @@
   {
     "id": "566ca1a365dbbdab32ec055b",
     "code": "AngelThump",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fbef6601abde735115de57",
-    "code": "HHydro",
     "imageType": "png",
     "userId": "5561169bd6b9d206222a8c19"
   },
@@ -150,32 +90,8 @@
     "userId": "5561169bd6b9d206222a8c19"
   },
   {
-    "id": "54fbf02f01abde735115de5d",
-    "code": "ButterSauce",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fbf05a01abde735115de5e",
-    "code": "BaconEffect",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fbf07e01abde735115de5f",
-    "code": "SuchFraud",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
     "id": "54fbf09c01abde735115de61",
     "code": "CandianRage",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "54fbefc901abde735115de5a",
-    "code": "She'llBeRight",
     "imageType": "png",
     "userId": "5561169bd6b9d206222a8c19"
   },
@@ -194,18 +110,6 @@
   {
     "id": "550b344bff8ecee922d2a3c1",
     "code": "KaRappa",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "55189a5062e6bd0027aee082",
-    "code": "YetiZ",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "552d2fc2236a1aa17a996c5b",
-    "code": "miniJulia",
     "imageType": "png",
     "userId": "5561169bd6b9d206222a8c19"
   },
@@ -252,12 +156,6 @@
     "userId": "54f93e618edd5fcd455f213f"
   },
   {
-    "id": "54fbef8701abde735115de58",
-    "code": "iamsocal",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
     "id": "555981336ba1901877765555",
     "code": "haHAA",
     "imageType": "png",
@@ -284,12 +182,6 @@
   {
     "id": "566c9fc265dbbdab32ec053b",
     "code": "FeelsBadMan",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
-    "id": "566c9eeb65dbbdab32ec052b",
-    "code": "BasedGod",
     "imageType": "png",
     "userId": "5561169bd6b9d206222a8c19"
   },
@@ -342,12 +234,6 @@
     "userId": "5561169bd6b9d206222a8c19"
   },
   {
-    "id": "56d937f7216793c63ec140cb",
-    "code": "FCreep",
-    "imageType": "png",
-    "userId": "5957e86c36b6a43b492d3989"
-  },
-  {
     "id": "56e9f494fff3cc5c35e5287e",
     "code": "monkaS",
     "imageType": "png",
@@ -384,12 +270,6 @@
     "userId": "5561169bd6b9d206222a8c19"
   },
   {
-    "id": "580e438942170bfd57189866",
-    "code": "FeelsPumpkinMan",
-    "imageType": "png",
-    "userId": "5561169bd6b9d206222a8c19"
-  },
-  {
     "id": "59cf182fcbe2693d59d7bf46",
     "code": "SqShy",
     "imageType": "png",
@@ -406,5 +286,35 @@
     "code": "WubTF",
     "imageType": "png",
     "userId": "54f93e3e8edd5fcd455f213d"
+  },
+  {
+    "id": "5e76d2ab8c0f5c3723a9a87d",
+    "code": "cvR",
+    "imageType": "png",
+    "userId": "54ee2465b822020506c52a52"
+  },
+  {
+    "id": "5e76d2d2d112fc372574d222",
+    "code": "cvL",
+    "imageType": "png",
+    "userId": "54ee2465b822020506c52a52"
+  },
+  {
+    "id": "5e76d338d6581c3724c0f0b2",
+    "code": "cvHazmat",
+    "imageType": "png",
+    "userId": "54ee2465b822020506c52a52"
+  },
+  {
+    "id": "5e76d399d6581c3724c0f0b8",
+    "code": "cvMask",
+    "imageType": "png",
+    "userId": "54ee2465b822020506c52a52"
+  },
+  {
+    "id": "5ffdf28dc96152314ad63960",
+    "code": "DogChamp",
+    "imageType": "png",
+    "userId": "54f92c8c34fde4ae450d8d26"
   }
 ]

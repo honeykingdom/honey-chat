@@ -84,6 +84,20 @@
         }
       }
     },
+    "ambassador": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/2cbc339f-34f4-488a-ae51-efdf74f4e323/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/2cbc339f-34f4-488a-ae51-efdf74f4e323/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/2cbc339f-34f4-488a-ae51-efdf74f4e323/3",
+          "description": "Twitch Ambassador",
+          "title": "Twitch Ambassador",
+          "click_action": "visit_url",
+          "click_url": "https://www.twitch.tv/team/ambassadors",
+          "last_updated": null
+        }
+      }
+    },
     "anomaly-2_1": {
       "versions": {
         "1": {
@@ -120,6 +134,20 @@
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/ca3db7f7-18f5-487e-a329-cd0b538ee979/3",
           "description": "Anonymous Cheerer",
           "title": "Anonymous Cheerer",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        }
+      }
+    },
+    "artist-badge": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/4300a897-03dc-4e83-8c0e-c332fee7057f/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/4300a897-03dc-4e83-8c0e-c332fee7057f/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/4300a897-03dc-4e83-8c0e-c332fee7057f/3",
+          "description": "Artist on this Channel",
+          "title": "Artist",
           "click_action": "none",
           "click_url": "",
           "last_updated": null
@@ -486,7 +514,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/a539dc18-ae19-49b0-98c4-8391a594332b/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/a539dc18-ae19-49b0-98c4-8391a594332b/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/a539dc18-ae19-49b0-98c4-8391a594332b/3",
-          "description": "Direct Relief - Charity 2018",
+          "description": "Supported their favorite streamer during the 2018 Blizzard of Bits",
           "title": "Direct Relief - Charity 2018",
           "click_action": "visit_url",
           "click_url": "https://link.twitch.tv/blizzardofbits",
@@ -500,7 +528,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/8bedf8c3-7a6d-4df2-b62f-791b96a5dd31/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/8bedf8c3-7a6d-4df2-b62f-791b96a5dd31/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/8bedf8c3-7a6d-4df2-b62f-791b96a5dd31/3",
-          "description": "Bits Leader 1",
+          "description": "Ranked as a top cheerer on this channel",
           "title": "Bits Leader 1",
           "click_action": "visit_url",
           "click_url": "https://bits.twitch.tv",
@@ -510,7 +538,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f04baac7-9141-4456-a0e7-6301bcc34138/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f04baac7-9141-4456-a0e7-6301bcc34138/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f04baac7-9141-4456-a0e7-6301bcc34138/3",
-          "description": "Bits Leader 2",
+          "description": "Ranked as a top cheerer on this channel",
           "title": "Bits Leader 2",
           "click_action": "visit_url",
           "click_url": "https://bits.twitch.tv",
@@ -520,7 +548,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f1d2aab6-b647-47af-965b-84909cf303aa/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f1d2aab6-b647-47af-965b-84909cf303aa/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f1d2aab6-b647-47af-965b-84909cf303aa/3",
-          "description": "Bits Leader 3",
+          "description": "Ranked as a top cheerer on this channel",
           "title": "Bits Leader 3",
           "click_action": "visit_url",
           "click_url": "https://bits.twitch.tv",
@@ -870,10 +898,10 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/3",
-          "description": "founder",
+          "description": "Founder",
           "title": "Founder",
-          "click_action": "None",
-          "click_url": "",
+          "click_action": "visit_url",
+          "click_url": "https://help.twitch.tv/s/article/founders-badge",
           "last_updated": null
         }
       }
@@ -940,10 +968,24 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/3158e758-3cb4-43c5-94b3-7639810451c5/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/3158e758-3cb4-43c5-94b3-7639810451c5/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/3158e758-3cb4-43c5-94b3-7639810451c5/3",
-          "description": "GLHF Pledge",
+          "description": "Signed the GLHF pledge in support for inclusive gaming communities",
           "title": "GLHF Pledge",
           "click_action": "visit_url",
           "click_url": "https://www.anykey.org/pledge",
+          "last_updated": null
+        }
+      }
+    },
+    "glitchcon2020": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/1d4b03b9-51ea-42c9-8f29-698e3c85be3d/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/1d4b03b9-51ea-42c9-8f29-698e3c85be3d/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/1d4b03b9-51ea-42c9-8f29-698e3c85be3d/3",
+          "description": "Pink. Bevel. Dino. Earned for Attending Glitchcon 2020",
+          "title": "GlitchCon 2020",
+          "click_action": "visit_url",
+          "click_url": "https://www.twitchcon.com/",
           "last_updated": null
         }
       }
@@ -986,6 +1028,30 @@
           "title": "Hello Neighbor",
           "click_action": "visit_url",
           "click_url": "https://www.twitch.tv/directory/game/Hello%20Neighbor/details",
+          "last_updated": null
+        }
+      }
+    },
+    "hype-train": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/3",
+          "description": "Top supporter during the most recent hype train",
+          "title": "Current Hype Train Conductor",
+          "click_action": "visit_url",
+          "click_url": "https://help.twitch.tv/s/article/hype-train-guide",
+          "last_updated": null
+        },
+        "2": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/3",
+          "description": "Top supporter during prior hype trains",
+          "title": "Former Hype Train Conductor",
+          "click_action": "visit_url",
+          "click_url": "https://help.twitch.tv/s/article/hype-train-guide",
           "last_updated": null
         }
       }
@@ -1054,6 +1120,210 @@
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/3",
           "description": "Moderator",
           "title": "Moderator",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        }
+      }
+    },
+    "moments": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/bf370830-d79a-497b-81c6-a365b2b60dda/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/bf370830-d79a-497b-81c6-a365b2b60dda/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/bf370830-d79a-497b-81c6-a365b2b60dda/3",
+          "description": "Earned for being a part of at least 1 moment on a channel",
+          "title": "Moments Badge - Tier 1",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "2": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/fc46b10c-5b45-43fd-81ad-d5cb0de6d2f4/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/fc46b10c-5b45-43fd-81ad-d5cb0de6d2f4/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/fc46b10c-5b45-43fd-81ad-d5cb0de6d2f4/3",
+          "description": "Earned for being a part of at least 5 moments on a channel",
+          "title": "Moments Badge - Tier 2",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "3": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/d08658d7-205f-4f75-ad44-8c6e0acd8ef6/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/d08658d7-205f-4f75-ad44-8c6e0acd8ef6/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/d08658d7-205f-4f75-ad44-8c6e0acd8ef6/3",
+          "description": "Earned for being a part of at least 10 moments on a channel",
+          "title": "Moments Badge - Tier 3",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "4": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/fe5b5ddc-93e7-4aaf-9b3e-799cd41808b1/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/fe5b5ddc-93e7-4aaf-9b3e-799cd41808b1/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/fe5b5ddc-93e7-4aaf-9b3e-799cd41808b1/3",
+          "description": "Earned for being a part of at least 15 moments on a channel",
+          "title": "Moments Badge - Tier 4",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "5": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/c8a0d95a-856e-4097-9fc0-7765300a4f58/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/c8a0d95a-856e-4097-9fc0-7765300a4f58/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/c8a0d95a-856e-4097-9fc0-7765300a4f58/3",
+          "description": "Earned for being a part of at least 20 moments on a channel",
+          "title": "Moments Badge - Tier 5",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "6": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f9e3b4e4-200e-4045-bd71-3a6b480c23ae/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f9e3b4e4-200e-4045-bd71-3a6b480c23ae/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f9e3b4e4-200e-4045-bd71-3a6b480c23ae/3",
+          "description": "Earned for being a part of at least 30 moments on a channel",
+          "title": "Moments Badge - Tier 6",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "7": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/a90a26a4-fdf7-4ac3-a782-76a413da16c1/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/a90a26a4-fdf7-4ac3-a782-76a413da16c1/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/a90a26a4-fdf7-4ac3-a782-76a413da16c1/3",
+          "description": "Earned for being a part of at least 40 moments on a channel",
+          "title": "Moments Badge - Tier 7",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "8": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f22286cd-6aa3-42ce-b3fb-10f5d18c4aa0/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f22286cd-6aa3-42ce-b3fb-10f5d18c4aa0/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f22286cd-6aa3-42ce-b3fb-10f5d18c4aa0/3",
+          "description": "Earned for being a part of at least 50 moments on a channel",
+          "title": "Moments Badge - Tier 8",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "9": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/5cb2e584-1efd-469b-ab1d-4d1b59a944e7/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/5cb2e584-1efd-469b-ab1d-4d1b59a944e7/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/5cb2e584-1efd-469b-ab1d-4d1b59a944e7/3",
+          "description": "Earned for being a part of at least 60 moments on a channel",
+          "title": "Moments Badge - Tier 9",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "10": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/9c13f2b6-69cd-4537-91b4-4a8bd8b6b1fd/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/9c13f2b6-69cd-4537-91b4-4a8bd8b6b1fd/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/9c13f2b6-69cd-4537-91b4-4a8bd8b6b1fd/3",
+          "description": "Earned for being a part of at least 75 moments on a channel",
+          "title": "Moments Badge - Tier 10",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "11": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/7573e7a2-0f1f-4508-b833-d822567a1e03/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/7573e7a2-0f1f-4508-b833-d822567a1e03/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/7573e7a2-0f1f-4508-b833-d822567a1e03/3",
+          "description": "Earned for being a part of at least 90 moments on a channel",
+          "title": "Moments Badge - Tier 11",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "12": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f2c91d14-85c8-434b-a6c0-6d7930091150/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f2c91d14-85c8-434b-a6c0-6d7930091150/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f2c91d14-85c8-434b-a6c0-6d7930091150/3",
+          "description": "Earned for being a part of at least 105 moments on a channel",
+          "title": "Moments Badge - Tier 12",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "13": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/35eb3395-a1d3-4170-969a-86402ecfb11a/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/35eb3395-a1d3-4170-969a-86402ecfb11a/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/35eb3395-a1d3-4170-969a-86402ecfb11a/3",
+          "description": "Earned for being a part of at least 120 moments on a channel",
+          "title": "Moments Badge - Tier 13",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "14": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/cb40eb03-1015-45ba-8793-51c66a24a3d5/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/cb40eb03-1015-45ba-8793-51c66a24a3d5/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/cb40eb03-1015-45ba-8793-51c66a24a3d5/3",
+          "description": "Earned for being a part of at least 140 moments on a channel",
+          "title": "Moments Badge - Tier 14",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "15": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/b241d667-280b-4183-96ae-2d0053631186/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/b241d667-280b-4183-96ae-2d0053631186/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/b241d667-280b-4183-96ae-2d0053631186/3",
+          "description": "Earned for being a part of at least 160 moments on a channel",
+          "title": "Moments Badge - Tier 15",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "16": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/5684d1bc-8132-4a4f-850c-18d3c5bd04f3/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/5684d1bc-8132-4a4f-850c-18d3c5bd04f3/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/5684d1bc-8132-4a4f-850c-18d3c5bd04f3/3",
+          "description": "Earned for being a part of at least 180 moments on a channel",
+          "title": "Moments Badge - Tier 16",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "17": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/3b08c1ee-0f77-451b-9226-b5b22d7f023c/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/3b08c1ee-0f77-451b-9226-b5b22d7f023c/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/3b08c1ee-0f77-451b-9226-b5b22d7f023c/3",
+          "description": "Earned for being a part of at least 200 moments on a channel",
+          "title": "Moments Badge - Tier 17",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "18": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/14057e75-080c-42da-a412-6232c6f33b68/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/14057e75-080c-42da-a412-6232c6f33b68/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/14057e75-080c-42da-a412-6232c6f33b68/3",
+          "description": "Earned for being a part of at least 225 moments on a channel",
+          "title": "Moments Badge - Tier 18",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "19": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/6100cc6f-6b4b-4a3d-a55b-a5b34edb5ea1/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/6100cc6f-6b4b-4a3d-a55b-a5b34edb5ea1/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/6100cc6f-6b4b-4a3d-a55b-a5b34edb5ea1/3",
+          "description": "Earned for being a part of at least 250 moments on a channel",
+          "title": "Moments Badge - Tier 19",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "20": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/43399796-e74c-4741-a975-56202f0af30e/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/43399796-e74c-4741-a975-56202f0af30e/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/43399796-e74c-4741-a975-56202f0af30e/3",
+          "description": "Earned for being a part of at least 275 moments on a channel",
+          "title": "Moments Badge - Tier 20",
           "click_action": "none",
           "click_url": "",
           "last_updated": null
@@ -1189,7 +1459,7 @@
           "description": "Verified",
           "title": "Verified",
           "click_action": "visit_url",
-          "click_url": "https://blog.twitch.tv/the-verified-badge-is-here-13381bc05735",
+          "click_url": "https://blog.twitch.tv/2017/04/24/the-verified-badge-is-here-13381bc05735",
           "last_updated": null
         }
       }
@@ -1268,16 +1538,160 @@
         }
       }
     },
+    "predictions": {
+      "versions": {
+        "blue-1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/e33d8b46-f63b-4e67-996d-4a7dcec0ad33/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/e33d8b46-f63b-4e67-996d-4a7dcec0ad33/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/e33d8b46-f63b-4e67-996d-4a7dcec0ad33/3",
+          "description": "Predicted Outcome One",
+          "title": "Predicted Blue (1)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-10": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/072ae906-ecf7-44f1-ac69-a5b2261d8892/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/072ae906-ecf7-44f1-ac69-a5b2261d8892/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/072ae906-ecf7-44f1-ac69-a5b2261d8892/3",
+          "description": "Predicted Outcome Ten",
+          "title": "Predicted Blue (10)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-2": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/ffdda3fe-8012-4db3-981e-7a131402b057/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/ffdda3fe-8012-4db3-981e-7a131402b057/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/ffdda3fe-8012-4db3-981e-7a131402b057/3",
+          "description": "Predicted Outcome Two",
+          "title": "Predicted Blue (2)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-3": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f2ab9a19-8ef7-4f9f-bd5d-9cf4e603f845/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f2ab9a19-8ef7-4f9f-bd5d-9cf4e603f845/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f2ab9a19-8ef7-4f9f-bd5d-9cf4e603f845/3",
+          "description": "Predicted Outcome Three",
+          "title": "Predicted Blue (3)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-4": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/df95317d-9568-46de-a421-a8520edb9349/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/df95317d-9568-46de-a421-a8520edb9349/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/df95317d-9568-46de-a421-a8520edb9349/3",
+          "description": "Predicted Outcome Four",
+          "title": "Predicted Blue (4)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-5": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/88758be8-de09-479b-9383-e3bb6d9e6f06/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/88758be8-de09-479b-9383-e3bb6d9e6f06/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/88758be8-de09-479b-9383-e3bb6d9e6f06/3",
+          "description": "Predicted Outcome Five",
+          "title": "Predicted Blue (5)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-6": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/46b1537e-d8b0-4c0d-8fba-a652e57b9df0/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/46b1537e-d8b0-4c0d-8fba-a652e57b9df0/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/46b1537e-d8b0-4c0d-8fba-a652e57b9df0/3",
+          "description": "Predicted Outcome Six",
+          "title": "Predicted Blue (6)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-7": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/07cd34b2-c6a1-45f5-8d8a-131e3c8b2279/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/07cd34b2-c6a1-45f5-8d8a-131e3c8b2279/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/07cd34b2-c6a1-45f5-8d8a-131e3c8b2279/3",
+          "description": "Predicted Outcome Seven",
+          "title": "Predicted Blue (7)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-8": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/4416dfd7-db97-44a0-98e7-40b4e250615e/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/4416dfd7-db97-44a0-98e7-40b4e250615e/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/4416dfd7-db97-44a0-98e7-40b4e250615e/3",
+          "description": "Predicted Outcome Eight",
+          "title": "Predicted Blue (8)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "blue-9": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/fc74bd90-2b74-4f56-8e42-04d405e10fae/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/fc74bd90-2b74-4f56-8e42-04d405e10fae/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/fc74bd90-2b74-4f56-8e42-04d405e10fae/3",
+          "description": "Predicted Outcome Nine",
+          "title": "Predicted Blue (9)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "gray-1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/144f77a2-e324-4a6b-9c17-9304fa193a27/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/144f77a2-e324-4a6b-9c17-9304fa193a27/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/144f77a2-e324-4a6b-9c17-9304fa193a27/3",
+          "description": "Predicted Gray (1)",
+          "title": "Predicted Gray (1)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "gray-2": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/097a4b14-b458-47eb-91b6-fe74d3dbb3f5/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/097a4b14-b458-47eb-91b6-fe74d3dbb3f5/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/097a4b14-b458-47eb-91b6-fe74d3dbb3f5/3",
+          "description": "Predicted Gray (2)",
+          "title": "Predicted Gray (2)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "pink-1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/75e27613-caf7-4585-98f1-cb7363a69a4a/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/75e27613-caf7-4585-98f1-cb7363a69a4a/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/75e27613-caf7-4585-98f1-cb7363a69a4a/3",
+          "description": "Predicted Outcome One",
+          "title": "Predicted Pink (1)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        },
+        "pink-2": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/4b76d5f2-91cc-4400-adf2-908a1e6cfd1e/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/4b76d5f2-91cc-4400-adf2-908a1e6cfd1e/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/4b76d5f2-91cc-4400-adf2-908a1e6cfd1e/3",
+          "description": "Predicted Outcome Two",
+          "title": "Predicted Pink (2)",
+          "click_action": "none",
+          "click_url": "",
+          "last_updated": null
+        }
+      }
+    },
     "premium": {
       "versions": {
         "1": {
-          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/a1dd5073-19c3-4911-8cb4-c464a7bc1510/1",
-          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/a1dd5073-19c3-4911-8cb4-c464a7bc1510/2",
-          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/a1dd5073-19c3-4911-8cb4-c464a7bc1510/3",
-          "description": "Twitch Prime",
-          "title": "Twitch Prime",
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fb98ca1933/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fb98ca1933/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/bbbe0db0-a598-423e-86d0-f9fb98ca1933/3",
+          "description": "Prime Gaming",
+          "title": "Prime Gaming",
           "click_action": "visit_url",
-          "click_url": "https://twitch.amazon.com/prime",
+          "click_url": "https://gaming.amazon.com",
           "last_updated": null
         }
       }
@@ -1386,7 +1800,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/21656088-7da2-4467-acd2-55220e1f45ad/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/21656088-7da2-4467-acd2-55220e1f45ad/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/21656088-7da2-4467-acd2-55220e1f45ad/3",
-          "description": "Gifter Leader 1",
+          "description": "Ranked as a top subscription gifter in this community",
           "title": "Gifter Leader 1",
           "click_action": "none",
           "click_url": "",
@@ -1396,7 +1810,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/0d9fe96b-97b7-4215-b5f3-5328ebad271c/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/0d9fe96b-97b7-4215-b5f3-5328ebad271c/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/0d9fe96b-97b7-4215-b5f3-5328ebad271c/3",
-          "description": "Gifter Leader 2",
+          "description": "Ranked as a top subscription gifter in this community",
           "title": "Gifter Leader 2",
           "click_action": "none",
           "click_url": "",
@@ -1406,7 +1820,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/4c6e4497-eed9-4dd3-ac64-e0599d0a63e5/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/4c6e4497-eed9-4dd3-ac64-e0599d0a63e5/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/4c6e4497-eed9-4dd3-ac64-e0599d0a63e5/3",
-          "description": "Gifter Leader 3",
+          "description": "Ranked as a top subscription gifter in this community",
           "title": "Gifter Leader 3",
           "click_action": "none",
           "click_url": "",
@@ -1420,7 +1834,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f1d8486f-eb2e-4553-b44f-4d614617afc1/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f1d8486f-eb2e-4553-b44f-4d614617afc1/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f1d8486f-eb2e-4553-b44f-4d614617afc1/3",
-          "description": "Sub Gifter",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "Sub Gifter",
           "click_action": "none",
           "click_url": "",
@@ -1430,7 +1844,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/3e638e02-b765-4070-81bd-a73d1ae34965/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/3e638e02-b765-4070-81bd-a73d1ae34965/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/3e638e02-b765-4070-81bd-a73d1ae34965/3",
-          "description": "5 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "5 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1440,7 +1854,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/bffca343-9d7d-49b4-a1ca-90af2c6a1639/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/bffca343-9d7d-49b4-a1ca-90af2c6a1639/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/bffca343-9d7d-49b4-a1ca-90af2c6a1639/3",
-          "description": "10 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "10 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1450,7 +1864,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/17e09e26-2528-4a04-9c7f-8518348324d1/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/17e09e26-2528-4a04-9c7f-8518348324d1/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/17e09e26-2528-4a04-9c7f-8518348324d1/3",
-          "description": "25 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "25 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1460,7 +1874,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/47308ed4-c979-4f3f-ad20-35a8ab76d85d/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/47308ed4-c979-4f3f-ad20-35a8ab76d85d/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/47308ed4-c979-4f3f-ad20-35a8ab76d85d/3",
-          "description": "50 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "50 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1470,7 +1884,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/5056c366-7299-4b3c-a15a-a18573650bfb/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/5056c366-7299-4b3c-a15a-a18573650bfb/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/5056c366-7299-4b3c-a15a-a18573650bfb/3",
-          "description": "100 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "100 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1480,7 +1894,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/df25dded-df81-408e-a2d3-40d48f0d529f/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/df25dded-df81-408e-a2d3-40d48f0d529f/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/df25dded-df81-408e-a2d3-40d48f0d529f/3",
-          "description": "250 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "250 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1490,7 +1904,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/f440decb-7468-4bf9-8666-98ba74f6eab5/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/f440decb-7468-4bf9-8666-98ba74f6eab5/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/f440decb-7468-4bf9-8666-98ba74f6eab5/3",
-          "description": "500 Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "500 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1500,7 +1914,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/b8c76744-c7e9-44be-90d0-08840a8f6e39/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/b8c76744-c7e9-44be-90d0-08840a8f6e39/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/b8c76744-c7e9-44be-90d0-08840a8f6e39/3",
-          "description": "??? Gift Subs",
+          "description": "Has gifted a subscription to another viewer in this community",
           "title": "1000 Gift Subs",
           "click_action": "none",
           "click_url": "",
@@ -1636,7 +2050,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/bd444ec6-8f34-4bf9-91f4-af1e3428d80f/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/bd444ec6-8f34-4bf9-91f4-af1e3428d80f/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/bd444ec6-8f34-4bf9-91f4-af1e3428d80f/3",
-          "description": "Turbo",
+          "description": "A subscriber of Twitch's monthly premium user service",
           "title": "Turbo",
           "click_action": "turbo",
           "click_url": "",
@@ -1664,7 +2078,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/0964bed0-5c31-11e7-a90b-0739918f1d9b/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/0964bed0-5c31-11e7-a90b-0739918f1d9b/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/0964bed0-5c31-11e7-a90b-0739918f1d9b/3",
-          "description": "TwitchCon 2017",
+          "description": "Attended TwitchCon 2017",
           "title": "TwitchCon 2017",
           "click_action": "visit_url",
           "click_url": "https://www.twitchcon.com/",
@@ -1678,10 +2092,24 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/e68164e4-087d-4f62-81da-d3557efae3cb/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/e68164e4-087d-4f62-81da-d3557efae3cb/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/e68164e4-087d-4f62-81da-d3557efae3cb/3",
-          "description": "TwitchCon 2018",
+          "description": "Attended TwitchCon 2018",
           "title": "TwitchCon 2018",
           "click_action": "visit_url",
           "click_url": "https://www.twitchcon.com/?utm_source=twitch-chat&utm_medium=badge&utm_campaign=tc18",
+          "last_updated": null
+        }
+      }
+    },
+    "twitchconAmsterdam2020": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/ed917c9a-1a45-4340-9c64-ca8be4348c51/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/ed917c9a-1a45-4340-9c64-ca8be4348c51/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/ed917c9a-1a45-4340-9c64-ca8be4348c51/3",
+          "description": "Registered for TwitchCon 2020 - Europe",
+          "title": "TwitchCon Amsterdam 2020",
+          "click_action": "visit_url",
+          "click_url": "https://www.twitchcon.com/amsterdam/?utm_source=twitch-chat&utm_medium=badge&utm_campaign=tcamsterdam20",
           "last_updated": null
         }
       }
@@ -1692,7 +2120,7 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/590eee9e-f04d-474c-90e7-b304d9e74b32/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/590eee9e-f04d-474c-90e7-b304d9e74b32/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/590eee9e-f04d-474c-90e7-b304d9e74b32/3",
-          "description": "TwitchCon EU 2019",
+          "description": "Attended TwitchCon 2019 - Europe",
           "title": "TwitchCon EU 2019",
           "click_action": "visit_url",
           "click_url": "https://europe.twitchcon.com/?utm_source=twitch-chat&utm_medium=badge&utm_campaign=tceu19",
@@ -1706,10 +2134,24 @@
           "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/569c829d-c216-4f56-a191-3db257ed657c/1",
           "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/569c829d-c216-4f56-a191-3db257ed657c/2",
           "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/569c829d-c216-4f56-a191-3db257ed657c/3",
-          "description": "TwitchCon NA 2019",
+          "description": "Attended TwitchCon 2019",
           "title": "TwitchCon NA 2019",
           "click_action": "visit_url",
           "click_url": "https://www.twitchcon.com/?utm_source=twitch-chat&utm_medium=badge&utm_campaign=tcna19",
+          "last_updated": null
+        }
+      }
+    },
+    "twitchconNA2020": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/ed917c9a-1a45-4340-9c64-ca8be4348c51/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/ed917c9a-1a45-4340-9c64-ca8be4348c51/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/ed917c9a-1a45-4340-9c64-ca8be4348c51/3",
+          "description": "Registered for TwitchCon 2020 - North America",
+          "title": "TwitchCon NA 2020",
+          "click_action": "visit_url",
+          "click_url": "https://www.twitchcon.com/?utm_source=twitch-chat&utm_medium=badge&utm_campaign=tcna20",
           "last_updated": null
         }
       }
@@ -1724,6 +2166,20 @@
           "title": "Tyranny",
           "click_action": "visit_url",
           "click_url": "https://www.twitch.tv/directory/game/Tyranny/details",
+          "last_updated": null
+        }
+      }
+    },
+    "user-anniversary": {
+      "versions": {
+        "1": {
+          "image_url_1x": "https://static-cdn.jtvnw.net/badges/v1/ccbbedaa-f4db-4d0b-9c2a-375de7ad947c/1",
+          "image_url_2x": "https://static-cdn.jtvnw.net/badges/v1/ccbbedaa-f4db-4d0b-9c2a-375de7ad947c/2",
+          "image_url_4x": "https://static-cdn.jtvnw.net/badges/v1/ccbbedaa-f4db-4d0b-9c2a-375de7ad947c/3",
+          "description": "Staff badge celebrating Twitch tenure",
+          "title": "Twitchaversary",
+          "click_action": "none",
+          "click_url": "",
           "last_updated": null
         }
       }

@@ -1,17 +1,198 @@
 {
-  "id": "5b43f6f00485f43277ceb6f0",
-  "bots": ["honeykingdombot"],
-  "channelEmotes": [],
+  "id": "57e639c29e435d971f6ea7d6",
+  "bots": [],
+  "avatar": "https://static-cdn.jtvnw.net/jtv_user_pictures/lasqa-profile_image-49dc25f1e724dbd6-300x300.jpeg",
+  "channelEmotes": [
+    {
+      "id": "6025de5ad47a0b2db8d1a89c",
+      "code": "BUNI",
+      "imageType": "png",
+      "userId": "57e639c29e435d971f6ea7d6"
+    },
+    {
+      "id": "6025defcd47a0b2db8d1a89e",
+      "code": "monkaIgnore",
+      "imageType": "png",
+      "userId": "57e639c29e435d971f6ea7d6"
+    },
+    {
+      "id": "6025df84d47a0b2db8d1a8a1",
+      "code": "Nayaya",
+      "imageType": "png",
+      "userId": "57e639c29e435d971f6ea7d6"
+    },
+    {
+      "id": "6025e090d47a0b2db8d1a8a6",
+      "code": "FeelsNyaMan",
+      "imageType": "png",
+      "userId": "57e639c29e435d971f6ea7d6"
+    },
+    {
+      "id": "602935b782b7c45eb1c9436a",
+      "code": "PatregoWine",
+      "imageType": "png",
+      "userId": "57e639c29e435d971f6ea7d6"
+    },
+    {
+      "id": "602d846cee839b1e5ec6dc6c",
+      "code": "Godge",
+      "imageType": "png",
+      "userId": "57e639c29e435d971f6ea7d6"
+    }
+  ],
   "sharedEmotes": [
     {
-      "id": "55b6f480e66682f576dd94f5",
-      "code": "Clap",
+      "id": "5590b223b344e2c42a9e28e3",
+      "code": "EZ",
+      "imageType": "png",
+      "user": {
+        "id": "558f7862b344e2c42a9e2822",
+        "name": "helloboat",
+        "displayName": "helloboat",
+        "providerId": "39819556"
+      }
+    },
+    {
+      "id": "57850b9df1bf2c1003a88644",
+      "code": "FeelsRainMan",
       "imageType": "gif",
       "user": {
-        "id": "550d9f3e62e6bd0027aedb53",
-        "name": "turtlemaw",
-        "displayName": "TurtleMaw",
-        "providerId": "22998696"
+        "id": "5784feedf1bf2c1003a885eb",
+        "name": "gerych",
+        "displayName": "gerych",
+        "providerId": "109442824"
+      }
+    },
+    {
+      "id": "57719a9a6bdecd592c3ad59b",
+      "code": "gachiBASS",
+      "imageType": "gif",
+      "user": {
+        "id": "558853e654f1152d6a65b48c",
+        "name": "rooph1e",
+        "displayName": "Rooph1e",
+        "providerId": "35959325"
+      }
+    },
+    {
+      "id": "56c2cff2d9ec6bf744247bf1",
+      "code": "KKool",
+      "imageType": "gif",
+      "user": {
+        "id": "559c3b94a9d6c1121305ff4e",
+        "name": "garych",
+        "displayName": "garych",
+        "providerId": "30393449"
+      }
+    },
+    {
+      "id": "59474044e949fe3b435e3135",
+      "code": "FeelsTastyMan",
+      "imageType": "png",
+      "user": {
+        "id": "561c219aef87f8db05aca668",
+        "name": "tastymcpanda",
+        "displayName": "TastyMcPanda",
+        "providerId": "38098373"
+      }
+    },
+    {
+      "id": "55a24e1294dd94001ee86b39",
+      "code": "RareParrot",
+      "imageType": "gif",
+      "user": {
+        "id": "556a12b17f47f2681ba61eca",
+        "name": "himynameissander",
+        "displayName": "HiMyNameIsSander",
+        "providerId": "61937071"
+      }
+    },
+    {
+      "id": "589cac4789782d0a4887f79c",
+      "code": "FeelsThinkingMan",
+      "imageType": "png",
+      "user": {
+        "id": "561a97daba456c3e066d2251",
+        "name": "amiccuz",
+        "displayName": "Amiccuz",
+        "providerId": "70482906"
+      }
+    },
+    {
+      "id": "58868aa5afc2ff756c3f495e",
+      "code": "GachiPls",
+      "imageType": "gif",
+      "user": {
+        "id": "57a426adb52ce81352d47a03",
+        "name": "remezzz",
+        "displayName": "RemeZZZ",
+        "providerId": "38953724"
+      }
+    },
+    {
+      "id": "58ae8407ff7b7276f8e594f2",
+      "code": "POGGERS",
+      "imageType": "png",
+      "user": {
+        "id": "57ea01a4665bcff56f0b64da",
+        "name": "to_ot",
+        "displayName": "tO_Ot",
+        "providerId": "133315887"
+      }
+    },
+    {
+      "id": "56cb56f5500cb4cf51e25b90",
+      "code": "nymnCorn",
+      "imageType": "gif",
+      "user": {
+        "id": "559ad81fa287f9ec6c0a6ff3",
+        "name": "nymn",
+        "displayName": "NymN",
+        "providerId": "62300805"
+      }
+    },
+    {
+      "id": "576befd71f520d6039622f7e",
+      "code": "GuitarTime",
+      "imageType": "gif",
+      "user": {
+        "id": "55076ad82ceba31912e2ba46",
+        "name": "reckful",
+        "displayName": "Reckful",
+        "providerId": "9072112"
+      }
+    },
+    {
+      "id": "5b35ca08392c604c5fd81874",
+      "code": "HYPERCLAP",
+      "imageType": "gif",
+      "user": {
+        "id": "55c94879fc8fb4101a3b8a60",
+        "name": "alfurin",
+        "displayName": "Alfurin",
+        "providerId": "41528856"
+      }
+    },
+    {
+      "id": "59a6d3dedccaf930aa8f3de1",
+      "code": "TriKool",
+      "imageType": "gif",
+      "user": {
+        "id": "57b247fc821edc2106cc6d41",
+        "name": "metalproz",
+        "displayName": "Metalproz",
+        "providerId": "36817125"
+      }
+    },
+    {
+      "id": "5afdd15ab5f610729e2f6e7a",
+      "code": "lickL",
+      "imageType": "gif",
+      "user": {
+        "id": "59e606024ebd8047f54da98a",
+        "name": "ilarj",
+        "displayName": "Ilarj",
+        "providerId": "170049125"
       }
     },
     {
@@ -23,39 +204,6 @@
         "name": "supinic",
         "displayName": "Supinic",
         "providerId": "31400525"
-      }
-    },
-    {
-      "id": "5af84b9e766af63db43bf6b9",
-      "code": "sumSmash",
-      "imageType": "gif",
-      "user": {
-        "id": "5a0e23118c22a247ead5eff0",
-        "name": "freast",
-        "displayName": "fREAST",
-        "providerId": "13264843"
-      }
-    },
-    {
-      "id": "59143b496996b360ff9b807c",
-      "code": "gachiHYPER",
-      "imageType": "gif",
-      "user": {
-        "id": "55fb1c8fb4ccd58c2f985b82",
-        "name": "xxxxxxxxxx420xxxxxxxxxx",
-        "displayName": "XxXxXxXxXx420xXxXxXxXxX",
-        "providerId": "86082509"
-      }
-    },
-    {
-      "id": "5590b223b344e2c42a9e28e3",
-      "code": "EZ",
-      "imageType": "png",
-      "user": {
-        "id": "558f7862b344e2c42a9e2822",
-        "name": "helloboat",
-        "displayName": "helloboat",
-        "providerId": "39819556"
       }
     }
   ]
