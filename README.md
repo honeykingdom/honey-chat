@@ -5,11 +5,11 @@ Alternative twitch-like chat with history and some enhancements
 ## How to use
 
 ```
-https://honeykingdom.github.io/chat/#<channel_name>
+https://honey-chat.vercel.app/#<channel_name>
 ```
 
 ### Examples
 
-https://honeykingdom.github.io/chat/#forsen
+https://honey-chat.vercel.app/#forsen
 
-https://honeykingdom.github.io/chat/#lirik
+https://honey-chat.vercel.app/#lirik
