@@ -1,11 +1,10 @@
 import { format } from 'date-fns/fp';
-import { MessageCard } from 'features/messageCards';
-import { YoutubeVideoResponse } from './youtubeApiTypes';
+import type { MessageCardDetails } from 'features/messageCards';
+import type { YoutubeVideoResponse } from './youtubeApiTypes';
 
-// eslint-disable-next-line import/prefer-default-export
 export const parseYoutubeVideo = ({
   items,
-}: YoutubeVideoResponse): MessageCard | null => {
+}: YoutubeVideoResponse): MessageCardDetails | null => {
   if (items.length === 0) return null;
 
   const {
@@ -24,12 +23,11 @@ export const parseYoutubeVideo = ({
 
   const date = format('PP', new Date(publishedAt));
 
-  // TODO:
   return {
     id,
     src: x1,
     srcSet: `${x1} 1x, ${x2} 2x, ${x4} 4x`,
     title,
     description: `${date} · ${channelTitle}`,
-  } as any;
+  };
 };

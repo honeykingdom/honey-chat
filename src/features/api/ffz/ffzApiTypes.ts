@@ -62,3 +62,5 @@ export type FfzApBadge = {
   badge_is_colored?: 0 | 1;
   admin?: 1;
 };
+
+export type FfzApGlobalBadgesResponse = FfzApBadge[];

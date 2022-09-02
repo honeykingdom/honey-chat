@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { MessageCard } from 'features/messageCards';
+import type { MessageCardDetails } from 'features/messageCards';
 import { parseYoutubeVideo } from './youtubeApiParseResponses';
 
 const API_BASE = 'https://www.googleapis.com/youtube/v3';
@@ -9,11 +9,11 @@ export const youtubeApi = createApi({
   reducerPath: 'youtubeApi',
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE }),
   endpoints: (builder) => ({
-    youtubeVideo: builder.query<MessageCard | null, string>({
+    youtubeVideo: builder.query<MessageCardDetails | null, string>({
       query: (videoId) => `/videos?part=snippet&id=${videoId}&key=${API_KEY}`,
       transformResponse: parseYoutubeVideo,
     }),
   }),
 });
 
-export const { useLazyYoutubeVideoQuery } = youtubeApi;
+export const { useYoutubeVideoQuery } = youtubeApi;

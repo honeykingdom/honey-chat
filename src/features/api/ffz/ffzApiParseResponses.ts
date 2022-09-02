@@ -1,6 +1,6 @@
-import { Emoji } from 'features/emotes/emotesTypes';
-import { Badges, Emotes } from '../types';
-import {
+import type { Emoji } from 'features/emotes';
+import type { Badges, Emotes } from '../types';
+import type {
   FfzApBadge,
   FfzBadge,
   FfzChannelEmotesResponse,
@@ -14,12 +14,12 @@ export const parseFfzGlobalEmotes = ({
   default_sets: defaultSets,
   sets,
 }: FfzGlobalEmotesResponse): Emotes<FfzEmote> => {
-  const result: Emotes<FfzEmote> = { entries: {}, nameToId: {} };
+  const result: Emotes<FfzEmote> = { entries: {}, names: {} };
 
   for (const setId of defaultSets) {
     for (const emote of sets[setId].emoticons) {
       result.entries[emote.id] = emote;
-      result.nameToId[emote.name] = emote.id.toString();
+      result.names[emote.name] = emote.id.toString();
     }
   }
 
@@ -30,11 +30,11 @@ export const parseFfzChannelEmotes = ({
   room,
   sets,
 }: FfzChannelEmotesResponse): Emotes<FfzEmote> => {
-  const result: Emotes<FfzEmote> = { entries: {}, nameToId: {} };
+  const result: Emotes<FfzEmote> = { entries: {}, names: {} };
 
   for (const emote of sets[room.set].emoticons) {
     result.entries[emote.id] = emote;
-    result.nameToId[emote.name] = emote.id.toString();
+    result.names[emote.name] = emote.id.toString();
   }
 
   return result;
@@ -44,26 +44,27 @@ const codePointsToString = (codePoints: string): string =>
   String.fromCodePoint(...codePoints.split('-').map((s) => parseInt(s, 16)));
 
 // https://github.com/FrankerFaceZ/FrankerFaceZ/blob/master/src/modules/chat/emoji.js#L305
+// eslint-disable-next-line no-bitwise
 const hasInTwitter = (has: number) => 0b0010 & has;
 
 export const parseFfzEmoji = ({
   e: emojis,
 }: FfzEmojiResponse): Emotes<Emoji> => {
-  const result: Emotes<Emoji> = { entries: {}, nameToId: {} };
+  const result: Emotes<Emoji> = { entries: {}, names: {} };
   // const names: string[] = [];
 
-  const addToNameToId = (
+  const addToNames = (
     char: string,
     name: string | string[],
     codePoints: string,
   ) => {
-    result.nameToId[char] = codePoints;
+    result.names[char] = codePoints;
 
     if (Array.isArray(name)) {
-      for (const n of name) result.nameToId[`:${n}:`] = codePoints;
+      for (const n of name) result.names[`:${n}:`] = codePoints;
       // for (const n of name) names.push(n);
     } else {
-      result.nameToId[`:${name}:`] = codePoints;
+      result.names[`:${name}:`] = codePoints;
       // names.push(name);
     }
   };
@@ -73,7 +74,7 @@ export const parseFfzEmoji = ({
 
     const char = codePointsToString(codePoints);
 
-    addToNameToId(char, name, codePoints);
+    addToNames(char, name, codePoints);
 
     result.entries[codePoints] = {
       category,
@@ -88,7 +89,7 @@ export const parseFfzEmoji = ({
       for (const [codePoints, , , , , name] of variants) {
         const char = codePointsToString(codePoints);
 
-        addToNameToId(char, name, codePoints);
+        addToNames(char, name, codePoints);
 
         result.entries[codePoints] = {
           category: -1,

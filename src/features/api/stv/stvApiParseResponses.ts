@@ -2,11 +2,11 @@ import { Emotes } from '../types';
 import { StvCosmetics, StvCosmeticsResponse, StvEmote } from './stvApiTypes';
 
 export const parseStvEmotes = (data: StvEmote[]): Emotes<StvEmote> => {
-  const result: Emotes<StvEmote> = { entries: {}, nameToId: {} };
+  const result: Emotes<StvEmote> = { entries: {}, names: {} };
 
   for (const emote of data) {
     result.entries[emote.id] = emote;
-    result.nameToId[emote.name] = emote.id;
+    result.names[emote.name] = emote.id;
   }
 
   return result;

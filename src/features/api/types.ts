@@ -4,7 +4,7 @@ export type Emotes<T> = {
 
   // TODO: rename to 'names'?
   /** [name]: id */
-  nameToId: Record<string, string>;
+  names: Record<string, string>;
 };
 
 export type Badges<T> = {

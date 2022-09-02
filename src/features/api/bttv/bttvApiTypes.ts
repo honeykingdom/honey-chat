@@ -1,14 +1,14 @@
-export type BttvEmote = {
+type ABttvEmote = {
   id: string;
   code: string;
   imageType: 'png' | 'gif';
 };
 
-export type BttvGlobalEmote = BttvEmote & {
+export type BttvEmoteCommon = ABttvEmote & {
   userId: string;
 };
 
-export type BttvChannelEmote = BttvEmote & {
+export type BttvEmoteDetailed = ABttvEmote & {
   user: {
     id: string;
     name: string;
@@ -17,13 +17,15 @@ export type BttvChannelEmote = BttvEmote & {
   };
 };
 
-export type BttvGlobalEmotesResponse = BttvGlobalEmote[];
+export type BttvEmote = BttvEmoteCommon | BttvEmoteDetailed;
+
+export type BttvGlobalEmotesResponse = BttvEmoteCommon[];
 
 export type BttvChannelEmotesResponse = {
   id: string;
   bots: string[];
-  channelEmotes: BttvChannelEmote[];
-  sharedEmotes: BttvChannelEmote[];
+  channelEmotes: BttvEmoteDetailed[];
+  sharedEmotes: BttvEmoteDetailed[];
 };
 
 export type BttvBadge = {
@@ -36,3 +38,5 @@ export type BttvBadge = {
     svg: string;
   };
 };
+
+export type BttvGlobalBadgesResponse = BttvBadge[];

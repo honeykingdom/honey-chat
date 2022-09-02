@@ -1,20 +1,20 @@
 import { Badges, Emotes } from '../types';
 import {
   BttvBadge,
-  BttvChannelEmote,
+  BttvEmoteDetailed,
   BttvChannelEmotesResponse,
-  BttvGlobalEmote,
+  BttvEmoteCommon,
   BttvGlobalEmotesResponse,
 } from './bttvApiTypes';
 
 export const parseBttvGlobalEmotes = (
   data: BttvGlobalEmotesResponse,
-): Emotes<BttvGlobalEmote> => {
-  const result: Emotes<BttvGlobalEmote> = { entries: {}, nameToId: {} };
+): Emotes<BttvEmoteCommon> => {
+  const result: Emotes<BttvEmoteCommon> = { entries: {}, names: {} };
 
   for (const emote of data) {
     result.entries[emote.id] = emote;
-    result.nameToId[emote.code] = emote.id;
+    result.names[emote.code] = emote.id;
   }
 
   return result;
@@ -22,17 +22,17 @@ export const parseBttvGlobalEmotes = (
 
 export const parseBttvChannelEmotes = (
   data: BttvChannelEmotesResponse,
-): Emotes<BttvChannelEmote> => {
-  const result: Emotes<BttvChannelEmote> = { entries: {}, nameToId: {} };
+): Emotes<BttvEmoteDetailed> => {
+  const result: Emotes<BttvEmoteDetailed> = { entries: {}, names: {} };
 
   for (const emote of data.channelEmotes) {
     result.entries[emote.id] = emote;
-    result.nameToId[emote.code] = emote.id;
+    result.names[emote.code] = emote.id;
   }
 
   for (const emote of data.sharedEmotes) {
     result.entries[emote.id] = emote;
-    result.nameToId[emote.code] = emote.id;
+    result.names[emote.code] = emote.id;
   }
 
   return result;

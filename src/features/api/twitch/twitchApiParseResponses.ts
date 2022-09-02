@@ -1,34 +1,32 @@
 import { format } from 'date-fns/fp';
-import { Emotes } from '../types';
-import {
-  MessageCard,
+import type { MessageCardDetails } from 'features/messageCards';
+import type { Emotes } from '../types';
+import type {
   TwitchBadge,
   TwitchBadgesResponse,
-  TwitchBlockedUsersResponse,
-  TwitchClipResponse,
+  TwitchUserBlockListsResponse,
+  TwitchClipsResponse,
   TwitchEmote,
-  TwitchEmotesResponse,
-  TwitchVideoResponse,
+  TwitchEmoteSetsResponse,
+  TwitchVideosResponse,
 } from './twitchApiTypes';
 
-export const parseBadges = (
+export const parseTwitchBadges = (
   response: TwitchBadgesResponse,
 ): Record<string, TwitchBadge> => response.badge_sets;
 
 export const parseBlockedUsers = (
-  response: TwitchBlockedUsersResponse,
+  response: TwitchUserBlockListsResponse,
 ): string[] => response.data.map((user) => user.user_login);
 
 export const parseTwitchEmotes = (
-  responses: TwitchEmotesResponse[],
+  response: TwitchEmoteSetsResponse,
 ): Emotes<TwitchEmote> => {
-  const result: Emotes<TwitchEmote> = { entries: {}, nameToId: {} };
+  const result: Emotes<TwitchEmote> = { entries: {}, names: {} };
 
-  for (const response of responses) {
-    for (const emote of response.data) {
-      result.entries[emote.id] = emote;
-      result.nameToId[emote.name] = emote.id;
-    }
+  for (const emote of response.data) {
+    result.entries[emote.id] = emote;
+    result.names[emote.name] = emote.id;
   }
 
   return result;
@@ -36,7 +34,7 @@ export const parseTwitchEmotes = (
 
 export const parseTwitchClip = ({
   data,
-}: TwitchClipResponse): MessageCard | null => {
+}: TwitchClipsResponse): MessageCardDetails | null => {
   if (data.length === 0) return null;
 
   const {
@@ -60,7 +58,7 @@ export const parseTwitchClip = ({
 
 export const parseTwitchVideo = ({
   data,
-}: TwitchVideoResponse): MessageCard | null => {
+}: TwitchVideosResponse): MessageCardDetails | null => {
   if (data.length === 0) return null;
 
   const {

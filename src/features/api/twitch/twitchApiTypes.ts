@@ -10,7 +10,7 @@ export type TwitchUser = {
   view_count: number;
 };
 
-export type TwitchUsersResponse = {
+export type TwitchGetUsersResponse = {
   data: TwitchUser[];
 };
 
@@ -27,6 +27,7 @@ export type TwitchEmote = {
     | 'smilies'
     | 'limitedtime'
     | 'subscriptions'
+    | 'follower'
     | 'twofactor';
   emote_set_id: string;
   owner_id: string;
@@ -35,7 +36,7 @@ export type TwitchEmote = {
   theme_mode: ('light' | 'dark')[];
 };
 
-export type TwitchEmotesResponse = {
+export type TwitchEmoteSetsResponse = {
   data: TwitchEmote[];
   template: string;
 };
@@ -70,7 +71,7 @@ export type TwitchBlockedUser = {
   logo: string;
 };
 
-export type TwitchBlockedUsersResponse = {
+export type TwitchUserBlockListsResponse = {
   data: {
     user_id: string;
     user_login: string;
@@ -95,7 +96,7 @@ type TwitchClipData = {
   thumbnail_url: string;
 };
 
-export type TwitchClipResponse = {
+export type TwitchClipsResponse = {
   data: TwitchClipData[];
   pagination: Record<string, unknown>;
 };
@@ -117,7 +118,7 @@ type TwitchVideoData = {
   duration: string;
 };
 
-export type TwitchVideoResponse = {
+export type TwitchVideosResponse = {
   data: TwitchVideoData[];
   pagination: Record<string, unknown>;
 };
@@ -132,13 +133,4 @@ export type JwtPayload = {
   email_verified: boolean;
   picture: string;
   preferred_username: string;
-};
-
-// TODO: move to different place
-export type MessageCard = {
-  id: string;
-  src: string;
-  srcSet: string;
-  title: string;
-  description: string;
 };
