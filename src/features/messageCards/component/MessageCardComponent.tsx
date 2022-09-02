@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { useAppSelector } from 'app/hooks';
 import { DEFAULT_TWITCH_TEMPLATE } from 'features/emotes';
 import {
   useTwitchClipQuery,
   useTwitchVideoQuery,
   useYoutubeVideoQuery,
 } from 'features/api';
+import { accessTokenSelector } from 'features/chat';
 import { MessageCard as Card } from '../messageCardsTypes';
 import { MessageCardType } from '../messageCardsConstants';
 
@@ -147,9 +149,12 @@ const MessageCardComponent = ({
   type = MessageCardType.TWITCH_CLIP,
   url,
 }: Props) => {
+  const accessToken = useAppSelector(accessTokenSelector);
   const hook = hooks[type];
-  const card = hook(id, { skip: !id });
+  const isTwitch = type !== MessageCardType.YOUTUBE_VIDEO;
+  const card = hook(id, { skip: !id || (isTwitch && !accessToken) });
 
+  if (card.isUninitialized) return null;
   if (card.isLoading) return renderLoading();
   if (card.isError || !card.data) return renderError(type);
 
