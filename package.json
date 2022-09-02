@@ -36,7 +36,7 @@
     "react-textarea-autosize": "^8.3.4",
     "react-use": "^17.4.0",
     "redux": "^4.2.0",
-    "url-regex": "^5.0.0"
+    "url-regex-safe": "^3.0.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.3.1",
@@ -46,6 +46,7 @@
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
     "@types/react-redux": "^7.1.24",
+    "@types/url-regex-safe": "^1.0.0",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@vitejs/plugin-react": "^2.0.1",
