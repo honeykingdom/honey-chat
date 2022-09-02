@@ -16,6 +16,7 @@ export const makeStore = () =>
       twitchApi.middleware,
       youtubeApi.middleware,
     ],
+    devTools: process.env.NODE_ENV !== 'production',
   });
 
 const store = makeStore();
