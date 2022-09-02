@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from 'app/store';
 import { meLoginSelector } from 'features/chat';
 import createOptionsCategories from './utils/createOptionsCategories';
+import getHighlightRegex from './utils/getHighlightRegex';
 
 export const optionsSelector = (state: RootState) => state.chat.options;
 export const showCardsSelector = createSelector(optionsSelector, (options) => ({
@@ -15,20 +16,9 @@ export const splitChatSelector = (state: RootState) =>
 const highlightKeywordsSelector = (state: RootState) =>
   state.chat.options.notifications.highlightKeywords;
 export const highlightRegExpSelector = createSelector(
-  meLoginSelector,
   highlightKeywordsSelector,
-  (meLogin, highlightKeywords): RegExp | undefined => {
-    const keywords: string[] = [];
-    if (meLogin) keywords.push(meLogin);
-    if (highlightKeywords) {
-      for (const keyword of highlightKeywords.split(',')) {
-        const normalizedKeyword = keyword.trim();
-        if (normalizedKeyword) keywords.push(normalizedKeyword);
-      }
-    }
-    if (keywords.length === 0) return;
-    return new RegExp(`(${keywords.join('|')})`, 'i');
-  },
+  meLoginSelector,
+  getHighlightRegex,
 );
 
 export const optionsCategoriesSelector = createSelector(
