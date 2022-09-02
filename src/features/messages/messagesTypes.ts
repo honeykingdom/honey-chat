@@ -85,55 +85,72 @@ export type MessagePartEmote =
   | MessagePartStvEmote
   | MessagePartEmoji;
 
-export type MessageTypePrivate = {
-  type: MessageType.PRIVATE_MESSAGE;
+type MessageUser = {
   id: string;
-  channelId: string;
+  login: string;
+  displayName?: string;
+  color?: string;
+  /** Is displayName not latin characters */
+  // isIntl: false;
+};
+
+type MessagePrivateTags = {
+  emotes?: string;
+  badges?: string;
+};
+
+type AMessage = {
+  id: string;
   channelName: string;
   timestamp: number;
-  user: {
-    id: string;
-    login: string;
-    displayName: string;
-    color: string;
-    isIntl: false;
-  };
+  user: MessageUser;
   badges: MessageBadge[];
   parts: MessagePart[];
   body: string;
-  card: MessageCard | null;
-  isAction: boolean;
-  isDeleted: boolean;
-  isHistory: boolean;
-  isSelf: boolean;
+  _tags: MessagePrivateTags;
+};
 
-  // isHighlighted: boolean;
+// https://github.com/twurple/twurple/blob/main/packages/chat/src/commands/TwitchPrivateMessage.ts
+export type MessageTypePrivate = AMessage & {
+  type: MessageType.PRIVATE_MESSAGE;
+  card: MessageCard | null;
+  /** Whether the message is a cheer */
+  isCheer: boolean;
+  /** Whether the message represents a redemption of a custom channel points reward */
+  isRedemption: boolean;
+  /** Whether the message is highlighted by using channel points */
+  isPointsHighlight: boolean;
+  /** Starts with `/me` in the twitch chat */
+  isAction: boolean;
+  /** Is message was deleted by mods */
+  isDeleted: boolean;
+  /** Is message loaded from the recent-messages */
+  isHistory: boolean;
+  /** Is message was sent by current user with chat.say() */
+  isSelf: boolean;
+  /** Is message highlighted according highlight settings */
+  isHighlighted: boolean;
+
   // isHidden: boolean;
+};
+
+export type MessageTypeUserNotice = AMessage & {
+  type: MessageType.USER_NOTICE;
+  /** @see https://dev.twitch.tv/docs/irc/tags#usernotice-tags */
+  noticeType: string;
+  systemMessage: string;
 };
 
 export type MessageTypeNotice = {
   type: MessageType.NOTICE;
   id: string;
-  channelId: string;
   channelName: string;
-  message: string;
+  body: string;
+  /** @see https://dev.twitch.tv/docs/irc/msg-id */
   noticeType: string;
-};
-
-export type MessageTypeUserNotice = {
-  type: MessageType.USER_NOTICE;
-  id: string;
-  channelId: string;
-  channelName: string;
-  message: string;
-  // noticeType: keyof typeof twitchIrc.UserNoticeType;
-  systemMessage: string;
-  user: {
-    login: string;
-  };
 };
 
 export type Messages =
   | MessageTypePrivate
-  | MessageTypeNotice
-  | MessageTypeUserNotice;
+  | MessageTypeUserNotice
+  | MessageTypeNotice;

@@ -1,3 +1,5 @@
+import { PrivateMessage } from '@twurple/chat';
+
 export enum MessageType {
   PRIVATE_MESSAGE = 0,
   NOTICE = 1,
@@ -17,3 +19,5 @@ export enum MessagePartType {
   STV_EMOTE = 103,
   EMOJI = 104,
 }
+
+export const IRCV3_KNOWN_COMMANDS = new Map([['PRIVMSG', PrivateMessage]]);
