@@ -1,9 +1,9 @@
 declare module '*.ogg' {
-  const url: string;
-  export default url;
+  const src: string;
+  export default src;
 }
 
 declare module '*.svg' {
-  const url: string;
-  export default url;
+  const content: React.FC<React.SVGProps<SVGSVGElement>>;
+  export default content;
 }
