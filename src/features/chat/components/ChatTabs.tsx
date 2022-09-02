@@ -87,13 +87,11 @@ const ChatTabs = ({ chat }: Props) => {
     chat.current?.part(name);
     dispatch(channelRemoved(name));
 
-    const lsChannels = lsRead(LS.Channels);
-    if (lsChannels) {
-      lsWrite(
-        LS.Channels,
-        lsChannels.filter(([n]) => n !== name),
-      );
-    }
+    const lsChannels = lsRead(LS.Channels) || [];
+    lsWrite(
+      LS.Channels,
+      lsChannels.filter(([n]) => n !== name),
+    );
   };
 
   const handleAddTabClick = () => {
@@ -112,11 +110,9 @@ const ChatTabs = ({ chat }: Props) => {
 
     dispatch(channelAdded(normalizedName));
 
-    const lsChannels = lsRead(LS.Channels);
-    if (lsChannels) {
-      lsChannels.push([name]);
-      lsWrite(LS.Channels, lsChannels);
-    }
+    const lsChannels = lsRead(LS.Channels) || [];
+    lsChannels.push([name]);
+    lsWrite(LS.Channels, lsChannels);
   };
 
   return (
