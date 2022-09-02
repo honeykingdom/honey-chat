@@ -1,3 +1,14 @@
+import { MessagePartType } from 'features/messages';
+
+export const FREQUENTLY_USED_EMOTES_LIMIT = 18;
+
+export enum EmoteType {
+  Twitch = MessagePartType.TWITCH_EMOTE,
+  Bttv = MessagePartType.BTTV_EMOTE,
+  Ffz = MessagePartType.FFZ_EMOTE,
+  Stv = MessagePartType.STV_EMOTE,
+}
+
 // https://github.com/FrankerFaceZ/Add-Ons/blob/master/src/ffzap-bttv/index.js#L218
 export const BTTV_EMOTES_MODIFIERS: Record<string, string> = {
   cvMask: '3px 0 0 0',
@@ -22,3 +33,6 @@ export const FFZ_EMOTES_MODIFIERS: Record<string, string> = {
   70864: '0',
   147038: '0',
 };
+
+export const DEFAULT_TWITCH_TEMPLATE =
+  'https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}';

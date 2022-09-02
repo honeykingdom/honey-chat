@@ -1,11 +1,11 @@
-import {
-  BttvChannelEmote,
-  BttvGlobalEmote,
+import type {
   Emotes,
   FfzEmote,
   StvEmote,
   TwitchEmote,
+  BttvEmote,
 } from 'features/api';
+import type { EmoteType } from './emotesConstants';
 
 export type Emoji = {
   category: number;
@@ -18,12 +18,39 @@ export type Emoji = {
 
 export type AllEmotes = {
   twitch?: Emotes<TwitchEmote>;
-  bttvGlobal?: Emotes<BttvGlobalEmote>;
-  bttvChannel?: Emotes<BttvChannelEmote>;
+  twitchTemplate?: string;
+  bttvGlobal?: Emotes<BttvEmote>;
+  bttvChannel?: Emotes<BttvEmote>;
   ffzGlobal?: Emotes<FfzEmote>;
   ffzChannel?: Emotes<FfzEmote>;
   stvGlobal?: Emotes<StvEmote>;
   stvChannel?: Emotes<StvEmote>;
-  // https://github.com/FrankerFaceZ/FrankerFaceZ/blob/master/src/modules/chat/emoji.js
   emoji?: Emotes<Emoji>;
+};
+
+export type HtmlEmote = {
+  id: string;
+  title: string;
+  alt: string;
+  src: string;
+  srcSet: string;
+  owner: {
+    id?: string;
+    name?: string;
+    displayName?: string;
+  };
+};
+
+type LsEmotesUsageItem = [uses: number, updatedAt: number];
+/**
+ * `{ [EmoteType]: { [emoteId]: [uses, updatedAt] } }`
+ */
+export type LsEmotesUsageStatistic = Record<
+  EmoteType,
+  Record<string, LsEmotesUsageItem>
+>;
+
+export type EmotesCategory = {
+  title?: string;
+  items: HtmlEmote[];
 };

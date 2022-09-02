@@ -1,94 +1,93 @@
-import * as R from 'ramda';
-import { createSelector } from '@reduxjs/toolkit';
+import type { BttvEmote, FfzEmote, StvEmote } from 'features/api';
+import { MessagePartType } from 'features/messages';
+import type { AllEmotes, EmotesCategory, HtmlEmote } from '../emotesTypes';
+import createHtmlEmote from './createHtmlEmote';
 
-import * as api from 'api';
-import * as htmlEntity from 'features/messages/utils/htmlEntity';
-import type { StateEmotes } from 'features/emotes/emotesSelectors';
-import getEmotesByText from 'features/emotes/utils/getEmotesByText';
-import { getEmotesFromUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
-
-export type EmoteCategory = {
-  title?: string;
-  items: htmlEntity.Emote[];
-};
-
-const getTwitchUserEmoteCategories = R.pipe<
-  Record<string, api.TwitchEmote[]>,
-  api.TwitchEmote[][],
-  EmoteCategory[]
->(
-  R.values,
-  R.map((items) => ({ items: R.map(htmlEntity.createTwitchEmote, items) })),
-);
-
-const createMainEmoteCategories = (emotes: StateEmotes) => {
-  if (!emotes) return [];
+const createEmoteCategories = (emotes: AllEmotes) => {
+  const result: EmotesCategory[] = [];
 
   const {
-    twitchGlobal,
-    twitchUser,
+    twitch,
     bttvGlobal,
     bttvChannel,
     ffzGlobal,
     ffzChannel,
+    stvGlobal,
+    stvChannel,
   } = emotes;
 
-  return [
-    {
+  const createBttvHtmlEmote = (emote: BttvEmote) =>
+    createHtmlEmote(emotes, MessagePartType.BTTV_EMOTE, emote.id)!;
+  const createFfzHtmlEmote = (emote: FfzEmote) =>
+    createHtmlEmote(emotes, MessagePartType.FFZ_EMOTE, `${emote.id}`)!;
+  const createStvHtmlEmote = (emote: StvEmote) =>
+    createHtmlEmote(emotes, MessagePartType.STV_EMOTE, emote.id)!;
+
+  if (bttvChannel) {
+    result.push({
       title: 'BetterTTV Channel Emotes',
-      items: bttvChannel.map(htmlEntity.createBttvEmote),
-    },
-    {
+      items: Object.values(bttvChannel.entries).map(createBttvHtmlEmote),
+    });
+  }
+
+  if (bttvGlobal) {
+    result.push({
+      title: 'BetterTTV Global Emotes',
+      items: Object.values(bttvGlobal.entries).map(createBttvHtmlEmote),
+    });
+  }
+
+  if (ffzChannel) {
+    result.push({
       title: 'FrankerFaceZ Channel Emotes',
-      items: ffzChannel.map(htmlEntity.createFfzEmote),
-    },
-    ...getTwitchUserEmoteCategories(twitchUser),
-    {
-      title: 'Twitch',
-      items: R.map(
-        htmlEntity.createTwitchEmote,
-        R.propOr([], '0', twitchGlobal),
-      ),
-    },
-    {
-      title: 'BetterTTV',
-      items: bttvGlobal.map(htmlEntity.createBttvEmote),
-    },
-    {
-      title: 'FrankerFaceZ',
-      items: ffzGlobal.map(htmlEntity.createFfzEmote),
-    },
-  ].filter(R.path(['items', 'length'])) as EmoteCategory[];
-};
-
-const getMainEmoteCategories = createSelector(
-  (emotes: StateEmotes) => emotes,
-  createMainEmoteCategories,
-);
-
-const createEmoteCategories = (emotes: StateEmotes, text: string) => {
-  if (!emotes) return [];
-
-  if (text) {
-    const items = getEmotesByText(text, emotes);
-    const title = `${items.length ? '' : 'No '}Search Results for "${text}"`;
-
-    return [{ title, items }];
+      items: Object.values(ffzChannel.entries).map(createFfzHtmlEmote),
+    });
   }
 
-  const mainEmoteCategories = getMainEmoteCategories(emotes);
-  const frequentlyUsed = getEmotesFromUsageStatistic(emotes);
-
-  if (!frequentlyUsed.length) {
-    return mainEmoteCategories;
+  if (ffzGlobal) {
+    result.push({
+      title: 'FrankerFaceZ Global Emotes',
+      items: Object.values(ffzGlobal.entries).map(createFfzHtmlEmote),
+    });
   }
 
-  const frequentlyUsedCategory = {
-    title: 'Frequently Used',
-    items: frequentlyUsed,
-  };
+  if (stvChannel) {
+    result.push({
+      title: '7TV Channel Emotes',
+      items: Object.values(stvChannel.entries).map(createStvHtmlEmote),
+    });
+  }
 
-  return [frequentlyUsedCategory, ...mainEmoteCategories] as EmoteCategory[];
+  if (stvGlobal) {
+    result.push({
+      title: '7TV Global Emotes',
+      items: Object.values(stvGlobal.entries).map(createStvHtmlEmote),
+    });
+  }
+
+  if (twitch) {
+    const user: HtmlEmote[] = [];
+    const global: HtmlEmote[] = [];
+
+    for (const emote of Object.values(twitch.entries)) {
+      const htmlEmote = createHtmlEmote(
+        emotes,
+        MessagePartType.TWITCH_EMOTE,
+        emote.id,
+      )!;
+
+      if (emote.emote_set_id === '0') {
+        global.push(htmlEmote);
+      } else {
+        user.push(htmlEmote);
+      }
+    }
+
+    result.push({ title: 'Twitch User Emotes', items: user });
+    result.push({ title: 'Twitch Global Emotes', items: global });
+  }
+
+  return result;
 };
 
 export default createEmoteCategories;

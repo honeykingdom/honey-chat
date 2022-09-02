@@ -1,51 +1,45 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from 'app/store';
-import {
-  bttvChannelEmotesSelector,
-  bttvGlobalEmotesSelector,
-  ffzChannelEmotesSelector,
-  ffzEmojisSelector,
-  ffzGlobalEmotesSelector,
-  stvChannelEmotesSelector,
-  stvGlobalEmotesSelector,
-  twitchEmotesSelector,
-} from 'features/api';
-import createEmoteCategories from 'features/emotes/utils/createEmoteCategories';
-import { AllEmotes } from './emotesTypes';
+import type { RootState } from 'app/store';
+import type { AllEmotes } from './emotesTypes';
+import createEmoteCategories from './utils/createEmoteCategories';
 
 export const emotesSelector = createSelector(
-  twitchEmotesSelector,
-  bttvGlobalEmotesSelector,
-  bttvChannelEmotesSelector,
-  ffzGlobalEmotesSelector,
-  ffzChannelEmotesSelector,
-  stvGlobalEmotesSelector,
-  stvChannelEmotesSelector,
-  ffzEmojisSelector,
+  (state: RootState) => state.chat.emotes.twitch.data,
+  (state: RootState) => state.chat.emotes.twitch.template,
+  (state: RootState) => state.chat.emotes.bttv.data,
+  (state: RootState) => state.chat.emotes.ffz.data,
+  (state: RootState) => state.chat.emotes.stv.data,
+  (state: RootState) => state.chat.emotes.emoji.data,
+  (state: RootState) =>
+    state.chat.channels.entities[state.chat.currentChannel!]?.emotes.bttv.data,
+  (state: RootState) =>
+    state.chat.channels.entities[state.chat.currentChannel!]?.emotes.ffz.data,
+  (state: RootState) =>
+    state.chat.channels.entities[state.chat.currentChannel!]?.emotes.stv.data,
   (
-    { data: twitch },
-    { data: bttvGlobal },
-    { data: bttvChannel },
-    { data: ffzGlobal },
-    { data: ffzChannel },
-    { data: stvGlobal },
-    { data: stvChannel },
-    { data: emoji },
-  ): AllEmotes => ({
-    twitch: twitch?.data,
+    twitch,
+    twitchTemplate,
     bttvGlobal,
-    bttvChannel,
     ffzGlobal,
-    ffzChannel,
     stvGlobal,
-    stvChannel,
     emoji,
+    bttvChannel,
+    ffzChannel,
+    stvChannel,
+  ): AllEmotes => ({
+    twitch,
+    twitchTemplate,
+    bttvGlobal,
+    ffzGlobal,
+    stvGlobal,
+    emoji,
+    bttvChannel,
+    ffzChannel,
+    stvChannel,
   }),
 );
 
-/** @deprecated */
-export const emoteCategoriesSelector = (state: RootState, search: string) => {
-  const emotes = emotesSelector(state);
-
-  return createEmoteCategories(emotes, search);
-};
+export const emoteCategoriesSelector = createSelector(
+  emotesSelector,
+  (emotes) => createEmoteCategories(emotes),
+);
