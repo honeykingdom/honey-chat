@@ -40,17 +40,15 @@ export const OPTIONS_INITIAL_STATE: Options = {
   },
 };
 
-// https://github.com/Chatterino/chatterino2/blob/master/src/widgets/settingspages/GeneralPage.cpp#L240
+// https://date-fns.org/v2.29.2/docs/format
 export const TIMESTAMP_FORMAT = [
   'Disable',
   'h:mm',
   'hh:mm',
+  'H:mm',
+  'HH:mm',
   'h:mm a',
   'hh:mm a',
-  'h:mm:ss',
-  'hh:mm:ss',
-  'h:mm:ss a',
-  'hh:mm:ss a',
 ] as const;
 
 export const MESSAGES_LIMIT = [
