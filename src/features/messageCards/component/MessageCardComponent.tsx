@@ -1,15 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
+import { DEFAULT_TWITCH_TEMPLATE } from 'features/emotes';
+import {
+  useTwitchClipQuery,
+  useTwitchVideoQuery,
+  useYoutubeVideoQuery,
+} from 'features/api';
+import { MessageCard as Card } from '../messageCardsTypes';
+import { MessageCardType } from '../messageCardsConstants';
 
-import { TWITCH_EMOTES_CDN } from 'utils/constants';
-import type { MessageCardInfo } from 'features/messages/messagesSlice';
-import { messageCardSelector } from 'features/messageCards/messageCardsSelectors';
-
-const MessageCardRoot = styled.a.attrs({
-  target: '_blank',
-  rel: 'noreferrer noopener',
-})<{ $clickable?: boolean }>`
+const MessageCardComponentRoot = styled.a<{ $clickable?: boolean }>`
   display: flex;
   flex-wrap: nowrap;
   padding: 5px;
@@ -88,29 +89,47 @@ const DescriptionLoading = styled.div`
   width: 120px;
 `;
 
+const template = DEFAULT_TWITCH_TEMPLATE;
 const emoteId = '58765';
-const errorImageSrc = `${TWITCH_EMOTES_CDN}/${emoteId}/1.0`;
-const errorImageSrcSet = `${TWITCH_EMOTES_CDN}/${emoteId}/1.0 1x, ${TWITCH_EMOTES_CDN}/${emoteId}/2.0 2x, ${TWITCH_EMOTES_CDN}/${emoteId}/3.0 4x`;
+const tmp = template
+  .replace('{{id}}', emoteId)
+  .replace('{{format}}', 'default')
+  .replace('{{theme_mode}}', 'dark');
+const x1 = tmp.replace('{{scale}}', '1.0');
+const x2 = tmp.replace('{{scale}}', '2.0');
+const x4 = tmp.replace('{{scale}}', '4.0');
+const errorImageSrc = x1;
+const errorImageSrcSet = `${x1} 1x, ${x2} 2x, ${x4} 4x`;
 
 const errorTitle = 'Something went wrong';
-const errorDescription = {
-  'twitch-clip': "We couldn't find that Clip",
-  'twitch-video': "We couldn't find that Video",
-  'youtube-video': "We couldn't find that Video",
+const errorDescription: Record<MessageCardType, string> = {
+  [MessageCardType.TWITCH_CLIP]: "We couldn't find that Clip",
+  [MessageCardType.TWITCH_VIDEO]: "We couldn't find that Video",
+  [MessageCardType.YOUTUBE_VIDEO]: "We couldn't find that Video",
+};
+const hooks: Record<
+  MessageCardType,
+  | typeof useTwitchClipQuery
+  | typeof useTwitchVideoQuery
+  | typeof useYoutubeVideoQuery
+> = {
+  [MessageCardType.TWITCH_CLIP]: useTwitchClipQuery,
+  [MessageCardType.TWITCH_VIDEO]: useTwitchVideoQuery,
+  [MessageCardType.YOUTUBE_VIDEO]: useYoutubeVideoQuery,
 };
 
 const renderLoading = () => (
-  <MessageCardRoot>
+  <MessageCardComponentRoot>
     <PreviewLoading />
     <Content>
       <TitleLoading />
       <DescriptionLoading />
     </Content>
-  </MessageCardRoot>
+  </MessageCardComponentRoot>
 );
 
-const renderError = (type: MessageCardInfo['type']) => (
-  <MessageCardRoot>
+const renderError = (type: MessageCardType) => (
+  <MessageCardComponentRoot>
     <Preview>
       <Image src={errorImageSrc} srcSet={errorImageSrcSet} alt="" />
     </Preview>
@@ -118,31 +137,36 @@ const renderError = (type: MessageCardInfo['type']) => (
       <Title>{errorTitle}</Title>
       <Description>{errorDescription[type]}</Description>
     </Content>
-  </MessageCardRoot>
+  </MessageCardComponentRoot>
 );
 
-type Props = MessageCardInfo;
+type Props = Card;
 
-const MessageCard = (cardInfo: Props) => {
-  const card = useSelector(messageCardSelector(cardInfo));
+const MessageCardComponent = ({
+  id,
+  type = MessageCardType.TWITCH_CLIP,
+  url,
+}: Props) => {
+  const hook = hooks[type];
+  const card = hook(id, { skip: !id });
 
-  if (!card || card.status === 'loading') {
-    return renderLoading();
-  }
+  if (card.isLoading) return renderLoading();
+  if (card.isError || !card.data) return renderError(type);
 
-  if (card.status === 'error') {
-    return renderError(cardInfo.type);
-  }
+  const { src, srcSet, title, description } = card.data;
 
-  const { id, src, srcSet, title, description } = card;
-
-  const url =
-    cardInfo.type === 'twitch-clip'
+  const href =
+    type === MessageCardType.TWITCH_CLIP
       ? `https://clips.twitch.tv/${id}`
-      : cardInfo.url;
+      : url;
 
   return (
-    <MessageCardRoot href={url} $clickable>
+    <MessageCardComponentRoot
+      target="_blank"
+      rel="noreferrer noopener"
+      href={href}
+      $clickable
+    >
       <Preview>
         <Image src={src} srcSet={srcSet} alt={title} />
       </Preview>
@@ -150,8 +174,8 @@ const MessageCard = (cardInfo: Props) => {
         <Title>{title}</Title>
         <Description>{description}</Description>
       </Content>
-    </MessageCardRoot>
+    </MessageCardComponentRoot>
   );
 };
 
-export default MessageCard;
+export default MessageCardComponent;
