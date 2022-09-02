@@ -145,6 +145,7 @@ const chat = createSlice({
       );
     },
     channelAdded: (state, { payload }: PayloadAction<string>) => {
+      if (!state.currentChannel) state.currentChannel = payload;
       channelsAdapter.addOne(state.channels, {
         name: payload,
         ...CHANNEL_INITIAL_STATE,
