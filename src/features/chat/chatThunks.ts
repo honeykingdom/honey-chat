@@ -58,8 +58,9 @@ const createGlobalChatThunk = <T>({
     builder.addCase(thunk.pending, (state) => {
       path(state).status = 'pending';
     });
-    builder.addCase(thunk.rejected, (state) => {
+    builder.addCase(thunk.rejected, (state, { error }) => {
       path(state).status = 'rejected';
+      console.warn(error.message);
     });
     builder.addCase(thunk.fulfilled, (state, { payload }) => {
       path(state).status = 'fulfilled';
@@ -96,12 +97,13 @@ const createChannelChatThunk = <T>({
       if (!channel) return;
       path(channel).status = 'pending';
     });
-    builder.addCase(thunk.rejected, (state, { meta: { arg } }) => {
+    builder.addCase(thunk.rejected, (state, { meta: { arg }, error }) => {
       const channel = state.channels.entities[arg.channelName];
       if (!channel) return;
       path(channel).status = 'rejected';
+      console.warn(error.message);
     });
-    builder.addCase(thunk.fulfilled, (state, { payload, meta: { arg } }) => {
+    builder.addCase(thunk.fulfilled, (state, { meta: { arg }, payload }) => {
       const channel = state.channels.entities[arg.channelName];
       if (!channel) return;
       path(channel).status = 'fulfilled';
@@ -129,8 +131,9 @@ export const fetchBlockedUsers = (() => {
     builder.addCase(thunk.pending, (state) => {
       state.me.blockedUsers.status = 'pending';
     });
-    builder.addCase(thunk.rejected, (state) => {
+    builder.addCase(thunk.rejected, (state, { error }) => {
       state.me.blockedUsers.status = 'rejected';
+      console.warn(error.message);
     });
     builder.addCase(thunk.fulfilled, (state, { payload }) => {
       state.me.blockedUsers.status = 'fulfilled';
@@ -150,13 +153,19 @@ export const fetchRecentMessages = (() => {
 
   builderFns.push((builder: ActionReducerMapBuilder<ChatState>) => {
     builder.addCase(thunk.pending, (state, { meta: { arg } }) => {
-      state.channels.entities[arg!]!.recentMessages.status = 'pending';
+      const channel = state.channels.entities[arg];
+      if (!channel) return;
+      channel.recentMessages.status = 'pending';
     });
-    builder.addCase(thunk.rejected, (state, { meta: { arg } }) => {
-      state.channels.entities[arg!]!.recentMessages.status = 'rejected';
+    builder.addCase(thunk.rejected, (state, { meta: { arg }, error }) => {
+      const channel = state.channels.entities[arg];
+      if (!channel) return;
+      channel.recentMessages.status = 'rejected';
+      console.warn(error.message);
     });
-    builder.addCase(thunk.fulfilled, (state, { payload, meta: { arg } }) => {
-      const channel = state.channels.entities[arg]!;
+    builder.addCase(thunk.fulfilled, (state, { meta: { arg }, payload }) => {
+      const channel = state.channels.entities[arg];
+      if (!channel) return;
       channel.recentMessages.status = 'fulfilled';
 
       let rawMessages = payload.messages;
@@ -177,6 +186,7 @@ export const fetchRecentMessages = (() => {
         messages.length % 2 === 0
           ? channel.isFirstMessageAltBg
           : !channel.isFirstMessageAltBg;
+      // TODO: handle messages limit
     });
   });
 
@@ -211,8 +221,9 @@ export const fetchAndMergeTwitchEmotes = (() => {
     builder.addCase(thunk.pending, (state) => {
       state.emotes.twitch.status = 'pending';
     });
-    builder.addCase(thunk.rejected, (state) => {
+    builder.addCase(thunk.rejected, (state, { error }) => {
       state.emotes.twitch.status = 'rejected';
+      console.warn(error);
     });
     builder.addCase(thunk.fulfilled, (state, { payload }) => {
       const { twitch } = state.emotes;
@@ -237,7 +248,6 @@ export const fetchAndMergeTwitchEmotes = (() => {
 
   return thunk;
 })();
-// TODO: add errors: Failed to fetch FrankerFaceZ channel emotes. (unknown error)
 export const fetchBttvGlobalEmotes = createGlobalChatThunk({
   name: 'fetchBttvGlobalEmotes',
   path: (state) => state.emotes.bttv,
