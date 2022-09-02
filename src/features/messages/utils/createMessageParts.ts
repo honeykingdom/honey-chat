@@ -1,4 +1,4 @@
-import urlRegex from 'url-regex';
+import urlRegex from 'url-regex-safe';
 import type { AllEmotes } from '../../emotes/emotesTypes';
 import { MessagePartType } from '../messagesConstants';
 import { MessagePart } from '../messagesTypes';
