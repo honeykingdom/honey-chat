@@ -1,6 +1,6 @@
 import { MessagePartType } from 'features/messages';
 
-export const FREQUENTLY_USED_EMOTES_LIMIT = 18;
+export const FREQUENTLY_USED_EMOTES_LIMIT = 36;
 
 export enum EmoteType {
   Twitch = MessagePartType.TWITCH_EMOTE,
