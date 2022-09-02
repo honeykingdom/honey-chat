@@ -8,56 +8,70 @@ const SwitchRoot = styled.div`
   line-height: 20px;
 `;
 const Label = styled.label`
-  content: '';
-  position: relative;
   display: inline-block;
+  position: relative;
   order: 0;
   width: 35px;
   height: 20px;
-  vertical-align: bottom;
-  border-radius: 10px/50%;
-  background-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 2px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.1s ease;
+  content: '';
   cursor: pointer;
+  vertical-align: bottom;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  transition-property: background-color;
+  transition-timing-function: ease;
+  transition-duration: 0.1s;
+  border-color: rgba(255, 255, 255, 0.7);
+  background-color: transparent;
 
   &:after {
     content: '';
+    display: block;
     position: absolute;
     top: 2px;
-    left: 2px;
     bottom: 2px;
-    display: block;
-    width: 16px;
-    border-radius: 50%;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    transition-property: left;
+    transition-timing-function: ease;
+    transition-duration: 0.1s;
+    border-radius: 9000px;
     background-color: #fff;
-    transition: left 0.1s ease;
+  }
+
+  &:hover {
+    border-color: #fff;
   }
 `;
-const Input = styled.input.attrs({ type: 'checkbox' })`
+const Input = styled.input`
   position: absolute;
   opacity: 0;
 
   &:checked + ${Label} {
-    background-color: #9147ff;
+    border-color: #a970ff;
+    background-color: #000;
 
     &:after {
       content: '';
-      top: 2px;
-      left: calc(100% - 18px);
+      left: calc((100% - 12px) - 2px);
+      background-color: #a970ff;
     }
 
     &:before {
-      content: '';
-      position: absolute;
-      top: 9px;
-      left: 10px;
+      box-sizing: content-box;
+      border-width: 0px 0px 2px 2px;
+      border-style: solid;
+      border-color: #a970ff;
       display: block;
-      height: 3px;
+      position: absolute;
+      top: 7px;
+      left: 8px;
       width: 7px;
-      border-bottom: 2px solid #fff;
-      border-left: 2px solid #fff;
-      transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+      height: 3px;
+      transform: translate3d(-50%, -50%, 0px) rotate(-45deg);
+      content: '';
     }
   }
 `;
@@ -70,10 +84,17 @@ type Props = {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Switch = ({ id, label, checked, readOnly, onChange }: Props) => (
+const Switch = ({
+  id,
+  label,
+  checked = false,
+  readOnly = false,
+  onChange = () => {},
+}: Props) => (
   <SwitchRoot>
     <Input
       id={id}
+      type="checkbox"
       aria-label={label}
       checked={checked}
       readOnly={readOnly}
@@ -82,11 +103,5 @@ const Switch = ({ id, label, checked, readOnly, onChange }: Props) => (
     <Label htmlFor={id} />
   </SwitchRoot>
 );
-
-Switch.defaultProps = {
-  checked: false,
-  readOnly: false,
-  onChange: () => {},
-};
 
 export default Switch;
