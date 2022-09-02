@@ -1,0 +1,38 @@
+env:
+  browser: true
+  jest: true
+parserOptions:
+  project: "./tsconfig.json"
+extends:
+  - airbnb
+  - airbnb-typescript
+  - airbnb/hooks
+  - plugin:@typescript-eslint/recommended
+  - plugin:@next/next/recommended
+  - prettier
+rules:
+  consistent-return: 'off'
+  no-empty: 'off'
+  no-restricted-syntax: 'off'
+  no-param-reassign: 'off'
+  no-underscore-dangle: 'off'
+  no-continue: 'off'
+  prefer-destructuring: 'off'
+  arrow-body-style: 'warn'
+  import/no-cycle: 'warn'
+  import/prefer-default-export: 'off'
+  jsx-a11y/media-has-caption: 'warn'
+  react/react-in-jsx-scope: 'off'
+  react/function-component-definition: 'off'
+  react/no-unescaped-entities: 'off'
+  react/require-default-props: 'off'
+  react/jsx-props-no-spreading: 'off'
+  react-hooks/exhaustive-deps: 'warn'
+  react/button-has-type: 'warn'
+  react/no-array-index-key: 'warn'
+  jsx-a11y/anchor-is-valid: 'warn'
+  '@typescript-eslint/ban-ts-comment': 'warn'
+  '@typescript-eslint/no-shadow': 'warn'
+  '@typescript-eslint/no-explicit-any': 'warn'
+  '@typescript-eslint/explicit-module-boundary-types': 'off'
+  '@typescript-eslint/naming-convention': 'warn'
