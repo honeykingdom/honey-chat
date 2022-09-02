@@ -115,34 +115,17 @@ const createChannelChatThunk = <T>({
 };
 
 // blocked users
-export const fetchBlockedUsers = (() => {
-  const thunk = createAsyncThunk(
-    'chat/fetchBlockedUsers',
-    async (_, { getState }) => {
-      const state = getState() as RootState;
-      const { id, accessToken } = state.chat.me;
-      return api.twitch.users
-        .getUserBlockList(id!, accessToken!)
-        .then(parseBlockedUsers);
-    },
-  );
-
-  builderFns.push((builder: ActionReducerMapBuilder<ChatState>) => {
-    builder.addCase(thunk.pending, (state) => {
-      state.me.blockedUsers.status = 'pending';
-    });
-    builder.addCase(thunk.rejected, (state, { error }) => {
-      state.me.blockedUsers.status = 'rejected';
-      console.warn(error.message);
-    });
-    builder.addCase(thunk.fulfilled, (state, { payload }) => {
-      state.me.blockedUsers.status = 'fulfilled';
-      state.me.blockedUsers.data = payload;
-    });
-  });
-
-  return thunk;
-})();
+export const fetchBlockedUsers = createGlobalChatThunk({
+  name: 'fetchBlockedUsers',
+  path: (state) => state.me.blockedUsers,
+  payloadCreator: (_, { getState }) => {
+    const state = getState() as RootState;
+    const { id, accessToken } = state.chat.me;
+    return api.twitch.users
+      .getUserBlockList(id!, accessToken!)
+      .then(parseBlockedUsers);
+  },
+});
 
 // recent messages
 export const fetchRecentMessages = (() => {
