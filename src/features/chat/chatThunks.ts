@@ -165,11 +165,11 @@ export const fetchRecentMessages = (() => {
         chat: state,
       } as RootState);
       channel.messages = [...messages, ...channel.messages];
-      channel.isFirstMessageAltBg =
-        messages.length % 2 === 0
-          ? channel.isFirstMessageAltBg
-          : !channel.isFirstMessageAltBg;
-      // TODO: handle messages limit
+
+      // if we added odd number of messages, invert altBg
+      if (messages.length % 2 !== 0) {
+        channel.isFirstMessageAltBg = !channel.isFirstMessageAltBg;
+      }
     });
   });
 

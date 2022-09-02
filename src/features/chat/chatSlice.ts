@@ -156,8 +156,22 @@ const chat = createSlice({
       const createParts = createCreateParts(fakeState);
       const createCard = createCreateCard(fakeState);
 
-      // TODO: remove messages from blocked users when ready, handle altBg
-      // const blockedUsers = state.me.blockedUsers;
+      const blockedUsers = state.me.blockedUsers.data;
+      const filteredMessages = channel.messages.filter(
+        (m) =>
+          !(
+            m.type === MessageType.PRIVATE_MESSAGE &&
+            blockedUsers?.includes(m.user.login)
+          ),
+      );
+      // if parity of the messages length changed, invert altBg
+      if (channel.messages.length % 2 !== filteredMessages.length % 2) {
+        channel.isFirstMessageAltBg = !channel.isFirstMessageAltBg;
+      }
+      // change messages link only if we filtered at least one message
+      if (channel.messages.length !== filteredMessages.length) {
+        channel.messages = filteredMessages;
+      }
 
       for (const message of channel.messages) {
         if (
