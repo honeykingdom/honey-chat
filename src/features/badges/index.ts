@@ -1,4 +1,7 @@
 export * from './badgesTypes';
+export * from './badgesConstants';
 export * from './badgesSelectors';
 
-export * from './createMessageBadges';
+export { default as Badges } from './components/Badges';
+
+export { default as createMessageBadges } from './utils/createMessageBadges';

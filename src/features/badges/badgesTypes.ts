@@ -1,4 +1,4 @@
-import {
+import type {
   Badges,
   BttvBadge,
   ChatterinoBadge,
@@ -7,7 +7,7 @@ import {
   StvBadge,
   TwitchBadge,
 } from 'features/api';
-import { MessageBadgeType } from './badgesConstants';
+import type { MessageBadgeType } from './badgesConstants';
 
 export type AllBadges = {
   twitchGlobal?: Record<string, TwitchBadge>;
@@ -40,3 +40,12 @@ export type MessageBadge =
   | MessageBadgeFfzAp
   | MessageBadgeStv
   | MessageBadgeChatterino;
+
+export type HtmlBadge = {
+  id: string;
+  title: string;
+  alt: string;
+  src: string;
+  srcSet?: string;
+  bgColor?: string | null;
+};

@@ -1,38 +1,62 @@
 import { createSelector } from '@reduxjs/toolkit';
-import {
-  bttvGlobalBadgesSelector,
-  chatterinoBadgesSelector,
-  ffsApBadgesSelector,
-  ffzGlobalBadgesSelector,
-  stvCosmeticsSelector,
-  twitchChannelBadgesSelector,
-  twitchGlobalBadgesSelector,
-} from 'features/api';
-import { AllBadges } from './badgesTypes';
+import type { RootState } from 'app/store';
+import { MessageBadgeType } from './badgesConstants';
+import type { AllBadges, MessageBadge } from './badgesTypes';
+import createHtmlBadge from './utils/createHtmlBadge';
 
 export const badgesSelector = createSelector(
-  twitchGlobalBadgesSelector,
-  twitchChannelBadgesSelector,
-  bttvGlobalBadgesSelector,
-  ffzGlobalBadgesSelector,
-  ffsApBadgesSelector,
-  stvCosmeticsSelector,
-  chatterinoBadgesSelector,
+  (state: RootState) => state.chat.badges.twitch.data,
+  (state: RootState) =>
+    state.chat.channels.entities[state.chat.currentChannel!]?.badges.twitch
+      .data,
+  (state: RootState) => state.chat.badges.bttv.data,
+  (state: RootState) => state.chat.badges.ffz.data,
+  (state: RootState) => state.chat.badges.ffzAp.data,
+  (state: RootState) => state.chat.badges.stv.data,
+  (state: RootState) => state.chat.badges.chatterino.data,
   (
-    { data: twitchGlobal },
-    { data: twitchChannel },
-    { data: bttv },
-    { data: ffz },
-    { data: ffzAp },
-    { data: stv },
-    { data: chatterino },
+    twitchGlobal,
+    twitchChannel,
+    bttv,
+    ffz,
+    ffzAp,
+    stv,
+    chatterino,
   ): AllBadges => ({
     twitchGlobal,
     twitchChannel,
     bttv,
     ffz,
     ffzAp,
-    stv: stv?.badges,
+    stv,
     chatterino,
   }),
+);
+export const twitchGlobalBadgesSelector = (state: RootState) =>
+  state.chat.badges.twitch.data;
+export const twitchChannelBadgesSelector = (state: RootState) =>
+  state.chat.channels.entities[state.chat.currentChannel!]?.badges.twitch.data;
+export const bttvBadgesSelector = (state: RootState) =>
+  state.chat.badges.bttv.data;
+export const ffzBadgesSelector = (state: RootState) =>
+  state.chat.badges.ffz.data;
+export const ffzApBadgesSelector = (state: RootState) =>
+  state.chat.badges.ffzAp.data;
+export const stvBadgesSelector = (state: RootState) =>
+  state.chat.badges.stv.data;
+export const chatterinoBadgesSelector = (state: RootState) =>
+  state.chat.badges.chatterino.data;
+
+const meGlobalBadgesSelector = (state: RootState) =>
+  state.chat.me.globalUserState?.badges;
+const meChannelBadgesSelector = (state: RootState) =>
+  state.chat.channels.entities[state.chat.currentChannel!]?.userState?.badges;
+
+export const meBadgesSelector = createSelector(
+  meGlobalBadgesSelector,
+  meChannelBadgesSelector,
+  (global = {}, channel = {}) =>
+    Object.entries({ ...channel, ...global }).map<MessageBadge>(
+      ([name, version]) => [MessageBadgeType.TWITCH, name, version],
+    ),
 );
