@@ -2,8 +2,6 @@ import {
   type ActionReducerMapBuilder,
   createAsyncThunk,
   type AsyncThunkPayloadCreator,
-  type ThunkAction,
-  type AnyAction,
 } from '@reduxjs/toolkit';
 import type { PrivateMessage, UserNotice } from '@twurple/chat';
 import type { MessageTypes } from 'ircv3';
@@ -34,7 +32,7 @@ import {
 } from 'features/messages/utils/createMessages';
 import { writeEmotesUsageStatistic } from 'features/emotes';
 import { messageReceived } from './chatSlice';
-import type { ChatState, FetchResult } from './chatTypes';
+import type { Channel, ChatState, FetchResult } from './chatTypes';
 
 const builderFns: ((builder: ActionReducerMapBuilder<ChatState>) => void)[] =
   [];
@@ -72,32 +70,42 @@ const createGlobalChatThunk = <T>({
   return thunk;
 };
 
-type CreateChannelChatThunkArgs<T, U> = {
+type FetchChannelThunkArg = {
+  channelId: string;
+  channelName: string;
+};
+type CreateChannelChatThunkArgs<T> = {
   name: string;
-  path: (state: ChatState, arg: U) => FetchResult<T>;
-  payloadCreator: AsyncThunkPayloadCreator<{ data: T; channelName: string }, U>;
+  path: (channel: Channel) => FetchResult<T>;
+  payloadCreator: AsyncThunkPayloadCreator<
+    { data: T; channelName: string },
+    FetchChannelThunkArg
+  >;
 };
 
-const createChannelChatThunk = <T, U>({
+const createChannelChatThunk = <T>({
   name,
   path,
   payloadCreator,
-}: CreateChannelChatThunkArgs<T, U>) => {
+}: CreateChannelChatThunkArgs<T>) => {
   const thunk = createAsyncThunk(`chat/${name}`, payloadCreator);
 
   builderFns.push((builder: ActionReducerMapBuilder<ChatState>) => {
     builder.addCase(thunk.pending, (state, { meta: { arg } }) => {
-      if (!state.channels.entities[(arg as any).channelName]) return;
-      path(state, arg).status = 'pending';
+      const channel = state.channels.entities[arg.channelName];
+      if (!channel) return;
+      path(channel).status = 'pending';
     });
     builder.addCase(thunk.rejected, (state, { meta: { arg } }) => {
-      if (!state.channels.entities[(arg as any).channelName]) return;
-      path(state, arg).status = 'rejected';
+      const channel = state.channels.entities[arg.channelName];
+      if (!channel) return;
+      path(channel).status = 'rejected';
     });
     builder.addCase(thunk.fulfilled, (state, { payload, meta: { arg } }) => {
-      if (!state.channels.entities[(arg as any).channelName]) return;
-      path(state, arg).status = 'fulfilled';
-      path(state, arg).data = payload.data;
+      const channel = state.channels.entities[arg.channelName];
+      if (!channel) return;
+      path(channel).status = 'fulfilled';
+      path(channel).data = payload.data;
     });
   });
 
@@ -287,30 +295,26 @@ export const fetchChatterinoGlobalBadges = createGlobalChatThunk({
 });
 
 // channel emotes
-type FetchChannelEmotesArg = {
-  channelId: string;
-  channelName: string;
-};
 export const fetchBttvChannelEmotes = createChannelChatThunk({
   name: 'fetchBttvChannelEmotes',
-  path: (state, arg) => state.channels.entities[arg.channelName]!.emotes.bttv!,
-  payloadCreator: ({ channelId, channelName }: FetchChannelEmotesArg) =>
+  path: (channel) => channel.emotes.bttv,
+  payloadCreator: ({ channelId, channelName }) =>
     api.bttv
       .channelEmotes(channelId)
       .then((data) => ({ data: parseBttvChannelEmotes(data), channelName })),
 });
 export const fetchFfzChannelEmotes = createChannelChatThunk({
   name: 'fetchFfzChannelEmotes',
-  path: (state, arg) => state.channels.entities[arg.channelName]!.emotes.ffz!,
-  payloadCreator: ({ channelId, channelName }: FetchChannelEmotesArg) =>
+  path: (channel) => channel.emotes.ffz,
+  payloadCreator: ({ channelId, channelName }) =>
     api.ffz
       .channelEmotes(channelId)
       .then((data) => ({ data: parseFfzChannelEmotes(data), channelName })),
 });
 export const fetchStvChannelEmotes = createChannelChatThunk({
   name: 'fetchStvChannelEmotes',
-  path: (state, arg) => state.channels.entities[arg.channelName]!.emotes.stv!,
-  payloadCreator: ({ channelId, channelName }: FetchChannelEmotesArg) =>
+  path: (channel) => channel.emotes.stv,
+  payloadCreator: ({ channelId, channelName }) =>
     api.stv
       .channelEmotes(channelId)
       .then((data) => ({ data: parseStvEmotes(data), channelName })),
@@ -319,9 +323,8 @@ export const fetchStvChannelEmotes = createChannelChatThunk({
 // channel badges
 export const fetchTwitchChannelBadges = createChannelChatThunk({
   name: 'fetchTwitchChannelBadges',
-  path: (state, arg) =>
-    state.channels.entities[arg.channelName]!.badges.twitch!,
-  payloadCreator: ({ channelId, channelName }: FetchChannelEmotesArg) =>
+  path: (channel) => channel.badges.twitch,
+  payloadCreator: ({ channelId, channelName }) =>
     api.twitch.badges
       .getChannelBadges(channelId)
       .then((data) => ({ data: parseTwitchBadges(data), channelName })),
