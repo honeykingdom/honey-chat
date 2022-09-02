@@ -36,11 +36,11 @@ const useChatInput = (
   const users = useAppSelector(currentChannelUsersSelector);
   const recentInputs = useAppSelector(currentChannelRecentInputsSelector);
 
-  useEffect(() => {
-    setRecentInputsIndex(0);
-  }, [recentInputs]);
-
   const suggestions = useSuggestions();
+
+  useEffect(() => {
+    setRecentInputsIndex(-1);
+  }, [recentInputs]);
 
   const getDeps = () => ({
     textarea: textareaRef.current!,
@@ -173,7 +173,7 @@ const useChatInput = (
 
           const newIndex = d.recentInputsIndex + 1;
 
-          d.textarea.value = d.recentInputs[newIndex];
+          d.textarea.value = d.recentInputs[newIndex] || '';
           setRecentInputsIndex(newIndex);
 
           return;
@@ -181,15 +181,14 @@ const useChatInput = (
 
         if (e.key === 'ArrowDown') {
           const isCaretAtEnd =
-            e.currentTarget.selectionStart ===
-            e.currentTarget.defaultValue.length;
+            e.currentTarget.selectionStart === e.currentTarget.value.length;
 
           if (!isCaretAtEnd) return;
-          if (d.recentInputsIndex <= 0) return;
+          if (d.recentInputsIndex < 0) return;
 
           const newIndex = d.recentInputsIndex - 1;
 
-          d.textarea.value = d.recentInputs[newIndex];
+          d.textarea.value = d.recentInputs[newIndex] || '';
           setRecentInputsIndex(newIndex);
         }
       }
