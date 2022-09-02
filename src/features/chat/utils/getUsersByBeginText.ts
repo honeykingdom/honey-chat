@@ -1,14 +1,12 @@
 const getUsersByBeginText = (
   beginText: string,
   users: string[],
-  currentUserLogin: string | null,
+  meLogin: string | null,
   limit = 5,
 ) => {
   const result = [];
   const beginTextLower = beginText.toLowerCase();
-  const currentUserLoginLower = (currentUserLogin || '').toLowerCase();
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const name of users) {
     if (result.length === limit) return result;
 
@@ -16,7 +14,7 @@ const getUsersByBeginText = (
 
     if (
       (beginTextLower === '' || nameLower.startsWith(beginTextLower)) &&
-      nameLower !== currentUserLoginLower
+      nameLower !== meLogin
     ) {
       result.push(name);
     }

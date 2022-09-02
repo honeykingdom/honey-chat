@@ -1,17 +1,20 @@
-/* eslint-disable react/prop-types */
-import React, { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import styled, { css } from 'styled-components';
+import React, { useState, useRef, useCallback } from 'react';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import TextareaAutosize from 'react-textarea-autosize';
-import useOnClickOutside from 'react-cool-onclickoutside';
-
-import ChatModal from 'components/ChatModal';
+import { useAppSelector } from 'app/hooks';
+import { PREVENT_FORWARD_PROPS } from 'utils/constants';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 import IconButton from 'components/IconButton';
-import { ReactComponent as SmileyFaceIconSvg } from 'icons/smiley-face.svg';
-import EmotePicker from 'features/emotes/EmotePicker';
-import type { SuggestionsState } from 'features/chat/utils/suggestions';
-import { isEmotesLoadedSelector } from 'features/emotes/emotesSelectors';
-import * as htmlEntity from 'features/messages/utils/htmlEntity';
+import { EmotePicker, type HtmlEmote } from 'features/emotes';
+import SmileyFaceIconSvg from 'icons/smiley-face.svg';
+import useChatInput from '../hooks/useChatInput';
+import {
+  authStatusSelector,
+  isChannelReadySelector,
+  isRegisteredSelector,
+} from '../chatSelectors';
+import type { SendMessageFn, SuggestionsState } from '../chatTypes';
 
 const ChatInputRoot = styled.div`
   padding-left: 10px;
@@ -43,6 +46,7 @@ const Suggestions = styled.div`
   border-bottom: none;
   background-color: #18181b;
   color: #fff;
+  font-size: 13px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0px 2px rgba(0, 0, 0, 0.1); */
@@ -102,7 +106,9 @@ const EmotesModal = styled.div`
   min-width: 0;
   white-space: nowrap;
 `;
-const Textarea = styled(TextareaAutosize)<{ $showScroll: boolean }>`
+const Textarea = styled(TextareaAutosize, PREVENT_FORWARD_PROPS)<{
+  $showScroll?: boolean;
+}>`
   display: block;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -128,8 +134,17 @@ const Textarea = styled(TextareaAutosize)<{ $showScroll: boolean }>`
   transition-property: box-shadow, border, background-color;
 
   &:focus {
+    border-color: #a970ff;
     background-color: #000;
-    border-color: #9147ff;
+
+    &:hover {
+      border-color: #a970ff;
+      background-color: #000;
+    }
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   &[disabled] {
@@ -149,46 +164,44 @@ const SmileyFaceIcon = styled(SmileyFaceIconSvg)`
 `;
 
 type Props = {
-  text: string;
-  suggestions: SuggestionsState;
-  isDisabled: boolean;
-  onEmoteClick: (name: string) => void;
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onKeyUp: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  onBlur: () => void;
-  onSuggestionMouseEnter: (index: number) => void;
-  onSuggestionClick: (index: number) => void;
+  sendMessage: SendMessageFn;
 };
 
 const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
-  (
-    {
-      text,
-      suggestions,
-      isDisabled,
-      onEmoteClick,
-      onChange,
-      onKeyUp,
-      onKeyDown,
-      onBlur,
-      onSuggestionMouseEnter,
-      onSuggestionClick,
-    },
-    textareaRef,
-  ) => {
-    const suggestionsRef = useRef<HTMLDivElement>(null);
-
-    useOnClickOutside(() => onBlur(), {
-      refs: [textareaRef as React.RefObject<HTMLElement>, suggestionsRef],
-    });
+  ({ sendMessage }, textareaRef) => {
+    const authStatus = useAppSelector(authStatusSelector);
+    const isRegistered = useAppSelector(isRegisteredSelector);
+    const isReady = useAppSelector(isChannelReadySelector);
 
     const [isShowTextareaScroll, setIsShowTextareaScroll] = useState(false);
     const [isEmotesModalVisible, setIsEmotesModalVisible] = useState(false);
-    const isEmotesLoaded = useSelector(isEmotesLoadedSelector);
-    const handleCloseEmotesModal = () => setIsEmotesModalVisible(false);
 
-    const chatInputRef = useOnClickOutside(handleCloseEmotesModal);
+    const chatInputRef = useRef<HTMLDivElement>(null);
+    const suggestionsRef = useRef<HTMLDivElement>(null);
+
+    const {
+      suggestions,
+      handleChange,
+      handleKeyUp,
+      handleKeyDown,
+      handleBlur,
+      handleSuggestionMouseEnter,
+      handleSuggestionClick,
+      handleEmoteClick,
+    } = useChatInput(
+      sendMessage,
+      textareaRef as React.RefObject<HTMLTextAreaElement>,
+    );
+
+    const handleCloseEmotesModal = useCallback(
+      () => setIsEmotesModalVisible(false),
+      [],
+    );
+
+    useOnClickOutside(chatInputRef, handleCloseEmotesModal);
+    useOnClickOutside(suggestionsRef, () =>
+      suggestions.set({ isActive: false }),
+    );
 
     const renderSuggestions = ({
       type,
@@ -199,32 +212,32 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
         <SuggestionItem
           key={name}
           $isActive={index === activeIndex}
-          onMouseEnter={() => onSuggestionMouseEnter(index)}
-          onClick={() => onSuggestionClick(index)}
+          onMouseEnter={() => handleSuggestionMouseEnter(index)}
+          onClick={() => handleSuggestionClick(index)}
         >
           {name}
         </SuggestionItem>
       );
 
       const renderEmote = (
-        { src, srcSet, alt }: htmlEntity.Emote,
+        { id, src, srcSet, alt, title }: HtmlEmote,
         index: number,
       ) => (
         <SuggestionItem
-          key={alt}
+          key={id}
           $isActive={index === activeIndex}
-          onMouseEnter={() => onSuggestionMouseEnter(index)}
-          onClick={() => onSuggestionClick(index)}
+          onMouseEnter={() => handleSuggestionMouseEnter(index)}
+          onClick={() => handleSuggestionClick(index)}
         >
           <SuggestionImage src={src} srcSet={srcSet} alt={alt} />
-          {alt}
+          {title}
         </SuggestionItem>
       );
 
       const renderItems = () =>
         type === 'users'
           ? (items as string[]).map(renderUser)
-          : (items as htmlEntity.Emote[]).map(renderEmote);
+          : items.map(renderEmote);
 
       return (
         <Suggestions ref={suggestionsRef}>
@@ -243,9 +256,10 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
 
     const renderEmotesModal = () => (
       <EmotesModal>
-        <ChatModal onClose={handleCloseEmotesModal}>
-          <EmotePicker onEmoteClick={onEmoteClick} />
-        </ChatModal>
+        <EmotePicker
+          onClose={handleCloseEmotesModal}
+          onEmoteClick={handleEmoteClick}
+        />
       </EmotesModal>
     );
 
@@ -255,23 +269,23 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
     return (
       <ChatInputRoot ref={chatInputRef}>
         <ChatInputInner>
-          {suggestions.isActive && renderSuggestions(suggestions)}
-          <TextareaWrapper $isSuggestions={suggestions.isActive}>
+          {suggestions.state.isActive && renderSuggestions(suggestions.state)}
+          <TextareaWrapper $isSuggestions={suggestions.state.isActive}>
             <TextareaInput>
               <Textarea
                 ref={textareaRef}
-                value={text}
                 placeholder="Send a message"
                 maxLength={500}
                 maxRows={4}
-                disabled={isDisabled}
+                disabled={!(isRegistered && authStatus === 'success')}
                 $showScroll={isShowTextareaScroll}
-                onChange={onChange}
-                onKeyUp={onKeyUp}
-                onKeyDown={onKeyDown}
+                onChange={handleChange}
+                onKeyUp={handleKeyUp}
+                onKeyDown={handleKeyDown}
+                onBlur={handleBlur}
                 onHeightChange={handleHeightChange}
               />
-              {isEmotesLoaded && renderEmotesButton()}
+              {isReady && renderEmotesButton()}
             </TextareaInput>
           </TextareaWrapper>
           {isEmotesModalVisible && renderEmotesModal()}

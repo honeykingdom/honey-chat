@@ -1,90 +1,106 @@
 import { useEffect } from 'react';
-import { useAppSelector } from 'app/hooks';
-import { isAuthSelector, meIdSelector } from 'features/auth';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { optionsSelector } from 'features/options';
 import {
-  useLazyBlockedUsersQuery,
-  useLazyBttvChannelEmotesQuery,
-  useLazyBttvGlobalBadgesQuery,
-  useLazyBttvGlobalEmotesQuery,
-  useLazyChatterinoBadgesQuery,
-  useLazyFfzApGlobalBadgesQuery,
-  useLazyFfzChannelEmotesQuery,
-  useLazyFfzGlobalBadgesQuery,
-  useLazyFfzGlobalEmotesQuery,
-  useLazyRecentMessagesQuery,
-  useLazyStvChannelEmotesQuery,
-  useLazyStvCosmeticsQuery,
-  useLazyStvGlobalEmotesQuery,
-  useLazyTwitchChannelBadgesQuery,
-  useLazyTwitchEmotesQuery,
-  useLazyTwitchGlobalBadgesQuery,
-} from 'features/api';
-import {
-  currentChannelIdSelector,
   currentChannelNameSelector,
+  authStatusSelector,
+  currentChannelIdSelector,
+  fetchGlobalStatusSelector,
+  fetchChannelStatusSelector,
+  isJoinedCurrentChannelSelector,
+  isChannelResourcesLoadedSelector,
+  isChannelReadySelector,
+  accessTokenSelector,
+  channelNamesSelector,
+  fetchRecentMessagesStatusSelector,
 } from '../chatSelectors';
+import {
+  fetchAndMergeTwitchEmotes,
+  fetchBlockedUsers,
+  fetchBttvChannelEmotes,
+  fetchBttvGlobalBadges,
+  fetchBttvGlobalEmotes,
+  fetchChatterinoGlobalBadges,
+  fetchFfzApGlobalBadges,
+  fetchFfzChannelEmotes,
+  fetchFfzEmoji,
+  fetchFfzGlobalBadges,
+  fetchFfzGlobalEmotes,
+  fetchRecentMessages,
+  fetchStvChannelEmotes,
+  fetchStvGlobalBadges,
+  fetchStvGlobalEmotes,
+  fetchTwitchChannelBadges,
+  fetchTwitchGlobalBadges,
+} from '../chatThunks';
+import { channelResourcesLoaded } from '../chatSlice';
 
 const useFetchChatData = () => {
-  const isAuth = useAppSelector(isAuthSelector);
-  const meId = useAppSelector(meIdSelector);
-  const currentChannelName = useAppSelector(currentChannelNameSelector);
-  const currentChannelId = useAppSelector(currentChannelIdSelector);
+  // TODO: fix dispatch types
+  const dispatch = useAppDispatch() as any;
+  const authStatus = useAppSelector(authStatusSelector);
+  const accessToken = useAppSelector(accessTokenSelector);
+  const channelId = useAppSelector(currentChannelIdSelector);
+  const channelName = useAppSelector(currentChannelNameSelector);
+  const channelNames = useAppSelector(channelNamesSelector);
+  const isJoined = useAppSelector(isJoinedCurrentChannelSelector);
   const options = useAppSelector(optionsSelector);
+  const fetchGlobalStatus = useAppSelector(fetchGlobalStatusSelector);
+  const fetchChannelStatus = useAppSelector(fetchChannelStatusSelector);
+  const fetchRecentMessagesStatus = useAppSelector(
+    fetchRecentMessagesStatusSelector,
+  );
 
-  const [fetchTwitchEmotes] = useLazyTwitchEmotesQuery();
-  const [fetchTwitchGlobalBadges] = useLazyTwitchGlobalBadgesQuery();
-  const [fetchTwitchChannelBadges] = useLazyTwitchChannelBadgesQuery();
-  const [fetchBlockedUsers] = useLazyBlockedUsersQuery();
-
-  const [fetchBttvGlobalEmotes] = useLazyBttvGlobalEmotesQuery();
-  const [fetchBttvChannelEmotes] = useLazyBttvChannelEmotesQuery();
-  const [fetchBttvGlobalBadges] = useLazyBttvGlobalBadgesQuery();
-
-  const [fetchFfzGlobalEmotes] = useLazyFfzGlobalEmotesQuery();
-  const [fetchFfzChannelEmotes] = useLazyFfzChannelEmotesQuery();
-  const [fetchFfzGlobalBadges] = useLazyFfzGlobalBadgesQuery();
-  const [fetchFfzApGlobalBadges] = useLazyFfzApGlobalBadgesQuery();
-
-  const [fetchStvGlobalEmotes] = useLazyStvGlobalEmotesQuery();
-  const [fetchStvChannelEmotes] = useLazyStvChannelEmotesQuery();
-  const [fetchStvCosmetics] = useLazyStvCosmeticsQuery();
-
-  const [fetchChatterinoBadges] = useLazyChatterinoBadgesQuery();
-
-  const [fetchRecentMessages] = useLazyRecentMessagesQuery();
+  const isChannelReady = useAppSelector(isChannelReadySelector);
+  const isChannelResourcesLoaded = useAppSelector(
+    isChannelResourcesLoadedSelector,
+  );
 
   useEffect(() => {
-    if (!isAuth || !meId) return;
+    if (authStatus !== 'success' || !accessToken) return;
 
-    fetchBlockedUsers(meId, true);
-  }, [isAuth, meId]);
+    dispatch(fetchBlockedUsers());
+  }, [authStatus, accessToken]);
 
   // refetch twitch emote sets when channel changes
   useEffect(() => {
-    if (!isAuth || !currentChannelName) return;
+    if (!isJoined) return;
 
-    fetchTwitchEmotes(undefined, true);
-  }, [isAuth, currentChannelName]);
+    dispatch(fetchAndMergeTwitchEmotes());
+  }, [isJoined]);
 
   useEffect(() => {
-    fetchTwitchGlobalBadges(undefined, true);
-
-    if (options.bttv.emotes) fetchBttvGlobalEmotes(undefined, true);
-    if (options.bttv.badges) fetchBttvGlobalBadges(undefined, true);
-
-    if (options.ffz.emotes) fetchFfzGlobalEmotes(undefined, true);
-    if (options.ffz.badges) {
-      fetchFfzGlobalBadges(undefined, true);
-      fetchFfzApGlobalBadges(undefined, true);
+    if (fetchGlobalStatus.emotes.twitch === 'idle') {
+      dispatch(fetchTwitchGlobalBadges());
     }
-
-    if (options.stv.emotes) fetchStvGlobalEmotes(undefined, true);
-    if (options.stv.badges || options.stv.paints) {
-      fetchStvCosmetics(undefined, true);
+    if (fetchGlobalStatus.emotes.bttv === 'idle' && options.bttv.emotes) {
+      dispatch(fetchBttvGlobalEmotes());
     }
-
-    if (options.chatterino.badges) fetchChatterinoBadges(undefined, true);
+    if (fetchGlobalStatus.emotes.bttv === 'idle' && options.bttv.badges) {
+      dispatch(fetchBttvGlobalBadges());
+    }
+    if (fetchGlobalStatus.emotes.ffz === 'idle' && options.ffz.emotes) {
+      dispatch(fetchFfzGlobalEmotes());
+    }
+    if (fetchGlobalStatus.emotes.emoji === 'idle' && options.ffz.emoji) {
+      dispatch(fetchFfzEmoji());
+    }
+    if (fetchGlobalStatus.badges.ffz === 'idle' && options.ffz.badges) {
+      dispatch(fetchFfzGlobalBadges());
+      dispatch(fetchFfzApGlobalBadges());
+    }
+    if (fetchGlobalStatus.emotes.stv === 'idle' && options.stv.emotes) {
+      dispatch(fetchStvGlobalEmotes());
+    }
+    if (fetchGlobalStatus.badges.stv === 'idle' && options.stv.badges) {
+      dispatch(fetchStvGlobalBadges());
+    }
+    if (
+      fetchGlobalStatus.badges.chatterino === 'idle' &&
+      options.chatterino.badges
+    ) {
+      dispatch(fetchChatterinoGlobalBadges());
+    }
   }, [
     options.bttv.emotes,
     options.bttv.badges,
@@ -92,32 +108,55 @@ const useFetchChatData = () => {
     options.ffz.badges,
     options.stv.emotes,
     options.stv.badges,
-    options.stv.paints,
+    options.stv.badges,
     options.chatterino.badges,
   ]);
 
   useEffect(() => {
-    if (!currentChannelId) return;
+    if (!channelId || !channelName) return;
 
-    fetchTwitchChannelBadges(currentChannelId, true);
+    const params = { channelId, channelName };
 
-    if (options.bttv.emotes) fetchBttvChannelEmotes(currentChannelId, true);
-    if (options.ffz.emotes) fetchFfzChannelEmotes(currentChannelId, true);
-    if (options.stv.emotes) fetchStvChannelEmotes(currentChannelId, true);
+    if (fetchChannelStatus.badges.twitch === 'idle') {
+      dispatch(fetchTwitchChannelBadges(params));
+    }
+    if (fetchChannelStatus.emotes.bttv === 'idle' && options.bttv.emotes) {
+      dispatch(fetchBttvChannelEmotes(params));
+    }
+    if (fetchChannelStatus.emotes.ffz === 'idle' && options.ffz.emotes) {
+      dispatch(fetchFfzChannelEmotes(params));
+    }
+    if (fetchChannelStatus.emotes.stv === 'idle' && options.stv.emotes) {
+      dispatch(fetchStvChannelEmotes(params));
+    }
   }, [
-    currentChannelId,
+    channelId,
+    channelName,
     options.bttv.emotes,
     options.ffz.emotes,
     options.stv.emotes,
+    options.recentMessages.load,
+    fetchChannelStatus.badges.twitch,
+    fetchChannelStatus.emotes.bttv,
+    fetchChannelStatus.emotes.ffz,
+    fetchChannelStatus.emotes.stv,
   ]);
 
   useEffect(() => {
-    if (!currentChannelName) return;
-
-    if (options.recentMessages.load) {
-      fetchRecentMessages(currentChannelName, true);
+    if (channelNames.length === 0) return;
+    for (const { name, status } of fetchRecentMessagesStatus) {
+      if (status === 'idle' && options.recentMessages.load) {
+        dispatch(fetchRecentMessages(name));
+      }
     }
-  }, [currentChannelName, options.recentMessages.load]);
+  }, [channelNames.length, options.recentMessages.load]);
+
+  useEffect(() => {
+    if (isChannelReady) return;
+    if (!isChannelResourcesLoaded) return;
+
+    dispatch(channelResourcesLoaded());
+  }, [isChannelReady, isChannelResourcesLoaded]);
 };
 
 export default useFetchChatData;

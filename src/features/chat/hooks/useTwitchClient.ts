@@ -1,127 +1,175 @@
-import { useEffect, useRef, useCallback } from 'react';
-import {
-  Chat,
-  ChatEvents,
-  Commands,
-  Events,
-  GlobalUserStateMessage,
-} from 'twitch-js';
+import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { MessageTypes } from 'ircv3';
+import { AuthProvider, StaticAuthProvider } from '@twurple/auth';
+import {
+  ChatClient,
+  GlobalUserState,
+  PrivateMessage,
+  RoomState,
+  UserNotice,
+  UserState,
+} from '@twurple/chat';
+import getIrcChannelName from 'utils/getChannelName';
+import { createCustomNotice } from 'features/messages';
+import { CLIENT_ID } from 'utils/constants';
 import {
   accessTokenSelector,
-  invalidateAuth,
-  isAuthSelector,
-  meLoginSelector,
-} from 'features/auth';
+  authStatusSelector,
+  channelNamesSelector,
+} from '../chatSelectors';
 import {
-  channelsAdded,
-  channelRemoved,
-  clearChatReceived,
-  connected,
-  currentChannelChanged,
-  disconnected,
+  chatConnected,
+  chatDisconnected,
+  chatRegistered,
   globalUserStateReceived,
-  messageSended,
+  roomStateReceived,
+  userStateReceived,
+  messageReceived,
+} from '../chatSlice';
+import {
+  parseGlobalUserState,
+  parseRoomState,
+  parseUserState,
+} from '../utils/parseIrc';
+import {
   noticeReceived,
   privateMessageReceived,
-  reconnecting,
-  roomStateReceived,
   userNoticeReceived,
-  userStateReceived,
-} from '../chatSlice';
+} from '../chatThunks';
 
+// TODO: try to read access token directly from the localStorage for the first time
 const useTwitchClient = () => {
-  const dispatch = useAppDispatch();
+  // TODO: fix dispatch types
+  const dispatch = useAppDispatch() as any;
+  const authStatus = useAppSelector(authStatusSelector);
+  const accessToken = useAppSelector(accessTokenSelector);
+  const channelNames = useAppSelector(channelNamesSelector);
 
-  const isAuth = useAppSelector(isAuthSelector);
-  const token = useAppSelector(accessTokenSelector);
-  const username = useAppSelector(meLoginSelector);
+  const chatRef = useRef<ChatClient | null>(null);
+  const channelNamesRef = useRef<string[]>([]);
 
-  const chatRef = useRef<Chat | null>(null);
+  channelNamesRef.current = channelNames;
 
   useEffect(() => {
-    if (!isAuth) return;
+    if (authStatus === 'uninitialized' || chatRef.current) return;
 
-    const options = token && username ? { token, username } : {};
-    const chat = new Chat({
-      ...options,
-      log: { level: 'silent' },
-    });
+    let authProvider: AuthProvider | undefined;
 
-    chat.on(Commands.WELCOME, () => dispatch(connected()));
-    chat.on(Commands.GLOBALUSERSTATE, (m) =>
-      dispatch(globalUserStateReceived((m as GlobalUserStateMessage).tags)),
-    );
-    chat.on(Commands.USER_STATE, (m) =>
-      dispatch(userStateReceived({ channel: m.channel, tags: m.tags })),
-    );
-    chat.on(Commands.ROOM_STATE, (m) =>
-      dispatch(roomStateReceived({ channel: m.channel, tags: m.tags })),
-    );
+    if (authStatus === 'success' && accessToken) {
+      authProvider = new StaticAuthProvider(CLIENT_ID, accessToken);
+    }
 
-    // socket closed
-    chat.on(ChatEvents.DISCONNECTED, () => dispatch(disconnected()));
-    // ping failed
-    chat.on(ChatEvents.RECONNECT, () => dispatch(reconnecting()));
-
-    chat.on(Events.AUTHENTICATION_FAILED, () => dispatch(invalidateAuth()));
-
-    chat.on(Events.PRIVATE_MESSAGE, (m) => dispatch(privateMessageReceived(m)));
-    chat.on(Events.NOTICE, (m) => dispatch(noticeReceived(m)));
-    chat.on(Events.USER_NOTICE, (m) => dispatch(userNoticeReceived(m)));
-    chat.on(Events.CLEAR_CHAT, (m) => dispatch(clearChatReceived(m)));
+    const chat = new ChatClient({ authProvider });
 
     chatRef.current = chat;
 
-    chat.connect().then(async () => {
-      const lsChannelsRaw = localStorage.getItem('channels');
-      const lsChannels = lsChannelsRaw?.split(',') || [];
-
-      dispatch(channelsAdded(lsChannels));
-      dispatch(currentChannelChanged(lsChannels[0]));
-
-      // const channel = 'cohhcarnage';
-      // const channel = 'dmitryscaletta';
-      // const channel = 'melharucos';
+    chat.onConnect(() => {
+      dispatch(chatConnected());
     });
-  }, [isAuth, token, username]);
+    chat.onDisconnect((manually, reason) => {
+      dispatch(chatDisconnected());
+      console.warn(`Disconnected. ${reason}`);
+    });
+    chat.onRegister(() => {
+      channelNamesRef.current.forEach((channel) =>
+        chat
+          .join(channel)
+          .catch((e) =>
+            dispatch(messageReceived(createCustomNotice(channel, e.message))),
+          ),
+      );
+      dispatch(chatRegistered());
+    });
+    chat.onAuthenticationFailure((message, retryCount) => {
+      console.warn(message, retryCount);
+    });
 
-  const joinChannel = useCallback((channel: string) => {
-    const chat = chatRef.current;
+    chat.onTypedMessage(GlobalUserState, (msg) => {
+      dispatch(globalUserStateReceived(parseGlobalUserState(msg)));
+    });
+    chat.onTypedMessage(UserState, (msg) => {
+      const userState = parseUserState(msg);
+      const channelName = getIrcChannelName(msg);
+      dispatch(userStateReceived({ channelName, userState }));
+    });
+    chat.onTypedMessage(RoomState, (msg) => {
+      const roomState = parseRoomState(msg);
+      const channelName = getIrcChannelName(msg);
+      dispatch(roomStateReceived({ channelName, roomState }));
+    });
 
-    if (!chat) return;
+    // ClearChat
+    // chat.onBan((channel, user, msg) => {});
+    // chat.onTimeout((channel, user, duration, msg) => {});
+    // chat.onChatClear((channel, msg) => {});
 
-    dispatch(channelsAdded([channel]));
+    // ClearMsg
+    // chat.onMessageRemove((channel, messageId, msg) => {});
 
-    chat.join(channel);
-  }, []);
+    // HostTarget
+    // chat.onHost((channel, target, viewers) => {});
+    // chat.onUnhost((channel) => {});
 
-  const partChannel = useCallback((channel: string) => {
-    const chat = chatRef.current;
+    // chat.onJoin(() => {});
+    // chat.onJoinFailure(() => {});
+    // chat.onPart(() => {});
 
-    if (!chat) return;
+    chat.onTypedMessage(PrivateMessage, (msg) => {
+      dispatch(privateMessageReceived(msg));
+    });
 
-    chat.part(channel);
+    chat.onTypedMessage(UserNotice, (msg) => {
+      dispatch(userNoticeReceived(msg));
+    });
 
-    dispatch(channelRemoved(channel));
-  }, []);
+    chat.onTypedMessage(MessageTypes.Commands.Notice, (msg) => {
+      dispatch(noticeReceived(msg));
+    });
 
-  const sendMessage = useCallback(async (channel: string, message: string) => {
-    const chat = chatRef.current;
+    // Privmsg
+    // chat.onHosted((channel, byChannel, auto, viewers) => {});
+    // chat.onMessage((channel, user, message, msg) => {});
+    // chat.onAction((channel, user, message, msg) => {});
 
-    if (!chat) return;
+    // RoomState
+    // this.onSlow
+    // this.onFollowersOnly
 
-    // TODO: replace emojis like :haha:
-    await chat.say(channel, message);
+    // UserNotice
+    // this.onSub
+    // this.onResub
+    // this.onSubGift
+    // this.onCommunitySub
+    // this.onPrimePaidUpgrade
+    // this.onGiftPaidUpgrade
+    // this.onStandardPayForward
+    // this.onCommunityPayForward
+    // this.onPrimeCommunityGift
+    // this.onRaid
+    // this.onRaidCancel
+    // this.onRitual
+    // this.onBitsBadgeUpgrade
+    // this.onSubExtend
+    // this.onRewardGift
+    // this.onAnnouncement
 
-    dispatch(messageSended({ channel, message }));
-  }, []);
+    // Whisper
+    // this.onWhisper
 
-  return {
-    joinChannel,
-    partChannel,
-    sendMessage,
-  };
+    // Notice
+    // this.onEmoteOnly
+    // this.onHostsRemaining
+    // this.onR9k
+    // this.onSubsOnly
+    // this.onNoPermission
+    // this.onMessageRatelimit
+    // this.onMessageFailed
+
+    chat.connect();
+  }, [authStatus, accessToken]);
+
+  return chatRef;
 };
 
 export default useTwitchClient;
