@@ -19,6 +19,7 @@ import {
 } from 'features/messages/utils/createMessages';
 import { type Options, getInitialOptions } from 'features/options';
 import {
+  CHANNEL_INITIAL_STATE,
   CHANNEL_RECENT_INPUTS_LIMIT,
   CHANNEL_USERS_LIMIT,
 } from './chatConstants';
@@ -31,23 +32,6 @@ import type {
   LsChannels,
   UserStateTags,
 } from './chatTypes';
-
-const CHANNEL_INITIAL_STATE: Omit<Channel, 'name'> = {
-  messages: [],
-  recentMessages: { status: 'idle' },
-  ready: false,
-  isFirstMessageAltBg: false,
-  users: [],
-  recentInputs: [],
-  badges: {
-    twitch: { status: 'idle' },
-  },
-  emotes: {
-    bttv: { status: 'idle' },
-    ffz: { status: 'idle' },
-    stv: { status: 'idle' },
-  },
-};
 
 const channelsAdapter = createEntityAdapter<Channel>({
   selectId: (channel) => channel.name,
@@ -139,8 +123,9 @@ const chat = createSlice({
       channelsAdapter.addMany(
         state.channels,
         payload.map(([name, id]) => ({
-          name,
           ...CHANNEL_INITIAL_STATE,
+          id,
+          name,
         })),
       );
     },
@@ -263,6 +248,7 @@ const chat = createSlice({
     },
     clearChatReceived: (state, { payload }) => {},
 
+    // options
     optionChanged: {
       reducer: (
         state,
