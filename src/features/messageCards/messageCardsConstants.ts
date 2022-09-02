@@ -14,4 +14,4 @@ export const TWITCH_VIDEO_REGEX =
 
 // https://regexr.com/3dj5t
 export const YOUTUBE_VIDEO_REGEX =
-  /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/;
+  /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?:[\w-]+\?v=|embed\/|v\/|shorts\/)?)([\w-]+)(\S+)?$/;
