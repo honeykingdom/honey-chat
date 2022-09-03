@@ -1,5 +1,10 @@
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV !== 'production',
+});
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const config = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -18,3 +23,5 @@ module.exports = {
     // ignoreBuildErrors: true,
   },
 };
+
+module.exports = withPWA(config);
