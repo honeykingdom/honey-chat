@@ -260,7 +260,48 @@ const chat = createSlice({
         }
       }
     },
-    clearChatReceived: (state, { payload }) => {},
+
+    clearChatReceived: (
+      state,
+      { payload }: PayloadAction<{ channelName: string; login?: string }>,
+    ) => {
+      const channel = state.channels.entities[payload.channelName];
+      if (!channel) return;
+
+      if (payload.login) {
+        // /ban or /timeout
+        for (const message of channel.messages) {
+          if (
+            message.type === MessageType.PRIVATE_MESSAGE &&
+            message.user.login === payload.login
+          ) {
+            message.isDeleted = true;
+          }
+        }
+      } else {
+        // /clear
+        for (const message of channel.messages) {
+          if (message.type === MessageType.PRIVATE_MESSAGE) {
+            message.isHistory = true;
+          }
+        }
+      }
+    },
+    clearMsgReceived: (
+      state,
+      { payload }: PayloadAction<{ channelName: string; messageId: string }>,
+    ) => {
+      const channel = state.channels.entities[payload.channelName];
+      if (!channel) return;
+
+      const message = channel.messages.find(
+        (m) =>
+          m.type === MessageType.PRIVATE_MESSAGE && m.id === payload.messageId,
+      );
+      if (message) {
+        (message as MessageTypePrivate).isDeleted = true;
+      }
+    },
 
     // options
     optionChanged: {
@@ -319,6 +360,7 @@ export const {
 
   messageReceived,
   clearChatReceived,
+  clearMsgReceived,
 
   optionChanged,
 } = chat.actions;

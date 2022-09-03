@@ -13,6 +13,7 @@ import {
 import getIrcChannelName from 'utils/getChannelName';
 import { createCustomNotice } from 'features/messages';
 import { CLIENT_ID } from 'utils/constants';
+import toDaysMinutesSeconds from 'utils/toDaysMinutesSeconds';
 import {
   accessTokenSelector,
   authStatusSelector,
@@ -22,6 +23,8 @@ import {
   chatConnected,
   chatDisconnected,
   chatRegistered,
+  clearChatReceived,
+  clearMsgReceived,
   globalUserStateReceived,
   roomStateReceived,
   userStateReceived,
@@ -100,12 +103,25 @@ const useTwitchClient = () => {
     });
 
     // ClearChat
-    // chat.onBan((channel, user, msg) => {});
-    // chat.onTimeout((channel, user, duration, msg) => {});
-    // chat.onChatClear((channel, msg) => {});
+    chat.onBan((channelName, login) => {
+      const messageBody = `${login} has been permanently banned.`;
+      dispatch(clearChatReceived({ channelName, login }));
+      dispatch(createCustomNotice(channelName, messageBody));
+    });
+    chat.onTimeout((channelName, login, duration) => {
+      const durationText = toDaysMinutesSeconds(duration);
+      const messageBody = `${login} has been timed out for ${durationText}.`;
+      dispatch(clearChatReceived({ channelName, login }));
+      dispatch(createCustomNotice(channelName, messageBody));
+    });
+    chat.onChatClear((channelName) => {
+      dispatch(clearChatReceived({ channelName }));
+    });
 
     // ClearMsg
-    // chat.onMessageRemove((channel, messageId, msg) => {});
+    chat.onMessageRemove((channelName, messageId) => {
+      dispatch(clearMsgReceived({ channelName, messageId }));
+    });
 
     // HostTarget
     // chat.onHost((channel, target, viewers) => {});
