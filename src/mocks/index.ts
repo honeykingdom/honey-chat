@@ -77,7 +77,7 @@ export const messagePartTwitchEmote = (
 
   if (!id) throw new Error(`No twitch emote with name ${name}`);
 
-  return { type: MessagePartType.TWITCH_EMOTE, content: id };
+  return { type: MessagePartType.TWITCH_EMOTE, content: { id, modifiers: [] } };
 };
 
 export const messagePartBttvEmote = (name: string): MessagePartBttvEmote => {
@@ -85,7 +85,7 @@ export const messagePartBttvEmote = (name: string): MessagePartBttvEmote => {
 
   if (!id) throw new Error(`No BTTV emote with name ${name}`);
 
-  return { type: MessagePartType.BTTV_EMOTE, content: id };
+  return { type: MessagePartType.BTTV_EMOTE, content: { id, modifiers: [] } };
 };
 
 export const messagePartFfzEmote = (name: string): MessagePartFfzEmote => {
@@ -93,7 +93,7 @@ export const messagePartFfzEmote = (name: string): MessagePartFfzEmote => {
 
   if (!id) throw new Error(`No FFZ emote with name ${name}`);
 
-  return { type: MessagePartType.FFZ_EMOTE, content: id };
+  return { type: MessagePartType.FFZ_EMOTE, content: { id, modifiers: [] } };
 };
 
 export const messagePartStvEmote = (name: string): MessagePartStvEmote => {
@@ -101,7 +101,7 @@ export const messagePartStvEmote = (name: string): MessagePartStvEmote => {
 
   if (!id) throw new Error(`No 7TV emote with name ${name}`);
 
-  return { type: MessagePartType.STV_EMOTE, content: id };
+  return { type: MessagePartType.STV_EMOTE, content: { id, modifiers: [] } };
 };
 
 // https://twemoji.maxcdn.com/v/latest/72x72/1f47f.png
@@ -110,5 +110,5 @@ export const messagePartEmoji = (emoji: string): MessagePartEmoji => {
 
   if (!id) throw new Error(`No emoji with id ${id}`);
 
-  return { type: MessagePartType.EMOJI, content: id };
+  return { type: MessagePartType.EMOJI, content: { id, modifiers: [] } };
 };

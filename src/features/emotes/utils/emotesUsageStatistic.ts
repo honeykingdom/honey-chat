@@ -26,8 +26,8 @@ export const readEmotesUsageStatistic = (): MessagePartEmote[] => {
   for (const [typeString, emotes] of Object.entries(stats)) {
     const type = Number.parseInt(typeString, 10) as MessagePartEmote['type'];
 
-    for (const [content, [uses, updatedAt]] of Object.entries(emotes)) {
-      result.push({ type, content, uses, updatedAt });
+    for (const [id, [uses, updatedAt]] of Object.entries(emotes)) {
+      result.push({ type, content: { id, modifiers: [] }, uses, updatedAt });
     }
   }
 
@@ -43,7 +43,10 @@ export const writeEmotesUsageStatistic = (parts: MessagePart[]) => {
 
   const stats = lsRead(LS.EmotesUsageStatistic) || {};
 
-  for (const { type, content: id } of parts as MessagePartEmote[]) {
+  for (const {
+    type,
+    content: { id },
+  } of parts as MessagePartEmote[]) {
     const isEmote = EMOTE_TYPES.includes(type);
     if (!isEmote) continue;
     if (!stats[type]) stats[type] = {};

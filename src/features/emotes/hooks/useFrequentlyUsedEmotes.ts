@@ -13,7 +13,7 @@ const useFrequentlyUsedEmotes = () => {
     const stats = readEmotesUsageStatistic();
     return stats
       .slice(0, FREQUENTLY_USED_EMOTES_LIMIT)
-      .map(({ type, content }) => createHtmlEmote(emotes, type, content)!)
+      .map(({ type, content }) => createHtmlEmote(emotes, type, content.id)!)
       .filter(Boolean);
   });
 
