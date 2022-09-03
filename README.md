@@ -13,6 +13,7 @@ https://honey-chat.vercel.app/#lirik
 * Recent messages history
 * BTTV/FFZ/7TV emotes and badges
 * Ability to join multiple channels
+* Can be installed as a native app on desktop and mobiles
 * Sound notifications on highlights
 * Information about YouTube videos and Twitch clips right in the chat
 * Autocomplete for emotes (type `:` and start entering an emote name)
