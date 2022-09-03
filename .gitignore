@@ -37,3 +37,6 @@ yarn-error.log*
 .eslintcache
 
 __NEXT/
+
+/public/sw.js
+/public/workbox-*.js
