@@ -4,8 +4,8 @@ Alternative twitch-like chat with history and some enhancements.
 
 https://honey-chat.vercel.app
 
-Examples:
-https://honey-chat.vercel.app/#forsen
+Examples:  
+https://honey-chat.vercel.app/#forsen  
 https://honey-chat.vercel.app/#lirik
 
 ## Features
