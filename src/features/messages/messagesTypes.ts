@@ -7,44 +7,34 @@ export type MessagePartText = {
   content: string;
 };
 
+type MessagePartEmoteContent = {
+  id: string;
+  modifiers: MessagePartEmoteModifier[];
+};
+
 export type MessagePartTwitchEmote = {
   type: MessagePartType.TWITCH_EMOTE;
-  content: {
-    id: string;
-    modifiers: MessagePartEmoteModifier[];
-  };
+  content: MessagePartEmoteContent;
 };
 
 export type MessagePartBttvEmote = {
   type: MessagePartType.BTTV_EMOTE;
-  content: {
-    id: string;
-    modifiers: MessagePartEmoteModifier[];
-  };
+  content: MessagePartEmoteContent;
 };
 
 export type MessagePartFfzEmote = {
   type: MessagePartType.FFZ_EMOTE;
-  content: {
-    id: string;
-    modifiers: MessagePartEmoteModifier[];
-  };
+  content: MessagePartEmoteContent;
 };
 
 export type MessagePartStvEmote = {
   type: MessagePartType.STV_EMOTE;
-  content: {
-    id: string;
-    modifiers: MessagePartEmoteModifier[];
-  };
+  content: MessagePartEmoteContent;
 };
 
 export type MessagePartEmoji = {
   type: MessagePartType.EMOJI;
-  content: {
-    id: string;
-    modifiers: MessagePartEmoteModifier[];
-  };
+  content: MessagePartEmoteContent;
 };
 
 export type MessagePartMention = {
