@@ -28,6 +28,7 @@ const MoreMessagesButton = styled.button<{ $isVisible: boolean }>`
   display: ${(p) => (p.$isVisible ? 'block' : 'none')};
   padding: 5px 20px;
   background: rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
   color: #fff;
   border-radius: 4px;
   border: none;
