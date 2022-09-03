@@ -7,3 +7,4 @@ export { default as EmotePicker } from './components/EmotePicker';
 
 export * from './utils/emotesUsageStatistic';
 export { default as getEmotesByText } from './utils/getEmotesByText';
+export { default as isEmoteModifier } from './utils/isEmoteModifier';

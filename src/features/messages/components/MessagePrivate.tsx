@@ -10,7 +10,11 @@ import { Badges } from 'features/badges';
 import { showCardsSelector, timestampFormatSelector } from 'features/options';
 import { MessageCardComponent } from 'features/messageCards';
 import { MessagePartType } from '../messagesConstants';
-import type { MessagePart, MessageTypePrivate } from '../messagesTypes';
+import type {
+  MessagePart,
+  MessagePartEmote,
+  MessageTypePrivate,
+} from '../messagesTypes';
 
 type MessageRootProps = {
   $isAction: boolean;
@@ -79,11 +83,18 @@ const Timestamp = styled.span`
   color: rgba(255, 255, 255, 0.6);
 `;
 
-const renderMessageParts =
-  (login: string, meLogin?: string) =>
-  ({ type, content }: MessagePart, key: number) => {
+const renderMessageParts = (
+  parts: MessagePart[],
+  login: string,
+  meLogin?: string,
+) => {
+  const result: JSX.Element[] = [];
+
+  for (let i = 0; i < parts.length; i += 1) {
+    const { type, content } = parts[i];
+
     if (type === MessagePartType.TEXT) {
-      return content;
+      result.push(<React.Fragment key={i}>{content}</React.Fragment>);
     }
 
     if (
@@ -93,37 +104,38 @@ const renderMessageParts =
       type === MessagePartType.STV_EMOTE ||
       type === MessagePartType.EMOJI
     ) {
-      return <Emote key={key} type={type} content={content} />;
+      result.push(<Emote key={i} emote={parts[i] as MessagePartEmote} />);
     }
 
     // TODO: something wrong with self mentions
     if (type === MessagePartType.MENTION) {
-      return (
+      result.push(
         <Mention
-          key={key}
+          key={i}
           $isActive={content.recipient === meLogin}
           $isSelf={login === meLogin}
         >
           {content.displayText}
-        </Mention>
+        </Mention>,
       );
     }
 
     if (type === MessagePartType.LINK) {
-      return (
+      result.push(
         <Link
-          key={key}
+          key={i}
           href={content.url}
           rel="noreferrer noopener"
           target="_blank"
         >
           {content.displayText}
-        </Link>
+        </Link>,
       );
     }
+  }
 
-    return null;
-  };
+  return result;
+};
 
 type Props = {
   message: MessageTypePrivate;
@@ -180,7 +192,7 @@ const Message = ({
         </Link>
       );
     }
-    return parts.map(renderMessageParts(login, meLogin));
+    return renderMessageParts(parts, login, meLogin);
   };
 
   return (

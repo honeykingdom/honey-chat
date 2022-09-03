@@ -1,7 +1,8 @@
 import urlRegex from 'url-regex-safe';
+import { isEmoteModifier } from 'features/emotes';
 import type { AllEmotes } from '../../emotes/emotesTypes';
 import { MessagePartType } from '../messagesConstants';
-import { MessagePart } from '../messagesTypes';
+import { MessagePart, MessagePartEmoteModifier } from '../messagesTypes';
 
 const MENTION_REGEX = /^(@([\p{Letter}\p{Number}_]+))(.*)/u;
 const LINK_REGEX = urlRegex({ strict: false });
@@ -32,6 +33,31 @@ const parseEmoteOffsets = (emotesTag: string) => {
   return result;
 };
 
+/** Pushes emote modifier to `modifier` field if possible */
+const addEmoteModifier = (
+  messageParts: MessagePart[],
+  part: MessagePartEmoteModifier,
+) => {
+  const minus1part = messageParts.at(-1);
+  const minus2part = messageParts.at(-2);
+
+  // if -1st part is only spaces
+  // and -2nd part is an emote
+  if (
+    minus1part?.type === MessagePartType.TEXT &&
+    minus1part?.content.trim() === '' &&
+    (minus2part?.type === MessagePartType.TWITCH_EMOTE ||
+      minus2part?.type === MessagePartType.BTTV_EMOTE ||
+      minus2part?.type === MessagePartType.FFZ_EMOTE ||
+      minus2part?.type === MessagePartType.STV_EMOTE ||
+      minus2part?.type === MessagePartType.EMOJI)
+  ) {
+    minus2part.content.modifiers.push(part);
+  } else {
+    messageParts.push(part);
+  }
+};
+
 const createMessageParts = (
   message: string,
   emotes: AllEmotes,
@@ -58,7 +84,7 @@ const createMessageParts = (
         if (emoteId) {
           messageParts.push({
             type: MessagePartType.TWITCH_EMOTE,
-            content: emoteId,
+            content: { id: emoteId, modifiers: [] },
           });
 
           break;
@@ -71,7 +97,7 @@ const createMessageParts = (
         if (twitchEmoteId) {
           messageParts.push({
             type: MessagePartType.TWITCH_EMOTE,
-            content: twitchEmoteId,
+            content: { id: twitchEmoteId, modifiers: [] },
           });
 
           break;
@@ -79,37 +105,76 @@ const createMessageParts = (
       }
 
       const bttvEmoteId =
-        emotes.bttvGlobal?.names[word] || emotes.bttvChannel?.names[word];
+        emotes.bttvChannel?.names[word] || emotes.bttvGlobal?.names[word];
 
       if (bttvEmoteId) {
-        messageParts.push({
+        const bttvEmote =
+          emotes.bttvChannel?.entries[bttvEmoteId] ||
+          emotes.bttvGlobal?.entries[bttvEmoteId];
+        const isModifier = !!isEmoteModifier(
+          bttvEmote!.code,
+          MessagePartType.BTTV_EMOTE,
+        );
+
+        const part: MessagePart = {
           type: MessagePartType.BTTV_EMOTE,
-          content: bttvEmoteId,
-        });
+          content: { id: bttvEmoteId, modifiers: [] },
+        };
+
+        if (isModifier) {
+          addEmoteModifier(messageParts, part);
+        } else {
+          messageParts.push(part);
+        }
 
         break;
       }
 
       const ffzEmoteId =
-        emotes.ffzGlobal?.names[word] || emotes.ffzChannel?.names[word];
+        emotes.ffzChannel?.names[word] || emotes.ffzGlobal?.names[word];
 
       if (ffzEmoteId) {
-        messageParts.push({
+        const isModifier = !!isEmoteModifier(
+          ffzEmoteId,
+          MessagePartType.FFZ_EMOTE,
+        );
+
+        const part: MessagePart = {
           type: MessagePartType.FFZ_EMOTE,
-          content: ffzEmoteId,
-        });
+          content: { id: ffzEmoteId, modifiers: [] },
+        };
+
+        if (isModifier) {
+          addEmoteModifier(messageParts, part);
+        } else {
+          messageParts.push(part);
+        }
 
         break;
       }
 
       const stvEmoteId =
-        emotes.stvGlobal?.names[word] || emotes.stvChannel?.names[word];
+        emotes.stvChannel?.names[word] || emotes.stvGlobal?.names[word];
 
       if (stvEmoteId) {
-        messageParts.push({
+        const stvEmote =
+          emotes.stvChannel?.entries[stvEmoteId] ||
+          emotes.stvGlobal?.entries[stvEmoteId];
+        const isModifier = !!isEmoteModifier(
+          stvEmote!,
+          MessagePartType.STV_EMOTE,
+        );
+
+        const part: MessagePart = {
           type: MessagePartType.STV_EMOTE,
-          content: stvEmoteId,
-        });
+          content: { id: stvEmoteId, modifiers: [] },
+        };
+
+        if (isModifier) {
+          addEmoteModifier(messageParts, part);
+        } else {
+          messageParts.push(part);
+        }
 
         break;
       }
@@ -117,7 +182,10 @@ const createMessageParts = (
       const emojiId = emotes.emoji?.names[word];
 
       if (emojiId) {
-        messageParts.push({ type: MessagePartType.EMOJI, content: emojiId });
+        messageParts.push({
+          type: MessagePartType.EMOJI,
+          content: { id: emojiId, modifiers: [] },
+        });
 
         break;
       }
@@ -155,10 +223,10 @@ const createMessageParts = (
         break;
       }
 
-      const lastItem = messageParts[messageParts.length - 1];
+      const lastPart = messageParts.at(-1);
 
-      if (lastItem?.type === MessagePartType.TEXT) {
-        lastItem.content += word;
+      if (lastPart?.type === MessagePartType.TEXT) {
+        lastPart.content += word;
       } else {
         messageParts.push({
           type: MessagePartType.TEXT,
@@ -170,10 +238,10 @@ const createMessageParts = (
     }
 
     if (!isLast) {
-      const lastItem = messageParts[messageParts.length - 1];
+      const lastPart = messageParts.at(-1);
 
-      if (lastItem?.type === MessagePartType.TEXT) {
-        lastItem.content += ' ';
+      if (lastPart?.type === MessagePartType.TEXT) {
+        if (lastPart.content !== ' ') lastPart.content += ' ';
       } else {
         messageParts.push({
           type: MessagePartType.TEXT,

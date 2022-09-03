@@ -7,15 +7,46 @@ import createHtmlEmote from '../utils/createHtmlEmote';
 
 const Wrapper = styled.span`
   display: inline;
+
+  &[data-modified='true'] {
+    ~ & {
+      position: relative;
+      z-index: 1;
+    }
+
+    position: relative;
+    z-index: 0;
+
+    span {
+      position: absolute;
+      top: -20px;
+      bottom: -20px;
+      left: -20px;
+      right: -20px;
+      margin: auto;
+      pointer-events: none;
+
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        padding: 0;
+        margin: 0;
+        pointer-events: none !important;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
 `;
 const imageCss = css`
   position: relative;
-  margin: -0.5rem 0;
+  margin: -5px 0;
   max-width: 100%;
   vertical-align: middle;
 `;
+const Modifier = styled.span``;
 const Image = styled.img`
-  ${imageCss}
+  ${imageCss};
 `;
 const ImageEmoji = styled.img`
   ${imageCss};
@@ -28,29 +59,36 @@ const ImageEmoji = styled.img`
   height: calc(var(--ffz-chat-font-size) * 1.5);
 `;
 
-type Props = MessagePartEmote;
+type Props = {
+  emote: MessagePartEmote;
+};
 
-const Emote = ({ type, content }: Props) => {
+const Emote = ({ emote: { type, content } }: Props) => {
   const emotes = useAppSelector(emotesSelector);
-  const htmlEmote = createHtmlEmote(emotes, type, content);
+  const htmlEmote = createHtmlEmote(emotes, type, content.id);
 
   if (!htmlEmote) return null;
 
+  const renderModifiers = () =>
+    content.modifiers
+      .map((emote) => createHtmlEmote(emotes, emote.type, emote.content.id)!)
+      .filter(Boolean)
+      .map(({ id, title, alt, src, srcSet }) => (
+        <Modifier key={id}>
+          <Image title={title} alt={alt} src={src} srcSet={srcSet} />
+        </Modifier>
+      ));
+
   const { id, title, alt, src, srcSet } = htmlEmote;
 
-  return type === MessagePartType.EMOJI ? (
-    <Wrapper>
-      <ImageEmoji
-        title={title}
-        alt={alt}
-        src={src}
-        srcSet={srcSet}
-        data-id={id}
-      />
-    </Wrapper>
-  ) : (
-    <Wrapper>
-      <Image title={title} alt={alt} src={src} srcSet={srcSet} data-id={id} />
+  return (
+    <Wrapper data-id={id} data-modified={content.modifiers.length > 0}>
+      {type === MessagePartType.EMOJI ? (
+        <ImageEmoji title={title} alt={alt} src={src} srcSet={srcSet} />
+      ) : (
+        <Image title={title} alt={alt} src={src} srcSet={srcSet} />
+      )}
+      {!!content.modifiers.length && renderModifiers()}
     </Wrapper>
   );
 };

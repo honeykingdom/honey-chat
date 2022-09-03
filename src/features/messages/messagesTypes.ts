@@ -9,27 +9,42 @@ export type MessagePartText = {
 
 export type MessagePartTwitchEmote = {
   type: MessagePartType.TWITCH_EMOTE;
-  content: string;
+  content: {
+    id: string;
+    modifiers: MessagePartEmoteModifier[];
+  };
 };
 
 export type MessagePartBttvEmote = {
   type: MessagePartType.BTTV_EMOTE;
-  content: string;
+  content: {
+    id: string;
+    modifiers: MessagePartEmoteModifier[];
+  };
 };
 
 export type MessagePartFfzEmote = {
   type: MessagePartType.FFZ_EMOTE;
-  content: string;
+  content: {
+    id: string;
+    modifiers: MessagePartEmoteModifier[];
+  };
 };
 
 export type MessagePartStvEmote = {
   type: MessagePartType.STV_EMOTE;
-  content: string;
+  content: {
+    id: string;
+    modifiers: MessagePartEmoteModifier[];
+  };
 };
 
 export type MessagePartEmoji = {
   type: MessagePartType.EMOJI;
-  content: string;
+  content: {
+    id: string;
+    modifiers: MessagePartEmoteModifier[];
+  };
 };
 
 export type MessagePartMention = {
@@ -84,6 +99,11 @@ export type MessagePartEmote =
   | MessagePartFfzEmote
   | MessagePartStvEmote
   | MessagePartEmoji;
+
+export type MessagePartEmoteModifier =
+  | MessagePartBttvEmote
+  | MessagePartFfzEmote
+  | MessagePartStvEmote;
 
 type MessageUser = {
   id: string;

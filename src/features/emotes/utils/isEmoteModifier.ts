@@ -5,8 +5,8 @@ import {
   FFZ_EMOTES_MODIFIERS,
 } from '../emotesConstants';
 
-const isBttvEmoteModifier = (name: string): false | string =>
-  BTTV_EMOTES_MODIFIERS[name] || false;
+const isBttvEmoteModifier = (code: string): false | string =>
+  BTTV_EMOTES_MODIFIERS[code] || false;
 
 // ignore ffzEmote.margins, extra_width and shrink_to_fit for now
 const isFfzEmoteModifier = (id: string): false | string =>
@@ -17,7 +17,7 @@ const isStvEmoteModifier = (emote: StvEmote) =>
   emote.visibility_simple.includes('ZERO_WIDTH') ? '0' : false;
 
 function isEmoteModifier(
-  name: string,
+  code: string,
   type: MessagePartType.BTTV_EMOTE,
 ): false | string;
 function isEmoteModifier(
