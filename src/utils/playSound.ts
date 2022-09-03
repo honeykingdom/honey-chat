@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 
-const tink = new Howl({ src: ['/sounds/tink.ogg'] });
+const tink = new Howl({ src: ['/sounds/ts-tink.ogg'] });
 
 const SOUNDS = {
   tink,
