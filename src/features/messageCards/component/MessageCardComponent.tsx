@@ -37,6 +37,7 @@ const Preview = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   height: 45px;
   width: 80px;
   background-color: #26262c;
