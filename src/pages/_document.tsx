@@ -33,6 +33,20 @@ const Document = () => (
       <meta name="apple-mobile-web-app-title" content="Honey Chat" />
       <meta name="application-name" content="Honey Chat" />
       <meta name="theme-color" content="#0e0e10" />
+
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="Honey Chat" />
+      <meta
+        property="og:description"
+        content="Twitch chat with messages history and BTTV/FFZ/7TV emotes"
+      />
+      <meta property="og:site_name" content="Honey Chat" />
+      <meta property="og:url" content="https://honey-chat.vercel.app" />
+      <meta
+        property="og:image"
+        content="https://honey-chat.vercel.app/android-chrome-512x512.png"
+      />
+
       <script
         async
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
