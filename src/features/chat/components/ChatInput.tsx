@@ -184,7 +184,6 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
       handleChange,
       handleKeyUp,
       handleKeyDown,
-      handleBlur,
       handleSuggestionMouseEnter,
       handleSuggestionClick,
       handleEmoteClick,
@@ -199,9 +198,7 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
     );
 
     useOnClickOutside(chatInputRef, handleCloseEmotesModal);
-    useOnClickOutside(suggestionsRef, () =>
-      suggestions.set({ isActive: false }),
-    );
+    useOnClickOutside(suggestionsRef, () => suggestions.hide());
 
     const renderSuggestions = ({
       type,
@@ -282,7 +279,6 @@ const ChatInput = React.forwardRef<HTMLTextAreaElement, Props>(
                 onChange={handleChange}
                 onKeyUp={handleKeyUp}
                 onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
                 onHeightChange={handleHeightChange}
               />
               {isReady && renderEmotesButton()}

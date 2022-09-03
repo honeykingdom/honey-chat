@@ -33,6 +33,7 @@ const useSuggestions = () => {
   );
 
   const reset = useCallback(() => setState(suggestionsInitialState), []);
+  const hide = useCallback(() => setState({ isActive: false }), []);
   const up = useCallback(() => setState(setSuggestionsUp), []);
   const down = useCallback(() => setState(setSuggestionsDown), []);
 
@@ -40,6 +41,7 @@ const useSuggestions = () => {
     state,
     set: setState,
     reset,
+    hide,
     up,
     down,
   };

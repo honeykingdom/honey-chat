@@ -19,7 +19,6 @@ type UseChatInputReturnType = {
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleKeyUp: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  handleBlur: () => void;
   handleSuggestionMouseEnter: (index: number) => void;
   handleSuggestionClick: (index: number) => void;
 };
@@ -153,7 +152,7 @@ const useChatInput = (
         }
 
         if (e.key === 'Escape') {
-          d.suggestions.set({ isActive: false });
+          d.suggestions.hide();
           return;
         }
       }
@@ -203,6 +202,7 @@ const useChatInput = (
 
   const handleSuggestionClick = useCallback(
     (activeIndex: number) => {
+      console.log({ activeIndex });
       const d = deps.current;
       const newState = { ...d.suggestions.state, activeIndex };
       d.textarea.value = replaceSuggestionText(d.textarea.value, newState);
@@ -211,11 +211,6 @@ const useChatInput = (
     },
     [deps],
   );
-
-  const handleBlur = useCallback(() => {
-    const d = deps.current;
-    d.suggestions.set({ isActive: false });
-  }, [deps]);
 
   const handleEmoteClick = useCallback(
     (name: string) => {
@@ -230,7 +225,6 @@ const useChatInput = (
     handleChange,
     handleKeyUp,
     handleKeyDown,
-    handleBlur,
     handleSuggestionMouseEnter,
     handleSuggestionClick,
     handleEmoteClick,
