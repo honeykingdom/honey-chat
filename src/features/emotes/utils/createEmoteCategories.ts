@@ -70,6 +70,9 @@ const createEmoteCategories = (emotes: AllEmotes) => {
     const global: HtmlEmote[] = [];
 
     for (const emote of Object.values(twitch.entries)) {
+      // skip duplicated variations of smile emotes
+      if (emote.owner_id === 'twitch') continue;
+
       const htmlEmote = createHtmlEmote(
         emotes,
         MessagePartType.TWITCH_EMOTE,
