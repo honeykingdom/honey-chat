@@ -6,6 +6,7 @@ import IconButton from 'components/IconButton';
 import Modal from 'components/Modal';
 import { OptionsCategories } from 'features/options';
 import GearsIconSvg from 'icons/gears.svg';
+import GithubIconSvg from 'icons/github.svg';
 import { authStatusSelector, isRegisteredSelector } from '../chatSelectors';
 import Profile from './Profile';
 
@@ -18,19 +19,29 @@ const ChatControlsRoot = styled.div`
 const Controls = styled.div`
   display: flex;
   align-items: center;
+`;
+const ControlButtons = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
 
   & > :not(:last-child) {
     margin-right: 8px;
   }
-`;
-const OptionsButton = styled(IconButton)`
-  margin-left: auto;
 `;
 const GearsIcon = styled(GearsIconSvg)`
   display: block;
   width: 20px;
   height: 20px;
 `;
+const GithubIcon = styled(GithubIconSvg)`
+  display: block;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+`;
+const IconButtonA = IconButton as ReturnType<typeof styled.a>;
 
 type Props = {
   onChatClick: () => void;
@@ -48,15 +59,29 @@ const ChatControls = ({ onChatClick }: Props) => {
     <ChatControlsRoot>
       <Controls>
         <Profile />
-        <OptionsButton onClick={() => setIsOptionsVisible((prev) => !prev)}>
-          <GearsIcon />
-        </OptionsButton>
-        <Button
-          disabled={!(isRegistered && authStatus === 'success')}
-          onClick={onChatClick}
-        >
-          Chat
-        </Button>
+        <ControlButtons>
+          <IconButtonA
+            as="a"
+            title="Github Repo"
+            href="https://github.com/honeykingdom/honey-chat"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <GithubIcon />
+          </IconButtonA>
+          <IconButton
+            title="Chat settings"
+            onClick={() => setIsOptionsVisible((prev) => !prev)}
+          >
+            <GearsIcon />
+          </IconButton>
+          <Button
+            disabled={!(isRegistered && authStatus === 'success')}
+            onClick={onChatClick}
+          >
+            Chat
+          </Button>
+        </ControlButtons>
       </Controls>
       <Modal
         title="Chat settings"

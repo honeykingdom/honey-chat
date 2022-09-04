@@ -13,14 +13,18 @@ const ProfileRoot = styled.div`
   display: flex;
   align-items: center;
   font-size: 13px;
+  max-width: calc(100% - 128px);
 `;
-const ProfileContainer = styled.div``;
+const ProfileContainer = styled.div`
+  max-width: 100%;
+`;
 const UserButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 10px;
   height: 30px;
+  max-width: 100%;
   vertical-align: middle;
   overflow: hidden;
   white-space: nowrap;
@@ -49,7 +53,11 @@ const UserAvatar = styled.img`
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.2);
 `;
-const UserName = styled.div``;
+const UserName = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 const Dropdown = styled.div`
   position: absolute;
   top: 0;
@@ -85,6 +93,7 @@ const TwitchIcon = styled(TwitchIconSvg)`
   width: 20px;
   height: 20px;
 `;
+const ButtonA = Button as ReturnType<typeof styled.a>;
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -103,11 +112,10 @@ const Profile = () => {
   };
 
   const renderSignInButton = () => (
-    // @ts-ignore
-    <Button as="a" href={getAuthUrl()}>
+    <ButtonA as="a" href={getAuthUrl()}>
       <TwitchIcon />
       Sign in with Twitch
-    </Button>
+    </ButtonA>
   );
 
   const renderProfile = () => (
