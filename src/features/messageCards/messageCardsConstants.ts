@@ -12,6 +12,6 @@ export const TWITCH_CLIP_REGEX =
 export const TWITCH_VIDEO_REGEX =
   /^(?:https?:\/\/)?(?:www\.|m\.)?twitch\.tv\/videos\/(\d+)(?:\?.+)?$/;
 
-// https://regexr.com/3dj5t
+// https://regex101.com/r/22dNgk/1
 export const YOUTUBE_VIDEO_REGEX =
-  /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?:[\w-]+\?v=|embed\/|v\/|shorts\/)?)([\w-]+)(\S+)?$/;
+  /^((?:https?:)?\/\/)?((?:www|m)\.)?(?:youtube\.com|youtu.be)(\/(?!channel)(?:[\w-]+\?v=|embed\/|v\/|shorts\/)?)([\w-]+)(\S+)?$/;
