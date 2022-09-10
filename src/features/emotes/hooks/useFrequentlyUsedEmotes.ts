@@ -9,13 +9,12 @@ import { readEmotesUsageStatistic } from '../utils/emotesUsageStatistic';
 const useFrequentlyUsedEmotes = () => {
   const emotes = useAppSelector(emotesSelector);
 
-  const [frequentlyUsedEmotes] = useState(() => {
-    const stats = readEmotesUsageStatistic();
-    return stats
+  const [frequentlyUsedEmotes] = useState(() =>
+    readEmotesUsageStatistic()
       .slice(0, FREQUENTLY_USED_EMOTES_LIMIT)
       .map(({ type, content }) => createHtmlEmote(emotes, type, content.id)!)
-      .filter(Boolean);
-  });
+      .filter(Boolean),
+  );
 
   return frequentlyUsedEmotes;
 };
