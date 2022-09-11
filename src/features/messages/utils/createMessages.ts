@@ -106,7 +106,7 @@ export const createUserNotice = (
   state: RootState,
 ): MessageTypeUserNotice => {
   const channelName = msg.channel.value;
-  const body = msg.message.value;
+  const body = msg.message?.value;
   const user = msg.userInfo;
   const noticeType = msg.tags.get('msg-id') || '';
   const systemMessage = (msg.tags.get('system-msg') || '').replace(/\\s/g, ' ');
