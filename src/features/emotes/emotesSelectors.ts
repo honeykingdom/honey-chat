@@ -41,5 +41,5 @@ export const emotesSelector = createSelector(
 
 export const emoteCategoriesSelector = createSelector(
   emotesSelector,
-  (emotes) => createEmoteCategories(emotes),
+  createEmoteCategories,
 );
