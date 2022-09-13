@@ -182,7 +182,7 @@ const Message = ({
     e.preventDefault();
   };
 
-  const newColor = color ? calculateColor(color) : '';
+  const newColor = color ? calculateColor(color) : '#fff';
 
   const renderBody = () => {
     if (isDeleted && isVisible) {
