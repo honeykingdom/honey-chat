@@ -36,5 +36,6 @@ export function lsRead(key: LS): any {
     return RAW_KEYS.includes(key) ? data : JSON.parse(data);
   } catch (e) {
     console.warn(e);
+    return null;
   }
 }
