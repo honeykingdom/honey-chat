@@ -95,6 +95,7 @@ const renderMessageParts = (
 
     if (type === MessagePartType.TEXT) {
       result.push(<React.Fragment key={i}>{content}</React.Fragment>);
+      continue;
     }
 
     if (
@@ -105,6 +106,7 @@ const renderMessageParts = (
       type === MessagePartType.EMOJI
     ) {
       result.push(<Emote key={i} emote={parts[i] as MessagePartEmote} />);
+      continue;
     }
 
     // TODO: something wrong with self mentions
@@ -118,6 +120,7 @@ const renderMessageParts = (
           {content.displayText}
         </Mention>,
       );
+      continue;
     }
 
     if (type === MessagePartType.LINK) {
@@ -131,6 +134,7 @@ const renderMessageParts = (
           {content.displayText}
         </Link>,
       );
+      continue;
     }
   }
 
