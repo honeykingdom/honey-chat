@@ -14,7 +14,7 @@
     "test": "vitest watch",
     "generate:emojis-map": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' ts-node ./scripts/generateEmojisMap",
     "generate:twitch": "npx openapi-typescript https://twitch-api-swagger.surge.sh/openapi.json -o src/features/api/twitch/twitchApiTypes.generated.ts",
-    "generate:ffz": "npx npx openapi-typescript https://api.frankerfacez.com/v1/swagger.json -o ./src/features/api/ffz/ffzApiTypes.generated.ts",
+    "generate:ffz": "npx openapi-typescript https://api.frankerfacez.com/v1/swagger.json -o ./src/features/api/ffz/ffzApiTypes.generated.ts",
     "fetch-mocks": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' ts-node ./scripts/fetchMocks"
   },
   "dependencies": {
