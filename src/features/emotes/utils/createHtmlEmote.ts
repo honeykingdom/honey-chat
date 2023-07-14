@@ -91,15 +91,26 @@ const createHtmlEmote = (
     const emote =
       emotes.stvChannel?.entries[id] || emotes.stvGlobal?.entries[id];
     const title = emote?.name || '';
-    const x1 = `//cdn.7tv.app/emote/${id}/1x`;
-    const x2 = `//cdn.7tv.app/emote/${id}/2x`;
-    const x4 = `//cdn.7tv.app/emote/${id}/4x`;
+    let src = '';
+    let srcSet = '';
+    if (emote?.urls) {
+      src = emote.urls[0][1];
+      srcSet = emote.urls.map(([scale, url]) => `${url} ${scale}x`).join(', ');
+    } else {
+      const format = emote?.mime.replace('image/', '') || 'webp';
+      const x1 = `//cdn.7tv.app/emote/${id}/1x.${format}`;
+      const x2 = `//cdn.7tv.app/emote/${id}/2x.${format}`;
+      const x3 = `//cdn.7tv.app/emote/${id}/3x.${format}`;
+      const x4 = `//cdn.7tv.app/emote/${id}/4x.${format}`;
+      src = x1;
+      srcSet = `${x1} 1x, ${x2} 2x, ${x3} 3x, ${x4} 4x`;
+    }
     return {
       id,
       title,
       alt: title,
-      src: x1,
-      srcSet: `${x1} 1x, ${x2} 2x, ${x4} 4x`,
+      src,
+      srcSet,
       owner: {
         id: emote?.owner.twitch_id,
         name: emote?.owner.login,
