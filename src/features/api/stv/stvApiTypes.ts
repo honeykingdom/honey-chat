@@ -1,5 +1,17 @@
-import { Badges } from '../types';
+import type { DeepRequired } from 'ts-essentials';
+import type { definitions } from './stvApiTypes.generated';
+import type { Badges } from '../types';
 
+export type StvGlobalEmotesResponse = DeepRequired<
+  definitions['model.EmoteSetModel']
+>;
+export type StvChannelEmotesResponse = DeepRequired<
+  definitions['model.UserConnectionModel']
+>;
+export type StvEmoteSet = DeepRequired<definitions['model.EmoteSetModel']>;
+export type StvEmote = DeepRequired<definitions['model.ActiveEmoteModel']>;
+
+/*
 export type StvRole = {
   id: string;
   name: string;
@@ -37,6 +49,7 @@ export type StvEmote = {
   height: number[];
   urls: ['1' | '2' | '3' | '4', string][];
 };
+*/
 
 export type StvRawBadge = {
   id: string;

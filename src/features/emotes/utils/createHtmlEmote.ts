@@ -38,6 +38,7 @@ const createHtmlEmote = (
       alt: title,
       src: x1,
       srcSet: `${x1} 1x, ${x2} 2x, ${x4} 4x`,
+      sources: [],
       owner: {
         id: ownerId,
       },
@@ -58,6 +59,7 @@ const createHtmlEmote = (
       alt: title,
       src: x1,
       srcSet: `${x1} 1x, ${x2} 2x, ${x3} 3x`,
+      sources: [],
       owner: {
         id: (emote as MaybeWithUser)?.user?.providerId,
         name: (emote as MaybeWithUser)?.user?.name,
@@ -79,6 +81,7 @@ const createHtmlEmote = (
       alt: title,
       src: x1,
       srcSet: `${x1} 1x, ${x2} 2x, ${x4} 4x`,
+      sources: [],
       owner: {
         id: emote?.owner?._id ? `${emote?.owner?._id}` : undefined,
         name: emote?.owner?.name,
@@ -93,17 +96,19 @@ const createHtmlEmote = (
     const title = emote?.name || '';
     let src = '';
     let srcSet = '';
-    if (emote?.urls) {
-      src = emote.urls[0][1];
-      srcSet = emote.urls.map(([scale, url]) => `${url} ${scale}x`).join(', ');
-    } else {
-      const format = emote?.mime.replace('image/', '') || 'webp';
+    const sources: HtmlEmote['sources'] = [];
+    // assume that every emote has 1x/2x/3x/4x and avif/webp
+    for (const format of ['avif', 'webp'] as const) {
       const x1 = `//cdn.7tv.app/emote/${id}/1x.${format}`;
       const x2 = `//cdn.7tv.app/emote/${id}/2x.${format}`;
       const x3 = `//cdn.7tv.app/emote/${id}/3x.${format}`;
       const x4 = `//cdn.7tv.app/emote/${id}/4x.${format}`;
-      src = x1;
-      srcSet = `${x1} 1x, ${x2} 2x, ${x3} 3x, ${x4} 4x`;
+      const set = `${x1} 1x, ${x2} 2x, ${x3} 3x, ${x4} 4x`;
+      sources.push([`image/${format}`, set]);
+      if (format === 'webp') {
+        src = x1;
+        srcSet = set;
+      }
     }
     return {
       id,
@@ -111,10 +116,11 @@ const createHtmlEmote = (
       alt: title,
       src,
       srcSet,
+      sources,
       owner: {
-        id: emote?.owner.twitch_id,
-        name: emote?.owner.login,
-        displayName: emote?.owner.display_name,
+        id: emote?.data.owner?.id,
+        name: emote?.data.owner?.username,
+        displayName: emote?.data.owner?.display_name,
       },
     };
   }
@@ -132,6 +138,7 @@ const createHtmlEmote = (
       alt,
       src: w72,
       srcSet: `${w72} 72w`,
+      sources: [],
       owner: {},
     };
   }

@@ -34,6 +34,7 @@ export type HtmlEmote = {
   alt: string;
   src: string;
   srcSet: string;
+  sources: [mime: `image/${string}`, srcSet: string][];
   owner: {
     id?: string;
     name?: string;

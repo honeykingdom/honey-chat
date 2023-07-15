@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import type { StvEmote } from 'features/api';
 import { MessagePartType } from 'features/messages';
 import {
@@ -12,9 +13,9 @@ const isBttvEmoteModifier = (code: string): false | string =>
 const isFfzEmoteModifier = (id: string): false | string =>
   FFZ_EMOTES_MODIFIERS[id] || false;
 
-// https://github.com/FrankerFaceZ/Add-Ons/blob/master/src/7tv-emotes/modules/emotes.js#L195
+// https://github.com/FrankerFaceZ/Add-Ons/blob/master/src/7tv-emotes/modules/emotes.js#L187
 const isStvEmoteModifier = (emote: StvEmote) =>
-  emote.visibility_simple.includes('ZERO_WIDTH') ? '0' : false;
+  emote.flags === 1 << 0 ? '0' : false;
 
 function isEmoteModifier(
   code: string,

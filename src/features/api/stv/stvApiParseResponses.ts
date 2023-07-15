@@ -1,10 +1,31 @@
-import { Emotes } from '../types';
-import { StvCosmetics, StvCosmeticsResponse, StvEmote } from './stvApiTypes';
+import type { Emotes } from '../types';
+import type {
+  StvChannelEmotesResponse,
+  StvCosmetics,
+  StvCosmeticsResponse,
+  StvEmote,
+  StvGlobalEmotesResponse,
+} from './stvApiTypes';
 
-export const parseStvEmotes = (data: StvEmote[]): Emotes<StvEmote> => {
+export const parseStvGlobalEmotes = (
+  data: StvGlobalEmotesResponse,
+): Emotes<StvEmote> => {
   const result: Emotes<StvEmote> = { entries: {}, names: {} };
 
-  for (const emote of data) {
+  for (const emote of data.emotes) {
+    result.entries[emote.id] = emote;
+    result.names[emote.name] = emote.id;
+  }
+
+  return result;
+};
+
+export const parseStvChannelEmotes = (
+  data: StvChannelEmotesResponse,
+): Emotes<StvEmote> => {
+  const result: Emotes<StvEmote> = { entries: {}, names: {} };
+
+  for (const emote of data.emote_set.emotes) {
     result.entries[emote.id] = emote;
     result.names[emote.name] = emote.id;
   }
