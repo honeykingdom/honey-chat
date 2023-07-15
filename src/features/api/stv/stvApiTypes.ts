@@ -11,46 +11,6 @@ export type StvChannelEmotesResponse = DeepRequired<
 export type StvEmoteSet = DeepRequired<definitions['model.EmoteSetModel']>;
 export type StvEmote = DeepRequired<definitions['model.ActiveEmoteModel']>;
 
-/*
-export type StvRole = {
-  id: string;
-  name: string;
-  position: number;
-  color: number;
-  allowed: number;
-  denied: number;
-  default: boolean;
-};
-
-export type StvUser = {
-  id: string;
-  twitch_id: string;
-  login: string;
-  display_name: string;
-  role: StvRole;
-  profile_picture_id?: string;
-};
-
-export type StvEmote = {
-  id: string;
-  name: string;
-  owner: StvUser;
-  visibility: number;
-  visibility_simple: (
-    | 'GLOBAL'
-    | 'OVERRIDE_FFZ'
-    | 'OVERRIDE_BTTV'
-    | 'ZERO_WIDTH'
-  )[];
-  mime: 'image/png' | 'image/gif' | 'image/webp' | 'image/jpeg' | string;
-  status: number;
-  tags: string[];
-  width: number[];
-  height: number[];
-  urls: ['1' | '2' | '3' | '4', string][];
-};
-*/
-
 export type StvRawBadge = {
   id: string;
   name: string;
