@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useAppSelector } from 'app/hooks';
-import { emotesSelector } from 'features/emotes';
-import { type MessagePartEmote, MessagePartType } from 'features/messages';
+import { emotesSelector } from 'features/emotes/emotesSelectors';
+import type { MessagePartEmote } from 'features/messages/messagesTypes';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import createHtmlEmote from '../utils/createHtmlEmote';
+import type { HtmlEmote } from '../emotesTypes';
 
 const Wrapper = styled.span`
   display: inline;

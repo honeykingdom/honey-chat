@@ -3,21 +3,22 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { RootState } from 'app/store';
+import type { RootState } from 'app/store';
 import { LS } from 'utils/constants';
 import { lsRead, lsWrite } from 'utils/ls';
-import {
-  MessageType,
+import { MessageType } from 'features/messages/messagesConstants';
+import type {
   MessageTypeNotice,
   MessageTypePrivate,
   MessageTypeUserNotice,
-} from 'features/messages';
+} from 'features/messages/messagesTypes';
 import {
   createCreateBadges,
   createCreateCard,
   createCreateParts,
 } from 'features/messages/utils/createMessages';
-import { type Options, getInitialOptions } from 'features/options';
+import type { Options } from 'features/options/optionsTypes';
+import getInitialOptions from 'features/options/utils/getInitialOptions';
 import {
   CHANNEL_INITIAL_STATE,
   CHANNEL_RECENT_INPUTS_LIMIT,

@@ -1,6 +1,6 @@
-import { MessageBadge } from 'features/badges';
-import { MessageCard } from 'features/messageCards';
-import { MessagePartType, MessageType } from './messagesConstants';
+import type { MessageBadge } from 'features/badges/badgesTypes';
+import type { MessageCard } from 'features/messageCards/messageCardsTypes';
+import type { MessagePartType, MessageType } from './messagesConstants';
 
 export type MessagePartText = {
   type: MessagePartType.TEXT;

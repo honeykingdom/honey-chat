@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useAppSelector } from 'app/hooks';
-import { splitChatSelector } from 'features/options';
+import { splitChatSelector } from 'features/options/optionsSelectors';
 import Message from 'features/messages/components/Message';
 import {
   currentChannelMessagesSelector,

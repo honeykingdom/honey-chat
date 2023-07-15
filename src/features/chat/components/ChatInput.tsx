@@ -6,7 +6,8 @@ import { useAppSelector } from 'app/hooks';
 import { PREVENT_FORWARD_PROPS } from 'utils/constants';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import IconButton from 'components/IconButton';
-import { EmotePicker, type HtmlEmote } from 'features/emotes';
+import EmotePicker from 'features/emotes/components/EmotePicker';
+import { type HtmlEmote } from 'features/emotes/emotesTypes';
 import SmileyFaceIconSvg from 'icons/smiley-face.svg';
 import useChatInput from '../hooks/useChatInput';
 import {

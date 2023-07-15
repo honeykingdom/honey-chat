@@ -1,5 +1,5 @@
 import urlRegex from 'url-regex-safe';
-import { isEmoteModifier } from 'features/emotes';
+import isEmoteModifier from 'features/emotes/utils/isEmoteModifier';
 import type { AllEmotes } from '../../emotes/emotesTypes';
 import { MessagePartType } from '../messagesConstants';
 import { MessagePart, MessagePartEmoteModifier } from '../messagesTypes';

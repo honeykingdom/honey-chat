@@ -1,4 +1,4 @@
-import type { AllEmotes } from 'features/emotes';
+import type { AllEmotes } from 'features/emotes/emotesTypes';
 import { parseTwitchEmotes } from 'features/api/twitch/twitchApiParseResponses';
 import {
   parseBttvChannelEmotes,
@@ -9,8 +9,8 @@ import {
   parseFfzEmoji,
   parseFfzGlobalEmotes,
 } from 'features/api/ffz/ffzApiParseResponses';
-import { parseStvEmotes } from 'features/api/stv/stvApiParseResponses';
-import {
+import { parseStvGlobalEmotes } from 'features/api/stv/stvApiParseResponses';
+import type {
   MessagePartBttvEmote,
   MessagePartEmoji,
   MessagePartFfzEmote,
@@ -19,8 +19,8 @@ import {
   MessagePartStvEmote,
   MessagePartText,
   MessagePartTwitchEmote,
-  MessagePartType,
-} from 'features/messages';
+} from 'features/messages/messagesTypes';
+import { MessagePartType } from 'features/messages/messagesConstants';
 
 import twitchEmotes from './twitchEmotes.json';
 import twitchBadgesGlobal from './twitchBadgesGlobal.json';
@@ -47,8 +47,8 @@ export const emotes: AllEmotes = {
   bttvChannel: parseBttvChannelEmotes(bttvChannelEmotes as any),
   ffzGlobal: parseFfzGlobalEmotes(ffzGlobalEmotes as any),
   ffzChannel: parseFfzChannelEmotes(ffzChannelEmotes as any),
-  stvGlobal: parseStvEmotes(stvGlobalEmotes as any),
-  stvChannel: parseStvEmotes(stvChannelEmotes as any),
+  stvGlobal: parseStvGlobalEmotes(stvGlobalEmotes as any),
+  stvChannel: parseStvGlobalEmotes(stvChannelEmotes as any),
   emoji: parseFfzEmoji(ffzEmoji as any),
 };
 

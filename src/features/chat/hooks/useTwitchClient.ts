@@ -11,7 +11,7 @@ import {
   UserState,
 } from '@twurple/chat';
 import getIrcChannelName from 'utils/getChannelName';
-import { createCustomNotice } from 'features/messages';
+import createCustomNotice from 'features/messages/utils/createCustomNotice';
 import { CLIENT_ID } from 'utils/constants';
 import toDaysMinutesSeconds from 'utils/toDaysMinutesSeconds';
 import {
@@ -31,15 +31,15 @@ import {
   messageReceived,
 } from '../chatSlice';
 import {
-  parseGlobalUserState,
-  parseRoomState,
-  parseUserState,
-} from '../utils/parseIrc';
-import {
   noticeReceived,
   privateMessageReceived,
   userNoticeReceived,
 } from '../chatThunks';
+import {
+  parseGlobalUserState,
+  parseRoomState,
+  parseUserState,
+} from '../utils/parseIrc';
 
 // TODO: try to read access token directly from the localStorage for the first time
 const useTwitchClient = () => {

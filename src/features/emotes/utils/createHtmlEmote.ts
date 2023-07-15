@@ -1,5 +1,5 @@
 import type { BttvEmoteDetailed } from 'features/api';
-import { MessagePartType } from 'features/messages';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import { DEFAULT_TWITCH_TEMPLATE } from '../emotesConstants';
 import type { AllEmotes, HtmlEmote } from '../emotesTypes';
 

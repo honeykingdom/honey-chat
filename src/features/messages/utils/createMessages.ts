@@ -3,19 +3,19 @@ import { parseMessage, Message, type MessageTypes } from 'ircv3';
 import { PrivateMessage, UserNotice } from '@twurple/chat';
 import type { RootState } from 'app/store';
 import getIrcChannelName from 'utils/getChannelName';
-import {
-  blockedUsersSelector,
-  meSelector,
-  parseBadgesTag,
-} from 'features/chat';
-import { createMessageCard } from 'features/messageCards';
+import { blockedUsersSelector, meSelector } from 'features/chat/chatSelectors';
+import parseBadgesTag from 'features/chat/utils/parseBadgesTag';
+import createMessageCard from 'features/messageCards/utils/createMessageCard';
 import {
   badgesSelector,
-  createMessageBadges,
   meBadgesSelector,
-} from 'features/badges';
-import { emotesSelector } from 'features/emotes';
-import { highlightRegExpSelector, showCardsSelector } from 'features/options';
+} from 'features/badges/badgesSelectors';
+import createMessageBadges from 'features/badges/utils/createMessageBadges';
+import { emotesSelector } from 'features/emotes/emotesSelectors';
+import {
+  highlightRegExpSelector,
+  showCardsSelector,
+} from 'features/options/optionsSelectors';
 import { IRCV3_KNOWN_COMMANDS, MessageType } from '../messagesConstants';
 import type {
   MessagePart,
@@ -26,7 +26,9 @@ import type {
 } from '../messagesTypes';
 import createMessageParts from './createMessageParts';
 
-const parsePrivMsgBody = (content: string): [body: string, isAction: boolean] =>
+const parsePrivMsgBody = (
+  content: string,
+): [body: string, isAction: boolean] =>
   content.startsWith('\u0001ACTION ')
     ? [content.slice(8, -1), true]
     : [content, false];

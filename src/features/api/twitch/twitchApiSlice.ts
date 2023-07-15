@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from 'app/store';
 import { CLIENT_ID } from 'utils/constants';
-import type { MessageCardDetails } from 'features/messageCards';
+import type { MessageCardDetails } from 'features/messageCards/messageCardsTypes';
 import { parseTwitchClip, parseTwitchVideo } from './twitchApiParseResponses';
 
 export const API_BASE = 'https://api.twitch.tv/helix';

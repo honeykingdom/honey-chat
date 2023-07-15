@@ -1,4 +1,4 @@
-import type { Emoji } from 'features/emotes';
+import type { Emoji } from 'features/emotes/emotesTypes';
 import type { Badges, Emotes } from '../types';
 import type {
   FfzApBadge,

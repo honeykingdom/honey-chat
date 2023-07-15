@@ -4,11 +4,14 @@ import { css } from '@emotion/react';
 import { format } from 'date-fns/fp';
 import { calculateColor } from 'utils/colors';
 import { useAppSelector } from 'app/hooks';
-import { meLoginSelector } from 'features/chat';
-import { Emote } from 'features/emotes';
-import { Badges } from 'features/badges';
-import { showCardsSelector, timestampFormatSelector } from 'features/options';
-import { MessageCardComponent } from 'features/messageCards';
+import { meLoginSelector } from 'features/chat/chatSelectors';
+import Emote from 'features/emotes/components/Emote';
+import Badges from 'features/badges/components/Badges';
+import {
+  showCardsSelector,
+  timestampFormatSelector,
+} from 'features/options/optionsSelectors';
+import MessageCardComponent from 'features/messageCards/component/MessageCardComponent';
 import { MessagePartType } from '../messagesConstants';
 import type {
   MessagePart,

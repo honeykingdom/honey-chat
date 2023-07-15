@@ -1,4 +1,4 @@
-import { type HtmlEmote } from 'features/emotes';
+import type { HtmlEmote } from 'features/emotes/emotesTypes';
 import { SuggestionsState } from '../chatTypes';
 
 const replaceSuggestionText = (

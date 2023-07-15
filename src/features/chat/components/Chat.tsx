@@ -1,10 +1,11 @@
 import { useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { type AllEmotes, emotesSelector } from 'features/emotes';
-import { useAuth } from 'features/auth';
-import { replaceEmojis } from 'features/messages';
-import { messageSended } from '../chatThunks';
+import { emotesSelector } from 'features/emotes/emotesSelectors';
+import type { AllEmotes } from 'features/emotes/emotesTypes';
+import useAuth from 'features/auth/hooks/useAuth';
+import replaceEmojis from 'features/messages/utils/replaceEmojis';
+import { messageSended } from 'features/chat/chatThunks';
 import { currentChannelNameSelector } from '../chatSelectors';
 import useTwitchClient from '../hooks/useTwitchClient';
 import useFetchChatData from '../hooks/useFetchChatData';

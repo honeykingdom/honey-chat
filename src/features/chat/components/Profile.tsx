@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import Button from 'components/Button';
-import { clearAuthData, getAuthUrl } from 'features/auth';
+import clearAuthData from 'features/auth/utils/clearAuthData';
+import getAuthUrl from 'features/auth/utils/getAuthUrl';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import TwitchIconSvg from 'icons/twitch.svg';
 import { useRef, useState } from 'react';
@@ -64,7 +65,8 @@ const Dropdown = styled.div`
   left: 0;
   right: 0;
   transform: translateY(-100%);
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 8px 0px,
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 4px 8px 0px,
     rgba(0, 0, 0, 0.4) 0px 0px 4px 0px;
   background-color: #18181b;
   border-radius: 4px;
@@ -93,7 +95,7 @@ const TwitchIcon = styled(TwitchIconSvg)`
   width: 20px;
   height: 20px;
 `;
-const ButtonA = Button as ReturnType<typeof styled.a>;
+const ButtonA = Button as unknown as ReturnType<typeof styled.a>;
 
 const Profile = () => {
   const dispatch = useAppDispatch();

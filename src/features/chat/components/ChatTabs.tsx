@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { createCustomNotice } from 'features/messages';
+import createCustomNotice from 'features/messages/utils/createCustomNotice';
 import CloseIconSvg from 'icons/close.svg';
 import { LS } from 'utils/constants';
 import { lsRead, lsWrite } from 'utils/ls';

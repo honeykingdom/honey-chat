@@ -1,5 +1,5 @@
 import type { BttvEmote, FfzEmote, StvEmote } from 'features/api';
-import { MessagePartType } from 'features/messages';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import type { AllEmotes, EmotesCategory, HtmlEmote } from '../emotesTypes';
 import createHtmlEmote from './createHtmlEmote';
 

@@ -1,5 +1,5 @@
 // https://nainacodes.com/blog/create-an-accessible-and-reusable-react-modal
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import styled from '@emotion/styled';
 import CloseIconSvg from 'icons/close.svg';
@@ -28,7 +28,8 @@ const StyledModal = styled.div`
   position: relative;
   margin: auto;
   padding: 8px 0;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 8px 0px,
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 4px 8px 0px,
     rgba(0, 0, 0, 0.4) 0px 0px 4px 0px;
   background-color: #18181b;
   white-space: normal;

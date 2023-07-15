@@ -1,3 +1,3 @@
-import { Chat } from 'features/chat';
+import Chat from '../features/chat/components/Chat';
 
 export default Chat;

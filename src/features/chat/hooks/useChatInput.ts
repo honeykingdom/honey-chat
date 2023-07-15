@@ -5,8 +5,9 @@ import {
   currentChannelRecentInputsSelector,
   currentChannelUsersSelector,
   meLoginSelector,
-} from 'features/chat';
-import { emotesSelector, getEmotesByText } from 'features/emotes';
+} from 'features/chat/chatSelectors';
+import { emotesSelector } from 'features/emotes/emotesSelectors';
+import getEmotesByText from 'features/emotes/utils/getEmotesByText';
 import { SUGGESTION_TYPES } from '../chatConstants';
 import type { SendMessageFn } from '../chatTypes';
 import useSuggestions from './useSuggestions';

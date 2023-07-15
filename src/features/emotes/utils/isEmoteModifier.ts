@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import type { StvEmote } from 'features/api';
-import { MessagePartType } from 'features/messages';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import {
   BTTV_EMOTES_MODIFIERS,
   FFZ_EMOTES_MODIFIERS,

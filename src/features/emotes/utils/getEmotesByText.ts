@@ -1,4 +1,4 @@
-import { MessagePartType } from 'features/messages';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import type { AllEmotes, HtmlEmote } from '../emotesTypes';
 import createHtmlEmote from './createHtmlEmote';
 

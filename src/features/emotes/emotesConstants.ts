@@ -1,4 +1,4 @@
-import { MessagePartType } from 'features/messages';
+import { MessagePartType } from 'features/messages/messagesConstants';
 
 export const FREQUENTLY_USED_EMOTES_LIMIT = 36;
 
@@ -7,6 +7,7 @@ export enum EmoteType {
   Bttv = MessagePartType.BTTV_EMOTE,
   Ffz = MessagePartType.FFZ_EMOTE,
   Stv = MessagePartType.STV_EMOTE,
+  Emoji = MessagePartType.EMOJI,
 }
 
 // https://github.com/FrankerFaceZ/Add-Ons/blob/master/src/ffzap-bttv/index.js#L218

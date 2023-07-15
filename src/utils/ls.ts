@@ -1,7 +1,7 @@
-import type { LsTokens, LsUser } from 'features/auth';
-import type { LsChannels } from 'features/chat';
-import type { LsEmotesUsageStatistic as EmotesUsage } from 'features/emotes';
-import type { LsOptions } from 'features/options';
+import type { LsTokens, LsUser } from 'features/auth/authTypes';
+import type { LsChannels } from 'features/chat/chatTypes';
+import type { LsEmotesUsageStatistic as EmotesUsage } from 'features/emotes/emotesTypes';
+import type { LsOptions } from 'features/options/optionsTypes';
 import { LS } from './constants';
 
 const RAW_KEYS = [LS.LastChannel];

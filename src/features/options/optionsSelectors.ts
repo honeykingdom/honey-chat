@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from 'app/store';
-import { meLoginSelector } from 'features/chat';
+import { meLoginSelector } from 'features/chat/chatSelectors';
 import createOptionsCategories from './utils/createOptionsCategories';
 import getHighlightRegex from './utils/getHighlightRegex';
 

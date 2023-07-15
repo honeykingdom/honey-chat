@@ -1,10 +1,11 @@
-import {
+import type {
   MessagePart,
   MessagePartEmote,
-  MessagePartType,
-} from 'features/messages';
+} from 'features/messages/messagesTypes';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import { LS } from 'utils/constants';
 import { lsRead, lsWrite } from 'utils/ls';
+import type { LsEmotesUsageStatistic } from '../emotesTypes';
 
 const EMOTE_TYPES: MessagePartType[] = [
   MessagePartType.TWITCH_EMOTE,
@@ -41,7 +42,8 @@ export const readEmotesUsageStatistic = (): MessagePartEmote[] => {
 export const writeEmotesUsageStatistic = (parts: MessagePart[]) => {
   if (parts.length === 0) return;
 
-  const stats = lsRead(LS.EmotesUsageStatistic) || {};
+  const stats =
+    lsRead(LS.EmotesUsageStatistic) || ({} as LsEmotesUsageStatistic);
 
   for (const {
     type,

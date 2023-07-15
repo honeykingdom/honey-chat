@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import Switch from 'components/Switch';
 import Select from 'components/Select';
-import { optionChanged } from 'features/chat';
+import { optionChanged } from 'features/chat/chatSlice';
 import { ENTER_HIGHLIGHT_KEYWORDS_TEXT } from '../optionsConstants';
 import { optionsCategoriesSelector } from '../optionsSelectors';
 

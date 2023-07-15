@@ -1,5 +1,5 @@
-import type { AllBadges, MessageBadge } from 'features/badges';
-import { MessageBadgeType } from 'features/badges';
+import type { AllBadges, MessageBadge } from 'features/badges/badgesTypes';
+import { MessageBadgeType } from 'features/badges/badgesConstants';
 
 const createMessageBadges = (
   allBadges: AllBadges,

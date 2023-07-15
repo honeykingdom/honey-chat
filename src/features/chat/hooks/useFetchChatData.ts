@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { optionsSelector } from 'features/options';
+import { optionsSelector } from 'features/options/optionsSelectors';
 import {
   currentChannelNameSelector,
   authStatusSelector,

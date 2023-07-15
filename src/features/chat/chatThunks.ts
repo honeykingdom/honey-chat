@@ -18,8 +18,9 @@ import api, {
   parseFfzEmoji,
   parseFfzGlobalBadges,
   parseFfzGlobalEmotes,
+  parseStvChannelEmotes,
   parseStvCosmetics,
-  parseStvEmotes,
+  parseStvGlobalEmotes,
   parseTwitchBadges,
   parseTwitchEmotes,
 } from 'features/api';
@@ -30,9 +31,9 @@ import {
   createNotice,
   createOwnMessage,
 } from 'features/messages/utils/createMessages';
-import { writeEmotesUsageStatistic } from 'features/emotes';
-import { messageReceived } from './chatSlice';
+import { writeEmotesUsageStatistic } from 'features/emotes/utils/emotesUsageStatistic';
 import type { Channel, ChatState, FetchResult } from './chatTypes';
+import { messageReceived } from './chatSlice';
 
 const builderFns: ((builder: ActionReducerMapBuilder<ChatState>) => void)[] =
   [];
@@ -244,7 +245,7 @@ export const fetchFfzGlobalEmotes = createGlobalChatThunk({
 export const fetchStvGlobalEmotes = createGlobalChatThunk({
   name: 'fetchStvGlobalEmotes',
   path: (state) => state.emotes.stv,
-  payloadCreator: () => api.stv.globalEmotes().then(parseStvEmotes),
+  payloadCreator: () => api.stv.globalEmotes().then(parseStvGlobalEmotes),
 });
 export const fetchFfzEmoji = createGlobalChatThunk({
   name: 'fetchFfzEmoji',
@@ -310,7 +311,7 @@ export const fetchStvChannelEmotes = createChannelChatThunk({
   payloadCreator: ({ channelId, channelName }) =>
     api.stv
       .channelEmotes(channelId)
-      .then((data) => ({ data: parseStvEmotes(data), channelName })),
+      .then((data) => ({ data: parseStvChannelEmotes(data), channelName })),
 });
 
 // channel badges

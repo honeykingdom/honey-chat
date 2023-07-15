@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { MessageCardDetails } from 'features/messageCards';
+import type { MessageCardDetails } from 'features/messageCards/messageCardsTypes';
 import { parseYoutubeVideo } from './youtubeApiParseResponses';
 
 const API_BASE = 'https://www.googleapis.com/youtube/v3';

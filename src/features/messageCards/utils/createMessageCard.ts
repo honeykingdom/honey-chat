@@ -1,4 +1,5 @@
-import { type MessagePart, MessagePartType } from 'features/messages';
+import type { MessagePart } from 'features/messages/messagesTypes';
+import { MessagePartType } from 'features/messages/messagesConstants';
 import type { MessageCard } from '../messageCardsTypes';
 import {
   MessageCardType,

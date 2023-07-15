@@ -1,6 +1,6 @@
 import { useAppSelector } from 'app/hooks';
-import { badgesSelector } from 'features/badges';
-import type { MessageTypePrivate } from 'features/messages';
+import { badgesSelector } from 'features/badges/badgesSelectors';
+import type { MessageTypePrivate } from 'features/messages/messagesTypes';
 import createHtmlBadge from '../utils/createHtmlBadge';
 import Badge from './Badge';
 

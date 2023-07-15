@@ -2,13 +2,13 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { useAppSelector } from 'app/hooks';
-import { DEFAULT_TWITCH_TEMPLATE } from 'features/emotes';
+import { DEFAULT_TWITCH_TEMPLATE } from 'features/emotes/emotesConstants';
 import {
   useTwitchClipQuery,
   useTwitchVideoQuery,
   useYoutubeVideoQuery,
 } from 'features/api';
-import { accessTokenSelector } from 'features/chat';
+import { accessTokenSelector } from 'features/chat/chatSelectors';
 import { MessageCard as Card } from '../messageCardsTypes';
 import { MessageCardType } from '../messageCardsConstants';
 
@@ -17,7 +17,9 @@ const MessageCardComponentRoot = styled.a<{ $clickable?: boolean }>`
   flex-wrap: nowrap;
   padding: 5px;
   border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.9);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.9),
+    0 0 2px rgba(0, 0, 0, 0.9);
   background-color: #18181b;
   text-decoration: none;
 

@@ -13,9 +13,9 @@ import type {
   TwitchBadge,
   TwitchEmote,
 } from 'features/api';
-import type { Messages } from 'features/messages';
-import type { Emoji, HtmlEmote } from 'features/emotes';
-import type { Options } from 'features/options';
+import type { Messages } from 'features/messages/messagesTypes';
+import type { Emoji, HtmlEmote } from 'features/emotes/emotesTypes';
+import type { Options } from 'features/options/optionsTypes';
 
 type UserType = '' | 'admin' | 'global_mod' | 'staff';
 

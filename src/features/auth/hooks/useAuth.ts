@@ -4,7 +4,8 @@ import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { LS } from 'utils/constants';
 import { lsRead, lsWrite } from 'utils/ls';
 import api, { JwtPayload } from 'features/api';
-import { authStatusChanged, authStatusSelector } from 'features/chat';
+import { authStatusChanged } from 'features/chat/chatSlice';
+import { authStatusSelector } from 'features/chat/chatSelectors';
 import { LsUser } from '../authTypes';
 
 const useAuth = () => {

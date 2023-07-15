@@ -1,5 +1,5 @@
 import { format } from 'date-fns/fp';
-import type { MessageCardDetails } from 'features/messageCards';
+import type { MessageCardDetails } from 'features/messageCards/messageCardsTypes';
 import type { YoutubeVideoResponse } from './youtubeApiTypes';
 
 export const parseYoutubeVideo = ({

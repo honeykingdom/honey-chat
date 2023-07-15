@@ -1,4 +1,4 @@
-import type { AllEmotes } from 'features/emotes';
+import type { AllEmotes } from 'features/emotes/emotesTypes';
 
 /** Replaces :smile: with 😊 */
 const replaceEmojis = (emojis: AllEmotes['emoji'], text: string) => {

@@ -2,7 +2,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from 'app/store';
 import { MessageBadgeType } from './badgesConstants';
 import type { AllBadges, MessageBadge } from './badgesTypes';
-import createHtmlBadge from './utils/createHtmlBadge';
 
 export const badgesSelector = createSelector(
   (state: RootState) => state.chat.badges.twitch.data,

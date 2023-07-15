@@ -4,7 +4,7 @@ import { useAppSelector } from 'app/hooks';
 import Button from 'components/Button';
 import IconButton from 'components/IconButton';
 import Modal from 'components/Modal';
-import { OptionsCategories } from 'features/options';
+import OptionsCategories from 'features/options/components/OptionsCategories';
 import GearsIconSvg from 'icons/gears.svg';
 import GithubIconSvg from 'icons/github.svg';
 import { authStatusSelector, isRegisteredSelector } from '../chatSelectors';
@@ -41,7 +41,7 @@ const GithubIcon = styled(GithubIconSvg)`
   height: 20px;
   padding: 2px;
 `;
-const IconButtonA = IconButton as ReturnType<typeof styled.a>;
+const IconButtonA = IconButton as unknown as ReturnType<typeof styled.a>;
 
 type Props = {
   onChatClick: () => void;
