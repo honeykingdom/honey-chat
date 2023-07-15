@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": "src",
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,8 +20,20 @@
     "noEmit": true,
     "jsx": "preserve",
     "noFallthroughCasesInSwitch": true,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": false
   },
-  "include": ["src", "scripts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src",
+    "scripts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
