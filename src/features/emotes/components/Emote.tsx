@@ -61,6 +61,22 @@ const ImageEmoji = styled.img`
   height: calc(var(--ffz-chat-font-size) * 1.5);
 `;
 
+const SmartEmote = ({ title, alt, src, srcSet, sources }: HtmlEmote) =>
+  sources.length === 0 ? (
+    <Image title={title} alt={alt} src={src} srcSet={srcSet} />
+  ) : (
+    <picture>
+      {sources.map(([mimeType, sourceSrcSet]) => (
+        <source srcSet={sourceSrcSet} type={mimeType} />
+      ))}
+      <Image title={title} alt={alt} src={src} srcSet={srcSet} />
+    </picture>
+  );
+
+const Emoji = ({ title, alt, src, srcSet }: HtmlEmote) => (
+  <ImageEmoji title={title} alt={alt} src={src} srcSet={srcSet} />
+);
+
 type Props = {
   emote: MessagePartEmote;
 };
@@ -75,20 +91,21 @@ const Emote = ({ emote: { type, content } }: Props) => {
     content.modifiers
       .map((emote) => createHtmlEmote(emotes, emote.type, emote.content.id)!)
       .filter(Boolean)
-      .map(({ id, title, alt, src, srcSet }) => (
-        <Modifier key={id}>
-          <Image title={title} alt={alt} src={src} srcSet={srcSet} />
+      .map((htmlEmoteModifier) => (
+        <Modifier key={htmlEmoteModifier.id}>
+          <SmartEmote {...htmlEmoteModifier} />
         </Modifier>
       ));
 
-  const { id, title, alt, src, srcSet } = htmlEmote;
-
   return (
-    <Wrapper data-id={id} data-modified={content.modifiers.length > 0}>
+    <Wrapper
+      data-id={htmlEmote.id}
+      data-modified={content.modifiers.length > 0}
+    >
       {type === MessagePartType.EMOJI ? (
-        <ImageEmoji title={title} alt={alt} src={src} srcSet={srcSet} />
+        <Emoji {...htmlEmote} />
       ) : (
-        <Image title={title} alt={alt} src={src} srcSet={srcSet} />
+        <SmartEmote {...htmlEmote} />
       )}
       {!!content.modifiers.length && renderModifiers()}
     </Wrapper>
