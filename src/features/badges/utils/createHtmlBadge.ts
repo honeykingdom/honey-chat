@@ -79,7 +79,7 @@ const createHtmlBadge = (
     const badge = badges.stv?.entries[id];
     if (!badge) return null;
     const { tooltip, urls } = badge;
-    const [[x1], [x2], [x3]] = urls;
+    const [[, x1], [, x2], [, x3]] = urls;
     const srcSet = `${x1} 1x, ${x2} 2x, ${x3} 3x`;
     return {
       id,
