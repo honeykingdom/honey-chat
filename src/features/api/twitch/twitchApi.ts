@@ -74,20 +74,19 @@ const chat = {
       template: responses[0].template,
     };
   },
-};
 
-const badges = {
-  getGlobalBadges: (language = 'en'): Promise<TwitchBadgesResponse> =>
-    fetch(
-      `https://badges.twitch.tv/v1/badges/global/display?language=${language}`,
-    ).then((r) => r.json()),
+  getGlobalBadges: (accessToken: string): Promise<TwitchBadgesResponse> =>
+    fetch(`${API_BASE}/chat/badges/global`, getOptions(accessToken)).then((r) =>
+      r.json(),
+    ),
 
   getChannelBadges: (
-    channelId: string,
-    language = 'en',
+    broadcasterId: string,
+    accessToken: string,
   ): Promise<TwitchBadgesResponse> =>
     fetch(
-      `https://badges.twitch.tv/v1/badges/channels/${channelId}/display?language=${language}`,
+      `${API_BASE}/chat/badges?broadcaster_id=${broadcasterId}`,
+      getOptions(accessToken),
     ).then((r) => r.json()),
 };
 
@@ -116,7 +115,6 @@ const videos = {
 const twitch = {
   users,
   chat,
-  badges,
   clips,
   videos,
 };

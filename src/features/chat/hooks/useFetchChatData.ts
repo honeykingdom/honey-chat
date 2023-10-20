@@ -60,7 +60,16 @@ const useFetchChatData = () => {
     if (authStatus !== 'success' || !accessToken) return;
 
     dispatch(fetchBlockedUsers());
+    dispatch(fetchTwitchGlobalBadges());
   }, [authStatus, accessToken]);
+
+  useEffect(() => {
+    if (authStatus !== 'success' || !accessToken) return;
+
+    if (fetchChannelStatus.badges.twitch === 'idle') {
+      dispatch(fetchTwitchChannelBadges({ channelId, channelName }));
+    }
+  }, [channelId, channelName, authStatus, accessToken]);
 
   // refetch twitch emote sets when channel changes
   useEffect(() => {
@@ -70,13 +79,10 @@ const useFetchChatData = () => {
   }, [isJoined]);
 
   useEffect(() => {
-    if (fetchGlobalStatus.emotes.twitch === 'idle') {
-      dispatch(fetchTwitchGlobalBadges());
-    }
     if (fetchGlobalStatus.emotes.bttv === 'idle' && options.bttv.emotes) {
       dispatch(fetchBttvGlobalEmotes());
     }
-    if (fetchGlobalStatus.emotes.bttv === 'idle' && options.bttv.badges) {
+    if (fetchGlobalStatus.badges.bttv === 'idle' && options.bttv.badges) {
       dispatch(fetchBttvGlobalBadges());
     }
     if (fetchGlobalStatus.emotes.ffz === 'idle' && options.ffz.emotes) {
@@ -117,9 +123,6 @@ const useFetchChatData = () => {
 
     const params = { channelId, channelName };
 
-    if (fetchChannelStatus.badges.twitch === 'idle') {
-      dispatch(fetchTwitchChannelBadges(params));
-    }
     if (fetchChannelStatus.emotes.bttv === 'idle' && options.bttv.emotes) {
       dispatch(fetchBttvChannelEmotes(params));
     }

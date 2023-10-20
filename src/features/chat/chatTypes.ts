@@ -10,12 +10,12 @@ import type {
   FfzEmote,
   StvBadge,
   StvEmote,
-  TwitchBadge,
   TwitchEmote,
 } from 'features/api';
 import type { Messages } from 'features/messages/messagesTypes';
 import type { Emoji, HtmlEmote } from 'features/emotes/emotesTypes';
 import type { Options } from 'features/options/optionsTypes';
+import type { TwitchBadges } from 'features/badges/badgesTypes';
 
 type UserType = '' | 'admin' | 'global_mod' | 'staff';
 
@@ -70,7 +70,7 @@ export type Channel = {
     stv: FetchResult<Emotes<StvEmote>>;
   };
   badges: {
-    twitch: FetchResult<Record<string, TwitchBadge>>;
+    twitch: FetchResult<TwitchBadges>;
   };
 };
 
@@ -112,7 +112,7 @@ export type ChatState = {
   };
   /** Global badges */
   badges: {
-    twitch: FetchResult<Record<string, TwitchBadge>>;
+    twitch: FetchResult<TwitchBadges>;
     bttv: FetchResult<Badges<BttvBadge>>;
     ffz: FetchResult<Badges<FfzBadge>>;
     ffzAp: FetchResult<Badges<FfzApBadge>>;

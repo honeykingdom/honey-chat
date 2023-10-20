@@ -2,18 +2,25 @@ import { format } from 'date-fns/fp';
 import type { MessageCardDetails } from 'features/messageCards/messageCardsTypes';
 import type { Emotes } from '../types';
 import type {
-  TwitchBadge,
   TwitchBadgesResponse,
   TwitchUserBlockListsResponse,
   TwitchClipsResponse,
   TwitchEmote,
   TwitchEmoteSetsResponse,
   TwitchVideosResponse,
+  TwitchBadgeVersion,
 } from './twitchApiTypes';
 
-export const parseTwitchBadges = (
-  response: TwitchBadgesResponse,
-): Record<string, TwitchBadge> => response.badge_sets;
+export const parseTwitchBadges = (response: TwitchBadgesResponse) => {
+  const result: Record<string, Record<string, TwitchBadgeVersion>> = {};
+  for (const { set_id: setId, versions } of response.data) {
+    result[setId] = {};
+    for (const version of versions) {
+      result[setId][version.id] = version;
+    }
+  }
+  return result;
+};
 
 export const parseBlockedUsers = (
   response: TwitchUserBlockListsResponse,

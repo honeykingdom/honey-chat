@@ -257,8 +257,11 @@ export const fetchFfzEmoji = createGlobalChatThunk({
 export const fetchTwitchGlobalBadges = createGlobalChatThunk({
   name: 'fetchTwitchGlobalBadges',
   path: (state) => state.badges.twitch,
-  payloadCreator: () =>
-    api.twitch.badges.getGlobalBadges().then(parseTwitchBadges),
+  payloadCreator: (_, { getState }) => {
+    const state = getState() as RootState;
+    const { accessToken } = state.chat.me;
+    return api.twitch.chat.getGlobalBadges(accessToken).then(parseTwitchBadges);
+  },
 });
 export const fetchBttvGlobalBadges = createGlobalChatThunk({
   name: 'fetchBttvGlobalBadges',
@@ -318,10 +321,13 @@ export const fetchStvChannelEmotes = createChannelChatThunk({
 export const fetchTwitchChannelBadges = createChannelChatThunk({
   name: 'fetchTwitchChannelBadges',
   path: (channel) => channel.badges.twitch,
-  payloadCreator: ({ channelId, channelName }) =>
-    api.twitch.badges
-      .getChannelBadges(channelId)
-      .then((data) => ({ data: parseTwitchBadges(data), channelName })),
+  payloadCreator: ({ channelId, channelName }, { getState }) => {
+    const state = getState() as RootState;
+    const { accessToken } = state.chat.me;
+    return api.twitch.chat
+      .getChannelBadges(channelId, accessToken)
+      .then((data) => ({ data: parseTwitchBadges(data), channelName }));
+  },
 });
 
 // messages

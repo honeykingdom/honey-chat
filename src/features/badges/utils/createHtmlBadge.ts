@@ -12,7 +12,7 @@ const createHtmlBadge = (
 ): HtmlBadge | null => {
   if (type === MessageBadgeType.TWITCH) {
     const badge = badges.twitchChannel?.[id] || badges.twitchGlobal?.[id];
-    const badgeVersion = badge?.versions[version];
+    const badgeVersion = badge?.[version];
     if (!badgeVersion) return null;
     const { title, image_url_1x, image_url_2x, image_url_4x } = badgeVersion;
     const srcSet = `${image_url_1x} 1x, ${image_url_2x} 2x, ${image_url_4x} 4x`;

@@ -5,13 +5,15 @@ import type {
   FfzApBadge,
   FfzBadge,
   StvBadge,
-  TwitchBadge,
+  TwitchBadgeVersion,
 } from 'features/api';
 import type { MessageBadgeType } from './badgesConstants';
 
+export type TwitchBadges = Record<string, Record<string, TwitchBadgeVersion>>;
+
 export type AllBadges = {
-  twitchGlobal?: Record<string, TwitchBadge>;
-  twitchChannel?: Record<string, TwitchBadge>;
+  twitchGlobal?: TwitchBadges;
+  twitchChannel?: TwitchBadges;
   bttv?: Badges<BttvBadge>;
   ffz?: Badges<FfzBadge>;
   ffzAp?: Badges<FfzApBadge>;

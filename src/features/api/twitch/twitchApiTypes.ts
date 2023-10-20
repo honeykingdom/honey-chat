@@ -13,12 +13,10 @@ export type TwitchUserBlockListsResponse =
 export type TwitchClipsResponse = components['schemas']['GetClipsResponse'];
 export type TwitchVideosResponse = components['schemas']['GetVideosResponse'];
 
-export type TwitchBadgeVersion = components['schemas']['BadgeVersion'];
-
-export type TwitchBadge = components['schemas']['Badge'];
-
 export type TwitchBadgesResponse =
-  components['schemas']['GetGlobalBadgesResponse'];
+  components['schemas']['GetGlobalChatBadgesResponse'];
+export type TwitchBadgeVersion =
+  components['schemas']['ChatBadge']['versions'][number];
 
 export type JwtPayload = {
   aud: string;
