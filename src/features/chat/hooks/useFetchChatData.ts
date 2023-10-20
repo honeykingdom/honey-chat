@@ -64,7 +64,14 @@ const useFetchChatData = () => {
   }, [authStatus, accessToken]);
 
   useEffect(() => {
-    if (authStatus !== 'success' || !accessToken) return;
+    if (
+      authStatus !== 'success' ||
+      !accessToken ||
+      !channelId ||
+      !channelName
+    ) {
+      return;
+    }
 
     if (fetchChannelStatus.badges.twitch === 'idle') {
       dispatch(fetchTwitchChannelBadges({ channelId, channelName }));
