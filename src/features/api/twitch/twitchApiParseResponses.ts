@@ -1,4 +1,5 @@
 import { format } from 'date-fns/fp';
+import type { TwitchBadges } from 'features/badges/badgesTypes';
 import type { MessageCardDetails } from 'features/messageCards/messageCardsTypes';
 import type { Emotes } from '../types';
 import type {
@@ -8,11 +9,10 @@ import type {
   TwitchEmote,
   TwitchEmoteSetsResponse,
   TwitchVideosResponse,
-  TwitchBadgeVersion,
 } from './twitchApiTypes';
 
 export const parseTwitchBadges = (response: TwitchBadgesResponse) => {
-  const result: Record<string, Record<string, TwitchBadgeVersion>> = {};
+  const result: TwitchBadges = {};
   for (const { set_id: setId, versions } of response.data) {
     result[setId] = {};
     for (const version of versions) {

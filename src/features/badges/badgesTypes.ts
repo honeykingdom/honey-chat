@@ -9,6 +9,9 @@ import type {
 } from 'features/api';
 import type { MessageBadgeType } from './badgesConstants';
 
+/**
+ * @example twitchBadges[setId][versionId]
+ */
 export type TwitchBadges = Record<string, Record<string, TwitchBadgeVersion>>;
 
 export type AllBadges = {
