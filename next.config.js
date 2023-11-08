@@ -22,6 +22,7 @@ const config = {
     // !! WARN !!
     // ignoreBuildErrors: true,
   },
+  output: 'export',
 };
 
 module.exports = withPWA(config);

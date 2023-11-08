@@ -12,7 +12,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next export",
     "start": "next start",
     "test": "vitest watch",
     "generate:emojis-map": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' ts-node ./scripts/generateEmojisMap",
