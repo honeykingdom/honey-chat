@@ -6,6 +6,9 @@
   "license": "MIT",
   "private": true,
   "homepage": "https://honey-chat.vercel.app",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
