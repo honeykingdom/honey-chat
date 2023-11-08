@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { LS } from 'utils/constants';
 import { lsRead, lsWrite } from 'utils/ls';
